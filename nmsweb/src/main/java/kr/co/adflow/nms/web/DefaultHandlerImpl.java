@@ -50,10 +50,10 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 					.getBytes());
 			conn.setRequestProperty("Authorization", "Basic " + encoding);
 
-			logger.debug("conn::" + conn);
+			logger.debug("conn :" + conn);
 
 			if (conn.getResponseCode() != 200) {
-				throw new HandleException("Failed::HTTPErrorCode::"
+				throw new HandleException("HTTPErrorCode :"
 						+ conn.getResponseCode());
 			}
 
@@ -70,7 +70,7 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 			// throw new Exception("TestException");
 			// }
 
-			logger.debug("receivedData::" + result.toString());
+			logger.debug("receivedData :" + result.toString());
 			return result.toString();
 		} catch (Exception e) {
 			throw new HandleException(e);
