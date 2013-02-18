@@ -62,7 +62,7 @@ public class NodeController {
 			// "{\"error\":\"{\"code\":\"100\",\"message\":\"FailedGetNodesProcess\"}\"}";
 			throw e;
 		} catch (Exception e) {
-			logger.error("Exception pccurred", e);
+			logger.error("Exception occurred", e);
 			// return error (json format)
 			return "{\"error\":\"{\"code\":\"100\",\"message\":\"FailedGetNodesProcess\"}\"}";
 		} finally {
