@@ -56,13 +56,13 @@ public class NodeController {
 			result = (String) handler.handle(hash);
 			logger.debug("sendData :" + result);
 		} catch (HandleException e) {
-			logger.error("HandleException occurred", e);
+			logger.error("handleException occurred", e);
 			// return error (json format)
 			// return
 			// "{\"error\":\"{\"code\":\"100\",\"message\":\"FailedGetNodesProcess\"}\"}";
 			throw e;
 		} catch (Exception e) {
-			logger.error("Exception occurred", e);
+			logger.error("exception occurred", e);
 			// return error (json format)
 			return "{\"error\":\"{\"code\":\"100\",\"message\":\"FailedGetNodesProcess\"}\"}";
 		} finally {
