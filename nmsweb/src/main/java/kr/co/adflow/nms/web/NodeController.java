@@ -48,21 +48,21 @@ public class NodeController {
 		hash.put(URL, "http://192.168.112.128:8980/opennms/rest/nodes");
 		hash.put(METHOD, "GET");
 
-		logger.debug("requestMap::" + hash);
+		logger.debug("requestMap :" + hash);
 
 		String result = null;
 
 		try {
 			result = (String) handler.handle(hash);
-			logger.debug("sendData::" + result);
+			logger.debug("sendData :" + result);
 		} catch (HandleException e) {
-			logger.error("Failed::HandleException", e);
+			logger.error("HandleException occurred", e);
 			// return error (json format)
 			// return
 			// "{\"error\":\"{\"code\":\"100\",\"message\":\"FailedGetNodesProcess\"}\"}";
 			throw e;
 		} catch (Exception e) {
-			logger.error("Failed::Exception", e);
+			logger.error("Exception pccurred", e);
 			// return error (json format)
 			return "{\"error\":\"{\"code\":\"100\",\"message\":\"FailedGetNodesProcess\"}\"}";
 		} finally {
