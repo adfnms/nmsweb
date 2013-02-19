@@ -55,7 +55,7 @@ public class NodeController {
 	String serchNode(HttpServletRequest request) {
 
 		Map<String, String[]> params = request.getParameterMap();
-		NodeProcess controll = new NodeProcess();
+		NodeProcess controll = NodeProcess.getProcess();
 		String result = null;
 
 		String[] id = params.get("id");
