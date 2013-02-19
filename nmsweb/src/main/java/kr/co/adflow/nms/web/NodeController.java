@@ -1,7 +1,5 @@
 package kr.co.adflow.nms.web;
 
-import groovy.lang.GroovyClassLoader;
-import groovy.lang.GroovyObject;
 
 import java.io.File;
 import java.util.Locale;
@@ -15,8 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -28,13 +28,13 @@ public class NodeController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(NodeController.class);
 
-	@RequestMapping(value = "/nodes", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String node(Locale locale, Model model) {
 
 		return "nodeList";
 	}
 
-	@RequestMapping(value = "/nodesAll", method = RequestMethod.GET)
+	@RequestMapping(value = "/nodes", method = RequestMethod.GET)
 	public @ResponseBody
 	String nodesAll(Locale locale, Model model) {
 
@@ -50,18 +50,18 @@ public class NodeController {
 		return result;
 	}
 
-	@RequestMapping(value = "/serchNode", method = RequestMethod.GET)
-	public @ResponseBody
-	String serchNode(HttpServletRequest request) {
+	@RequestMapping(value = "/nodes/{id}", method = RequestMethod.GET)
+	public @ResponseBody String serchNode(@PathVariable String id ){
 
-		Map<String, String[]> params = request.getParameterMap();
 		NodeProcess controll = NodeProcess.getProcess();
 		String result = null;
-
-		String[] id = params.get("id");
+		
+		
+		System.out.println("ddddd");
+		logger.info("daadfd");
 
 		try {
-			result = (String) controll.nodes(id[0]);
+			result = (String) controll.nodes(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -75,29 +75,6 @@ public class NodeController {
 	 * @return The value input as a String.
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sendNewSuspectEvent", method = RequestMethod.GET)
-	public @ResponseBody
-	String sendNewSuspectEvent() throws Exception {
 
-		try {
-
-			ClassLoader parent = getClass().getClassLoader();
-			GroovyClassLoader loader = new GroovyClassLoader(parent);
-			Class groovyClass = loader.parseClass(new File(
-					"src/test/groovy/script/sendNewSuspectEvent.groovy"));
-
-			// let's call some method on an instance
-			GroovyObject groovyObject = (GroovyObject) groovyClass
-					.newInstance();
-			String[] args = { "127.0.0.2", "192.168.112.128" };
-			Object ret = groovyObject.invokeMethod("sendNewSuspectEvent", args);
-			logger.debug("ret :" + ret);
-			return "{\"result\":\"success\"}";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "{\"error\":\"{\"code\":\"100\",\"message\":\""
-					+ e.getMessage() + "\"}\"}";
-		}
-	}
 
 }
