@@ -1,6 +1,6 @@
 package kr.co.adflow.nms.web.vo;
 
-public class ipInterface {
+public class IpInterface {
 	
 	
 	public String getSnmpPrimary() {

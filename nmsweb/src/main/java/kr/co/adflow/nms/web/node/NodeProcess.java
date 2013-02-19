@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import kr.co.adflow.nms.web.DefaultHandlerImpl;
 import kr.co.adflow.nms.web.Handler;
+import kr.co.adflow.nms.web.HandlerFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,8 @@ public class NodeProcess {
 
 	
 	public String nodes() {
-		Handler handler = DefaultHandlerImpl.getHandler();
+//		Handler handler = HandlerFactory.getHandler();
+		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
@@ -49,7 +51,7 @@ public class NodeProcess {
 	}
 	
 	public String nodes(String id) {
-		Handler handler = DefaultHandlerImpl.getHandler();
+		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
@@ -68,7 +70,7 @@ public class NodeProcess {
 		return result;
 	}
 	public String nodesIpInterfaces(String id) {
-		Handler handler = DefaultHandlerImpl.getHandler();
+		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
@@ -87,7 +89,7 @@ public class NodeProcess {
 		return result;
 	}
 	public String nodesIpInterfaces(String id, String ipAddress) {
-		Handler handler = DefaultHandlerImpl.getHandler();
+		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
@@ -106,7 +108,7 @@ public class NodeProcess {
 		return result;
 	}
 	public String nodesIpInterfacesServices(String id, String ipAddress) {
-		Handler handler = DefaultHandlerImpl.getHandler();
+		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
@@ -125,7 +127,7 @@ public class NodeProcess {
 		return result;
 	}
 	public String nodesIpInterfacesServices(String id, String ipAddress, String service) {
-		Handler handler = DefaultHandlerImpl.getHandler();
+		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
@@ -146,7 +148,7 @@ public class NodeProcess {
 	
 	///nodes/{id}/snmpinterfaces
 	public String nodesSnmpinterfaces(String id) {
-		Handler handler = DefaultHandlerImpl.getHandler();
+		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
@@ -167,7 +169,7 @@ public class NodeProcess {
 
 	///nodes/{id}/snmpinterfaces/{ifIndex} 
 	public String nodesSnmpinterfaces(String id, String ifIndex) {
-		Handler handler = DefaultHandlerImpl.getHandler();
+		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
@@ -188,7 +190,7 @@ public class NodeProcess {
 	
 	///nodes/{id}/categories 
 	public String nodesCategories(String id) {
-		Handler handler = DefaultHandlerImpl.getHandler();
+		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
@@ -210,7 +212,7 @@ public class NodeProcess {
 	
 	///nodes/{id}/categories/{categoryName}
 	public String nodesCategories(String id, String categoryName) {
-		Handler handler = DefaultHandlerImpl.getHandler();
+		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
@@ -231,7 +233,7 @@ public class NodeProcess {
 	
 	///nodes/{id}/assetRecord
 	public String nodesAssetRecord(String id) {
-		Handler handler = DefaultHandlerImpl.getHandler();
+		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
