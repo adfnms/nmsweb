@@ -86,8 +86,7 @@ public class NodeController {
 	}
 
 	
-<<<<<<< HEAD
-=======
+
 	@RequestMapping(value = "/nodes/{id}/ipinterfaces/{ipAddress}", method = RequestMethod.GET)
 	public @ResponseBody String nodeIdIpinterfaces(@PathVariable String id, @PathVariable String ipAddress ){
 
@@ -208,16 +207,5 @@ public class NodeController {
 
 		return result;
 	}
-	
-	
-	
-	/**
-	 * sendNewSuspectEvent
-	 * 
-	 * @return The value input as a String.
-	 * @exception Exception
-	 */
-
->>>>>>> branch 'master' of https://github.com/adfnms/nmsweb.git
 
 }
