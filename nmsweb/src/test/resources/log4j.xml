@@ -11,8 +11,8 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="kr.co.adflow">
-		<level value="info" />
+	<logger name="kr.co.adflow.nms.web">
+		<level value="debug" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->

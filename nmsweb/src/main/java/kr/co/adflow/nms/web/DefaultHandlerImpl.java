@@ -43,7 +43,10 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 			URL url = new URL((String) map.get("url"));
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod((String) map.get("method"));
-			conn.setRequestProperty("Accept", "application/json");
+			if (map.containsKey("Accept")) {
+				// "application/json"
+				conn.setRequestProperty("Accept", (String) map.get("Accept"));
+			}
 			String userPassword = map.get("username") + ":"
 					+ map.get("password");
 			String encoding = new sun.misc.BASE64Encoder().encode(userPassword
