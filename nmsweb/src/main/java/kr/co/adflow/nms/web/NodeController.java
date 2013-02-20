@@ -69,35 +69,6 @@ public class NodeController {
 		return result;
 	}
 
-	/**
-	 * sendNewSuspectEvent
-	 * 
-	 * @return The value input as a String.
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "/sendNewSuspectEvent", method = RequestMethod.GET)
-	public @ResponseBody
-	String sendNewSuspectEvent() throws Exception {
-
-		try {
-
-			ClassLoader parent = getClass().getClassLoader();
-			GroovyClassLoader loader = new GroovyClassLoader(parent);
-			Class groovyClass = loader.parseClass(new File(
-					"src/test/groovy/script/sendNewSuspectEvent.groovy"));
-
-			// let's call some method on an instance
-			GroovyObject groovyObject = (GroovyObject) groovyClass
-					.newInstance();
-			String[] args = { "127.0.0.2", "192.168.112.128" };
-			Object ret = groovyObject.invokeMethod("sendNewSuspectEvent", args);
-			logger.debug("ret :" + ret);
-			return "{\"result\":\"success\"}";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "{\"error\":\"{\"code\":\"100\",\"message\":\""
-					+ e.getMessage() + "\"}\"}";
-		}
-	}
+	
 
 }
