@@ -49,6 +49,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(URL, "http://localhost:8980/opennms/rest/nodes?limit=0");
+		hash.put("Accept", "application/json");
 		hash.put(METHOD, "GET");
 
 		String result = null;
