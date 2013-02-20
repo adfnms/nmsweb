@@ -51,7 +51,6 @@ body {
 					Nodes</button>
 			</p>
 		</div>
-		<li><a id="byPath" class="textLink" href="nodesAll"> All</a></li>
 
 		<div id="message"></div>
 
@@ -117,14 +116,17 @@ body {
 		 }
 		 });
 		 */
+		
 		 
-		$.getJSON('serchNode',{id : inid}, function(data) {
+		var ur="nodes/"+inid ;
+		alert(ur);
+		$.getJSON(ur, function(data) {
 			
 			var mydoc = document;
 			var p = mydoc.getElementById("nodeTable");
 			var tbodyElement = p.getElementsByTagName("tbody")[0];
 			
-//			alert (tbodyElement.rows.length);
+//			alert ("ddd");
 			
 			
 			for (var i=1; i <tbodyElement.rows.length; i++){
@@ -190,7 +192,7 @@ body {
 		function allNode() {
 
 	 
-			$.getJSON('nodesAll', function(data) {
+			$.getJSON('nodes', function(data) {
 				
 				var mydoc = document;
 				var p = mydoc.getElementById("nodeTable");
