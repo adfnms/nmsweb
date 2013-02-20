@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * TestController
  * 
  * @author typark@adflow.co.kr
- * @version 1.2
+ * @version 1.4
  */
 @Controller
 public class TestController {
