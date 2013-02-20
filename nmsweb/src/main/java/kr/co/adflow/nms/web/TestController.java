@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * /** Handles requests for the application
+ * TestController
+ * 
+ * @author typark@adflow.co.kr
+ * @version 1.0
  */
 @Controller
 public class TestController {
