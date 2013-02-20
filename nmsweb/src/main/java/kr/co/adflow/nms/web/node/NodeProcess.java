@@ -26,6 +26,8 @@ public class NodeProcess {
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
+//	private static final String NMSUrl = "http://localhost:8980/opennms/rest";
+	private static final String NMSUrl = "http://112.223.76.78:8980/opennms/rest";
 	private static final Logger logger = LoggerFactory
 			.getLogger(NodeProcess.class);
 
@@ -49,7 +51,7 @@ public class NodeProcess {
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, "http://localhost:8980/opennms/rest/nodes?limit=0");
+		hash.put(URL, NMSUrl + "/nodes?limit=0");
 		hash.put(Accept, "application/json");
 		hash.put(METHOD, "GET");
 
@@ -70,7 +72,7 @@ public class NodeProcess {
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, "http://localhost:8980/opennms/rest/nodes/" + id);
+		hash.put(URL, NMSUrl + "/nodes/" + id);
 		hash.put(Accept, "application/json");
 		hash.put(METHOD, "GET");
 
@@ -91,7 +93,7 @@ public class NodeProcess {
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, "http://localhost:8980/opennms/rest/nodes/" + id
+		hash.put(URL, NMSUrl + "/nodes/" + id
 				+ "/ipinterfaces?limit=0");
 		hash.put(Accept, "application/json");
 		hash.put(METHOD, "GET");
@@ -114,7 +116,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, "http://localhost:8980/opennms/rest/nodes/" + id
+		hash.put(URL, NMSUrl + "/nodes/" + id
 				+ "/ipinterfaces/" + ipAddress);
 		hash.put(METHOD, "GET");
 
@@ -136,7 +138,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, "http://localhost:8980/opennms/rest/nodes/" + id
+		hash.put(URL, NMSUrl + "/nodes/" + id
 				+ "/ipinterfaces/" + ipAddress + "/services?limit=0");
 		hash.put(METHOD, "GET");
 
@@ -159,7 +161,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, "http://localhost:8980/opennms/rest/nodes/" + id
+		hash.put(URL, NMSUrl + "/nodes/" + id
 				+ "/ipinterfaces/" + ipAddress + "/services/" + service);
 		hash.put(METHOD, "GET");
 
@@ -182,7 +184,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, "http://localhost:8980/opennms/rest/nodes/" + id
+		hash.put(URL, NMSUrl + "/nodes/" + id
 				+ "/snmpinterfaces");
 		hash.put(METHOD, "GET");
 
@@ -205,7 +207,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, "http://localhost:8980/opennms/rest/nodes/" + id
+		hash.put(URL, NMSUrl + "/nodes/" + id
 				+ "/snmpinterfaces/" + ifIndex);
 		hash.put(METHOD, "GET");
 
@@ -228,7 +230,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, "http://localhost:8980/opennms/rest/nodes/" + id
+		hash.put(URL, NMSUrl + "/nodes/" + id
 				+ "/categories");
 		hash.put(METHOD, "GET");
 
@@ -251,7 +253,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, "http://localhost:8980/opennms/rest/nodes/" + id
+		hash.put(URL, NMSUrl + "/nodes/" + id
 				+ "/categories/" + categoryName);
 		hash.put(METHOD, "GET");
 
@@ -274,7 +276,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, "http://localhost:8980/opennms/rest/nodes/" + id
+		hash.put(URL, NMSUrl + "/nodes/" + id
 				+ "/assetRecord");
 		hash.put(METHOD, "GET");
 
