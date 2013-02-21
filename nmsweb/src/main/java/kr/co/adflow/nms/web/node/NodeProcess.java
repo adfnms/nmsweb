@@ -1,19 +1,14 @@
 package kr.co.adflow.nms.web.node;
 
 import java.util.HashMap;
-import java.util.Locale;
 
-import kr.co.adflow.nms.web.DefaultHandlerImpl;
 import kr.co.adflow.nms.web.Handler;
 import kr.co.adflow.nms.web.HandlerFactory;
+import kr.co.adflow.nms.web.exception.HandleException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Handles requests for the application home page.
@@ -26,7 +21,8 @@ public class NodeProcess {
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
-//	private static final String NMSUrl = "http://localhost:8980/opennms/rest";
+	// private static final String NMSUrl =
+	// "http://localhost:8980/opennms/rest";
 	private static final String NMSUrl = "http://112.223.76.78:8980/opennms/rest";
 	private static final Logger logger = LoggerFactory
 			.getLogger(NodeProcess.class);
@@ -44,26 +40,33 @@ public class NodeProcess {
 		return process;
 	}
 
-	public String nodes() {
-		// Handler handler = HandlerFactory.getHandler();
-		Handler handler = HandlerFactory.getHandler();
-		HashMap hash = new HashMap();
-
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes?limit=0");
-		hash.put(Accept, "application/json");
-		hash.put(METHOD, "GET");
-
-		String result = null;
-
+	// exception templete
+	// modified by nadir
+	public String nodes() throws HandleException {
 		try {
-			result = (String) handler.handle(hash);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			Handler handler = HandlerFactory.getHandler();
+			HashMap hash = new HashMap();
 
-		return result;
+			hash.put(USERNAME, "admin");
+			hash.put(PASSWORD, "admin");
+			hash.put(URL, NMSUrl + "/nodes?limit=0");
+			hash.put(Accept, "application/json");
+			hash.put(METHOD, "GET");
+
+			logger.debug("input value : " + hash);
+
+			String result = (String) handler.handle(hash);
+
+			// testCode
+			// if (true) {
+			// throw new Exception("testException");
+			// }
+
+			// insert json parsing part
+			return result;
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
 	}
 
 	public String nodes(String id) {
@@ -93,8 +96,7 @@ public class NodeProcess {
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/ipinterfaces?limit=0");
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces?limit=0");
 		hash.put(Accept, "application/json");
 		hash.put(METHOD, "GET");
 
@@ -116,8 +118,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/ipinterfaces/" + ipAddress);
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces/" + ipAddress);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -138,8 +139,8 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/ipinterfaces/" + ipAddress + "/services?limit=0");
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces/" + ipAddress
+				+ "/services?limit=0");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -161,8 +162,8 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/ipinterfaces/" + ipAddress + "/services/" + service);
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces/" + ipAddress
+				+ "/services/" + service);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -184,8 +185,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/snmpinterfaces");
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/snmpinterfaces");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -207,8 +207,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/snmpinterfaces/" + ifIndex);
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/snmpinterfaces/" + ifIndex);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -230,8 +229,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/categories");
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/categories");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -253,8 +251,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/categories/" + categoryName);
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/categories/" + categoryName);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -276,8 +273,7 @@ public class NodeProcess {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/assetRecord");
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/assetRecord");
 		hash.put(METHOD, "GET");
 
 		String result = null;
