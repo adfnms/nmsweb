@@ -68,5 +68,7 @@ public class Node {
 	public void setAssetRecord(AssetRecord assetRecord) {
 		this.assetRecord = assetRecord;
 	}
-	
+
+
+
 }
