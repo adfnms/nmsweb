@@ -22,7 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * /** Handles requests for the application home page.
+ * AlarmsController
+ * 
+ * @author kicho@adflow.co.kr
+ * @version 1.1
  */
 @Controller
 public class AlarmsController {
