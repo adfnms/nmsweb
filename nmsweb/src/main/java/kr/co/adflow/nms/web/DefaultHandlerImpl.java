@@ -56,12 +56,12 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 				conn.setRequestProperty("Content-Type", (String) map.get("contentType"));
 			}
 			
-
 			String userPassword = map.get("username") + ":"
 					+ map.get("password");
 			String encoding = new sun.misc.BASE64Encoder().encode(userPassword
 					.getBytes());
 			conn.setRequestProperty("Authorization", "Basic " + encoding);
+
 			
 			//2013-02-21
 			//kicho@adflow.co.kr 

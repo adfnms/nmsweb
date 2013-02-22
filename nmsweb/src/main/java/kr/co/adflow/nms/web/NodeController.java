@@ -1,9 +1,10 @@
 package kr.co.adflow.nms.web;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
-import kr.co.adflow.nms.web.node.NodeProcess;
+import kr.co.adflow.nms.web.process.NodeProcess;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +23,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 public class NodeController {
 
+	private static final String RETURNRESULT = "result:::";
+	private static final String PATH = "path:::";
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(NodeController.class);
+
+	private NodeProcess controll = NodeProcess.getProcess();
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String node() {
@@ -31,14 +37,13 @@ public class NodeController {
 		return "nodeList";
 	}
 
-	// exception templete
-	// modified by nadir
 	@RequestMapping(value = "/nodes", method = RequestMethod.GET)
 	public @ResponseBody
-	String nodes() throws HandleException {
+	String nodes(HttpServletRequest request) throws HandleException {
 
-		NodeProcess controll = NodeProcess.getProcess();
 		String result = null;
+
+		logger.info(PATH + request.getRequestURI());
 
 		try {
 			result = (String) controll.nodes();
@@ -47,175 +52,193 @@ public class NodeController {
 			throw e;
 		}
 
+		logger.debug(RETURNRESULT + result);
 		return result;
 	}
 
 	@RequestMapping(value = "/nodes/{id}", method = RequestMethod.GET)
 	public @ResponseBody
-	String nodeId(@PathVariable String id) {
+	String nodeId(HttpServletRequest request, @PathVariable String id)
+			throws HandleException {
 
-		NodeProcess controll = NodeProcess.getProcess();
 		String result = null;
-
-		System.out.println("ddddd");
-		logger.info("daadfd");
+		logger.info(PATH + request.getRequestURI());
 
 		try {
 			result = (String) controll.nodes(id);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
 		}
 
+		logger.debug(RETURNRESULT + result);
 		return result;
 	}
 
 	@RequestMapping(value = "/nodes/{id}/ipinterfaces", method = RequestMethod.GET)
 	public @ResponseBody
-	String nodeIdIpinterfaces(@PathVariable String id) {
+	String nodeIdIpinterfaces(HttpServletRequest request,
+			@PathVariable String id) throws HandleException {
 
-		NodeProcess controll = NodeProcess.getProcess();
 		String result = null;
 
 		try {
 			result = (String) controll.nodesIpInterfaces(id);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
 		}
 
+		logger.debug(RETURNRESULT + result);
 		return result;
 	}
 
 	@RequestMapping(value = "/nodes/{id}/ipinterfaces/{ipAddress}", method = RequestMethod.GET)
 	public @ResponseBody
-	String nodeIdIpinterfaces(@PathVariable String id,
-			@PathVariable String ipAddress) {
+	String nodeIdIpinterfaces(HttpServletRequest request,
+			@PathVariable String id, @PathVariable String ipAddress)
+			throws HandleException {
 
-		NodeProcess controll = NodeProcess.getProcess();
 		String result = null;
 
 		try {
 			result = (String) controll.nodesIpInterfaces(id, ipAddress);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
 		}
 
+		logger.debug(RETURNRESULT + result);
 		return result;
 	}
 
 	@RequestMapping(value = "/nodes/{id}/ipinterfaces/{ipAddress}/services", method = RequestMethod.GET)
 	public @ResponseBody
-	String nodeIdIpinterfacesService(@PathVariable String id,
-			@PathVariable String ipAddress) {
+	String nodeIdIpinterfacesService(HttpServletRequest request,
+			@PathVariable String id, @PathVariable String ipAddress)
+			throws HandleException {
 
-		NodeProcess controll = NodeProcess.getProcess();
 		String result = null;
 
 		try {
 			result = (String) controll.nodesIpInterfacesServices(id, ipAddress);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
 		}
 
+		logger.debug(RETURNRESULT + result);
 		return result;
 	}
 
 	@RequestMapping(value = "/nodes/{id}/ipinterfaces/{ipAddress}/services/{serviceName}", method = RequestMethod.GET)
 	public @ResponseBody
-	String nodeIdIpinterfacesService(@PathVariable String id,
-			@PathVariable String ipAddress, @PathVariable String serviceName) {
+	String nodeIdIpinterfacesService(HttpServletRequest request,
+			@PathVariable String id, @PathVariable String ipAddress,
+			@PathVariable String serviceName) throws HandleException {
 
-		NodeProcess controll = NodeProcess.getProcess();
 		String result = null;
 
 		try {
 			result = (String) controll.nodesIpInterfacesServices(id, ipAddress,
 					serviceName);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
 		}
 
+		logger.debug(RETURNRESULT + result);
 		return result;
 	}
 
 	@RequestMapping(value = "/nodes/{id}/snmpinterfaces", method = RequestMethod.GET)
 	public @ResponseBody
-	String nodeSnmpinterfaces(@PathVariable String id) {
+	String nodeSnmpinterfaces(HttpServletRequest request,
+			@PathVariable String id) throws HandleException {
 
-		NodeProcess controll = NodeProcess.getProcess();
 		String result = null;
 
 		try {
 			result = (String) controll.nodesSnmpinterfaces(id);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
 		}
 
+		logger.debug(RETURNRESULT + result);
 		return result;
 	}
 
 	@RequestMapping(value = "/nodes/{id}/snmpinterfaces/{ifIndex}", method = RequestMethod.GET)
 	public @ResponseBody
-	String nodeSnmpinterfaces(@PathVariable String id,
-			@PathVariable String ifIndex) {
+	String nodeSnmpinterfaces(HttpServletRequest request,
+			@PathVariable String id, @PathVariable String ifIndex)
+			throws HandleException {
 
-		NodeProcess controll = NodeProcess.getProcess();
 		String result = null;
 
 		try {
 			result = (String) controll.nodesSnmpinterfaces(id, ifIndex);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
 		}
 
+		logger.debug(RETURNRESULT + result);
 		return result;
 	}
 
 	@RequestMapping(value = "/nodes/{id}/categories", method = RequestMethod.GET)
 	public @ResponseBody
-	String nodeCategories(@PathVariable String id) {
+	String nodeCategories(HttpServletRequest request, @PathVariable String id)
+			throws HandleException {
 
-		NodeProcess controll = NodeProcess.getProcess();
 		String result = null;
 
 		try {
 			result = (String) controll.nodesCategories(id);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
 		}
 
+		logger.debug(RETURNRESULT + result);
 		return result;
 	}
 
 	@RequestMapping(value = "/nodes/{id}/categories/{categoryName}", method = RequestMethod.GET)
 	public @ResponseBody
-	String nodeCategories(@PathVariable String id,
-			@PathVariable String categoryName) {
+	String nodeCategories(HttpServletRequest request, @PathVariable String id,
+			@PathVariable String categoryName) throws HandleException {
 
-		NodeProcess controll = NodeProcess.getProcess();
 		String result = null;
 
 		try {
 			result = (String) controll.nodesCategories(id, categoryName);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
 		}
 
+		logger.debug(RETURNRESULT + result);
 		return result;
 	}
 
 	@RequestMapping(value = "/nodes/{id}/assetRecord", method = RequestMethod.GET)
 	public @ResponseBody
-	String nodeAssetRecord(@PathVariable String id) {
+	String nodeAssetRecord(HttpServletRequest request, @PathVariable String id)
+			throws HandleException {
 
-		NodeProcess controll = NodeProcess.getProcess();
 		String result = null;
 
 		try {
 			result = (String) controll.nodesCategories(id);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
 		}
 
+		logger.debug(RETURNRESULT + result);
 		return result;
 	}
 
