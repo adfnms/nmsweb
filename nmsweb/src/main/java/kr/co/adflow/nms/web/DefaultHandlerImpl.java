@@ -1,6 +1,7 @@
 package kr.co.adflow.nms.web;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -47,12 +48,30 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 			if (map.containsKey("accept")) {
 				conn.setRequestProperty("Accept", (String) map.get("accept"));
 			}
+			
+			//2013-02-22
+			//kicho@adflow.co.kr 
+			//"Content-Type" 추가
+			if (map.containsKey("contentType")) {
+				conn.setRequestProperty("Content-Type", (String) map.get("contentType"));
+			}
+			
 
 			String userPassword = map.get("username") + ":"
 					+ map.get("password");
 			String encoding = new sun.misc.BASE64Encoder().encode(userPassword
 					.getBytes());
 			conn.setRequestProperty("Authorization", "Basic " + encoding);
+			
+			//2013-02-21
+			//kicho@adflow.co.kr 
+			//POST, PUT Data 추가
+			if (map.containsKey("data")) {
+				
+				conn.setDoOutput(true);
+				DataOutputStream wr = new DataOutputStream (conn.getOutputStream ());
+				wr.writeBytes ((String) map.get("data"));
+			}
 
 			logger.debug("conn :" + conn);
 
