@@ -1,5 +1,6 @@
 package kr.co.adflow.nms.web;
 
+import java.util.Enumeration;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,11 +42,42 @@ public class OutagesController {
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
 
-		try {
-			result = (String) controll.outages();
-		} catch (HandleException e) {
-			logger.error("Failed in processing", e);
-			throw e;
+		// 2013-02-23
+		// Parameter check 후 호추 분기
+		Enumeration eParam = request.getParameterNames();
+
+		if (eParam.hasMoreElements()) {
+			StringBuffer filter = new StringBuffer();
+
+			while (eParam.hasMoreElements()) {
+				String pName = (String) eParam.nextElement();
+				String pValue = request.getParameter(pName);
+
+				filter.append(pName + "=" + pValue + "&");
+
+			}
+
+			// 마지막 "&" 삭제.
+			filter.deleteCharAt(filter.length() - 1);
+			logger.debug("Param:::" + filter.toString());
+
+			try {
+				result = (String) controll
+						.outagesFilter(filter.toString());
+			} catch (HandleException e) {
+				logger.error("Failed in processing", e);
+				throw e;
+			}
+
+		} else {
+
+			try {
+				result = (String) controll.outages();
+			} catch (HandleException e) {
+				logger.error("Failed in processing", e);
+				throw e;
+			}
+
 		}
 
 		logger.debug(RETURNRESULT + result);

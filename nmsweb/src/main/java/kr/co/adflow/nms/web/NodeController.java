@@ -1,5 +1,7 @@
 package kr.co.adflow.nms.web;
 
+import java.util.Enumeration;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,11 +47,40 @@ public class NodeController {
 
 		logger.info(PATH + request.getRequestURI());
 
-		try {
-			result = (String) controll.nodes();
-		} catch (HandleException e) {
-			logger.error("Failed in processing", e);
-			throw e;
+		// 2013-02-23
+		// Parameter check 후 호출 분기
+		Enumeration eParam = request.getParameterNames();
+
+		if (eParam.hasMoreElements()) {
+			StringBuffer filter = new StringBuffer();
+
+			while (eParam.hasMoreElements()) {
+				String pName = (String) eParam.nextElement();
+				String pValue = request.getParameter(pName);
+
+				filter.append(pName + "=" + pValue + "&");
+			}
+
+			// 마지막 "&" 삭제.
+			filter.deleteCharAt(filter.length() - 1);
+			logger.debug("Param:::" + filter.toString());
+
+			try {
+				result = (String) controll.nodesFilter(filter.toString());
+			} catch (HandleException e) {
+				logger.error("Failed in processing", e);
+				throw e;
+			}
+
+		} else {
+
+			try {
+				result = (String) controll.nodes();
+			} catch (HandleException e) {
+				logger.error("Failed in processing", e);
+				throw e;
+			}
+
 		}
 
 		logger.debug(RETURNRESULT + result);
