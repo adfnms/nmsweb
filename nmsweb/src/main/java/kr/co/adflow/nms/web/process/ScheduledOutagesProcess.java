@@ -137,6 +137,32 @@ public class ScheduledOutagesProcess {
 
 		return result;
 	}
+	
+	
+	///sched-outages/{outageName}/notifd 
+	public String schedOutagesNotifdPut(String data) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(Accept, "application/xml");
+		hash.put(ContentType, "application/xml");
+		hash.put(URL, NMSUrl + "/sched-outages");
+		hash.put(METHOD, "POST");
+		hash.put(DATA, data);
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
 
 
 	

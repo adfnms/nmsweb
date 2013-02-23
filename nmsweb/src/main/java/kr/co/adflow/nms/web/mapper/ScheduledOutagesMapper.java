@@ -61,18 +61,14 @@ public class ScheduledOutagesMapper {
 			
 			JsonNode jNode = om.readTree(jdata);
 			
-			System.out.println("'aaa");
-			
 			schoedOutage.setType(jNode.path("@type").getTextValue());
 			schoedOutage.setName(jNode.path("@name").getTextValue());
 			
-			System.out.println("'bbb");
 			SchoedOutage.Time sTime = new SchoedOutage.Time();
 			
 			sTime.setEnds(jNode.path("time").path("@ends").getTextValue());
 			sTime.setBegins(jNode.path("time").path("@begins").getTextValue());
 			
-			System.out.println("'ccc"); 
 			schoedOutage.setTime(sTime);
 			
 			

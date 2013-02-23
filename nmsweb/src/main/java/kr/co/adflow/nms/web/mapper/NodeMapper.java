@@ -23,7 +23,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 /**
- * ScheduledOutagesController
+ * nodeMapping
  * 
  * @author kicho@adflow.co.kr
  * @version 1.1
@@ -89,12 +89,8 @@ public class NodeMapper {
 				}
 			}
 
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new MapperException(e);
 		}
 
 		return node;
@@ -183,18 +179,14 @@ public class NodeMapper {
 
 
 
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new MapperException(e);
 		}
 
 		return node;
 	}
 	
-	public IpInterface[] ipInterfaceMappingAll(String jdata) {
+	public IpInterface[] ipInterfaceMappingAll(String jdata) throws MapperException {
 
 		IpInterface[] iface = null;
 		int count = 0;
@@ -239,18 +231,13 @@ public class NodeMapper {
 				iface[0].setNodeId(jNode.path("ipInterface").path("nodeId").getTextValue());
 			}
 			
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new MapperException(e);
 		}
-
 		return iface;
 	}
 	
-	public IpInterface ipInterfaceMapping(String jdata) {
+	public IpInterface ipInterfaceMapping(String jdata) throws MapperException {
 
 		IpInterface iface = new IpInterface();
 
@@ -272,19 +259,15 @@ public class NodeMapper {
 				//	System.out.println(temp.path("assetRecord").path("category").getTextValue());
 				//	System.out.println("afdaff :" + temp.path("@type").getTextValue());
 
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new MapperException(e);
 		}
 
 		return iface;
 	}
 	
 	
-	public Service[] serviceMappingAll(String jdata) {
+	public Service[] serviceMappingAll(String jdata) throws MapperException {
 
 		Service[] service = null;
 		int count = 0;
@@ -350,18 +333,14 @@ public class NodeMapper {
 			}
 
 
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new MapperException(e);
 		}
 
 		return service;
 	}
 	
-	public Service serviceMapping(String jdata) {
+	public Service serviceMapping(String jdata) throws MapperException {
 
 		Service service = new Service();
 
@@ -387,18 +366,14 @@ public class NodeMapper {
 				//	System.out.println(temp.path("assetRecord").path("category").getTextValue());
 				//	System.out.println("afdaff :" + temp.path("@type").getTextValue());
 
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new MapperException(e);
 		}
 
 		return service;
 	}
 	
-	public SnmpInterface[] snmpInterfaceMappingAll(String jdata) {
+	public SnmpInterface[] snmpInterfaceMappingAll(String jdata) throws MapperException {
 
 		SnmpInterface[] snmpInterface = null;
 		int count = 0;
@@ -467,18 +442,14 @@ public class NodeMapper {
 			}
 
 
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new MapperException(e);
 		}
 
 		return snmpInterface;
 	}
 	
-	public SnmpInterface snmpInterfaceMapping(String jdata) {
+	public SnmpInterface snmpInterfaceMapping(String jdata) throws MapperException {
 		SnmpInterface snmpInterface = new SnmpInterface();
 
 		try {
@@ -506,18 +477,14 @@ public class NodeMapper {
 			snmpInterface.setNodeId(jNode.path("nodeId").getTextValue());
 			snmpInterface.setPhysAddr(jNode.path("physAddr").getTextValue());
 
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new MapperException(e);
 		}
 
 		return snmpInterface;
 	}
 	
-	public Category[] categoriesMappingAll(String jdata) {
+	public Category[] categoriesMappingAll(String jdata) throws MapperException {
 
 		Category[] category = null;
 		int count = 0;
@@ -557,18 +524,14 @@ public class NodeMapper {
 			}
 
 
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new MapperException(e);
 		}
 
 		return category;
 	}
 	
-	public Category categoriesMapping(String jdata) {
+	public Category categoriesMapping(String jdata) throws MapperException {
 		Category category = new Category();
 
 		try {
@@ -581,18 +544,14 @@ public class NodeMapper {
 			category.setName(jNode.path("@name").getTextValue());
 			category.setId(jNode.path("@id").getTextValue());
 
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new MapperException(e);
 		}
 
 		return category;
 	}
 	
-	public AssetRecord assetRecordMapping(String jdata) {
+	public AssetRecord assetRecordMapping(String jdata) throws MapperException {
 		AssetRecord assetRecord = new AssetRecord();
 
 		try {
@@ -611,12 +570,8 @@ public class NodeMapper {
 			assetRecord.setPollerCategory(jNode.path("pollerCategory").getTextValue());
 			assetRecord.setThresholdCategory(jNode.path("thresholdCategory").getTextValue());
 
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new MapperException(e);
 		}
 
 		return assetRecord;
