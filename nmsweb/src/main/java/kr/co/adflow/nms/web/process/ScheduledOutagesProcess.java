@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * scheduledOutagesProcess
  * 
  * @author kicho@adflow.co.kr
- * @version 1.1
+ * @version 1.2
  */
 @Controller
 public class ScheduledOutagesProcess {
@@ -120,7 +120,6 @@ public class ScheduledOutagesProcess {
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(Accept, "application/xml");
 		hash.put(ContentType, "application/xml");
 		hash.put(URL, NMSUrl + "/sched-outages");
 		hash.put(METHOD, "POST");
@@ -140,17 +139,201 @@ public class ScheduledOutagesProcess {
 	
 	
 	///sched-outages/{outageName}/notifd 
-	public String schedOutagesNotifdPut(String data) throws HandleException {
+	public String schedOutagesNotifdPut(String outageName) throws HandleException {
 		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(Accept, "application/xml");
-		hash.put(ContentType, "application/xml");
-		hash.put(URL, NMSUrl + "/sched-outages");
-		hash.put(METHOD, "POST");
-		hash.put(DATA, data);
+		hash.put(ContentType, "application/x-www-form-urlencoded");
+		hash.put(URL, NMSUrl + "/sched-outages/"+outageName+"/notifd");
+		hash.put(METHOD, "PUT");
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	
+	///sched-outages/{outageName}/collectd/{package} 
+	public String schedOutagesCollectdPut(String outageName, String packageName) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(ContentType, "application/x-www-form-urlencoded");
+		hash.put(URL, NMSUrl + "/sched-outages/"+outageName+"/collectd/"+packageName);
+		hash.put(METHOD, "PUT");
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	
+	///sched-outages/{outageName}/pollerd/{package} 
+	public String schedOutagesPollerdPut(String outageName, String packageName) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(ContentType, "application/x-www-form-urlencoded");
+		hash.put(URL, NMSUrl + "/sched-outages/"+outageName+"/pollerd/"+packageName);
+		hash.put(METHOD, "PUT");
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	
+	///sched-outages/{outageName}/threshd/{package} 
+	public String schedOutagesThreshdPut(String outageName, String packageName) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(ContentType, "application/x-www-form-urlencoded");
+		hash.put(URL, NMSUrl + "/sched-outages/"+outageName+"/threshd/"+packageName);
+		hash.put(METHOD, "PUT");
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	
+	///sched-outages/{outageName}
+	public String schedOutagesDelete(String outageName) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(URL, NMSUrl + "/sched-outages/"+outageName);
+		hash.put(METHOD, "DELETE");
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	///sched-outages/{outageName}/notifd 
+	public String schedOutagesNotifdDelete(String outageName) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(URL, NMSUrl + "/sched-outages/"+outageName+"/notifd");
+		hash.put(METHOD, "DELETE");
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	
+	///sched-outages/{outageName}/collectd/{package} 
+	public String schedOutagesCollectdDelete(String outageName, String packageName) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(URL, NMSUrl + "/sched-outages/"+outageName+"/collectd/"+packageName);
+		hash.put(METHOD, "DELETE");
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	
+	///sched-outages/{outageName}/pollerd/{package} 
+	public String schedOutagesPollerdDelete(String outageName, String packageName) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(URL, NMSUrl + "/sched-outages/"+outageName+"/pollerd/"+packageName);
+		hash.put(METHOD, "DELETE");
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	
+	///sched-outages/{outageName}/threshd/{package} 
+	public String schedOutagesThreshdDelete(String outageName, String packageName) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(URL, NMSUrl + "/sched-outages/"+outageName+"/threshd/"+packageName);
+		hash.put(METHOD, "DELETE");
 		
 
 		String result = null;
