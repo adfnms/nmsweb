@@ -85,7 +85,7 @@ public class ScheduledOutagesController {
 	}
 	
 	
-	@RequestMapping(value = "/sched-outages", method = RequestMethod.POST)
+	@RequestMapping(value = "/sched-outages", method = RequestMethod.POST) 
 	public @ResponseBody
 	String schedOutagesPost(HttpServletRequest request, @RequestBody String data) throws HandleException, MapperException {
 
@@ -97,6 +97,9 @@ public class ScheduledOutagesController {
 		
 //		String data2 = "<outage type=\"specific\" name=\"test4\"><time ends=\"20-Feb-2013 23:59:59\" begins=\"20-Feb-2013 21:00:00\"/><node id=\"16\"/></outage>";
 //		String data3 = "{\"@type\":\"specific\",\"@name\":\"test4\",\"time\":{\"@ends\":\"20-Feb-2013 23:59:59\",\"@begins\":\"20-Feb-2013 21:00:00\"},\"node\":{\"@id\":\"16\"}}";
+		
+		
+		logger.debug("fdfdfe:::"+data);
 		
 		try {
 			
