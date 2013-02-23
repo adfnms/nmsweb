@@ -32,8 +32,8 @@ public class ScheduledOutagesProcess {
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
-	private static final String NMSUrl = "http://localhost:8980/opennms/rest";
-//	private static final String NMSUrl = "http://112.223.76.78:8980/opennms/rest";
+//	private static final String NMSUrl = "http://localhost:8980/opennms/rest";
+	private static final String NMSUrl = "http://112.223.76.74:8980/opennms/rest";
 	private static final Logger logger = LoggerFactory
 			.getLogger(ScheduledOutagesProcess.class);
 
