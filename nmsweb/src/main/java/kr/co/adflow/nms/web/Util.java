@@ -28,55 +28,63 @@ public class Util {
 	}
 
 	public String jsonConvertXml(String data) throws HandleException {
-		String xml = null;
-		logger.info(MD5JSONDATA + data);
 		try {
+			String xml = null;
+			logger.info(MD5JSONDATA + data);
+
 			JSONObject o = new JSONObject(data);
 			xml = org.json.XML.toString(o);
 			System.out.println(xml);
+			return xml;
 		} catch (JSONException e) {
 			throw new HandleException(e);
 		}
-		return xml;
+
 	}
 
 	public String passWordPar(String data) throws HandleException {
-		String passWord = null;
-		logger.info(JSONDATA + data);
+		try {
+			String passWord = null;
+			logger.info(JSONDATA + data);
 
-		int pass = data.indexOf("password:");
-		passWord = data.substring(data.indexOf("password:") + 9,
-				data.length() - 2);
-		String md5 = encryptString(passWord);
-		String md5Json = data.replaceAll(passWord, md5);
-		
-		String finalJsonData = jsonConvertXml(md5Json);
-		logger.info(MD5XMLDATA + finalJsonData);
-		return finalJsonData;
+			int pass = data.indexOf("password:");
+			passWord = data.substring(data.indexOf("password:") + 9,
+					data.length() - 2);
+			String md5 = encryptString(passWord);
+			String md5Json = data.replaceAll(passWord, md5);
+
+			String finalJsonData = jsonConvertXml(md5Json);
+			logger.info(MD5XMLDATA + finalJsonData);
+			return finalJsonData;
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
 	}
 
-	public static String encryptString(String src) {
-		java.security.MessageDigest md5 = null;
+	public static String encryptString(String src) throws HandleException {
 		try {
+			java.security.MessageDigest md5 = null;
+
 			md5 = java.security.MessageDigest.getInstance("MD5");
+
+			String eip;
+			byte[] bip;
+			String temp = "";
+			String tst = src;
+
+			bip = md5.digest(tst.getBytes());
+			for (int i = 0; i < bip.length; i++) {
+				eip = "" + Integer.toHexString((int) bip[i] & 0x000000ff);
+				if (eip.length() < 2)
+					eip = "0" + eip;
+				temp = temp + eip;
+			}
+			String upperCase = temp.toUpperCase();
+			return upperCase;
 		} catch (Exception e) {
-			return "";
+			throw new HandleException(e);
 		}
-
-		String eip;
-		byte[] bip;
-		String temp = "";
-		String tst = src;
-
-		bip = md5.digest(tst.getBytes());
-		for (int i = 0; i < bip.length; i++) {
-			eip = "" + Integer.toHexString((int) bip[i] & 0x000000ff);
-			if (eip.length() < 2)
-				eip = "0" + eip;
-			temp = temp + eip;
-		}
-		String upperCase = temp.toUpperCase();
-		return upperCase;
 	}
 
 }
