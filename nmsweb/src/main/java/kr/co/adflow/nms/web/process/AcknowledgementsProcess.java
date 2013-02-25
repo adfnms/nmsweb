@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class AcknowledgementsProcess {
 
+	private static final String ContentType = "contentType";
 	private static final String METHOD = "method";
 	private static final String URL = "url";
 	private static final String PASSWORD = "password";
@@ -119,6 +120,32 @@ public class AcknowledgementsProcess {
 		hash.put(PASSWORD, "admin");
 		hash.put(URL, NMSUrl + "/acks/count");
 		hash.put(METHOD, "GET");
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	
+	/// POST
+	///acks 
+	public String acksPost(String prams) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(Accept, "application/json");
+		hash.put(ContentType, "application/x-www-form-urlencoded");
+		hash.put(URL, NMSUrl + "/acks?"+prams);
+		hash.put(METHOD, "POST");
+		
 
 		String result = null;
 

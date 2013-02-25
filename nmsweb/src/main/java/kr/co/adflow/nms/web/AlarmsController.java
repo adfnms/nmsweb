@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.exception.ValidationException;
+import kr.co.adflow.nms.web.process.AcknowledgementsProcess;
 import kr.co.adflow.nms.web.process.AlarmsProcess;
 import kr.co.adflow.nms.web.process.EventsProcess;
 
@@ -38,6 +40,8 @@ public class AlarmsController {
 			.getLogger(AlarmsController.class);
 
 	private AlarmsProcess controll = AlarmsProcess.getProcess();
+	private AcknowledgementsProcess controllAck = AcknowledgementsProcess
+			.getProcess();
 
 	@RequestMapping(value = "/alarms", method = RequestMethod.GET)
 	public @ResponseBody
@@ -47,7 +51,7 @@ public class AlarmsController {
 		logger.info(PATH + request.getRequestURI());
 
 		// 2013-02-23
-		// Parameter check ÈÄ È£Ãß ºÐ±â
+		// Parameter check Method í˜¸ì¶” ë¶„ê¸°
 		Enumeration eParam = request.getParameterNames();
 
 		if (eParam.hasMoreElements()) {
@@ -61,13 +65,12 @@ public class AlarmsController {
 
 			}
 
-			// ¸¶Áö¸· "&" »èÁ¦.
+			// ë§ˆì§€ë§‰ "&"ë¥¼ ì‚­ì œ.
 			filter.deleteCharAt(filter.length() - 1);
 			logger.debug("Param:::" + filter.toString());
 
 			try {
-				result = (String) controll
-						.alarmsFilter(filter.toString());
+				result = (String) controll.alarmsFilter(filter.toString());
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;
@@ -143,6 +146,88 @@ public class AlarmsController {
 		return result;
 	}
 
+	// PUT
+	// /alarms/{id}?ack=(true|false)
+	@RequestMapping(value = "/alarms/{id}", method = RequestMethod.PUT)
+	public @ResponseBody
+	String alarmsPut(HttpServletRequest request, @PathVariable String id)
+			throws HandleException, ValidationException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		// 2013-02-23
+		// Parameter check Method í˜¸ì¶” ë¶„ê¸°
+		Enumeration eParam = request.getParameterNames();
+
+		if (eParam.hasMoreElements()) {
+			StringBuffer prams = new StringBuffer();
+
+			String pName = (String) eParam.nextElement();
+
+			if (pName.equals("ack")) {
+
+				String pValue = request.getParameter(pName);
+
+				if (pValue.equals("true")) {
+					prams.append("alarmId=" + id + "&action=ack");
+				} else if (pValue.equals("false")) {
+					prams.append("alarmId=" + id + "&action=unack");
+				} else {
+
+					logger.error("Must supply the 'ack' parameter, set to either 'true' or 'false'");
+
+					throw new ValidationException("Must supply the 'ack' parameter, set to either 'true' or 'false'");
+
+				}
+
+				try {
+					result = (String) controllAck.acksPost(prams.toString());
+				} catch (HandleException e) {
+					logger.error("Failed in processing", e);
+					throw e;
+				}
+
+			} else {
+
+				logger.error("Must supply the parameter name, set to either 'ack'");
+				try {
+
+					throw new ValidationException("Must supply the parameter name, set to either 'ack'");
+					
+				} catch (ValidationException e) {
+					throw e;
+				}
+				
+
+			}
+
+			logger.debug("Param:::" + prams.toString());
+
+			// try {
+			// result = (String) controllAck
+			// .acksPost(prams.toString());
+			// } catch (HandleException e) {
+			// logger.error("Failed in processing", e);
+			// throw e;
+			// }
+
+		} else {
+
+			try {
+				result = (String) controllAck.acksPost("");
+			} catch (HandleException e) {
+				logger.error("Failed in processing", e);
+				throw e;
+			}
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+
+	}
+
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
 	public String processException(Exception e, HttpServletResponse response) {
@@ -155,6 +240,14 @@ public class AlarmsController {
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	public String processHandleException(HandleException e) {
+		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+				+ "\",\"message\":\"" + e.getMessage() + "\"}";
+	}
+	
+	@ExceptionHandler(ValidationException.class)
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ResponseBody
+	public String processValidationException(ValidationException e) {
 		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
 				+ "\",\"message\":\"" + e.getMessage() + "\"}";
 	}

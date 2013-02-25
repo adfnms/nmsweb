@@ -46,7 +46,7 @@ public class AcknowledgementsController {
 		logger.info(PATH + request.getRequestURI());
 		
 		// 2013-02-23
-		// Parameter check ÈÄ È£Ãß ºÐ±â
+		// Parameter check Method í˜¸ì¶” ë¶„ê¸°
 		Enumeration eParam = request.getParameterNames();
 
 		if (eParam.hasMoreElements()) {
@@ -60,7 +60,7 @@ public class AcknowledgementsController {
 
 			}
 
-			// ¸¶Áö¸· "&" »èÁ¦.
+			// ë§ˆì§€ë§‰ "&"ë¥¼ ì‚­ì œ.
 			filter.deleteCharAt(filter.length() - 1);
 			logger.debug("Param:::" + filter.toString());
 
@@ -123,6 +123,58 @@ public class AcknowledgementsController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
+	
+	
+	@RequestMapping(value = "/acks", method = RequestMethod.POST)
+	public @ResponseBody
+	String acksPost(HttpServletRequest request) throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+		
+		// 2013-02-23
+		// Parameter check Method í˜¸ì¶” ë¶„ê¸°
+		Enumeration eParam = request.getParameterNames();
+
+		if (eParam.hasMoreElements()) {
+			StringBuffer prams = new StringBuffer();
+
+			while (eParam.hasMoreElements()) {
+				String pName = (String) eParam.nextElement();
+				String pValue = request.getParameter(pName);
+
+				prams.append(pName + "=" + pValue + "&");
+
+			}
+
+			// ë§ˆì§€ë§‰ "&"ë¥¼ ì‚­ì œ.
+			prams.deleteCharAt(prams.length() - 1);
+			logger.debug("Param:::" + prams.toString());
+
+			try {
+				result = (String) controll
+						.acksPost(prams.toString());
+			} catch (HandleException e) {
+				logger.error("Failed in processing", e);
+				throw e;
+			}
+
+
+		} else {
+
+			try {
+				result = (String) controll.acksPost("");
+			} catch (HandleException e) {
+				logger.error("Failed in processing", e);
+				throw e;
+			}
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
 
 	@ExceptionHandler(Exception.class)
 	@ResponseBody

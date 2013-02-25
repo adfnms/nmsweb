@@ -55,7 +55,7 @@ public class ScheduledOutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		// 2013-02-23
-		// Parameter check ÈÄ È£Ãß ºÐ±â
+		// Parameter check method ë¶„ê¸°
 		Enumeration eParam = request.getParameterNames();
 
 		if (eParam.hasMoreElements()) {
@@ -69,7 +69,7 @@ public class ScheduledOutagesController {
 
 			}
 
-			// ¸¶Áö¸· "&" »èÁ¦.
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "&" ï¿½ï¿½ï¿½ï¿½.
 			filter.deleteCharAt(filter.length() - 1);
 			logger.debug("Param:::" + filter.toString());
 

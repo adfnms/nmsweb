@@ -1,8 +1,7 @@
 package kr.co.adflow.nms.web.exception;
 
 /**
- * This exception indicates an error has occurred handling data from opennms
- * rest service
+ * This exception indicates an error has occurred mapping data from nmsweb.
  */
 public class MapperException extends Exception {
 
