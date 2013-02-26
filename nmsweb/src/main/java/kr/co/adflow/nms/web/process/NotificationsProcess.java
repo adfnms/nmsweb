@@ -7,6 +7,7 @@ import kr.co.adflow.nms.web.DefaultHandlerImpl;
 import kr.co.adflow.nms.web.Handler;
 import kr.co.adflow.nms.web.HandlerFactory;
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.util.XmlUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.co.adflow.nms.web.vo.DestPath.DestinationPaths;
+import kr.co.adflow.nms.web.vo.DestPath.Path;
 
 /**
  * NotificationsProcess
@@ -124,6 +128,56 @@ public class NotificationsProcess {
 
 		try {
 			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	
+	public String notificationDestinationPathsPost(Path path) throws HandleException {
+
+		String result = null;
+
+		try {
+			// xml Read
+			XmlUtil xUtil = new XmlUtil();
+			String filePath = "d:\\OpenNMS\\etc\\destinationPaths.xml";
+			
+			Class<DestinationPaths> classname = DestinationPaths.class;
+			DestinationPaths dPath = new DestinationPaths();
+			
+			Object ob = xUtil.xmlRead(filePath, classname, dPath);
+			
+			dPath = (DestinationPaths)ob;
+			int size = dPath.getPath().size();
+
+			boolean dupCheak = true;
+			
+			for (int i = 0; i < size; i++) {
+				
+				if(path.getName().equals(dPath.getPath().get(i).getName())){
+					
+					dupCheak = false;
+				}
+				
+			}
+			
+			
+			if (dupCheak) {
+				
+				dPath.getPath().add(path);
+				
+				// xml Write
+//				filePath = "d:\\OpenNMS\\etc\\destinationPaths3.xml";
+				result = xUtil.xmlWrite(filePath, classname, dPath);
+				
+			} else {
+				logger.error("Noficatil :: Path name Duplicate Error");
+				throw new HandleException("Noficatil :: Path name Duplicate Error");
+			}
+			
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}

@@ -48,7 +48,7 @@ public class NodeController {
 		logger.info(PATH + request.getRequestURI());
 
 		// 2013-02-23
-		// Parameter check ÈÄ È£Ãâ ºÐ±â
+		// Parameter check ï¿½ï¿½ È£ï¿½ï¿½ ï¿½Ð±ï¿½
 		Enumeration eParam = request.getParameterNames();
 
 		if (eParam.hasMoreElements()) {
@@ -61,7 +61,7 @@ public class NodeController {
 				filter.append(pName + "=" + pValue + "&");
 			}
 
-			// ¸¶Áö¸· "&" »èÁ¦.
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "&" ï¿½ï¿½ï¿½ï¿½.
 			filter.deleteCharAt(filter.length() - 1);
 			logger.debug("Param:::" + filter.toString());
 
@@ -112,6 +112,7 @@ public class NodeController {
 			@PathVariable String id) throws HandleException {
 
 		String result = null;
+		logger.info(PATH + request.getRequestURI());
 
 		try {
 			result = (String) controll.nodesIpInterfaces(id);
@@ -131,6 +132,7 @@ public class NodeController {
 			throws HandleException {
 
 		String result = null;
+		logger.info(PATH + request.getRequestURI());
 
 		try {
 			result = (String) controll.nodesIpInterfaces(id, ipAddress);
@@ -150,6 +152,7 @@ public class NodeController {
 			throws HandleException {
 
 		String result = null;
+		logger.info(PATH + request.getRequestURI());
 
 		try {
 			result = (String) controll.nodesIpInterfacesServices(id, ipAddress);
@@ -169,6 +172,7 @@ public class NodeController {
 			@PathVariable String serviceName) throws HandleException {
 
 		String result = null;
+		logger.info(PATH + request.getRequestURI());
 
 		try {
 			result = (String) controll.nodesIpInterfacesServices(id, ipAddress,
@@ -188,6 +192,7 @@ public class NodeController {
 			@PathVariable String id) throws HandleException {
 
 		String result = null;
+		logger.info(PATH + request.getRequestURI());
 
 		try {
 			result = (String) controll.nodesSnmpinterfaces(id);
@@ -207,6 +212,7 @@ public class NodeController {
 			throws HandleException {
 
 		String result = null;
+		logger.info(PATH + request.getRequestURI());
 
 		try {
 			result = (String) controll.nodesSnmpinterfaces(id, ifIndex);
@@ -225,6 +231,7 @@ public class NodeController {
 			throws HandleException {
 
 		String result = null;
+		logger.info(PATH + request.getRequestURI());
 
 		try {
 			result = (String) controll.nodesCategories(id);
@@ -243,6 +250,7 @@ public class NodeController {
 			@PathVariable String categoryName) throws HandleException {
 
 		String result = null;
+		logger.info(PATH + request.getRequestURI());
 
 		try {
 			result = (String) controll.nodesCategories(id, categoryName);
@@ -261,6 +269,7 @@ public class NodeController {
 			throws HandleException {
 
 		String result = null;
+		logger.info(PATH + request.getRequestURI());
 
 		try {
 			result = (String) controll.nodesCategories(id);
