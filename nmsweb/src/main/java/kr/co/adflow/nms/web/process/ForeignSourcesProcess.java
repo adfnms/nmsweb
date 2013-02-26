@@ -34,6 +34,7 @@ public class ForeignSourcesProcess {
 
 	// foreignSources
 	public String foreignSources() throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -43,18 +44,17 @@ public class ForeignSourcesProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException();
 		}
-
+		return result;
 	}
 
 	// foreignSources/default
 	public String foreignSourcesDefault() throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -64,18 +64,17 @@ public class ForeignSourcesProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 
 	// foreignSources/deployed
 	public String foreignSourcesDeployed() throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -85,18 +84,17 @@ public class ForeignSourcesProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 
 	// foreignSources/deployed/count
 	public String foreignSourcesDeployedCount() throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -106,18 +104,17 @@ public class ForeignSourcesProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 
 	// foreignSources/{name}
 	public String foreignSources(String name) throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -126,18 +123,18 @@ public class ForeignSourcesProcess {
 			hash.put(URL, NMSUrl + "/foreignSources/" + name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
-			String result = null;
 
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 
 	// foreignSources/{name}/detectors
 	public String foreignSourcesDetectors(String name) throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -147,19 +144,18 @@ public class ForeignSourcesProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 
 	// foreignSources/{name}/detectors/{detector}
 	public String foreignSourcesDetectors(String name, String detector)
 			throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -170,62 +166,57 @@ public class ForeignSourcesProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 
 	// foreignSources/{name}/policies
-	public String foreignSourcesPolicies(String name) throws HandleException{
-		try {
-		Handler handler = HandlerFactory.getHandler();
-		HashMap hash = new HashMap();
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/foreignSources/" + name + "/policies");
-		hash.put(Accept, "application/json");
-		hash.put(METHOD, "GET");
-
+	public String foreignSourcesPolicies(String name) throws HandleException {
 		String result = null;
+		try {
+			Handler handler = HandlerFactory.getHandler();
+			HashMap hash = new HashMap();
+			hash.put(USERNAME, "admin");
+			hash.put(PASSWORD, "admin");
+			hash.put(URL, NMSUrl + "/foreignSources/" + name + "/policies");
+			hash.put(Accept, "application/json");
+			hash.put(METHOD, "GET");
 
-		
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
 
-		
+		return result;
 
 	}
 
 	// foreignSources/{name}/policies/{policy}
-	public String foreignSourcesPolicies(String name, String policy) throws HandleException{
-		try {
-		Handler handler = HandlerFactory.getHandler();
-		HashMap hash = new HashMap();
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/foreignSources/" + name + "/policies/"
-				+ policy);
-		hash.put(Accept, "application/json");
-		hash.put(METHOD, "GET");
-
+	public String foreignSourcesPolicies(String name, String policy)
+			throws HandleException {
 		String result = null;
+		try {
+			Handler handler = HandlerFactory.getHandler();
+			HashMap hash = new HashMap();
+			hash.put(USERNAME, "admin");
+			hash.put(PASSWORD, "admin");
+			hash.put(URL, NMSUrl + "/foreignSources/" + name + "/policies/"
+					+ policy);
+			hash.put(Accept, "application/json");
+			hash.put(METHOD, "GET");
 
-		
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
 
-		
+		return result;
 
 	}
 

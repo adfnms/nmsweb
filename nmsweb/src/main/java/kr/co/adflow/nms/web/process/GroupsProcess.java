@@ -37,6 +37,7 @@ public class GroupsProcess {
 
 	// groups
 	public String groups() throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -46,18 +47,18 @@ public class GroupsProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
+		return result;
 	}
 
 	// groupsPost
 
 	public String groupsPost(String xmlData) throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -68,16 +69,18 @@ public class GroupsProcess {
 			hash.put(METHOD, "POST");
 			hash.put(CONTENTTYPE, "application/xml");
 			hash.put(DATA, xmlData);
-			String result = null;
+
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
+		return result;
 	}
 
 	// groups/{groupname}
 	public String groups(String groupName) throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -87,20 +90,19 @@ public class GroupsProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 
 	// groups PUT groups users add
 
 	public String groupsPut(String groupName, String userName)
 			throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -111,19 +113,18 @@ public class GroupsProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "PUT");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 
 	// group Del group del //groups/{groupname}
 
 	public String groupsDelGroup(String groupName) throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -133,19 +134,18 @@ public class GroupsProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 
 	// group Del group user del //groups/{groupname}/users/{username}
 	public String groupsDelGroupUsers(String groupName, String userName)
 			throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -156,19 +156,18 @@ public class GroupsProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 
 	// groups/{groupname}/users
 
 	public String groupsUsers(String groupName) throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -178,13 +177,11 @@ public class GroupsProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 }

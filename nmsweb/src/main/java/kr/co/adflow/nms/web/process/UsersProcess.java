@@ -18,6 +18,9 @@ public class UsersProcess {
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
 	private static final String NMSUrl = "http://192.168.0.63:8980/opennms/rest";
+	// private static final String NMSUrl =
+	// "http://localhost:8980/opennms/rest";
+
 	private static final String Accept = "accept";
 	private static final String DATA = "data";
 	private static final String CONTENTTYPE = "contentType";
@@ -54,7 +57,7 @@ public class UsersProcess {
 		}
 
 	}
-	
+
 	// users
 	public String UsersPost(String xmlData) throws HandleException {
 		try {
@@ -66,7 +69,7 @@ public class UsersProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
 			hash.put(CONTENTTYPE, "application/xml");
-			hash.put(DATA,xmlData);
+			hash.put(DATA, xmlData);
 
 			String result = null;
 
@@ -88,6 +91,27 @@ public class UsersProcess {
 			hash.put(URL, NMSUrl + "/users/" + username);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
+
+			String result = null;
+
+			result = (String) handler.handle(hash);
+			return result;
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+	}
+
+	// users/{username} Delete
+	public String UsersDelete(String username) throws HandleException {
+		try {
+			Handler handler = HandlerFactory.getHandler();
+			HashMap hash = new HashMap();
+			hash.put(USERNAME, "admin");
+			hash.put(PASSWORD, "admin");
+			hash.put(URL, NMSUrl + "/users/" + username);
+			hash.put(Accept, "application/json");
+			hash.put(METHOD, "DELETE");
 
 			String result = null;
 

@@ -35,6 +35,7 @@ public class MapsProcess {
 	// maps
 
 	public String Maps() throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -44,18 +45,17 @@ public class MapsProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 
 	// maps/{id}
 	public String Maps(String id) throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -65,19 +65,17 @@ public class MapsProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
 
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 
 	// maps/{id}/mapElements
 	public String MapsMapElements(String id) throws HandleException {
+		String result = null;
 		try {
 			Handler handler = HandlerFactory.getHandler();
 			HashMap hash = new HashMap();
@@ -87,14 +85,12 @@ public class MapsProcess {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		return result;
 	}
 
 }

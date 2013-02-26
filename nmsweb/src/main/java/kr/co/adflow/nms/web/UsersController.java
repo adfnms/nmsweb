@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.process.UsersProcess;
+import kr.co.adflow.nms.web.util.Util;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,8 +70,26 @@ public class UsersController {
 		return result;
 	}
 
-	// users/{username} !!!404!!!
-	@RequestMapping(value = "/users{username}", method = RequestMethod.GET)
+	// users/{username} Delete
+	@RequestMapping(value = "/users/{username}", method = RequestMethod.DELETE)
+	public @ResponseBody
+	String usersDelete(@PathVariable String username, HttpServletRequest request)
+			throws HandleException {
+		logger.info(PATH + request.getRequestURL());
+		String result = null;
+
+		try {
+			result = (String) controll.UsersDelete(username);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
+	// users/{username}
+	@RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
 	public @ResponseBody
 	String users(@PathVariable String username, HttpServletRequest request)
 			throws HandleException {

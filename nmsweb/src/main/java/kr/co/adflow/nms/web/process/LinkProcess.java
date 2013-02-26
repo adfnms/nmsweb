@@ -34,55 +34,44 @@ public class LinkProcess {
 
 	// links
 	public String Links() throws HandleException {
-		try {
-		Handler handler = HandlerFactory.getHandler();
-		HashMap hash = new HashMap();
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl+"/links");
-		hash.put(Accept, "application/json");
-		hash.put(METHOD, "GET");
-
 		String result = null;
+		try {
+			Handler handler = HandlerFactory.getHandler();
+			HashMap hash = new HashMap();
+			hash.put(USERNAME, "admin");
+			hash.put(PASSWORD, "admin");
+			hash.put(URL, NMSUrl + "/links");
+			hash.put(Accept, "application/json");
+			hash.put(METHOD, "GET");
 
-		
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
 
-		
+		return result;
 
 	}
 
-	// /links/{id} 
-	public String Links(String id) throws HandleException{
-		try {
-		Handler handler = HandlerFactory.getHandler();
-		HashMap hash = new HashMap();
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl+"/links/"+id);
-		hash.put(Accept, "application/json");
-		hash.put(METHOD, "GET");
-
+	// /links/{id}
+	public String Links(String id) throws HandleException {
 		String result = null;
+		try {
+			Handler handler = HandlerFactory.getHandler();
+			HashMap hash = new HashMap();
+			hash.put(USERNAME, "admin");
+			hash.put(PASSWORD, "admin");
+			hash.put(URL, NMSUrl + "/links/" + id);
+			hash.put(Accept, "application/json");
+			hash.put(METHOD, "GET");
 
-		
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
-		
+		return result;
 
 	}
 }
-
-
-
-
-
-
