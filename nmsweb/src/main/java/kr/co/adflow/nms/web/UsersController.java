@@ -7,7 +7,6 @@ import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.process.UsersProcess;
 import kr.co.adflow.nms.web.util.Util;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -105,6 +104,27 @@ public class UsersController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
+	
+	// user POST
+	@RequestMapping(value = "/users/detail", method = RequestMethod.POST)
+	public @ResponseBody
+	String usersPostDetail(@RequestBody String data, HttpServletRequest request)
+			throws HandleException {
+		logger.info(PATH + request.getRequestURL());
+		logger.debug(INVALUE + data);
+		String result = null;
+		//String xmlData = ut.passWordPar(data);
+		//ogger.debug(XMLDATA + xmlData);
+		String dataExample="";
+		try {
+			result = (String) controll.UsersPost(dataExample);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+		return result;
+	}
+	
 
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
