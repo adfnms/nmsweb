@@ -137,6 +137,8 @@ public class NodeProcess {
 	public String nodesIpInterfaces(String id, String ipAddress) throws HandleException {
 		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
+		
+		logger.debug("aaaaa::"+ipAddress);
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
@@ -144,6 +146,8 @@ public class NodeProcess {
 		hash.put(URL, NMSUrl + "/nodes/" + id
 				+ "/ipinterfaces/" + ipAddress);
 		hash.put(METHOD, "GET");
+		
+		logger.debug("bbbbb::"+hash.get("URL").toString());
 
 		String result = null;
 

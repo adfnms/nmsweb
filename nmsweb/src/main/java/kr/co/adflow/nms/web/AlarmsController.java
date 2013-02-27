@@ -176,8 +176,12 @@ public class AlarmsController {
 				} else {
 
 					logger.error("Must supply the 'ack' parameter, set to either 'true' or 'false'");
-
-					throw new ValidationException("Must supply the 'ack' parameter, set to either 'true' or 'false'");
+					try {
+						throw new ValidationException(
+								"Must supply the 'ack' parameter, set to either 'true' or 'false'");
+					} catch (ValidationException e) {
+						throw e;
+					}
 
 				}
 
@@ -193,12 +197,12 @@ public class AlarmsController {
 				logger.error("Must supply the parameter name, set to either 'ack'");
 				try {
 
-					throw new ValidationException("Must supply the parameter name, set to either 'ack'");
-					
+					throw new ValidationException(
+							"Must supply the parameter name, set to either 'ack'");
+
 				} catch (ValidationException e) {
 					throw e;
 				}
-				
 
 			}
 
@@ -243,7 +247,7 @@ public class AlarmsController {
 		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
 				+ "\",\"message\":\"" + e.getMessage() + "\"}";
 	}
-	
+
 	@ExceptionHandler(ValidationException.class)
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody

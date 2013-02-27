@@ -133,6 +133,8 @@ public class NodeController {
 
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
+		
+		logger.debug("AAAAAA::::" + ipAddress);
 
 		try {
 			result = (String) controll.nodesIpInterfaces(id, ipAddress);
@@ -153,7 +155,8 @@ public class NodeController {
 
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
-
+		logger.debug("AAAAAA::::" + ipAddress);
+ 
 		try {
 			result = (String) controll.nodesIpInterfacesServices(id, ipAddress);
 		} catch (HandleException e) {
