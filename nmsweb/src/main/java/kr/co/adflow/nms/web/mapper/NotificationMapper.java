@@ -19,6 +19,9 @@ import kr.co.adflow.nms.web.vo.SchoedOutage;
 import kr.co.adflow.nms.web.vo.Service;
 import kr.co.adflow.nms.web.vo.SnmpInterface;
 import kr.co.adflow.nms.web.vo.DestPath.*;
+import kr.co.adflow.nms.web.vo.notifications.Notification;
+import kr.co.adflow.nms.web.vo.notifications.Parameter;
+import kr.co.adflow.nms.web.vo.notifications.Varbind;
 
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
@@ -37,21 +40,21 @@ import org.slf4j.LoggerFactory;
  * @version 1.1
  */
 
-public class DestinationPathMapper {
+public class NotificationMapper {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(AlarmsProcess.class);
+			.getLogger(NotificationMapper.class);
 
 	/**
 	 * singleton
 	 * 
 	 */
-	private DestinationPathMapper() {
+	private NotificationMapper() {
 	}
 
-	public static DestinationPathMapper mapper = new DestinationPathMapper();
+	public static NotificationMapper mapper = new NotificationMapper();
 
-	public static DestinationPathMapper getMapper() {
+	public static NotificationMapper getMapper() {
 		return mapper;
 	}
 
@@ -117,30 +120,69 @@ public class DestinationPathMapper {
 
 		return path;
 	}
+	
+	public Notification eventNotificationMapping(String jdata) throws MapperException {
 
-	public String schoedOutagePostMapping(SchoedOutage schoedOutage)
-			throws MapperException {
-
-		StringBuffer xml = new StringBuffer();
+		Notification noti = new Notification();
 
 		try {
-			xml.append("<outage type=\"");
-			xml.append(schoedOutage.getType());
-			xml.append("\" name=\"");
-			xml.append(schoedOutage.getName());
-			xml.append("\"><time ends=\"");
-			xml.append(schoedOutage.getTime().getEnds());
-			xml.append("\"  begins=\"");
-			xml.append(schoedOutage.getTime().getEnds());
-			xml.append("\"/><node id=\"");
-			xml.append(schoedOutage.getNode().getId());
-			xml.append("\"/></outage>");
+			ObjectMapper om = new ObjectMapper();
+
+			JsonNode jNode = om.readTree(jdata);
+
+			logger.debug("name::" + jNode.path("name").getTextValue());
+
+			noti.setName(jNode.path("name").getTextValue());
+			noti.setDescription(jNode.path("description").getTextValue());
+			noti.setSubject(jNode.path("subject").getTextValue());
+			noti.setStatus(jNode.path("status").getTextValue());
+			noti.setRule(jNode.path("rule").getTextValue());
+			noti.setWriteable(jNode.path("writeable").getTextValue());
+			noti.setUei(jNode.path("uei").getTextValue());
+			noti.setNoticeQueue(jNode.path("noticeQueue").getTextValue());
+			noti.setDestinationPath(jNode.path("destinationPath").getTextValue());
+			noti.setTextMessage(jNode.path("textMessage").getTextValue());
+			noti.setNumericMessage(jNode.path("numericMessage").getTextValue());
+			noti.setEventSeverity(jNode.path("eventSeverity").getTextValue());
+
+			
+
+			if (jNode.path("parameter").isArray()) {
+
+				JsonNode temp = null;
+				JsonNode temp2 = null;
+				Iterator<JsonNode> it = jNode.path("parameter").iterator();
+
+				int size = jNode.path("parameter").size();
+
+				for (int i = 0; i < size; i++) {
+
+					Parameter parameter = new Parameter();
+					temp = it.next();
+					
+					parameter.setName(temp.path("name").getTextValue());
+					parameter.setValue(temp.path("value").getTextValue());
+					noti.getParameter().add(parameter);
+				}
+
+			}
+			
+			Varbind varbind = new Varbind();
+			
+			varbind.setVbname(jNode.path("varbind").path("vbname").getTextValue());
+			varbind.setVbvalue(jNode.path("varbind").path("vbvalue").getTextValue());
+			
+			noti.setVarbind(varbind);
+			
+			
 
 		} catch (Exception e) {
 			throw new MapperException(e);
 		}
 
-		return xml.toString();
+		return noti;
 	}
+
+
 
 }

@@ -1,5 +1,6 @@
 package kr.co.adflow.nms.web;
 
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -8,14 +9,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
-import kr.co.adflow.nms.web.mapper.DestinationPathMapper;
+import kr.co.adflow.nms.web.exception.ValidationException;
+import kr.co.adflow.nms.web.mapper.NotificationMapper;
 import kr.co.adflow.nms.web.mapper.ScheduledOutagesMapper;
 import kr.co.adflow.nms.web.process.AlarmsProcess;
 import kr.co.adflow.nms.web.process.EventsProcess;
 import kr.co.adflow.nms.web.process.NotificationsProcess;
 import kr.co.adflow.nms.web.vo.SchoedOutage;
 import kr.co.adflow.nms.web.vo.DestPath.Path;
+import kr.co.adflow.nms.web.vo.notifications.Notification;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -37,8 +43,8 @@ public class NotificationsController {
 
 	private static final String RETURNRESULT = "result:::";
 	private static final String PATH = "path:::";
-	
-	private DestinationPathMapper mapper = DestinationPathMapper.getMapper();
+
+	private NotificationMapper mapper = NotificationMapper.getMapper();
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(NotificationsController.class);
@@ -72,8 +78,8 @@ public class NotificationsController {
 			logger.debug("Param:::" + filter.toString());
 
 			try {
-				result = (String) controll
-						.notificationsFilter(filter.toString());
+				result = (String) controll.notificationsFilter(filter
+						.toString());
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;
@@ -131,14 +137,138 @@ public class NotificationsController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	
-	
-	
-    ///// POST /////
-	@RequestMapping(value = "/sched-outages/DestinationPaths", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/notifications/destinationPaths/{pathName}", method = RequestMethod.GET)
 	public @ResponseBody
-	String notificationsDestincationPathsPost(HttpServletRequest request, @RequestBody String data)
-			throws HandleException, MapperException {
+	String notificationsDestincationPaths(HttpServletRequest request,
+			@PathVariable String pathName) throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = controll.notificationDestinationPaths(pathName);
+
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
+	@RequestMapping(value = "/notifications/destinationPaths", method = RequestMethod.GET)
+	public @ResponseBody
+	String notificationsDestincationPaths(HttpServletRequest request)
+			throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = controll.notificationDestinationPaths();
+
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
+	@RequestMapping(value = "/notifications/commands", method = RequestMethod.GET)
+	public @ResponseBody
+	String notificationsCommands(HttpServletRequest request)
+			throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = controll.notificationCommands();
+
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
+	@RequestMapping(value = "/notifications/events", method = RequestMethod.GET)
+	public @ResponseBody
+	String notificationsEvents(HttpServletRequest request)
+			throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = controll.notificationEvents();
+
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
+	@RequestMapping(value = "/notifications/eventNotifications", method = RequestMethod.GET)
+	public @ResponseBody
+	String notificationsEventNotifications(HttpServletRequest request)
+			throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = controll.notificationEventNotifications();
+
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
+	@RequestMapping(value = "/notifications/eventNotifications/{notificationName}", method = RequestMethod.GET)
+	public @ResponseBody
+	String notificationsEventNotifications(HttpServletRequest request,
+			@PathVariable String notificationName) throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = controll.notificationEventNotifications(notificationName);
+
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
+	// /// POST /////
+	@RequestMapping(value = "/notifications/destinationPaths", method = RequestMethod.POST)
+	public @ResponseBody
+	String notificationsDestincationPathsPost(HttpServletRequest request,
+			@RequestBody String data) throws HandleException, MapperException {
 
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
@@ -147,26 +277,26 @@ public class NotificationsController {
 		String xml = null;
 
 		// String data2 =
-		// "<outage type=\"specific\" name=\"test4\"><time ends=\"20-Feb-2013 23:59:59\" begins=\"20-Feb-2013 21:00:00\"/><node id=\"16\"/></outage>";
-		 String data3 =
-		 "{\"name\": \"TESTPath2\",\"initial-delay\": \"0s\",\"target\": [{\"interval\": \"0s\",\"name\": \"admin\",\"autoNotify\": \"on\",\"command\": [\"GCMSend\",\"GtalkSend\",\"HybridGCMSend\",\"callHomePhone\"]},{\"interval\": \"0m\",\"name\": \"Admin\",\"autoNotify\": \"on\",\"command\": \"javaEmail\"},{\"interval\": \"0s\",\"name\": \"kicho@adflow.co.kr\",\"autoNotify\": \"on\",\"command\": \"email\"}]}";
+		// "{"name": "TESTPath3","initial-delay": "0s","target": [{"interval": "0s","name": "admin","autoNotify": "on","command": ["GCMSend","GtalkSend","HybridGCMSend","callHomePhone"]},{"interval": "0m","name": "Admin","autoNotify": "on","command": "javaEmail"},{"interval": "0s","name": "kicho@adflow.co.kr","autoNotify": "on","command": "email"}]}";
+		// String data3 =
+		// "{\"name\": \"TESTPath2\",\"initial-delay\": \"0s\",\"target\": [{\"interval\": \"0s\",\"name\": \"admin\",\"autoNotify\": \"on\",\"command\": [\"GCMSend\",\"GtalkSend\",\"HybridGCMSend\",\"callHomePhone\"]},{\"interval\": \"0m\",\"name\": \"Admin\",\"autoNotify\": \"on\",\"command\": \"javaEmail\"},{\"interval\": \"0s\",\"name\": \"kicho@adflow.co.kr\",\"autoNotify\": \"on\",\"command\": \"email\"}]}";
 
 		logger.debug("Post Data:::" + data);
 
 		try {
 
-			path = mapper.destinationPathMapping(data3);
-			
-//			xml = (String) mapper.schoedOutagePostMapping(schoedOutage);
+			path = mapper.destinationPathMapping(data);
+
+			// xml = (String) mapper.schoedOutagePostMapping(schoedOutage);
 
 		} catch (MapperException e) {
 			logger.error("Failed Mapping", e);
 			throw e;
 		}
 
-		logger.debug("adf:::" + path.getTarget().get(0).getName());
-		logger.debug("adf222:::" + path.getTarget().get(0).getCommand().get(0).toString());
-		
+		// logger.debug("adf:::" + path.getTarget().get(0).getName());
+		// logger.debug("adf222:::" +
+		// path.getTarget().get(0).getCommand().get(0).toString());
 
 		try {
 			result = (String) controll.notificationDestinationPathsPost(path);
@@ -175,10 +305,265 @@ public class NotificationsController {
 			throw e;
 		}
 
+		result = "{\"result\":\"" + result + "\"}";
+
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	
+
+	@RequestMapping(value = "/notifications/eventNotifications", method = RequestMethod.POST)
+	public @ResponseBody
+	String notificationsEventNotificationsPost(HttpServletRequest request,
+			@RequestBody String data) throws HandleException, MapperException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		Notification noti = null;
+		String xml = null;
+
+		// String data2 =
+		// "{"name": "TEST3","description": "Notification Des","subject": "Login
+		// Error Hybrid GCM Subject
+		// ","status": "on","parameter": [],"rule": "(IPADDR IPLIKE
+		// *.*.*.*)","varbind": {"vbname": "testName","vbvalue": "testName"},"writeable": "yes","uei": "uei.opennms.org/internal/authentication/failure","noticeQueue": null,"destinationPath": "GTalk","textMessage": "Login
+		// Error Hybrid GCMText Message","numericMessage": "Login Error Short
+		// Message Hybrid GCM","eventSeverity": null}"
+		// String data3 =
+		// "{\"name\": \"TEST3\",\"description\": \"Notification Des\",\"subject\": \"Login Error Hybrid GCM Subject \",\"status\": \"on\",\"parameter\": [],\"rule\": \"(IPADDR IPLIKE *.*.*.*)\",\"varbind\": {\"vbname\": \"testName\",\"vbvalue\": \"testName\"},\"writeable\": \"yes\",\"uei\": \"uei.opennms.org/internal/authentication/failure\",\"noticeQueue\": null,\"destinationPath\": \"GTalk\",\"textMessage\": \"Login Error Hybrid GCMText Message\",\"numericMessage\": \"Login Error Short Message Hybrid GCM\",\"eventSeverity\": null}"
+		logger.debug("Post Data:::" + data);
+
+		try {
+
+			noti = mapper.eventNotificationMapping(data);
+
+			// xml = (String) mapper.schoedOutagePostMapping(schoedOutage);
+
+		} catch (MapperException e) {
+			logger.error("Failed Mapping", e);
+			throw e;
+		}
+
+		logger.debug("adf:::" + noti.getName());
+		logger.debug("adf222:::" + noti.getVarbind().getVbname());
+
+		try {
+			result = (String) controll
+					.notificationsEventNotificationsPost(noti);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		result = "{\"result\":\"" + result + "\"}";
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
+	// /// PUT /////
+	@RequestMapping(value = "/notifications/destinationPaths", method = RequestMethod.PUT)
+	public @ResponseBody
+	String notificationsDestincationPathsPut(HttpServletRequest request,
+			@RequestBody String data) throws HandleException, MapperException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		Path path = null;
+		String xml = null;
+
+		logger.debug("Post Data:::" + data);
+
+		try {
+
+			path = mapper.destinationPathMapping(data);
+
+		} catch (MapperException e) {
+			logger.error("Failed Mapping", e);
+			throw e;
+		}
+
+		try {
+			result = (String) controll.notificationDestinationPathsPut(path);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		result = "{\"result\":\"" + result + "\"}";
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
+	@RequestMapping(value = "/notifications/eventNotifications", method = RequestMethod.PUT)
+	public @ResponseBody
+	String notificationsEventNotificationsPut(HttpServletRequest request,
+			@RequestBody String data) throws HandleException, MapperException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		Notification noti = null;
+		String xml = null;
+
+		logger.debug("Notification Data:::" + data);
+
+		try {
+
+			noti = mapper.eventNotificationMapping(data);
+
+		} catch (MapperException e) {
+			logger.error("Failed Mapping", e);
+			throw e;
+		}
+
+		try {
+			result = (String) controll.notificationsEventNotificationsPut(noti);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		result = "{\"result\":\"" + result + "\"}";
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
+	@RequestMapping(value = "/notifications/eventNotifications/{notificationName}", method = RequestMethod.PUT)
+	public @ResponseBody
+	String notificationsEventNotificationsStatusPut(HttpServletRequest request,
+			@PathVariable String notificationName) throws HandleException,
+			MapperException, ValidationException {
+
+		String result = null;
+		String status = null;
+		logger.info(PATH + request.getRequestURI());
+
+		// 2013-02-23
+		// Parameter check Method 호추 분기
+		Enumeration eParam = request.getParameterNames();
+
+		if (eParam.hasMoreElements()) {
+			StringBuffer prams = new StringBuffer();
+
+			String pName = (String) eParam.nextElement();
+
+			if (pName.equals("status")) {
+
+				String pValue = request.getParameter(pName);
+
+				if (pValue.equals("on") || pValue.equals("off")) {
+					status = pValue;
+				} else {
+
+					logger.error("Must supply the 'status' parameter, set to either 'on' or 'off'");
+					try {
+						throw new ValidationException(
+								"Must supply the 'status' parameter, set to either 'on' or 'off'");
+					} catch (ValidationException e) {
+						throw e;
+					}
+
+				}
+
+				try {
+					result = (String) controll
+							.notificationsEventNotificationsStatusPut(
+									notificationName, status);
+				} catch (HandleException e) {
+					logger.error("Failed in processing", e);
+					throw e;
+				}
+
+			} else {
+
+				logger.error("Must supply the parameter name, set to either 'status'");
+				try {
+
+					throw new ValidationException(
+							"Must supply the parameter name, set to either 'status'");
+
+				} catch (ValidationException e) {
+					throw e;
+				}
+
+			}
+
+			logger.debug("Param:::" + prams.toString());
+
+		} else {
+
+			logger.error("Must supply the parameter name, set to either 'status'");
+			try {
+
+				throw new ValidationException(
+						"Must supply the parameter name, set to either 'status'");
+
+			} catch (ValidationException e) {
+				throw e;
+			}
+
+		}
+
+		result = "{\"result\":\"" + result + "\"}";
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
+	// /// DELETE /////
+	@RequestMapping(value = "/notifications/destinationPaths/{pathName}", method = RequestMethod.DELETE)
+	public @ResponseBody
+	String notificationsDestincationPathsDelete(HttpServletRequest request,
+			@PathVariable String pathName) throws HandleException,
+			MapperException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		logger.debug("pathName::" + pathName);
+
+		try {
+			result = (String) controll
+					.notificationDestinationPathsDelete(pathName);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		result = "{\"result\":\"" + result + "\"}";
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
+	@RequestMapping(value = "/notifications/eventNotifications/{notificationName}", method = RequestMethod.DELETE)
+	public @ResponseBody
+	String notificationsEventNotificationsDelete(HttpServletRequest request,
+			@PathVariable String notificationName) throws HandleException,
+			MapperException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		logger.debug("notificationName::" + notificationName);
+
+		try {
+			result = (String) controll
+					.notificationsEventNotificationsDelete(notificationName);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		result = "{\"result\":\"" + result + "\"}";
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
 
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
