@@ -1,16 +1,27 @@
 package kr.co.adflow.nms.web.process;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.HashMap;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
+import javax.xml.bind.Unmarshaller;
 
 import kr.co.adflow.nms.web.Handler;
 import kr.co.adflow.nms.web.HandlerFactory;
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.util.XmlUtil;
+import kr.co.adflow.nms.web.vo.DestPath.DestinationPaths;
+import kr.co.adflow.nms.web.vo.user.User;
+import kr.co.adflow.nms.web.vo.user.Userinfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
-@Controller
 public class UsersProcess {
 
 	private static final String METHOD = "method";
@@ -27,7 +38,7 @@ public class UsersProcess {
 	private static final Logger logger = LoggerFactory
 			.getLogger(UsersProcess.class);
 
-	private UsersProcess() {
+	public UsersProcess() {
 
 	}
 
@@ -81,6 +92,18 @@ public class UsersProcess {
 
 	}
 
+	/*
+	 * // users public String UsersPostDeatil(Users users) throws
+	 * HandleException { try {
+	 * 
+	 * String result = null;
+	 * 
+	 * 
+	 * return result; } catch (Exception e) { throw new HandleException(e); }
+	 * 
+	 * }
+	 */
+
 	// users/{username}
 	public String Users(String username) throws HandleException {
 		try {
@@ -121,6 +144,45 @@ public class UsersProcess {
 			throw new HandleException(e);
 		}
 
+	}
+
+	// users/detail
+	public String userPostDetail(kr.co.adflow.nms.web.vo.user.User user)
+			throws HandleException {
+		String result = null;
+		kr.co.adflow.nms.web.vo.user.Users users = new kr.co.adflow.nms.web.vo.user.Users();
+		logger.debug("postDetail");
+
+		try {
+			XmlUtil xUtil = new XmlUtil();
+			String filePath = "C:\\temp\\users.xml";
+			Class<Userinfo> classname = Userinfo.class;
+			Userinfo info = new Userinfo();
+			Object ob = xUtil.xmlRead(filePath, classname, info);
+			info = (Userinfo) ob;
+			int size = info.getUsers().getUser().size();
+			boolean idCheak = false;
+			for (int i = 0; i < size; i++) {
+				if (user.getUserId().equals(
+						info.getUsers().getUser().get(i).getUserId())) {
+					idCheak = true;
+				}
+			}
+			if (idCheak) {
+				info.getUsers().getUser().add(user);
+				String filePath2 = "C:\\temp\\users.xml";
+				result = xUtil.xmlWrite(filePath2, classname, info);
+			} else {
+				logger.error("User :: Id Not Found");
+				throw new HandleException(
+						"User :: Id Not Found");
+			}
+
+		} catch (Exception e) {
+
+			throw new HandleException(e);
+		}
+		return result;
 	}
 
 }

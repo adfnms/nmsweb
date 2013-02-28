@@ -7,8 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.exception.MapperException;
+import kr.co.adflow.nms.web.mapper.UserAndGroupMapper;
 import kr.co.adflow.nms.web.process.GroupsProcess;
-import kr.co.adflow.nms.web.util.Util;
+import kr.co.adflow.nms.web.util.UsersUtil;
+import kr.co.adflow.nms.web.vo.group.Groupinfo;
 
 
 
@@ -36,7 +39,7 @@ public class GroupsController {
 			.getLogger(GroupsController.class);
 
 	private GroupsProcess controll = GroupsProcess.getPrcess();
-	private Util ut = Util.getInstance();
+	private UsersUtil ut = UsersUtil.getInstance();
 
 	// groups
 	@RequestMapping(value = "/groups", method = RequestMethod.GET)
@@ -59,12 +62,20 @@ public class GroupsController {
 	@RequestMapping(value = "/groups", method = RequestMethod.POST)
 	public @ResponseBody
 	String groupsPost(@RequestBody String data, HttpServletRequest request)
-			throws HandleException {
+			throws HandleException, MapperException {
 		logger.info(PATH + request.getRequestURL());
 		logger.debug(INVALUE + data);
 		String result = null;
-		String xmlData = ut.jsonConvertXml(data);
-		logger.debug(XMLDATA + xmlData);
+		Groupinfo group=null;
+		String xmlData=null;
+		UserAndGroupMapper tcMapper=UserAndGroupMapper.getMapper();
+		//<group><name>adflow222</name><comments>The adflow222</comments><user>chan222</user></group>
+
+	    	group=tcMapper.groupInfo(data);
+	    	logger.debug("group::"+group.getComments());
+	    	logger.debug("group::"+group.getName());
+	    	logger.debug("group::"+group.getUser());
+	    	xmlData=ut.XmlParsingGroup(group);
 		try {
 			result = (String) controll.groupsPost(xmlData);
 		} catch (HandleException e) {

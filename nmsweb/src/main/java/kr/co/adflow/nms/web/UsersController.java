@@ -2,10 +2,16 @@ package kr.co.adflow.nms.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
 
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.exception.MapperException;
+import kr.co.adflow.nms.web.mapper.UserAndGroupMapper;
 import kr.co.adflow.nms.web.process.UsersProcess;
-import kr.co.adflow.nms.web.util.Util;
+import kr.co.adflow.nms.web.util.UsersUtil;
+import kr.co.adflow.nms.web.vo.user.User;
+import kr.co.adflow.nms.web.vo.user.UserInit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +36,7 @@ public class UsersController {
 	private UsersProcess controll = UsersProcess.getPrcess();
 	private static final String INVALUE = "invalue:::";
 	private static final String XMLDATA = "xmlData:::";
-	private Util ut = Util.getInstance();
+	private UsersUtil ut = UsersUtil.getInstance();
 
 	// users
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -53,12 +59,30 @@ public class UsersController {
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	public @ResponseBody
 	String usersPost(@RequestBody String data, HttpServletRequest request)
-			throws HandleException {
+			throws HandleException, MapperException, JAXBException,
+			ParserConfigurationException {
+
 		logger.info(PATH + request.getRequestURL());
 		logger.debug(INVALUE + data);
 		String result = null;
-		String xmlData = ut.passWordPar(data);
-		logger.debug(XMLDATA + xmlData);
+		UserInit userinit = null;
+		String xmlData = null;
+		UserAndGroupMapper tcmapper = UserAndGroupMapper.getMapper();
+		try {
+
+			userinit = tcmapper.initUser(data);
+			logger.debug("password:" + userinit.getPassword());
+			String pass = userinit.getPassword();
+			String md5 = ut.encryptString(pass);
+			logger.debug("md5pass:" + md5);
+			userinit.setPassword(md5);
+			xmlData = ut.XmlParsingUser(userinit);
+			logger.debug(xmlData);
+
+		} catch (MapperException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
 
 		try {
 			result = (String) controll.UsersPost(xmlData);
@@ -67,6 +91,33 @@ public class UsersController {
 			throw e;
 		}
 		return result;
+	}
+
+	// user POST
+	@RequestMapping(value = "/users/detail", method = RequestMethod.POST)
+	public @ResponseBody
+	String usersPostDetail(@RequestBody String data, HttpServletRequest request)
+			throws HandleException, MapperException {
+		logger.info(PATH + request.getRequestURL());
+		logger.debug(INVALUE + data);
+		String result = null;
+		UserAndGroupMapper tcmapper = UserAndGroupMapper.getMapper();
+		User user = new User();
+		
+		try {
+			user = tcmapper.userInfoMapping(data);
+		} catch (MapperException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		try {
+			result = (String) controll.userPostDetail(user);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+		return "zzz";
 	}
 
 	// users/{username} Delete
@@ -104,27 +155,6 @@ public class UsersController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	
-	// user POST
-	@RequestMapping(value = "/users/detail", method = RequestMethod.POST)
-	public @ResponseBody
-	String usersPostDetail(@RequestBody String data, HttpServletRequest request)
-			throws HandleException {
-		logger.info(PATH + request.getRequestURL());
-		logger.debug(INVALUE + data);
-		String result = null;
-		//String xmlData = ut.passWordPar(data);
-		//ogger.debug(XMLDATA + xmlData);
-		String dataExample="";
-		try {
-			result = (String) controll.UsersPost(dataExample);
-		} catch (HandleException e) {
-			logger.error("Failed in processing", e);
-			throw e;
-		}
-		return result;
-	}
-	
 
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
