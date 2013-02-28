@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.adflow.nms.web.vo.DestPath.DestinationPaths;
 import kr.co.adflow.nms.web.vo.DestPath.Path;
 import kr.co.adflow.nms.web.vo.eventconf.Events;
+import kr.co.adflow.nms.web.vo.notifdConfiguration.NotifdConfiguration;
 import kr.co.adflow.nms.web.vo.notificationCommands.NotificationCommands;
 import kr.co.adflow.nms.web.vo.notifications.Notification;
 import kr.co.adflow.nms.web.vo.notifications.Notifications;
@@ -147,7 +148,8 @@ public class NotificationsProcess {
 
 	public String notificationDestinationPaths() throws HandleException {
 
-		StringBuffer result = new StringBuffer();;
+		StringBuffer result = new StringBuffer();
+		;
 
 		try {
 			// xml Read
@@ -161,16 +163,16 @@ public class NotificationsProcess {
 
 			dPath = (DestinationPaths) ob;
 			int size = dPath.getPath().size();
-			
-			logger.debug("size::"+size);
+
+			logger.debug("size::" + size);
 
 			result.append("{\"path\":[");
-			
-			for (int i = 0; i < size; i++) {
-				logger.debug("getName::"+dPath.getPath().get(i).getName());
 
-				result.append("{\"name\":\""
-						+ dPath.getPath().get(i).getName() + "\"},");
+			for (int i = 0; i < size; i++) {
+				logger.debug("getName::" + dPath.getPath().get(i).getName());
+
+				result.append("{\"name\":\"" + dPath.getPath().get(i).getName()
+						+ "\"},");
 
 			}
 
@@ -180,8 +182,8 @@ public class NotificationsProcess {
 			}
 
 			result.append("]}");
-			
-			logger.debug("result::"+result.toString());
+
+			logger.debug("result::" + result.toString());
 
 		} catch (Exception e) {
 			throw new HandleException(e);
@@ -228,7 +230,7 @@ public class NotificationsProcess {
 
 					result = om.defaultPrettyPrintingWriter()
 							.writeValueAsString(path);
-					logger.debug("result ::"+result);
+					logger.debug("result ::" + result);
 
 				} catch (JsonGenerationException e) {
 					throw new HandleException(e);
@@ -239,8 +241,7 @@ public class NotificationsProcess {
 				}
 
 			} else {
-				logger.error("Nofi :: Path name(" + pathName
-						+ ") Not Found");
+				logger.error("Nofi :: Path name(" + pathName + ") Not Found");
 				throw new HandleException("Nofi :: Path name(" + pathName
 						+ ") Not Found");
 			}
@@ -302,7 +303,7 @@ public class NotificationsProcess {
 
 		return result;
 	}
-	
+
 	public String notificationDestinationPathsPut(Path path)
 			throws HandleException {
 
@@ -326,12 +327,12 @@ public class NotificationsProcess {
 			for (int i = 0; i < size; i++) {
 
 				if (path.getName().equals(dPath.getPath().get(i).getName())) {
-					
+
 					dPath.getPath().remove(i);
 					dPath.getPath().add(path);
-					
-					logger.debug("put:::"+dPath.getPath().get(i).getName());
-					
+
+					logger.debug("put:::" + dPath.getPath().get(i).getName());
+
 					dupCheak = true;
 					continue;
 				}
@@ -355,8 +356,8 @@ public class NotificationsProcess {
 		}
 
 		return result;
-	}	
-	
+	}
+
 	public String notificationDestinationPathsDelete(String pathName)
 			throws HandleException {
 
@@ -375,15 +376,14 @@ public class NotificationsProcess {
 			dPath = (DestinationPaths) ob;
 			int size = dPath.getPath().size();
 
-			boolean dupCheak = false; 
-			
+			boolean dupCheak = false;
+
 			for (int i = 0; i < size; i++) {
-				
 
 				if (pathName.equals(dPath.getPath().get(i).getName())) {
-					
-					logger.debug("delete:::"+dPath.getPath().get(i).getName());
-					
+
+					logger.debug("delete:::" + dPath.getPath().get(i).getName());
+
 					dPath.getPath().remove(i);
 					dupCheak = true;
 					continue;
@@ -395,8 +395,7 @@ public class NotificationsProcess {
 				result = xUtil.xmlWrite(filePath, classname, dPath);
 
 			} else {
-				logger.error("Nofi :: Path name(" + pathName
-						+ ") Not found");
+				logger.error("Nofi :: Path name(" + pathName + ") Not found");
 				throw new HandleException("Nofi :: Path name(" + pathName
 						+ ") Not found");
 			}
@@ -407,11 +406,11 @@ public class NotificationsProcess {
 
 		return result;
 	}
-	
-	
+
 	public String notificationCommands() throws HandleException {
 
-		StringBuffer result = new StringBuffer();;
+		StringBuffer result = new StringBuffer();
+		;
 
 		try {
 			// xml Read
@@ -425,13 +424,13 @@ public class NotificationsProcess {
 
 			nComm = (NotificationCommands) ob;
 			int size = nComm.getCommand().size();
-			
-			logger.debug("size::"+size);
+
+			logger.debug("size::" + size);
 
 			result.append("{\"command\":[");
-			
+
 			for (int i = 0; i < size; i++) {
-				logger.debug("getName::"+nComm.getCommand().get(i).getName());
+				logger.debug("getName::" + nComm.getCommand().get(i).getName());
 
 				result.append("{\"name\":\""
 						+ nComm.getCommand().get(i).getName() + "\"},");
@@ -444,8 +443,8 @@ public class NotificationsProcess {
 			}
 
 			result.append("]}");
-			
-			logger.debug("result::"+result.toString());
+
+			logger.debug("result::" + result.toString());
 
 		} catch (Exception e) {
 			throw new HandleException(e);
@@ -453,15 +452,16 @@ public class NotificationsProcess {
 
 		return result.toString();
 	}
-	
+
 	public String notificationEvents() throws HandleException {
 
-		StringBuffer result = new StringBuffer();;
+		StringBuffer result = new StringBuffer();
+		;
 
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "eventconf.xml"; 
+			String filePath = XMLPATH + "eventconf.xml";
 
 			Class<Events> classname = Events.class;
 			Events events = new Events();
@@ -469,36 +469,35 @@ public class NotificationsProcess {
 			Object ob = xUtil.xmlRead(filePath, classname, events);
 
 			events = (Events) ob;
-			
+
 			int fileSize = events.getEventFile().size();
-			
+
 			for (int i = 0; i < fileSize; i++) {
-				
-				
-				String fileName = "d:\\OpenNMS\\etc\\" + events.getEventFile().get(i).toString();
-				
-				logger.debug("Event sub file::"+fileName);
+
+				String fileName = "d:\\OpenNMS\\etc\\"
+						+ events.getEventFile().get(i).toString();
+
+				logger.debug("Event sub file::" + fileName);
 
 				Object fileOb = xUtil.xmlRead(fileName, classname, events);
-				
+
 				Events eventSub = (Events) fileOb;
-				
+
 				events.getEvent().addAll(eventSub.getEvent());
 
 			}
-			
-			
+
 			int size = events.getEvent().size();
-			
-			logger.debug("Event size::"+size);
+
+			logger.debug("Event size::" + size);
 
 			result.append("{\"event\":[");
-			
-			for (int i = 0; i < size; i++) {
-//				logger.debug("getUei::"+events.getEvent().get(i).getUei());
 
-				result.append("{\"uei\":\""
-						+ events.getEvent().get(i).getUei() + "\",");
+			for (int i = 0; i < size; i++) {
+				// logger.debug("getUei::"+events.getEvent().get(i).getUei());
+
+				result.append("{\"uei\":\"" + events.getEvent().get(i).getUei()
+						+ "\",");
 				result.append("\"event-label\":\""
 						+ events.getEvent().get(i).getUei() + "\"},");
 
@@ -510,8 +509,8 @@ public class NotificationsProcess {
 			}
 
 			result.append("]}");
-			
-			logger.debug("result::"+result.toString());
+
+			logger.debug("result::" + result.toString());
 
 		} catch (Exception e) {
 			throw new HandleException(e);
@@ -519,7 +518,7 @@ public class NotificationsProcess {
 
 		return result.toString();
 	}
-	
+
 	public String notificationEventNotifications() throws HandleException {
 
 		String result = null;
@@ -538,21 +537,20 @@ public class NotificationsProcess {
 
 			ObjectMapper om = new ObjectMapper();
 
-				try {
+			try {
 
-					result = om.defaultPrettyPrintingWriter().writeValueAsString(noti.getNotification());
-					
-					logger.debug("result ::"+result);
+				result = om.defaultPrettyPrintingWriter().writeValueAsString(
+						noti.getNotification());
 
-				} catch (JsonGenerationException e) {
-					throw new HandleException(e);
-				} catch (JsonMappingException e) {
-					throw new HandleException(e);
-				} catch (IOException e) {
-					throw new HandleException(e);
-				}
+				logger.debug("result ::" + result);
 
-
+			} catch (JsonGenerationException e) {
+				throw new HandleException(e);
+			} catch (JsonMappingException e) {
+				throw new HandleException(e);
+			} catch (IOException e) {
+				throw new HandleException(e);
+			}
 
 		} catch (Exception e) {
 			throw new HandleException(e);
@@ -560,7 +558,7 @@ public class NotificationsProcess {
 
 		return result;
 	}
-	
+
 	public String notificationEventNotifications(String notificationName)
 			throws HandleException {
 
@@ -584,7 +582,8 @@ public class NotificationsProcess {
 
 			for (int i = 0; i < size; i++) {
 
-				if (notificationName.equals(eNoti.getNotification().get(i).getName())) {
+				if (notificationName.equals(eNoti.getNotification().get(i)
+						.getName())) {
 
 					noti = eNoti.getNotification().get(i);
 				}
@@ -599,7 +598,7 @@ public class NotificationsProcess {
 
 					result = om.defaultPrettyPrintingWriter()
 							.writeValueAsString(noti);
-					logger.debug("result ::"+result);
+					logger.debug("result ::" + result);
 
 				} catch (JsonGenerationException e) {
 					throw new HandleException(e);
@@ -610,10 +609,10 @@ public class NotificationsProcess {
 				}
 
 			} else {
-				logger.error("Nofi :: Event Notifications name(" + notificationName
-						+ ") Not Found");
-				throw new HandleException("Nofi :: Event Notifications name(" + notificationName
-						+ ") Not Found");
+				logger.error("Nofi :: Event Notifications name("
+						+ notificationName + ") Not Found");
+				throw new HandleException("Nofi :: Event Notifications name("
+						+ notificationName + ") Not Found");
 			}
 
 		} catch (Exception e) {
@@ -622,8 +621,7 @@ public class NotificationsProcess {
 
 		return result;
 	}
-	
-	
+
 	public String notificationsEventNotificationsPost(Notification noti)
 			throws HandleException {
 
@@ -646,7 +644,8 @@ public class NotificationsProcess {
 
 			for (int i = 0; i < size; i++) {
 
-				if (noti.getName().equals(eNotis.getNotification().get(i).getName())) {
+				if (noti.getName().equals(
+						eNotis.getNotification().get(i).getName())) {
 
 					dupCheak = false;
 				}
@@ -662,10 +661,10 @@ public class NotificationsProcess {
 				result = xUtil.xmlWrite(filePath, classname, eNotis);
 
 			} else {
-				logger.error("Nofi :: Event Notification name(" + noti.getName()
-						+ ") Duplicate Error");
-				throw new HandleException("Nofi :: Event Notification name(" + noti.getName()
-						+ ") Duplicate Error");
+				logger.error("Nofi :: Event Notification name("
+						+ noti.getName() + ") Duplicate Error");
+				throw new HandleException("Nofi :: Event Notification name("
+						+ noti.getName() + ") Duplicate Error");
 			}
 
 		} catch (Exception e) {
@@ -674,7 +673,7 @@ public class NotificationsProcess {
 
 		return result;
 	}
-	
+
 	public String notificationsEventNotificationsPut(Notification noti)
 			throws HandleException {
 
@@ -697,13 +696,15 @@ public class NotificationsProcess {
 
 			for (int i = 0; i < size; i++) {
 
-				if (noti.getName().equals(eNotis.getNotification().get(i).getName())) {
-					
+				if (noti.getName().equals(
+						eNotis.getNotification().get(i).getName())) {
+
 					eNotis.getNotification().remove(i);
 					eNotis.getNotification().add(noti);
-					
-					logger.debug("put:::"+eNotis.getNotification().get(i).getName());
-					
+
+					logger.debug("put:::"
+							+ eNotis.getNotification().get(i).getName());
+
 					dupCheak = true;
 					continue;
 				}
@@ -716,61 +717,10 @@ public class NotificationsProcess {
 				result = xUtil.xmlWrite(filePath, classname, eNotis);
 
 			} else {
-				logger.error("Nofi :: Event Notification name(" + noti.getName()
-						+ ") Not found");
-				throw new HandleException("Nofi :: Event Notification name(" + noti.getName()
-						+ ") Not found");
-			}
-
-		} catch (Exception e) {
-			throw new HandleException(e);
-		}
-
-		return result;
-	}	
-	
-	public String notificationsEventNotificationsDelete(String notificationName )
-			throws HandleException {
-
-		String result = null;
-
-		try {
-			// xml Read
-			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "notifications.xml";
-
-			Class<Notifications> classname = Notifications.class;
-			Notifications eNotis = new Notifications();
-
-			Object ob = xUtil.xmlRead(filePath, classname, eNotis);
-
-			eNotis = (Notifications) ob;
-			int size = eNotis.getNotification().size();
-
-			boolean dupCheak = false; 
-			
-			for (int i = 0; i < size; i++) {
-				
-
-				if (notificationName.equals(eNotis.getNotification().get(i).getName())) {
-					
-					logger.debug("delete:::"+eNotis.getNotification().get(i).getName());
-					
-					eNotis.getNotification().remove(i);
-					dupCheak = true;
-					continue;
-				}
-
-			}
-
-			if (dupCheak) {
-				result = xUtil.xmlWrite(filePath, classname, eNotis);
-
-			} else {
-				logger.error("Nofi :: Event Notification name(" + notificationName
-						+ ") Not found");
-				throw new HandleException("Nofi :: Event Notification name(" + notificationName
-						+ ") Not found");
+				logger.error("Nofi :: Event Notification name("
+						+ noti.getName() + ") Not found");
+				throw new HandleException("Nofi :: Event Notification name("
+						+ noti.getName() + ") Not found");
 			}
 
 		} catch (Exception e) {
@@ -779,9 +729,8 @@ public class NotificationsProcess {
 
 		return result;
 	}
-	
-	
-	public String notificationsEventNotificationsStatusPut(String notificationName, String status)
+
+	public String notificationsEventNotificationsDelete(String notificationName)
 			throws HandleException {
 
 		String result = null;
@@ -803,12 +752,66 @@ public class NotificationsProcess {
 
 			for (int i = 0; i < size; i++) {
 
-				if (notificationName.equals(eNotis.getNotification().get(i).getName())) {
-					
+				if (notificationName.equals(eNotis.getNotification().get(i)
+						.getName())) {
+
+					logger.debug("delete:::"
+							+ eNotis.getNotification().get(i).getName());
+
+					eNotis.getNotification().remove(i);
+					dupCheak = true;
+					continue;
+				}
+
+			}
+
+			if (dupCheak) {
+				result = xUtil.xmlWrite(filePath, classname, eNotis);
+
+			} else {
+				logger.error("Nofi :: Event Notification name("
+						+ notificationName + ") Not found");
+				throw new HandleException("Nofi :: Event Notification name("
+						+ notificationName + ") Not found");
+			}
+
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+
+	public String notificationsEventNotificationsStatusPut(
+			String notificationName, String status) throws HandleException {
+
+		String result = null;
+
+		try {
+			// xml Read
+			XmlUtil xUtil = new XmlUtil();
+			String filePath = XMLPATH + "notifications.xml";
+
+			Class<Notifications> classname = Notifications.class;
+			Notifications eNotis = new Notifications();
+
+			Object ob = xUtil.xmlRead(filePath, classname, eNotis);
+
+			eNotis = (Notifications) ob;
+			int size = eNotis.getNotification().size();
+
+			boolean dupCheak = false;
+
+			for (int i = 0; i < size; i++) {
+
+				if (notificationName.equals(eNotis.getNotification().get(i)
+						.getName())) {
+
 					eNotis.getNotification().get(i).setStatus(status);
-					
-					logger.debug("status:::"+eNotis.getNotification().get(i).getStatus());
-					
+
+					logger.debug("status:::"
+							+ eNotis.getNotification().get(i).getStatus());
+
 					dupCheak = true;
 					continue;
 				}
@@ -821,11 +824,40 @@ public class NotificationsProcess {
 				result = xUtil.xmlWrite(filePath, classname, eNotis);
 
 			} else {
-				logger.error("Nofi :: Event Notification name(" + notificationName
-						+ ") Not found");
-				throw new HandleException("Nofi :: Event Notification name(" + notificationName
-						+ ") Not found");
+				logger.error("Nofi :: Event Notification name("
+						+ notificationName + ") Not found");
+				throw new HandleException("Nofi :: Event Notification name("
+						+ notificationName + ") Not found");
 			}
+
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+
+	public String notificationsConfigStatusPut(String status) throws HandleException {
+
+		String result = null;
+
+		try {
+			// xml Read
+			XmlUtil xUtil = new XmlUtil();
+			String filePath = XMLPATH + "notifd-configuration.xml";
+
+			Class<NotifdConfiguration> classname = NotifdConfiguration.class;
+			NotifdConfiguration notiConfig = new NotifdConfiguration();
+
+			Object ob = xUtil.xmlRead(filePath, classname, notiConfig);
+
+			notiConfig = (NotifdConfiguration) ob;
+
+			notiConfig.setStatus(status);
+
+			// xml Write
+			// filePath = "d:\\OpenNMS\\etc\\destinationPaths3.xml";
+			result = xUtil.xmlWrite(filePath, classname, notiConfig);
 
 		} catch (Exception e) {
 			throw new HandleException(e);

@@ -513,6 +513,89 @@ public class NotificationsController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
+	
+	
+	
+	// Notification Status Update
+	@RequestMapping(value = "/notificationConfig", method = RequestMethod.PUT)
+	public @ResponseBody
+	String notificationsConfigStatusPut(HttpServletRequest request) throws HandleException,
+			MapperException, ValidationException {
+
+		String result = null; 
+		String status = null;
+		logger.info(PATH + request.getRequestURI());
+
+		// 2013-02-28
+		// Parameter check
+		Enumeration eParam = request.getParameterNames();
+
+		if (eParam.hasMoreElements()) {
+			StringBuffer prams = new StringBuffer();
+
+			String pName = (String) eParam.nextElement();
+
+			if (pName.equals("status")) {
+
+				String pValue = request.getParameter(pName);
+
+				if (pValue.equals("on") || pValue.equals("off")) {
+					status = pValue;
+				} else {
+
+					logger.error("Must supply the 'status' parameter, set to either 'on' or 'off'");
+					try {
+						throw new ValidationException(
+								"Must supply the 'status' parameter, set to either 'on' or 'off'");
+					} catch (ValidationException e) {
+						throw e;
+					}
+
+				}
+
+				try {
+					result = (String) controll
+							.notificationsConfigStatusPut(status);
+				} catch (HandleException e) {
+					logger.error("Failed in processing", e);
+					throw e;
+				}
+
+			} else {
+
+				logger.error("Must supply the parameter name, set to either 'status'");
+				try {
+
+					throw new ValidationException(
+							"Must supply the parameter name, set to either 'status'");
+
+				} catch (ValidationException e) {
+					throw e;
+				}
+
+			}
+
+			logger.debug("Param:::" + prams.toString());
+
+		} else {
+
+			logger.error("Must supply the parameter name, set to either 'status'");
+			try {
+
+				throw new ValidationException(
+						"Must supply the parameter name, set to either 'status'");
+
+			} catch (ValidationException e) {
+				throw e;
+			}
+
+		}
+
+		result = "{\"result\":\"" + result + "\"}";
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
 
 	// /// DELETE /////
 	@RequestMapping(value = "/notifications/destinationPaths/{pathName}", method = RequestMethod.DELETE)
