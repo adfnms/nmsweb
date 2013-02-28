@@ -69,7 +69,7 @@ public class ScheduledOutagesController {
 
 			}
 
-			// ������ "&" ����.
+			// last "&" delete.
 			filter.deleteCharAt(filter.length() - 1);
 			logger.debug("Param:::" + filter.toString());
 
