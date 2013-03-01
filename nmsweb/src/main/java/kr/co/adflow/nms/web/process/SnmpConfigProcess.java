@@ -56,6 +56,31 @@ public class SnmpConfigProcess {
 			
 
 		}
+		
+		//PUT////!!!!!!
+		//snmpConfig/{ipAddress} 
+				public String SnmpConfigPut(String ipAddress) throws HandleException{
+					try {
+					Handler handler = HandlerFactory.getHandler();
+					HashMap hash = new HashMap();
+					hash.put(USERNAME, "admin");
+					hash.put(PASSWORD, "admin");
+					hash.put(URL, NMSUrl+"/snmpConfig/"+ipAddress);
+					hash.put(Accept, "application/json");
+					hash.put(METHOD, "PUT");
+
+					String result = null;
+
+				
+						result = (String) handler.handle(hash);
+						return result;
+					} catch (Exception e) {
+						throw new HandleException(e);
+					}
+
+					
+
+				}
 
 }
 

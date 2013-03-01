@@ -117,7 +117,7 @@ public class UsersController {
 			logger.error("Failed in processing", e);
 			throw e;
 		}
-		return "zzz";
+		return "succed";
 	}
 
 	// users/{username} Delete

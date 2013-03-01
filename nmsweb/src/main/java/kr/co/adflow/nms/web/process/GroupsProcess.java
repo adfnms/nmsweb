@@ -17,7 +17,9 @@ public class GroupsProcess {
 	private static final String URL = "url";
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
-	private static final String NMSUrl = "http://192.168.0.63:8980/opennms/rest";
+	//private static final String NMSUrl = "http://192.168.0.63:8980/opennms/rest";
+	private static final String NMSUrl = "http://112.223.76.74:8980/opennms/rest";
+	
 	private static final String Accept = "accept";
 	private static final String DATA = "data";
 	private static final String CONTENTTYPE = "contentType";

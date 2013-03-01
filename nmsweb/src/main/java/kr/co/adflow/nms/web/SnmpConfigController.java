@@ -43,6 +43,25 @@ public class SnmpConfigController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
+	//PUT
+	// snmpConfig / {IPADDRESS} 
+	
+	@RequestMapping(value = "/snmpConfig/{ipAddress}", method = RequestMethod.PUT)
+	public @ResponseBody
+	String snmpConfigPUT(@PathVariable String ipAddress, HttpServletRequest request)
+			throws HandleException {
+		logger.info(PATH + request.getRequestURL());
+		String result = null;
+
+		try {
+			result = (String) controll.SnmpConfigPut(ipAddress);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
 
 	@ExceptionHandler(Exception.class)
 	@ResponseBody

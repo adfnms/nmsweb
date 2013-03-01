@@ -16,7 +16,7 @@ public class UsersUtil {
 	private static final String MD5XMLDATA = "md5XMLData:::";
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(DefaultHandlerImpl.class);
+			.getLogger(UsersUtil.class);
 
 	public static UsersUtil util = new UsersUtil();
 
@@ -28,6 +28,8 @@ public class UsersUtil {
 		return util;
 	}
 
+	
+	
 
 
 	public String XmlParsingUser(UserInit userinit) throws HandleException {
