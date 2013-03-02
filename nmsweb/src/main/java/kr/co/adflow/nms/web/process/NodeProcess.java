@@ -343,5 +343,115 @@ public class NodeProcess {
 		return result;
 	}
 	
+	
+	///DELETE ////////////////
+	//nodes/{id}
+	public String nodesDelete(String id) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(URL, NMSUrl + "/nodes/"+id);
+		hash.put(METHOD, "DELETE");
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	public String nodesIpinterfacesDelete(String id, String ipAddress) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(URL, NMSUrl + "/nodes/"+id+"/ipinterfaces/"+ipAddress);
+		hash.put(METHOD, "DELETE");
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	public String nodesIpInterfacesServicesDelete(String id, String ipAddress, String service) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(URL, NMSUrl + "/nodes/"+id+"/ipinterfaces/"+ipAddress+"/services/"+service);
+		hash.put(METHOD, "DELETE");
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	public String nodesSnmpinterfacesDelete(String id, String ifIndex) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(URL, NMSUrl + "/nodes/"+id+"/snmpinterfaces/"+ifIndex);
+		hash.put(METHOD, "DELETE");
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	public String nodesCategoriesDelete(String id, String categoryName) throws HandleException {
+		Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, "admin");
+		hash.put(PASSWORD, "admin");
+		hash.put(URL, NMSUrl + "/nodes/"+id+"/categories/"+categoryName);
+		hash.put(METHOD, "DELETE");
+		
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+
+	
 
 }

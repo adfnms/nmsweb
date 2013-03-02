@@ -284,6 +284,104 @@ public class NodeController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
+	
+	
+	///// DELETE /////
+	@RequestMapping(value = "/nodes/{id}", method = RequestMethod.DELETE)
+	public @ResponseBody
+	String nodesDelete(HttpServletRequest request,
+			@PathVariable String id) throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) controll.nodesDelete(id);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
+	
+	@RequestMapping(value = "/nodes/{id}/ipinterfaces/{ipAddress}", method = RequestMethod.DELETE)
+	public @ResponseBody
+	String nodesIpinterfacesDelete(HttpServletRequest request,
+			@PathVariable String id, @PathVariable String ipAddress) throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) controll.nodesIpinterfacesDelete(id, ipAddress);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
+	@RequestMapping(value = "/nodes/{id}/ipInterfaces/{ipAddress}/services/{service}", method = RequestMethod.DELETE)
+	public @ResponseBody
+	String nodesIpInterfacesServicesDelete(HttpServletRequest request,
+			@PathVariable String id, @PathVariable String ipAddress, @PathVariable String service) throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) controll.nodesIpInterfacesServicesDelete(id, ipAddress, service);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
+	@RequestMapping(value = "/nodes/{id}/snmpinterfaces/{ifIndex}", method = RequestMethod.DELETE)
+	public @ResponseBody
+	String nodesSnmpinterfacesDelete(HttpServletRequest request,
+			@PathVariable String id, @PathVariable String ifIndex) throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) controll.nodesSnmpinterfacesDelete(id, ifIndex);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
+	@RequestMapping(value = "/nodes/{id}/categories/{categoryName}", method = RequestMethod.DELETE)
+	public @ResponseBody
+	String nodesCategoriesDelete(HttpServletRequest request,
+			@PathVariable String id, @PathVariable String categoryName) throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) controll.nodesCategoriesDelete(id, categoryName);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
 
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
