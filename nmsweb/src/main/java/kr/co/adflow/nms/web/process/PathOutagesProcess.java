@@ -82,7 +82,7 @@ public class PathOutagesProcess {
 					rst = stmt.executeQuery("SELECT nodeid, criticalpathip, criticalpathservicename  FROM pathoutage");
 					
 					result.append("{\"pathOutage\":[");
-					if(rst.next()) {
+					while(rst.next()) {
 						
 						result.append("{\"nodeid\":\"" + rst.getInt(1) + "\",");
 						result.append("\"criticalpathip\":\"" + rst.getString(2) + "\",");
@@ -90,6 +90,7 @@ public class PathOutagesProcess {
 						
 					}
 					
+					rst.close(); 
 					
 					// last "&" delete.
 					result.deleteCharAt(result.length() - 1);
