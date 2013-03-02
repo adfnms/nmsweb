@@ -2,8 +2,11 @@ package kr.co.adflow.nms.web.process;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 import javax.naming.Context;
@@ -14,7 +17,9 @@ import kr.co.adflow.nms.web.DefaultHandlerImpl;
 import kr.co.adflow.nms.web.Handler;
 import kr.co.adflow.nms.web.HandlerFactory;
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.vo.PathOutage;
 
+import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -39,7 +44,8 @@ public class PathOutagesProcess {
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
 	private static final String NMSUrl = "http://localhost:8980/opennms/rest";
-//	private static final String NMSUrl = "http://112.223.76.78:8980/opennms/rest";
+	// private static final String NMSUrl =
+	// "http://112.223.76.78:8980/opennms/rest";
 	private static final Logger logger = LoggerFactory
 			.getLogger(PathOutagesProcess.class);
 
@@ -55,60 +61,200 @@ public class PathOutagesProcess {
 	public static PathOutagesProcess getProcess() {
 		return process;
 	}
-	
+
 	public String pathOutages() throws HandleException {
-		
+
 		StringBuffer result = new StringBuffer();
-		
-		Statement stmt= null;
+
+		Statement stmt = null;
 		ResultSet rst = null;
 		Connection conn = null;
-		
-   		try
-		{
+		String sql = null;
+
+		try {
 			Context ctx = new InitialContext();
-			if(ctx == null )	throw new Exception("Boom - No Context");
-			
-	
-			// /jdbc/postgres is the name of the resource above 
-			DataSource ds = (DataSource)ctx.lookup("java:comp/env/jdbc/postgres");  
-			if (ds != null) 
-			{
+			if (ctx == null)
+				throw new Exception("Boom - No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+			if (ds != null) {
 				conn = ds.getConnection();
-	    
-				if(conn != null) 
-				{
+
+				if (conn != null) {
 					stmt = conn.createStatement();
-					rst = stmt.executeQuery("SELECT nodeid, criticalpathip, criticalpathservicename  FROM pathoutage");
-					
+					sql = "SELECT nodeid, criticalpathip, criticalpathservicename  FROM pathoutage";
+
+					logger.debug("sql:::" + sql);
+					rst = stmt.executeQuery(sql);
+
 					result.append("{\"pathOutage\":[");
-					while(rst.next()) {
-						
+					while (rst.next()) {
+
 						result.append("{\"nodeid\":\"" + rst.getInt(1) + "\",");
-						result.append("\"criticalpathip\":\"" + rst.getString(2) + "\",");
-						result.append("\"criticalpathservicename\":\"" + rst.getString(2) + "\"},");
-						
+						result.append("\"criticalpathip\":\""
+								+ rst.getString(2) + "\",");
+						result.append("\"criticalpathservicename\":\""
+								+ rst.getString(3) + "\"},");
+
 					}
-					
-					rst.close(); 
-					
+
+					rst.close();
+
 					// last "&" delete.
 					result.deleteCharAt(result.length() - 1);
 					result.append("]}");
 					logger.debug("ResultSet Json:::" + result.toString());
 				}
 			}
-		}catch(Exception e) 
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-            if ( stmt != null ) try { stmt.close();}catch(Exception e){}
-            if ( conn != null ) try { conn.close();}catch(Exception e){}
-        }
-
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
 
 		return result.toString();
 	}
 
+	public String pathOutagesDelete(String nodeId) throws HandleException {
+
+		StringBuffer result = new StringBuffer();
+
+		Statement stmt = null;
+		int rc = 0;
+		Connection conn = null;
+		String sql = null;
+
+		try {
+			Context ctx = new InitialContext();
+			if (ctx == null)
+				throw new HandleException("No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+			if (ds != null) {
+				conn = ds.getConnection();
+
+				if (conn != null) {
+					stmt = conn.createStatement();
+
+					sql = "DELETE FROM pathoutage WHERE nodeid='" + nodeId
+							+ "'";
+
+					logger.debug("sql:::" + sql);
+					rc = stmt.executeUpdate(sql);
+
+					logger.debug("sql Return Code:::" + rc);
+					result.append("{\"result\" : \"success\"}");
+
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
+
+		return result.toString();
+	}
+
+	public String pathOutagesPut(List<PathOutage> pathOutageList)
+			throws HandleException {
+
+		StringBuffer result = new StringBuffer();
+
+		Statement stmt = null;
+		int rc = 0;
+		Connection conn = null;
+		String sql = null;
+
+		Iterator<PathOutage> it = pathOutageList.iterator();
+
+		while (it.hasNext()) {
+
+			try {
+				PathOutage pathOutage = (PathOutage) it.next();
+				String nodeId = pathOutage.getNodeid();
+				String criticalpathip = pathOutage.getCriticalpathip();
+				String criticalpathservicename = pathOutage
+						.getCriticalpathservicename();
+
+				Context ctx = new InitialContext();
+				if (ctx == null)
+					throw new HandleException("No Context");
+
+				// /jdbc/postgres is the name of the resource above
+				DataSource ds = (DataSource) ctx
+						.lookup("java:comp/env/jdbc/postgres");
+				if (ds != null) {
+					conn = ds.getConnection();
+
+					if (conn != null) {
+						stmt = conn.createStatement();
+
+						// set은 delete 후 insert 함(opennms logic임)
+						sql = "DELETE FROM pathoutage WHERE nodeid='" + nodeId
+								+ "'";
+
+						logger.debug("sql:::" + sql);
+						rc = stmt.executeUpdate(sql);
+
+						sql = "INSERT INTO pathoutage(nodeid, criticalpathip, criticalpathservicename) VALUES ('"
+								+ nodeId
+								+ "', '"
+								+ criticalpathip
+								+ "', '"
+								+ criticalpathservicename + "')";
+
+						logger.debug("sql:::" + sql);
+						// rc=0 faile, rc=1 success
+						rc = stmt.executeUpdate(sql);
+
+						logger.debug("sql Return Code:::" + rc);
+
+					}
+				}
+
+			} catch (Exception e) {
+				throw new HandleException(e);
+			} finally {
+				if (stmt != null)
+					try {
+						stmt.close();
+					} catch (Exception e) {
+					}
+				if (conn != null)
+					try {
+						conn.close();
+					} catch (Exception e) {
+					}
+			}
+
+		}
+
+		result.append("{\"result\" : \"success\"}");
+
+		return result.toString();
+	}
 
 }
