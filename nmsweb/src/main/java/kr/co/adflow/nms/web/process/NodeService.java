@@ -1,20 +1,14 @@
 package kr.co.adflow.nms.web.process;
 
 import java.util.HashMap;
-import java.util.Locale;
 
-import kr.co.adflow.nms.web.DefaultHandlerImpl;
 import kr.co.adflow.nms.web.Handler;
-import kr.co.adflow.nms.web.HandlerFactory;
 import kr.co.adflow.nms.web.exception.HandleException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * NodeProcess
@@ -22,8 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author kicho@adflow.co.kr
  * @version 1.1
  */
-@Controller
-public class NodeProcess {
+@Service
+public class NodeService {
 
 	private static final String METHOD = "method";
 	private static final String URL = "url";
@@ -31,31 +25,22 @@ public class NodeProcess {
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
 	private static final String NMSUrl = "http://localhost:8980/opennms/rest";
-//	private static final String NMSUrl = "http://112.223.76.74:8980/opennms/rest";
+	// private static final String NMSUrl =
+	// "http://112.223.76.74:8980/opennms/rest";
 	private static final Logger logger = LoggerFactory
-			.getLogger(NodeProcess.class);
+			.getLogger(NodeService.class);
 
-	private NodeProcess() {
-	}
+	@Autowired
+	private Handler handler;
 
-	/**
-	 * singleton
-	 * 
-	 */
-	public static NodeProcess process = new NodeProcess();
-
-	public static NodeProcess getProcess() {
-		return process;
-	}
-	
 	public String nodesFilter(String filter) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes?"+filter);
+		hash.put(URL, NMSUrl + "/nodes?" + filter);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -71,7 +56,7 @@ public class NodeProcess {
 
 	public String nodes() throws HandleException {
 		// Handler handler = HandlerFactory.getHandler();
-		Handler handler = HandlerFactory.getHandler();
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
@@ -79,7 +64,7 @@ public class NodeProcess {
 		hash.put(URL, NMSUrl + "/nodes?limit=0");
 		hash.put(Accept, "application/json");
 		hash.put(METHOD, "GET");
-		
+
 		String result = null;
 
 		try {
@@ -92,7 +77,7 @@ public class NodeProcess {
 	}
 
 	public String nodes(String id) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
@@ -113,13 +98,12 @@ public class NodeProcess {
 	}
 
 	public String nodesIpInterfaces(String id) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/ipinterfaces?limit=0");
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces?limit=0");
 		hash.put(Accept, "application/json");
 		hash.put(METHOD, "GET");
 
@@ -134,20 +118,20 @@ public class NodeProcess {
 		return result;
 	}
 
-	public String nodesIpInterfaces(String id, String ipAddress) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+	public String nodesIpInterfaces(String id, String ipAddress)
+			throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
-		
-		logger.debug("aaaaa::"+ipAddress);
+
+		logger.debug("aaaaa::" + ipAddress);
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/ipinterfaces/" + ipAddress);
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces/" + ipAddress);
 		hash.put(METHOD, "GET");
-		
-		logger.debug("bbbbb::"+hash.get("URL").toString());
+
+		logger.debug("bbbbb::" + hash.get("URL").toString());
 
 		String result = null;
 
@@ -160,15 +144,16 @@ public class NodeProcess {
 		return result;
 	}
 
-	public String nodesIpInterfacesServices(String id, String ipAddress) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+	public String nodesIpInterfacesServices(String id, String ipAddress)
+			throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/ipinterfaces/" + ipAddress + "/services?limit=0");
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces/" + ipAddress
+				+ "/services?limit=0");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -184,14 +169,14 @@ public class NodeProcess {
 
 	public String nodesIpInterfacesServices(String id, String ipAddress,
 			String service) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/ipinterfaces/" + ipAddress + "/services/" + service);
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces/" + ipAddress
+				+ "/services/" + service);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -207,14 +192,13 @@ public class NodeProcess {
 
 	// /nodes/{id}/snmpinterfaces
 	public String nodesSnmpinterfaces(String id) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/snmpinterfaces");
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/snmpinterfaces");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -229,15 +213,15 @@ public class NodeProcess {
 	}
 
 	// /nodes/{id}/snmpinterfaces/{ifIndex}
-	public String nodesSnmpinterfaces(String id, String ifIndex) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+	public String nodesSnmpinterfaces(String id, String ifIndex)
+			throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/snmpinterfaces/" + ifIndex);
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/snmpinterfaces/" + ifIndex);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -253,14 +237,13 @@ public class NodeProcess {
 
 	// /nodes/{id}/categories
 	public String nodesCategories(String id) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/categories");
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/categories");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -275,15 +258,15 @@ public class NodeProcess {
 	}
 
 	// /nodes/{id}/categories/{categoryName}
-	public String nodesCategories(String id, String categoryName) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+	public String nodesCategories(String id, String categoryName)
+			throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/categories/" + categoryName);
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/categories/" + categoryName);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -299,14 +282,13 @@ public class NodeProcess {
 
 	// /nodes/{id}/assetRecord
 	public String nodesAssetRecord(String id) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/assetRecord");
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/assetRecord");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -319,17 +301,15 @@ public class NodeProcess {
 
 		return result;
 	}
-	
-	
+
 	public String nodesCategoriesPost(String id) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id
-				+ "/categories");
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/categories");
 		hash.put(METHOD, "POST");
 
 		String result = null;
@@ -342,19 +322,17 @@ public class NodeProcess {
 
 		return result;
 	}
-	
-	
-	///DELETE ////////////////
-	//nodes/{id}
+
+	// /DELETE ////////////////
+	// nodes/{id}
 	public String nodesDelete(String id) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/"+id);
+		hash.put(URL, NMSUrl + "/nodes/" + id);
 		hash.put(METHOD, "DELETE");
-		
 
 		String result = null;
 
@@ -366,16 +344,16 @@ public class NodeProcess {
 
 		return result;
 	}
-	
-	public String nodesIpinterfacesDelete(String id, String ipAddress) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+
+	public String nodesIpinterfacesDelete(String id, String ipAddress)
+			throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/"+id+"/ipinterfaces/"+ipAddress);
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces/" + ipAddress);
 		hash.put(METHOD, "DELETE");
-		
 
 		String result = null;
 
@@ -387,16 +365,17 @@ public class NodeProcess {
 
 		return result;
 	}
-	
-	public String nodesIpInterfacesServicesDelete(String id, String ipAddress, String service) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+
+	public String nodesIpInterfacesServicesDelete(String id, String ipAddress,
+			String service) throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/"+id+"/ipinterfaces/"+ipAddress+"/services/"+service);
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces/" + ipAddress
+				+ "/services/" + service);
 		hash.put(METHOD, "DELETE");
-		
 
 		String result = null;
 
@@ -408,16 +387,16 @@ public class NodeProcess {
 
 		return result;
 	}
-	
-	public String nodesSnmpinterfacesDelete(String id, String ifIndex) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+
+	public String nodesSnmpinterfacesDelete(String id, String ifIndex)
+			throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/"+id+"/snmpinterfaces/"+ifIndex);
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/snmpinterfaces/" + ifIndex);
 		hash.put(METHOD, "DELETE");
-		
 
 		String result = null;
 
@@ -429,16 +408,16 @@ public class NodeProcess {
 
 		return result;
 	}
-	
-	public String nodesCategoriesDelete(String id, String categoryName) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+
+	public String nodesCategoriesDelete(String id, String categoryName)
+			throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/"+id+"/categories/"+categoryName);
+		hash.put(URL, NMSUrl + "/nodes/" + id + "/categories/" + categoryName);
 		hash.put(METHOD, "DELETE");
-		
 
 		String result = null;
 
@@ -450,8 +429,5 @@ public class NodeProcess {
 
 		return result;
 	}
-	
-
-	
 
 }

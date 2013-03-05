@@ -6,10 +6,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
-import kr.co.adflow.nms.web.process.NodeProcess;
+import kr.co.adflow.nms.web.process.NodeService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,7 +32,8 @@ public class NodeController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(NodeController.class);
 
-	private NodeProcess controll = NodeProcess.getProcess();
+	@Autowired
+	private NodeService service;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String node() {
@@ -66,7 +68,7 @@ public class NodeController {
 			logger.debug("Param:::" + filter.toString());
 
 			try {
-				result = (String) controll.nodesFilter(filter.toString());
+				result = (String) service.nodesFilter(filter.toString());
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;
@@ -75,7 +77,7 @@ public class NodeController {
 		} else {
 
 			try {
-				result = (String) controll.nodes();
+				result = (String) service.nodes();
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;
@@ -96,7 +98,7 @@ public class NodeController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.nodes(id);
+			result = (String) service.nodes(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -115,7 +117,7 @@ public class NodeController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.nodesIpInterfaces(id);
+			result = (String) service.nodesIpInterfaces(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -133,11 +135,11 @@ public class NodeController {
 
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
-		
+
 		logger.debug("AAAAAA::::" + ipAddress);
 
 		try {
-			result = (String) controll.nodesIpInterfaces(id, ipAddress);
+			result = (String) service.nodesIpInterfaces(id, ipAddress);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -156,9 +158,9 @@ public class NodeController {
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
 		logger.debug("AAAAAA::::" + ipAddress);
- 
+
 		try {
-			result = (String) controll.nodesIpInterfacesServices(id, ipAddress);
+			result = (String) service.nodesIpInterfacesServices(id, ipAddress);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -178,7 +180,7 @@ public class NodeController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.nodesIpInterfacesServices(id, ipAddress,
+			result = (String) service.nodesIpInterfacesServices(id, ipAddress,
 					serviceName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -198,7 +200,7 @@ public class NodeController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.nodesSnmpinterfaces(id);
+			result = (String) service.nodesSnmpinterfaces(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -218,7 +220,7 @@ public class NodeController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.nodesSnmpinterfaces(id, ifIndex);
+			result = (String) service.nodesSnmpinterfaces(id, ifIndex);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -237,7 +239,7 @@ public class NodeController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.nodesCategories(id);
+			result = (String) service.nodesCategories(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -256,7 +258,7 @@ public class NodeController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.nodesCategories(id, categoryName);
+			result = (String) service.nodesCategories(id, categoryName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -275,7 +277,7 @@ public class NodeController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.nodesCategories(id);
+			result = (String) service.nodesCategories(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -284,19 +286,18 @@ public class NodeController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	
-	
-	///// DELETE /////
+
+	// /// DELETE /////
 	@RequestMapping(value = "/nodes/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody
-	String nodesDelete(HttpServletRequest request,
-			@PathVariable String id) throws HandleException {
+	String nodesDelete(HttpServletRequest request, @PathVariable String id)
+			throws HandleException {
 
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.nodesDelete(id);
+			result = (String) service.nodesDelete(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -305,18 +306,18 @@ public class NodeController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	
-	
+
 	@RequestMapping(value = "/nodes/{id}/ipinterfaces/{ipAddress}", method = RequestMethod.DELETE)
 	public @ResponseBody
 	String nodesIpinterfacesDelete(HttpServletRequest request,
-			@PathVariable String id, @PathVariable String ipAddress) throws HandleException {
+			@PathVariable String id, @PathVariable String ipAddress)
+			throws HandleException {
 
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.nodesIpinterfacesDelete(id, ipAddress);
+			result = (String) service.nodesIpinterfacesDelete(id, ipAddress);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -325,17 +326,19 @@ public class NodeController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	
-	@RequestMapping(value = "/nodes/{id}/ipInterfaces/{ipAddress}/services/{service}", method = RequestMethod.DELETE)
+
+	@RequestMapping(value = "/nodes/{id}/ipInterfaces/{ipAddress}/services/{serviceid}", method = RequestMethod.DELETE)
 	public @ResponseBody
 	String nodesIpInterfacesServicesDelete(HttpServletRequest request,
-			@PathVariable String id, @PathVariable String ipAddress, @PathVariable String service) throws HandleException {
+			@PathVariable String id, @PathVariable String ipAddress,
+			@PathVariable String serviceid) throws HandleException {
 
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.nodesIpInterfacesServicesDelete(id, ipAddress, service);
+			result = (String) service.nodesIpInterfacesServicesDelete(id,
+					ipAddress, serviceid);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -344,17 +347,18 @@ public class NodeController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/nodes/{id}/snmpinterfaces/{ifIndex}", method = RequestMethod.DELETE)
 	public @ResponseBody
 	String nodesSnmpinterfacesDelete(HttpServletRequest request,
-			@PathVariable String id, @PathVariable String ifIndex) throws HandleException {
+			@PathVariable String id, @PathVariable String ifIndex)
+			throws HandleException {
 
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.nodesSnmpinterfacesDelete(id, ifIndex);
+			result = (String) service.nodesSnmpinterfacesDelete(id, ifIndex);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -363,17 +367,18 @@ public class NodeController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/nodes/{id}/categories/{categoryName}", method = RequestMethod.DELETE)
 	public @ResponseBody
 	String nodesCategoriesDelete(HttpServletRequest request,
-			@PathVariable String id, @PathVariable String categoryName) throws HandleException {
+			@PathVariable String id, @PathVariable String categoryName)
+			throws HandleException {
 
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.nodesCategoriesDelete(id, categoryName);
+			result = (String) service.nodesCategoriesDelete(id, categoryName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

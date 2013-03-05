@@ -6,9 +6,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+
 import kr.co.adflow.nms.web.exception.HandleException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * DefaultHandler Implements
@@ -16,23 +19,28 @@ import org.slf4j.LoggerFactory;
  * @author typark@adflow.co.kr
  * @version 1.0
  */
+@Service
 public class DefaultHandlerImpl implements Handler<String, HashMap> {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(DefaultHandlerImpl.class);
 
+	public static int count = 0;
+
 	/**
 	 * singleton
 	 * 
 	 */
-	public static DefaultHandlerImpl handler = new DefaultHandlerImpl();
-
-	private DefaultHandlerImpl() {
+	// public static DefaultHandlerImpl handler = new DefaultHandlerImpl();
+	//
+	public DefaultHandlerImpl() {
+		logger.debug("DefaultHandlerImpl created " + count++);
 	}
 
-	public static Handler getInstance() {
-		return handler;
-	}
+	//
+	// public static Handler getInstance() {
+	// return handler;
+	// }
 
 	/**
 	 * 123456789011
@@ -44,33 +52,34 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 			URL url = new URL((String) map.get("url"));
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod((String) map.get("method"));
-			
+
 			if (map.containsKey("accept")) {
 				conn.setRequestProperty("Accept", (String) map.get("accept"));
 			}
-			
-			//2013-02-22
-			//kicho@adflow.co.kr 
-			//"Content-Type" 추가
+
+			// 2013-02-22
+			// kicho@adflow.co.kr
+			// "Content-Type" 추가
 			if (map.containsKey("contentType")) {
-				conn.setRequestProperty("Content-Type", (String) map.get("contentType"));
+				conn.setRequestProperty("Content-Type",
+						(String) map.get("contentType"));
 			}
-			
+
 			String userPassword = map.get("username") + ":"
 					+ map.get("password");
 			String encoding = new sun.misc.BASE64Encoder().encode(userPassword
 					.getBytes());
 			conn.setRequestProperty("Authorization", "Basic " + encoding);
 
-			
-			//2013-02-21
-			//kicho@adflow.co.kr 
-			//POST, PUT Data 추가
+			// 2013-02-21
+			// kicho@adflow.co.kr
+			// POST, PUT Data 추가
 			if (map.containsKey("data")) {
-				
+
 				conn.setDoOutput(true);
-				DataOutputStream wr = new DataOutputStream (conn.getOutputStream ());
-				wr.writeBytes ((String) map.get("data"));
+				DataOutputStream wr = new DataOutputStream(
+						conn.getOutputStream());
+				wr.writeBytes((String) map.get("data"));
 			}
 
 			logger.debug("conn :" + conn);
