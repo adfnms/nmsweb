@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -65,7 +67,7 @@ public class loginController {
 		
 		//get userId Info
 		String dataUrl = "http://localhost:8080/nmsweb/users/"+userId;
-		String strJson = "";
+		String jsonStr = "";
 		
 		_LOGIN:
 		
@@ -82,15 +84,14 @@ public class loginController {
 			}else{
 				
 				try {
-					strJson = Util.getJsonStrToUrl(dataUrl);//get Json String to user Info Url(util) 
+					jsonStr = Util.getJsonStrToUrl(dataUrl);//get Json String to user Info Url(util) 
 					
-					/*Object obj = JSONValue.parse(strJson);
+					ObjectMapper om = new ObjectMapper();
+					JsonNode jNode = om.readTree(jsonStr);
 					
-					JSONObject Object =(JSONObject)obj;*/
-					
-					String Id = "";//(String) Object.get("user-id");
-					String pwd	= "";//(String) Object.get("password");
-					String name ="";//(String) Object.get("full-name");
+					String Id = jNode.path("user-id").getTextValue();
+					String pwd	= jNode.path("password").getTextValue();
+					String name = jNode.path("full-name").getTextValue();
 					
 					//-------------------------------------------------------
 					

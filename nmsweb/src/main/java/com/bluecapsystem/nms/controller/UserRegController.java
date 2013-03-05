@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -63,7 +65,7 @@ public class UserRegController {
 		//get userId Info
 		String dataUrl = "http://localhost:8080/v1/users/"+userId;
 		
-		String strJson = "";
+		String jsonStr = "";
 		
 		_CHECKID:
 			
@@ -79,13 +81,12 @@ public class UserRegController {
 			
 				}else{
 					try {
-						strJson = Util.getJsonStrToUrl(dataUrl); //GET JSON STRING TO USER INFO URL(UTIL) 
+						jsonStr = Util.getJsonStrToUrl(dataUrl); //GET JSON STRING TO USER INFO URL(UTIL) 
 						
-						/*Object obj = JSONValue.parse(strJson);
+						ObjectMapper om = new ObjectMapper();
+						JsonNode jNode = om.readTree(jsonStr);
 						
-						JSONObject Object =(JSONObject)obj;*/
-						
-						String Id = "";
+						String Id = jNode.path("user-id").getTextValue();
 					
 						if(Id. equals(userId)){//USERID CHECK PROCESS
 							result = false;
