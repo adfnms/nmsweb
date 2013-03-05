@@ -15,7 +15,9 @@
     <link rel="apple-touch-icon-precomposed" href="<c:url value="/resources/bootstrap/ico/apple-touch-icon-57-precomposed.png" />">
     <link rel="shortcut icon" href="<c:url value="/resources/bootstrap/ico/favicon.png" />">
 
-	<script src="<c:url value="/resources/bootstrap/js/jquery-1.8.2.js" />"></script>
+	<script src="<c:url value="/resources/js/common/json2.js" />"></script>
+	<script src="<c:url value="/resources/js/common/jquery-1.8.2.js" />"></script>
+	
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-transition.js" />"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-alert.js" />"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-modal.js" />"></script>
@@ -28,7 +30,6 @@
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-collapse.js" />"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-carousel.js" />"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-typeahead.js" />"></script>
-	<script src="<c:url value="/resources/js/common/json2.js" />"></script>
 
 	<% if(styleFlag.equals("Y")){ %> 
 	<style type="text/css">
