@@ -25,17 +25,24 @@
 
 		var str = "";
 
-		for ( var i in jsonObj.user) {
+		
+		
+		console.log(jsonObj["@count"]);
+		
+		
+		var userObj = jsonObj["user"];
+		
+		for ( var i in userObj) {
 
-			str += "<tr  onclick=\"javascript:getUserDetail('"+jsonObj.user[i].user_id+"');\">";
+			str += "<tr onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
 			str += "	<td>";
-			str += jsonObj.user[i].user-id;
+			str += userObj[i]["user-id"];
 			str += "	</td>";
 			str += "	<td>";
-			str += jsonObj.user[i].full-name;
+			str += userObj[i]["full-name"];
 			str += "	</td>";
 			str += "	<td>";
-			str += jsonObj.user[i].user-comments;
+			str += userObj[i]["user-comments"];
 			str += "	</td>";
 // 			str += "	<td>";
 // 			str += jsonObj.user[i].password;
@@ -45,7 +52,7 @@
 
 		$("#userListTable").append(str);
 	}
-	
+
 	function getUserDetail(user_id){
 		
 		
