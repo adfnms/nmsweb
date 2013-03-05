@@ -46,6 +46,15 @@
 		<servlet-name>default</servlet-name>
 		<url-pattern>*.png</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Push</servlet-name>
+		<servlet-class>kr.co.adflow.nms.web.push.Pusher</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Push</servlet-name>
+		<url-pattern>/ws/*</url-pattern>
+	</servlet-mapping>
 
 	<!-- Parameter encoding filter -->
 	<filter>
