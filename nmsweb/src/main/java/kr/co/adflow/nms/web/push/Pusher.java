@@ -21,6 +21,8 @@ public class Pusher extends WebSocketServlet {
 	private static final Logger logger = LoggerFactory.getLogger(Pusher.class);
 	private final Set<WebSocketHandler> sockets = new CopyOnWriteArraySet<WebSocketHandler>();
 
+	private static Pusher pusher;
+
 	@Override
 	public WebSocket doWebSocketConnect(HttpServletRequest request,
 			String protocol) {
@@ -42,9 +44,14 @@ public class Pusher extends WebSocketServlet {
 	@Override
 	public void init() throws ServletException {
 		super.init();
+		pusher = this;
 	}
 
 	public Set<WebSocketHandler> getSockets() {
 		return sockets;
+	}
+
+	public static Pusher getInstance() {
+		return pusher;
 	}
 }

@@ -1,9 +1,15 @@
 package kr.co.adflow.nms.web.service;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import kr.co.adflow.nms.web.Handler;
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.push.Pusher;
+import kr.co.adflow.nms.web.push.WebSocketHandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +31,12 @@ public class NodeService {
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
-//	private static final String NMSUrl = "http://localhost:8980/opennms/rest";
+	// private static final String NMSUrl =
+	// "http://localhost:8980/opennms/rest";
 	// private static final String NMSUrl =
 	// "http://112.223.76.74:8980/opennms/rest";
-	private @Value("#{config['NMSURL']}") String ipAddr;
+	private @Value("#{config['NMSURL']}")
+	String ipAddr;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(NodeService.class);
@@ -58,11 +66,29 @@ public class NodeService {
 	}
 
 	public String nodes() throws HandleException {
-		// Handler handler = HandlerFactory.getHandler();
-		// Handler handler = HandlerFactory.getHandler();
+
+		// push sample code
+		Set<WebSocketHandler> sockets = Pusher.getInstance().getSockets();
+
+		Iterator<WebSocketHandler> it = sockets.iterator();
+
+		for (WebSocketHandler socket : sockets) {
+			System.out.println("Trying to send to Member!");
+			if (socket.isOpen()) {
+				System.out.println("Sending!");
+				try {
+					socket.sendMessage("Sending a Message to you Guys! "
+							+ new Date());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		// sample end
+
 		HashMap hash = new HashMap();
 		logger.debug("**************************");
-		logger.debug("ipADDR"+ipAddr);
+		logger.debug("ipADDR" + ipAddr);
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(URL, ipAddr + "/nodes?limit=0");
