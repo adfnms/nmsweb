@@ -12,7 +12,7 @@
 	<jsp:param value="회원가입" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
-<script src="<c:url value="/js/userMng.js" />"></script>
+<script src="<c:url value="/resources/js/userMng.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		
@@ -21,8 +21,7 @@
 
 	});
 
-	function callbackUseList(data) {
-		var jsonObj = JSON.parse(data);
+	function callbackUseList(jsonObj) {
 
 		var str = "";
 
@@ -30,13 +29,13 @@
 
 			str += "<tr  onclick=\"javascript:getUserDetail('"+jsonObj.user[i].user_id+"');\">";
 			str += "	<td>";
-			str += jsonObj.user[i].user_id;
+			str += jsonObj.user[i].user-id;
 			str += "	</td>";
 			str += "	<td>";
-			str += jsonObj.user[i].full_name;
+			str += jsonObj.user[i].full-name;
 			str += "	</td>";
 			str += "	<td>";
-			str += jsonObj.user[i].user_comments;
+			str += jsonObj.user[i].user-comments;
 			str += "	</td>";
 // 			str += "	<td>";
 // 			str += jsonObj.user[i].password;
