@@ -50,13 +50,13 @@
 	
 	var data = $("#form-logIn").serialize();
 	 
-	//alert(data);
+	alert(data);
 		// -> view -- 화면
 		// -> do -- 무언가 처리하고 결과를 보여줄때
 		// -> pop -- 팝업
 	 $.ajax({
 			type:'post',
-			url:'/admin/user/login',
+			url:'/v1/admin/user/login.do',
 			data: data,
 			dataType:'json',
 			error:function(res){
@@ -88,11 +88,11 @@
 			<input type="password"  id="password" name="password" class="input-block-level" placeholder="Password">
 			<div>
 			<table>
-			<colgroup><col width="10%"/><col width="40%"/><col width="50%"/></colgroup>
+			<colgroup><col width="50%"/><col width="40%"/><col width="10%"/></colgroup>
 				<tr>
-				<td></td>
+					<td></td>
 					<td><a class="btn btn-large btn-primary" href="javascript:memberLogIn()">로그인</a></td>
-					<td><a class="btn btn-large btn-primary" href="/nms/admin/userMng/userReg.do">사용자 등록</a><td>
+					<td></td>
 				</tr>
 			</table>
 			</div>

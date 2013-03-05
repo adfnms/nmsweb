@@ -55,7 +55,11 @@
 		
 		$.ajax({
 			type:'post',
-			url:'/nms/admin/user/checkUserId.do',
+			
+		 	//url:'/v1/admin/userMng/checkUserId.do', 
+			//대체 url:'<c:url value="/admin/userMng/checkUserId.do" />',
+			
+		 	url:'<c:url value="/admin/userMng/checkUserId.do" />',
 			data:'user-Id='+userId,
 			dataType:'json',
 			error:function(res){
@@ -169,7 +173,7 @@
 									<colgroup><col width="20%"/><col width="60%"/><col width="20%"/></colgroup>
 									<tr>
 										<td></td>
-										<td><a class="btn btn-large btn-primary" href="javascript:regMember()">회원 정보 등록</a></td>
+										<td><a class="btn btn-large btn-primary" href="javascript:regMember()">사용자 등록</a></td>
 										<td><td>
 									</tr>
 								</table>

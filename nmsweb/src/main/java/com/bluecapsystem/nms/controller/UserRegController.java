@@ -50,14 +50,14 @@ public class UserRegController {
 	 * @param userId
 	 * @return
 	 */
-	@RequestMapping(value = "/nms/admin/user/checkUserId")
+	@RequestMapping(value = "/admin/userMng/checkUserId")
 	public ModelAndView checkUserId(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
 			@RequestParam(value = "user-Id", required = false)String userId)
 			
 		{
 		
-		System.out.println("-------------userId-----------"+userId);
 		
+		 
 		boolean result = false;
 		String message = "";
 		ModelAndView model = new ModelAndView();
@@ -81,12 +81,16 @@ public class UserRegController {
 			
 				}else{
 					try {
-						jsonStr = Util.getJsonStrToUrl(dataUrl); //GET JSON STRING TO USER INFO URL(UTIL) 
+						//jsonStr = Util.getJsonStrToUrl(dataUrl); //GET JSON STRING TO USER INFO URL(UTIL) 
+						jsonStr = "{\"user-id\":\"adflow\",\"full-name\":\"adflow\",\"user-comments\":\"\",\"password\":\"21232F297A57A5A743894A0E4A801FC3\"}";
+						
 						
 						ObjectMapper om = new ObjectMapper();
 						JsonNode jNode = om.readTree(jsonStr);
 						
 						String Id = jNode.path("user-id").getTextValue();
+						
+						
 					
 						if(Id. equals(userId)){//USERID CHECK PROCESS
 							result = false;

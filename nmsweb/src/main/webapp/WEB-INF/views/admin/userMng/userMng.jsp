@@ -28,7 +28,7 @@
 
 		for ( var i in jsonObj.user) {
 
-			str += "<tr>";
+			str += "<tr  onclick=\"javascript:getUserDetail('"+jsonObj.user[i].user_id+"');\">";
 			str += "	<td>";
 			str += jsonObj.user[i].user_id;
 			str += "	</td>";
@@ -45,6 +45,46 @@
 		}
 
 		$("#userListTable").append(str);
+	}
+	
+	function getUserDetail(user_id){
+		
+		
+		
+		alert("-------------------user_id--------------------"+user_id);
+		
+		$("#userIdFrm").find('[name=user_id]:input').val(user_id);
+		
+		var frm = document.getElementById("userIdFrm");
+		
+		frm.action = "/v1/admin/userMng/userModify.do?user-Id="+user_id;
+		frm.submit();
+		
+		/*  $.ajax({
+			
+			 type:'post',
+		 	url:'<c:url value="/admin/userMng/userModify.do" />',
+			data:'user-Id='+user_id,
+			dataType:'json',
+			error:function(res){
+				
+				alert("서비스 실패");
+					
+	        },
+	        success: function(res){
+	        	
+	        	if(res.result == false){
+	        	
+	        		alert(res.message);
+	        		
+		   		}else{
+		   			var url = "/v1/admin/userMng/userModify.do?user-Id="+user_id;
+		   			window.open(url,'userModify','width=1160,height=640,scrolling=no, scrollbars=no');
+ 			
+		   		}
+			}		
+	});  */
+		
 	}
 </script>
 </head>
@@ -63,6 +103,9 @@
 
 		<div class="row-fluid">
 			<div class="span9">
+			<form  id="userIdFrm" name="userIdFrm" method="post">
+				<input type="hidden" id ="user_id" name="user_id" value="" />
+			</form>
 				<table class="table table-striped" id="userListTable">
 					<colgroup>
 						<col class="span2"/>
@@ -76,6 +119,7 @@
 							<th>소개</th>
 						</tr>
 					</thead>
+					
 				</table>
 			</div>
 		</div>

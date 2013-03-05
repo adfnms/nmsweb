@@ -131,7 +131,7 @@
 									<colgroup><col width="20%"/><col width="60%"/><col width="20%"/></colgroup>
 									<tr>
 										<td></td>
-										<td><a class="btn btn-large btn-primary" href="javascript:regMember()">수정</a></td>
+										<td><a class="btn btn-large btn-primary" href="javascript:regMember()">정보 수정</a></td>
 										<td><td>
 									</tr>
 								</table>

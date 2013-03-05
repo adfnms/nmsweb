@@ -64,7 +64,7 @@ public class loginController {
 		boolean result = false;
 		String message = "";
 		ModelAndView model = new ModelAndView();
-		
+		System.out.println("--------userId--------"+userId);
 		//get userId Info
 		String dataUrl = "http://localhost:8080/nmsweb/users/"+userId;
 		String jsonStr = "";
@@ -143,3 +143,7 @@ public class loginController {
 		return model;
 	}
 }
+
+
+
+
