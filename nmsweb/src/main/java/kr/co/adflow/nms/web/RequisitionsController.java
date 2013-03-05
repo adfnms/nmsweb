@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
 import kr.co.adflow.nms.web.mapper.RequisitionsMapper;
-import kr.co.adflow.nms.web.process.RequisitionsProcess;
+import kr.co.adflow.nms.web.service.RequisitionsService;
 import kr.co.adflow.nms.web.util.RequisitionsUtil;
 import kr.co.adflow.nms.web.vo.requisition.ReqPutForID;
 import kr.co.adflow.nms.web.vo.requisition.ReqPutIP;
@@ -15,12 +15,13 @@ import kr.co.adflow.nms.web.vo.requisition.RequisitionsAssets;
 import kr.co.adflow.nms.web.vo.requisition.RequisitionsCategory;
 import kr.co.adflow.nms.web.vo.requisition.RequisitionsNodes;
 import kr.co.adflow.nms.web.vo.requisition.RequisitionsNodesInterface;
-import kr.co.adflow.nms.web.vo.requisition.RequisitionsService;
+
 import kr.co.adflow.nms.web.vo.requisition.Requisitionsinfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -40,8 +41,8 @@ public class RequisitionsController {
 	private static final String DATA = "data:::";
 	private static final Logger logger = LoggerFactory
 			.getLogger(RequisitionsController.class);
-
-	private RequisitionsProcess controll = RequisitionsProcess.getPrcess();
+	@Autowired
+	private RequisitionsService service;
 
 	// requisitions
 	@RequestMapping(value = "/requisitions", method = RequestMethod.GET)
@@ -50,7 +51,7 @@ public class RequisitionsController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 		try {
-			result = controll.requisitions();
+			result = service.requisitions();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -67,7 +68,7 @@ public class RequisitionsController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 		try {
-			result = controll.requisitionsCount();
+			result = service.requisitionsCount();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -85,7 +86,7 @@ public class RequisitionsController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 		try {
-			result = controll.requisitionsDeployed();
+			result = service.requisitionsDeployed();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -105,7 +106,7 @@ public class RequisitionsController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 		try {
-			result = controll.requisitionsDeployedCount();
+			result = service.requisitionsDeployedCount();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -125,7 +126,7 @@ public class RequisitionsController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 		try {
-			result = (String) controll.requisitions(name);
+			result = (String) service.requisitions(name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -144,7 +145,7 @@ public class RequisitionsController {
 		String result = null;
 
 		try {
-			result = (String) controll.requisitionsNodes(name);
+			result = (String) service.requisitionsNodes(name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -164,7 +165,7 @@ public class RequisitionsController {
 		String result = null;
 
 		try {
-			result = (String) controll.requisitionsNodes(name, foreignId);
+			result = (String) service.requisitionsNodes(name, foreignId);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -186,7 +187,7 @@ public class RequisitionsController {
 		logger.info(PATH + request.getRequestURL());
 
 		try {
-			result = (String) controll.requisitionsNodesInterfaces(name,
+			result = (String) service.requisitionsNodesInterfaces(name,
 					foreignId);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -209,7 +210,7 @@ public class RequisitionsController {
 		logger.info(PATH + request.getRequestURL());
 
 		try {
-			result = (String) controll.requisitionsNodesInterfaces(name,
+			result = (String) service.requisitionsNodesInterfaces(name,
 					foreignId, ipAddress);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -232,7 +233,7 @@ public class RequisitionsController {
 		logger.info(PATH + request.getRequestURL());
 
 		try {
-			result = (String) controll.requisitionsNodesInterfacesServices(
+			result = (String) service.requisitionsNodesInterfacesServices(
 					name, foreignId, ipAddress);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -248,7 +249,7 @@ public class RequisitionsController {
 	public @ResponseBody
 	String requisitionsNodesInterfacesServices(@PathVariable String name,
 			@PathVariable String foreignId, @PathVariable String ipAddress,
-			@PathVariable String service, HttpServletRequest request)
+			@PathVariable String service1, HttpServletRequest request)
 			throws HandleException {
 
 		String result = null;
@@ -256,8 +257,8 @@ public class RequisitionsController {
 		logger.info(PATH + request.getRequestURL());
 
 		try {
-			result = (String) controll.requisitionsNodesInterfacesServices(
-					name, foreignId, ipAddress, service);
+			result = (String) service.requisitionsNodesInterfacesServices(
+					name, foreignId, ipAddress, service1);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -278,7 +279,7 @@ public class RequisitionsController {
 		logger.info(PATH + request.getRequestURL());
 
 		try {
-			result = (String) controll.requisitionsNodesCategories(name,
+			result = (String) service.requisitionsNodesCategories(name,
 					foreignId);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -300,7 +301,7 @@ public class RequisitionsController {
 		logger.info(PATH + request.getRequestURL());
 
 		try {
-			result = (String) controll.requisitionsNodesCategories(name,
+			result = (String) service.requisitionsNodesCategories(name,
 					foreignId, categoryName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -323,7 +324,7 @@ public class RequisitionsController {
 		logger.info(PATH + request.getRequestURL());
 
 		try {
-			result = (String) controll.requisitionsNodesAssets(name, foreignId);
+			result = (String) service.requisitionsNodesAssets(name, foreignId);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -357,7 +358,7 @@ public class RequisitionsController {
 		try {
 			RequisitionsUtil ut = RequisitionsUtil.getInstance();
 			xmlData = ut.xmlParsingRequisitions(requisitions);
-			result = (String) controll.requisitionsPostPro(xmlData);
+			result = (String) service.requisitionsPostPro(xmlData);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -392,7 +393,7 @@ public class RequisitionsController {
 		try {
 			RequisitionsUtil ut = RequisitionsUtil.getInstance();
 			xmlData = ut.xmlParsingRequisitionsNodes(renodes);
-			result = (String) controll.requisitionsPostNodesPro(xmlData, name);
+			result = (String) service.requisitionsPostNodesPro(xmlData, name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -426,7 +427,7 @@ public class RequisitionsController {
 		try {
 			RequisitionsUtil ut = RequisitionsUtil.getInstance();
 			xmlData = ut.xmlParsingRequisitionsNodesInterfaces(nodeInterface);
-			result = (String) controll.requisitionsPostNodesInterfacesPro(
+			result = (String) service.requisitionsPostNodesInterfacesPro(
 					xmlData, name, foreignId);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -447,7 +448,7 @@ public class RequisitionsController {
 			@RequestBody String data, HttpServletRequest request)
 			throws HandleException, MapperException {
 
-		RequisitionsService service = null;
+		kr.co.adflow.nms.web.vo.requisition.RequisitionsService rservice = null;
 		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
 		String xmlData = null;
 		logger.info(PATH + request.getRequestURL());
@@ -455,7 +456,7 @@ public class RequisitionsController {
 		String result = null;
 		try {
 
-			service = mapper.requisitionsService(data);
+			rservice = mapper.requisitionsService(data);
 		} catch (MapperException e) {
 			logger.error("Failed in Mapping", e);
 			throw e;
@@ -463,8 +464,8 @@ public class RequisitionsController {
 
 		try {
 			RequisitionsUtil ut = RequisitionsUtil.getInstance();
-			xmlData = ut.xmlParsingRequisitionsService(service);
-			result = (String) controll.requisitionServicesPro(xmlData, name,
+			xmlData = ut.xmlParsingRequisitionsService(rservice);
+			result = (String) service.requisitionServicesPro(xmlData, name,
 					foreignId, ipAddress);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -501,7 +502,7 @@ public class RequisitionsController {
 		try {
 			RequisitionsUtil ut = RequisitionsUtil.getInstance();
 			xmlData = ut.xmlParsingReqCategory(category);
-			result = (String) controll.requisitionCategorysPro(xmlData, name,
+			result = (String) service.requisitionCategorysPro(xmlData, name,
 					foreignId);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -539,7 +540,7 @@ public class RequisitionsController {
 		try {
 			RequisitionsUtil ut = RequisitionsUtil.getInstance();
 			xmlData = ut.xmlParsingReqAssets(assets);
-			result = (String) controll.requisitionAssetsPro(xmlData, name,
+			result = (String) service.requisitionAssetsPro(xmlData, name,
 					foreignId);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -562,7 +563,7 @@ public class RequisitionsController {
 
 		try {
 
-			result = (String) controll.requisitionImport(name);
+			result = (String) service.requisitionImport(name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -584,7 +585,7 @@ public class RequisitionsController {
 
 		try {
 
-			result = (String) controll.requisitionImportRescanP(name);
+			result = (String) service.requisitionImportRescanP(name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -618,7 +619,7 @@ public class RequisitionsController {
 		try {
 			RequisitionsUtil ut = RequisitionsUtil.getInstance();
 			String parSingData = ut.ParsingReqNameData(reqPutName);
-			result = (String) controll.requisitioUpdate(name, parSingData);
+			result = (String) service.requisitioUpdate(name, parSingData);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -653,7 +654,7 @@ public class RequisitionsController {
 			RequisitionsUtil ut = RequisitionsUtil.getInstance();
 			String parSingData = ut.ParsingReqPutID(putForId);
 
-			result = (String) controll.requisitionNameUpdate(name, foreignId,
+			result = (String) service.requisitionNameUpdate(name, foreignId,
 					parSingData);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -687,7 +688,7 @@ public class RequisitionsController {
 		try {
 			RequisitionsUtil ut = RequisitionsUtil.getInstance();
 			String parSingData = ut.ParsingReqPutIP(putIP);
-			result = (String) controll.requisitionInterUpdate(name, foreignId,
+			result = (String) service.requisitionInterUpdate(name, foreignId,
 					ipAddress,parSingData);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -709,7 +710,7 @@ public class RequisitionsController {
 		String result = null;
 
 		try {
-			result = (String) controll.reqDelete(name);
+			result = (String) service.reqDelete(name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -729,7 +730,7 @@ public class RequisitionsController {
 		String result = null;
 
 		try {
-			result = (String) controll.reqDeployDeletePro(name);
+			result = (String) service.reqDeployDeletePro(name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -750,7 +751,7 @@ public class RequisitionsController {
 		String result = null;
 
 		try {
-			result = (String) controll.reqNodesDelPro(name, foreignId);
+			result = (String) service.reqNodesDelPro(name, foreignId);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -770,7 +771,7 @@ public class RequisitionsController {
 		String result = null;
 
 		try {
-			result = (String) controll.reqInterDelPro(name, foreignId,
+			result = (String) service.reqInterDelPro(name, foreignId,
 					ipAddress);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -786,14 +787,14 @@ public class RequisitionsController {
 	public @ResponseBody
 	String ReqInterfaceDel(@PathVariable String name,
 			@PathVariable String foreignId, @PathVariable String ipAddress,
-			@PathVariable String service, HttpServletRequest request)
+			@PathVariable String service2, HttpServletRequest request)
 			throws HandleException {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 
 		try {
-			result = (String) controll.reqServiceDelPro(name, foreignId,
-					ipAddress, service);
+			result = (String) service.reqServiceDelPro(name, foreignId,
+					ipAddress, service2);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -814,7 +815,7 @@ public class RequisitionsController {
 		String result = null;
 
 		try {
-			result = (String) controll.reqCategoryDelPro(name, foreignId,
+			result = (String) service.reqCategoryDelPro(name, foreignId,
 					category);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -836,7 +837,7 @@ public class RequisitionsController {
 		String result = null;
 
 		try {
-			result = (String) controll.reqAssetDelPro(name, foreignId, field);
+			result = (String) service.reqAssetDelPro(name, foreignId, field);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

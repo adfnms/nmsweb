@@ -1,4 +1,4 @@
-package kr.co.adflow.nms.web.process;
+package kr.co.adflow.nms.web.service;
 
 import java.util.HashMap;
 
@@ -8,43 +8,37 @@ import kr.co.adflow.nms.web.exception.HandleException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
-@Controller
-public class RequisitionsProcess {
+@Service
+public class RequisitionsService {
 	private static final String METHOD = "method";
 	private static final String URL = "url";
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
-	// private static final String NMSUrl =
-	// "http://192.168.0.63:8980/opennms/rest";
-	private static final String NMSUrl = "http://112.223.76.74:8980/opennms/rest";
 
+	private @Value("#{config['NMSURL']}") String ipAddr;
 	private static final String Accept = "accept";
 	private static final String DATA = "data";
 	private static final String CONTENTTYPE = "contentType";
 	private static final Logger logger = LoggerFactory
-			.getLogger(RequisitionsProcess.class);
+			.getLogger(RequisitionsService.class);
 
-	private RequisitionsProcess() {
-
-	}
-
-	public static RequisitionsProcess process = new RequisitionsProcess();
-
-	public static RequisitionsProcess getPrcess() {
-		return process;
-	}
+	@Autowired
+	private Handler handler;
 
 	// requisitions
 	public String requisitions() throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions");
+			hash.put(URL, ipAddr + "/requisitions");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -60,11 +54,11 @@ public class RequisitionsProcess {
 	public String requisitionsCount() throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/count");
+			hash.put(URL, ipAddr + "/requisitions/count");
 			hash.put(METHOD, "GET");
 
 			result = (String) handler.handle(hash);
@@ -79,11 +73,11 @@ public class RequisitionsProcess {
 	public String requisitionsDeployed() throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+			
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/deployed");
+			hash.put(URL, ipAddr + "/requisitions/deployed");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -99,11 +93,11 @@ public class RequisitionsProcess {
 	public String requisitionsDeployedCount() throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/deployed/count");
+			hash.put(URL, ipAddr + "/requisitions/deployed/count");
 			hash.put(METHOD, "GET");
 
 			result = (String) handler.handle(hash);
@@ -118,11 +112,11 @@ public class RequisitionsProcess {
 	public String requisitions(String name) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name);
+			hash.put(URL, ipAddr + "/requisitions/" + name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -139,11 +133,11 @@ public class RequisitionsProcess {
 	public String requisitionsNodes(String name) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+	
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes");
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -160,11 +154,11 @@ public class RequisitionsProcess {
 			throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+	;
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -182,11 +176,11 @@ public class RequisitionsProcess {
 			throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -204,11 +198,11 @@ public class RequisitionsProcess {
 			String ipAddress) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -226,11 +220,11 @@ public class RequisitionsProcess {
 			String foreignId, String ipAddress) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress + "/services");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -250,11 +244,11 @@ public class RequisitionsProcess {
 			throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress + "/services/"
 					+ service);
 			hash.put(Accept, "application/json");
@@ -273,11 +267,11 @@ public class RequisitionsProcess {
 			throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/categories");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -295,11 +289,11 @@ public class RequisitionsProcess {
 			String categoryName) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/categories/" + categoryName);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -317,11 +311,11 @@ public class RequisitionsProcess {
 			throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+			
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/assets");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -338,11 +332,11 @@ public class RequisitionsProcess {
 	public String requisitionsPostPro(String xmlData) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+			
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions");
+			hash.put(URL, ipAddr + "/requisitions");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
 			hash.put(CONTENTTYPE, "application/xml");
@@ -360,11 +354,11 @@ public class RequisitionsProcess {
 			throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes");
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
 			hash.put(CONTENTTYPE, "application/xml");
@@ -383,11 +377,11 @@ public class RequisitionsProcess {
 			String name, String foreignId) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+			
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
@@ -408,11 +402,11 @@ public class RequisitionsProcess {
 			String foreignId, String ipAddress) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+			
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress + "/services");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
@@ -433,11 +427,11 @@ public class RequisitionsProcess {
 			String foreignId) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/categories");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
@@ -460,11 +454,11 @@ public class RequisitionsProcess {
 			String foreignId) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+	
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/assets");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
@@ -483,11 +477,11 @@ public class RequisitionsProcess {
 	public String requisitionImport(String name) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+			
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/import");
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/import");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "PUT");
 			result = (String) handler.handle(hash);
@@ -503,11 +497,11 @@ public class RequisitionsProcess {
 	public String requisitionImportRescanP(String name) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name
+			hash.put(URL, ipAddr + "/requisitions/" + name
 					+ "/import?rescanExisting=false");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "PUT");
@@ -525,11 +519,11 @@ public class RequisitionsProcess {
 			throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name);
+			hash.put(URL, ipAddr + "/requisitions/" + name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "PUT");
 			hash.put(DATA, data);
@@ -548,11 +542,11 @@ public class RequisitionsProcess {
 			String data) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "PUT");
@@ -572,11 +566,11 @@ public class RequisitionsProcess {
 			String ipAddress,String data) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "PUT");
@@ -595,11 +589,11 @@ public class RequisitionsProcess {
 	public String reqDelete(String name) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name);
+			hash.put(URL, ipAddr + "/requisitions/" + name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
 
@@ -616,11 +610,11 @@ public class RequisitionsProcess {
 	public String reqDeployDeletePro(String name) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/deployed/" + name);
+			hash.put(URL, ipAddr + "/requisitions/deployed/" + name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
 
@@ -638,11 +632,11 @@ public class RequisitionsProcess {
 			throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
@@ -662,11 +656,11 @@ public class RequisitionsProcess {
 			throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
@@ -686,11 +680,11 @@ public class RequisitionsProcess {
 			String ipAddress, String service) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+	
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress + "/services/"
 					+ service);
 			hash.put(Accept, "application/json");
@@ -711,11 +705,11 @@ public class RequisitionsProcess {
 			String category) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/categories/" + category);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
@@ -735,11 +729,11 @@ public class RequisitionsProcess {
 			throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/requisitions/" + name + "/nodes/"
+			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/assets/" + field);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");

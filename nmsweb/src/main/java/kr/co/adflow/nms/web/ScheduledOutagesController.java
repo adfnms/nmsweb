@@ -9,13 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
 import kr.co.adflow.nms.web.mapper.ScheduledOutagesMapper;
-import kr.co.adflow.nms.web.process.AlarmsProcess;
-import kr.co.adflow.nms.web.process.EventsProcess;
-import kr.co.adflow.nms.web.process.ScheduledOutagesProcess;
+import kr.co.adflow.nms.web.service.AlarmsService;
+import kr.co.adflow.nms.web.service.EventsService;
+import kr.co.adflow.nms.web.service.ScheduledOutagesService;
 import kr.co.adflow.nms.web.vo.SchoedOutage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,9 +42,8 @@ public class ScheduledOutagesController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(ScheduledOutagesController.class);
-
-	private ScheduledOutagesProcess controll = ScheduledOutagesProcess
-			.getProcess();
+	@Autowired
+	private ScheduledOutagesService service;
 
 	private ScheduledOutagesMapper mapper = ScheduledOutagesMapper.getMapper();
 
@@ -74,7 +74,7 @@ public class ScheduledOutagesController {
 			logger.debug("Param:::" + filter.toString());
 
 			try {
-				result = (String) controll
+				result = (String) service
 						.schedOutagesFilter(filter.toString());
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
@@ -84,7 +84,7 @@ public class ScheduledOutagesController {
 		} else {
 
 			try {
-				result = (String) controll.schedOutages();
+				result = (String) service.schedOutages();
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;
@@ -105,7 +105,7 @@ public class ScheduledOutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.schedOutages(outageName);
+			result = (String) service.schedOutages(outageName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -149,7 +149,7 @@ public class ScheduledOutagesController {
 		logger.debug("adf:::" + xml);
 
 		try {
-			result = (String) controll.schedOutagesPost(xml);
+			result = (String) service.schedOutagesPost(xml);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -171,7 +171,7 @@ public class ScheduledOutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.schedOutagesNotifdPut(outageName);
+			result = (String) service.schedOutagesNotifdPut(outageName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -190,7 +190,7 @@ public class ScheduledOutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.schedOutagesCollectdPut(outageName, packageName);
+			result = (String) service.schedOutagesCollectdPut(outageName, packageName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -209,7 +209,7 @@ public class ScheduledOutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.schedOutagesPollerdPut(outageName, packageName);
+			result = (String) service.schedOutagesPollerdPut(outageName, packageName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -228,7 +228,7 @@ public class ScheduledOutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.schedOutagesThreshdPut(outageName, packageName);
+			result = (String) service.schedOutagesThreshdPut(outageName, packageName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -250,7 +250,7 @@ public class ScheduledOutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.schedOutagesDelete(outageName);
+			result = (String) service.schedOutagesDelete(outageName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -269,7 +269,7 @@ public class ScheduledOutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.schedOutagesNotifdDelete(outageName);
+			result = (String) service.schedOutagesNotifdDelete(outageName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -288,7 +288,7 @@ public class ScheduledOutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.schedOutagesCollectdDelete(outageName, packageName);
+			result = (String) service.schedOutagesCollectdDelete(outageName, packageName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -307,7 +307,7 @@ public class ScheduledOutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.schedOutagesPollerdDelete(outageName, packageName);
+			result = (String) service.schedOutagesPollerdDelete(outageName, packageName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -326,7 +326,7 @@ public class ScheduledOutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.schedOutagesThreshdDelete(outageName, packageName);
+			result = (String) service.schedOutagesThreshdDelete(outageName, packageName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

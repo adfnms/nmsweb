@@ -5,10 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import kr.co.adflow.nms.web.exception.HandleException;
-import kr.co.adflow.nms.web.process.SnmpConfigProcess;
+import kr.co.adflow.nms.web.service.SnmpConfigService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,7 +25,8 @@ public class SnmpConfigController {
 	private static final String PATH = "path:::";
 	private static final Logger logger = LoggerFactory
 			.getLogger(SnmpConfigController.class);
-	private SnmpConfigProcess controll = SnmpConfigProcess.getPrcess();
+	@Autowired
+	private SnmpConfigService service;
 
 	// snmpConfig/{ipAddress}
 	@RequestMapping(value = "/snmpConfig/{ipAddress}", method = RequestMethod.GET)
@@ -35,7 +37,7 @@ public class SnmpConfigController {
 		String result = null;
 
 		try {
-			result = (String) controll.SnmpConfig(ipAddress);
+			result = (String) service.SnmpConfig(ipAddress);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -54,7 +56,7 @@ public class SnmpConfigController {
 		String result = null;
 
 		try {
-			result = (String) controll.SnmpConfigPut(ipAddress);
+			result = (String) service.SnmpConfigPut(ipAddress);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

@@ -1,20 +1,15 @@
-package kr.co.adflow.nms.web.process;
+package kr.co.adflow.nms.web.service;
 
 import java.util.HashMap;
-import java.util.Locale;
 
-import kr.co.adflow.nms.web.DefaultHandlerImpl;
 import kr.co.adflow.nms.web.Handler;
-import kr.co.adflow.nms.web.HandlerFactory;
 import kr.co.adflow.nms.web.exception.HandleException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 /**
  * AcknowledgementsProcess
@@ -22,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author kicho@adflow.co.kr
  * @version 1.1
  */
-@Controller
-public class AcknowledgementsProcess {
+@Service
+public class AcknowledgementsService {
 
 	private static final String ContentType = "contentType";
 	private static final String METHOD = "method";
@@ -31,32 +26,22 @@ public class AcknowledgementsProcess {
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
-	private static final String NMSUrl = "http://localhost:8980/opennms/rest";
-//	private static final String NMSUrl = "http://112.223.76.78:8980/opennms/rest";
+	private @Value("#{config['NMSURL']}") String ipAddr;
 	private static final Logger logger = LoggerFactory
-			.getLogger(AcknowledgementsProcess.class);
+			.getLogger(AcknowledgementsService.class);
+	@Autowired
+	private Handler handler;
 
-	private AcknowledgementsProcess() {
-	}
 
-	/**
-	 * singleton
-	 * 
-	 */
-	public static AcknowledgementsProcess process = new AcknowledgementsProcess();
-
-	public static AcknowledgementsProcess getProcess() {
-		return process;
-	}
 	
 	public String acksFilter(String filter) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+		
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/acks?"+filter);
+		hash.put(URL, ipAddr + "/acks?"+filter);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -71,13 +56,13 @@ public class AcknowledgementsProcess {
 	}
 
 	public String acks() throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+	
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/acks?limit=0");
+		hash.put(URL, ipAddr + "/acks?limit=0");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -92,13 +77,13 @@ public class AcknowledgementsProcess {
 	}
 	
 	public String acks(String id) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+	
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/acks/"+id);
+		hash.put(URL, ipAddr + "/acks/"+id);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -113,12 +98,12 @@ public class AcknowledgementsProcess {
 	}
 
 	public String acksCount() throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+		
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/acks/count");
+		hash.put(URL, ipAddr + "/acks/count");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -136,14 +121,14 @@ public class AcknowledgementsProcess {
 	/// POST
 	///acks 
 	public String acksPost(String prams) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+		
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
 		hash.put(ContentType, "application/x-www-form-urlencoded");
-		hash.put(URL, NMSUrl + "/acks?"+prams);
+		hash.put(URL, ipAddr + "/acks?"+prams);
 		hash.put(METHOD, "POST");
 		
 

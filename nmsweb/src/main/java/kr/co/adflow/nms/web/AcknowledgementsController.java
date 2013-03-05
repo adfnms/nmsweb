@@ -7,12 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
-import kr.co.adflow.nms.web.process.AcknowledgementsProcess;
-import kr.co.adflow.nms.web.process.AlarmsProcess;
-import kr.co.adflow.nms.web.process.EventsProcess;
+import kr.co.adflow.nms.web.service.AcknowledgementsService;
+import kr.co.adflow.nms.web.service.AlarmsService;
+import kr.co.adflow.nms.web.service.EventsService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,9 +35,8 @@ public class AcknowledgementsController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(AcknowledgementsController.class);
-
-	private AcknowledgementsProcess controll = AcknowledgementsProcess
-			.getProcess();
+	@Autowired
+	private AcknowledgementsService service;
 
 	@RequestMapping(value = "/acks", method = RequestMethod.GET)
 	public @ResponseBody
@@ -65,7 +65,7 @@ public class AcknowledgementsController {
 			logger.debug("Param:::" + filter.toString());
 
 			try {
-				result = (String) controll
+				result = (String) service
 						.acksFilter(filter.toString());
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
@@ -75,7 +75,7 @@ public class AcknowledgementsController {
 		} else {
 
 			try {
-				result = (String) controll.acks();
+				result = (String) service.acks();
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;
@@ -96,7 +96,7 @@ public class AcknowledgementsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.acks(id);
+			result = (String) service.acks(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -114,7 +114,7 @@ public class AcknowledgementsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.acksCount();
+			result = (String) service.acksCount();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -152,7 +152,7 @@ public class AcknowledgementsController {
 			logger.debug("Param:::" + prams.toString());
 
 			try {
-				result = (String) controll
+				result = (String) service
 						.acksPost(prams.toString());
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
@@ -163,7 +163,7 @@ public class AcknowledgementsController {
 		} else {
 
 			try {
-				result = (String) controll.acksPost("");
+				result = (String) service.acksPost("");
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;

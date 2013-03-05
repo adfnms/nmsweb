@@ -5,10 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import kr.co.adflow.nms.web.exception.HandleException;
-import kr.co.adflow.nms.web.process.MapsProcess;
+import kr.co.adflow.nms.web.service.MapsService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,8 +23,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class MapsController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(MapsController.class);
-
-	private MapsProcess controll = MapsProcess.getPrcess();
+	@Autowired
+	private MapsService service;
 	private static final String RETURNRESULT = "result:::";
 	private static final String PATH = "path:::";
 
@@ -36,7 +37,7 @@ public class MapsController {
 
 		String result = null;
 		try {
-			result = (String) controll.Maps();
+			result = (String) service.Maps();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -54,7 +55,7 @@ public class MapsController {
 		String result = null;
 
 		try {
-			result = (String) controll.Maps(id);
+			result = (String) service.Maps(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -72,7 +73,7 @@ public class MapsController {
 		String result = null;
 
 		try {
-			result = (String) controll.MapsMapElements(id);
+			result = (String) service.MapsMapElements(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

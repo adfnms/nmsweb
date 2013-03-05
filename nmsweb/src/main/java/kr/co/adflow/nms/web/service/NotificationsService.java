@@ -1,4 +1,4 @@
-package kr.co.adflow.nms.web.process;
+package kr.co.adflow.nms.web.service;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,7 +15,10 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,42 +38,32 @@ import kr.co.adflow.nms.web.vo.notifications.Notifications;
  * @author kicho@adflow.co.kr
  * @version 1.1
  */
-@Controller
-public class NotificationsProcess {
+@Service
+public class NotificationsService {
 
-	private static final String XMLPATH = "d:\\OpenNMS\\etc\\";
+	//private static final String XMLPATH = "d:\\OpenNMS\\etc\\";
+
 	private static final String METHOD = "method";
 	private static final String URL = "url";
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
-	private static final String NMSUrl = "http://localhost:8980/opennms/rest";
-	// private static final String NMSUrl =
-	// "http://112.223.76.78:8980/opennms/rest";
+	private @Value("#{config['XMLPATH']}") String xmlPath;
+	private @Value("#{config['NMSURL']}") String ipAddr;
 	private static final Logger logger = LoggerFactory
-			.getLogger(NotificationsProcess.class);
+			.getLogger(NotificationsService.class);
 
-	private NotificationsProcess() {
-	}
-
-	/**
-	 * singleton
-	 * 
-	 */
-	public static NotificationsProcess process = new NotificationsProcess();
-
-	public static NotificationsProcess getProcess() {
-		return process;
-	}
+	@Autowired
+	private Handler handler;
 
 	public String notificationsFilter(String filter) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+	
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/notifications?" + filter);
+		hash.put(URL, ipAddr + "/notifications?" + filter);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -85,13 +78,13 @@ public class NotificationsProcess {
 	}
 
 	public String notifications() throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+	
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/notifications?limit=0");
+		hash.put(URL, ipAddr + "/notifications?limit=0");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -106,13 +99,13 @@ public class NotificationsProcess {
 	}
 
 	public String notifications(String id) throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+		
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/notifications/" + id);
+		hash.put(URL, ipAddr + "/notifications/" + id);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -127,12 +120,12 @@ public class NotificationsProcess {
 	}
 
 	public String notificationsCount() throws HandleException {
-		Handler handler = HandlerFactory.getHandler();
+	
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/notifications/count");
+		hash.put(URL, ipAddr + "/notifications/count");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -154,7 +147,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "destinationPaths.xml";
+			String filePath = xmlPath + "destinationPaths.xml";
 
 			Class<DestinationPaths> classname = DestinationPaths.class;
 			DestinationPaths dPath = new DestinationPaths();
@@ -201,7 +194,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "destinationPaths.xml";
+			String filePath = xmlPath + "destinationPaths.xml";
 
 			Class<DestinationPaths> classname = DestinationPaths.class;
 			DestinationPaths dPath = new DestinationPaths();
@@ -261,7 +254,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "destinationPaths.xml";
+			String filePath = xmlPath + "destinationPaths.xml";
 
 			Class<DestinationPaths> classname = DestinationPaths.class;
 			DestinationPaths dPath = new DestinationPaths();
@@ -312,7 +305,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "destinationPaths.xml";
+			String filePath = xmlPath + "destinationPaths.xml";
 
 			Class<DestinationPaths> classname = DestinationPaths.class;
 			DestinationPaths dPath = new DestinationPaths();
@@ -366,7 +359,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "destinationPaths.xml";
+			String filePath = xmlPath + "destinationPaths.xml";
 
 			Class<DestinationPaths> classname = DestinationPaths.class;
 			DestinationPaths dPath = new DestinationPaths();
@@ -415,7 +408,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "notificationCommands.xml";
+			String filePath = xmlPath + "notificationCommands.xml";
 
 			Class<NotificationCommands> classname = NotificationCommands.class;
 			NotificationCommands nComm = new NotificationCommands();
@@ -461,7 +454,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "eventconf.xml";
+			String filePath = xmlPath + "eventconf.xml";
 
 			Class<Events> classname = Events.class;
 			Events events = new Events();
@@ -526,7 +519,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "notifications.xml";
+			String filePath = xmlPath + "notifications.xml";
 
 			Class<Notifications> classname = Notifications.class;
 			Notifications noti = new Notifications();
@@ -568,7 +561,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "notifications.xml";
+			String filePath = xmlPath + "notifications.xml";
 
 			Class<Notifications> classname = Notifications.class;
 			Notifications eNoti = new Notifications();
@@ -630,7 +623,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "notifications.xml";
+			String filePath = xmlPath + "notifications.xml";
 
 			Class<Notifications> classname = Notifications.class;
 			Notifications eNotis = new Notifications();
@@ -682,7 +675,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "notifications.xml";
+			String filePath = xmlPath + "notifications.xml";
 
 			Class<Notifications> classname = Notifications.class;
 			Notifications eNotis = new Notifications();
@@ -738,7 +731,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "notifications.xml";
+			String filePath = xmlPath + "notifications.xml";
 
 			Class<Notifications> classname = Notifications.class;
 			Notifications eNotis = new Notifications();
@@ -790,7 +783,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "notifications.xml";
+			String filePath = xmlPath + "notifications.xml";
 
 			Class<Notifications> classname = Notifications.class;
 			Notifications eNotis = new Notifications();
@@ -844,7 +837,7 @@ public class NotificationsProcess {
 		try {
 			// xml Read
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = XMLPATH + "notifd-configuration.xml";
+			String filePath = xmlPath + "notifd-configuration.xml";
 
 			Class<NotifdConfiguration> classname = NotifdConfiguration.class;
 			NotifdConfiguration notiConfig = new NotifdConfiguration();

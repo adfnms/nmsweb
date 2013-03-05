@@ -5,11 +5,12 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import kr.co.adflow.nms.web.exception.HandleException;
-import kr.co.adflow.nms.web.process.AlarmStatisticsProcess;
+import kr.co.adflow.nms.web.service.AlarmStatisticsService;
 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 
@@ -26,9 +27,8 @@ public class AlarmStatisticsController {
 			.getLogger(RequisitionsController.class);
 	private static final String RETURNRESULT = "result:::";
 	private static final String PATH = "path:::";
-
-	private AlarmStatisticsProcess controll = AlarmStatisticsProcess
-			.getPrcess();
+	@Autowired
+	private AlarmStatisticsService service;
 
 	// stats/alarms
 	@RequestMapping(value = "/stats/alarms", method = RequestMethod.GET)
@@ -38,7 +38,7 @@ public class AlarmStatisticsController {
 		String result = null;
 
 		try {
-			result = (String) controll.statsAlarms();
+			result = (String) service.statsAlarms();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -57,7 +57,7 @@ public class AlarmStatisticsController {
 		String result = null;
 
 		try {
-			result = (String) controll.statsAlarmsBySeverity();
+			result = (String) service.statsAlarmsBySeverity();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

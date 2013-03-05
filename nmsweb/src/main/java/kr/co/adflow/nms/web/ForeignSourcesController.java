@@ -1,33 +1,23 @@
 package kr.co.adflow.nms.web;
 
-import java.util.StringTokenizer;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
 
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
 import kr.co.adflow.nms.web.mapper.ForeignMapper;
-import kr.co.adflow.nms.web.mapper.RequisitionsMapper;
-import kr.co.adflow.nms.web.mapper.UserAndGroupMapper;
-import kr.co.adflow.nms.web.process.ForeignSourcesProcess;
+import kr.co.adflow.nms.web.service.ForeignSourcesService;
 import kr.co.adflow.nms.web.util.ForeignUtil;
-import kr.co.adflow.nms.web.util.RequisitionsUtil;
-import kr.co.adflow.nms.web.vo.requisition.RequisitionsAssets;
-import kr.co.adflow.nms.web.vo.user.UserInit;
-import kr.co.adflow.web.vo.foreign.ForDetector;
-import kr.co.adflow.web.vo.foreign.ForPoliceS;
-import kr.co.adflow.web.vo.foreign.ForPutName;
-
-import kr.co.adflow.web.vo.foreign.ForeignInfo;
+import kr.co.adflow.nms.web.vo.foreign.ForDetector;
+import kr.co.adflow.nms.web.vo.foreign.ForPoliceS;
+import kr.co.adflow.nms.web.vo.foreign.ForPutName;
+import kr.co.adflow.nms.web.vo.foreign.ForeignInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,8 +33,8 @@ public class ForeignSourcesController {
 	private static final String INVALUE = "invlalue::";
 	private static final Logger logger = LoggerFactory
 			.getLogger(ForeignSourcesController.class);
-
-	private ForeignSourcesProcess controll = ForeignSourcesProcess.getPrcess();
+	@Autowired
+	private ForeignSourcesService service;
 	private static final String DATA="data::";
 
 	// foreignSources
@@ -55,7 +45,7 @@ public class ForeignSourcesController {
 		String result = null;
 
 		try {
-			result = (String) controll.foreignSources();
+			result = (String) service.foreignSources();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -73,7 +63,7 @@ public class ForeignSourcesController {
 		String result = null;
 
 		try {
-			result = (String) controll.foreignSourcesDefault();
+			result = (String) service.foreignSourcesDefault();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -91,7 +81,7 @@ public class ForeignSourcesController {
 		String result = null;
 
 		try {
-			result = (String) controll.foreignSourcesDeployed();
+			result = (String) service.foreignSourcesDeployed();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -110,7 +100,7 @@ public class ForeignSourcesController {
 		String result = null;
 
 		try {
-			result = (String) controll.foreignSourcesDeployedCount();
+			result = (String) service.foreignSourcesDeployedCount();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -128,7 +118,7 @@ public class ForeignSourcesController {
 		String result = null;
 
 		try {
-			result = (String) controll.foreignSources(name);
+			result = (String) service.foreignSources(name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -146,7 +136,7 @@ public class ForeignSourcesController {
 		String result = null;
 
 		try {
-			result = (String) controll.foreignSourcesDetectors(name);
+			result = (String) service.foreignSourcesDetectors(name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -166,7 +156,7 @@ public class ForeignSourcesController {
 		String result = null;
 
 		try {
-			result = (String) controll.foreignSourcesDetectors(name, detector);
+			result = (String) service.foreignSourcesDetectors(name, detector);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -184,7 +174,7 @@ public class ForeignSourcesController {
 		String result = null;
 
 		try {
-			result = (String) controll.foreignSourcesPolicies(name);
+			result = (String) service.foreignSourcesPolicies(name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -203,7 +193,7 @@ public class ForeignSourcesController {
 		String result = null;
 
 		try {
-			result = (String) controll.foreignSourcesPolicies(name, policy);
+			result = (String) service.foreignSourcesPolicies(name, policy);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -237,7 +227,7 @@ public class ForeignSourcesController {
 		try {
 			ForeignUtil ut = ForeignUtil.getInstance();
 			xmlData = ut.xmlParsingForeign(forInfo);
-			result = (String) controll.foreignPostPro(xmlData);
+			result = (String) service.foreignPostPro(xmlData);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -274,7 +264,7 @@ public class ForeignSourcesController {
 		try {
 			ForeignUtil ut = ForeignUtil.getInstance();
 			xmlData = ut.xmlParsingDetector(detector);
-			result = (String) controll.foreignDecPro(xmlData, name);
+			result = (String) service.foreignDecPro(xmlData, name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -308,7 +298,7 @@ public class ForeignSourcesController {
 		try {
 			ForeignUtil ut = ForeignUtil.getInstance();
 			xmlData = ut.xmlParsingPolices(polices);
-			result = (String) controll.foreignPolicesPro(xmlData, name);
+			result = (String) service.foreignPolicesPro(xmlData, name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -343,7 +333,7 @@ public class ForeignSourcesController {
 		try {
 			ForeignUtil ut = ForeignUtil.getInstance();
 			String 	convertdata=ut.ParsingPutName(putName);
-			result = (String) controll.foreignPutNamePro(name,convertdata);
+			result = (String) service.foreignPutNamePro(name,convertdata);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -364,7 +354,7 @@ public class ForeignSourcesController {
 		
 		try {
 
-			result = (String) controll.foreignDelNamePro(name);
+			result = (String) service.foreignDelNamePro(name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -386,7 +376,7 @@ public class ForeignSourcesController {
 		
 		try {
 
-			result = (String) controll.foreignDelDecPro(name, detector);
+			result = (String) service.foreignDelDecPro(name, detector);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -407,7 +397,7 @@ public class ForeignSourcesController {
 		
 		try {
 
-			result = (String) controll.foreignDelPolPro(name, policy);
+			result = (String) service.foreignDelPolPro(name, policy);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

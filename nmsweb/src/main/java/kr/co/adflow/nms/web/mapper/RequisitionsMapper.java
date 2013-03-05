@@ -3,6 +3,7 @@ package kr.co.adflow.nms.web.mapper;
 import java.util.Iterator;
 
 import kr.co.adflow.nms.web.exception.MapperException;
+import kr.co.adflow.nms.web.vo.foreign.ForPutName;
 import kr.co.adflow.nms.web.vo.group.Groupinfo;
 import kr.co.adflow.nms.web.vo.requisition.ReqPutForID;
 import kr.co.adflow.nms.web.vo.requisition.ReqPutIP;
@@ -13,7 +14,6 @@ import kr.co.adflow.nms.web.vo.requisition.RequisitionsNodes;
 import kr.co.adflow.nms.web.vo.requisition.RequisitionsNodesInterface;
 import kr.co.adflow.nms.web.vo.requisition.RequisitionsService;
 import kr.co.adflow.nms.web.vo.requisition.Requisitionsinfo;
-import kr.co.adflow.web.vo.foreign.ForPutName;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;

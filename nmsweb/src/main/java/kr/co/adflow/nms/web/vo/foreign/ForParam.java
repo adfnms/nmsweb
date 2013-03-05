@@ -1,4 +1,4 @@
-package kr.co.adflow.web.vo.foreign;
+package kr.co.adflow.nms.web.vo.foreign;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

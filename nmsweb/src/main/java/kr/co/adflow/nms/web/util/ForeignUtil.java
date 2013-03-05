@@ -1,11 +1,11 @@
 package kr.co.adflow.nms.web.util;
 
 import kr.co.adflow.nms.web.exception.HandleException;
-import kr.co.adflow.web.vo.foreign.ForDetector;
-import kr.co.adflow.web.vo.foreign.ForPoliceS;
-import kr.co.adflow.web.vo.foreign.ForPutName;
+import kr.co.adflow.nms.web.vo.foreign.ForDetector;
+import kr.co.adflow.nms.web.vo.foreign.ForPoliceS;
+import kr.co.adflow.nms.web.vo.foreign.ForPutName;
+import kr.co.adflow.nms.web.vo.foreign.ForeignInfo;
 
-import kr.co.adflow.web.vo.foreign.ForeignInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

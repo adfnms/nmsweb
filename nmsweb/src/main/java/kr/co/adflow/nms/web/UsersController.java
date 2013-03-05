@@ -8,13 +8,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
 import kr.co.adflow.nms.web.mapper.UserAndGroupMapper;
-import kr.co.adflow.nms.web.process.UsersProcess;
+import kr.co.adflow.nms.web.service.NodeService;
+import kr.co.adflow.nms.web.service.UserService;
 import kr.co.adflow.nms.web.util.UsersUtil;
 import kr.co.adflow.nms.web.vo.user.User;
 import kr.co.adflow.nms.web.vo.user.UserInit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,10 +35,12 @@ public class UsersController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(UsersController.class);
-	private UsersProcess controll = UsersProcess.getPrcess();
+	@Autowired
+	private UserService service;
 	private static final String INVALUE = "invalue:::";
 	private static final String XMLDATA = "xmlData:::";
 	private UsersUtil ut = UsersUtil.getInstance();
+
 
 	// users
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -46,7 +50,7 @@ public class UsersController {
 		String result = null;
 
 		try {
-			result = (String) controll.Users();
+			result = (String) service.Users();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -85,7 +89,7 @@ public class UsersController {
 		}
 
 		try {
-			result = (String) controll.UsersPost(xmlData);
+			result = (String) service.UsersPost(xmlData);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -112,7 +116,7 @@ public class UsersController {
 		}
 
 		try {
-			result = (String) controll.userPostDetail(user);
+			result = (String) service.userPostDetail(user);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -129,7 +133,7 @@ public class UsersController {
 		String result = null;
 
 		try {
-			result = (String) controll.UsersDelete(username);
+			result = (String) service.UsersDelete(username);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -147,7 +151,7 @@ public class UsersController {
 		String result = null;
 
 		try {
-			result = (String) controll.Users(username);
+			result = (String) service.Users(username);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

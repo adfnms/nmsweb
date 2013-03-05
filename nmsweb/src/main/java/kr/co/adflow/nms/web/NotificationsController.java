@@ -1,8 +1,6 @@
 package kr.co.adflow.nms.web;
 
-import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,22 +9,15 @@ import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
 import kr.co.adflow.nms.web.exception.ValidationException;
 import kr.co.adflow.nms.web.mapper.NotificationMapper;
-import kr.co.adflow.nms.web.mapper.ScheduledOutagesMapper;
-import kr.co.adflow.nms.web.process.AlarmsProcess;
-import kr.co.adflow.nms.web.process.EventsProcess;
-import kr.co.adflow.nms.web.process.NotificationsProcess;
-import kr.co.adflow.nms.web.vo.SchoedOutage;
+import kr.co.adflow.nms.web.service.NotificationsService;
 import kr.co.adflow.nms.web.vo.DestPath.Path;
 import kr.co.adflow.nms.web.vo.notifications.Notification;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,8 +39,8 @@ public class NotificationsController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(NotificationsController.class);
-
-	private NotificationsProcess controll = NotificationsProcess.getProcess();
+	@Autowired
+	private NotificationsService service;
 
 	@RequestMapping(value = "/notifications", method = RequestMethod.GET)
 	public @ResponseBody
@@ -78,7 +69,7 @@ public class NotificationsController {
 			logger.debug("Param:::" + filter.toString());
 
 			try {
-				result = (String) controll.notificationsFilter(filter
+				result = (String) service.notificationsFilter(filter
 						.toString());
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
@@ -88,7 +79,7 @@ public class NotificationsController {
 		} else {
 
 			try {
-				result = (String) controll.notifications();
+				result = (String) service.notifications();
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;
@@ -109,7 +100,7 @@ public class NotificationsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.notifications(id);
+			result = (String) service.notifications(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -128,7 +119,7 @@ public class NotificationsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.notificationsCount();
+			result = (String) service.notificationsCount();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -147,7 +138,7 @@ public class NotificationsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = controll.notificationDestinationPaths(pathName);
+			result = service.notificationDestinationPaths(pathName);
 
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -168,7 +159,7 @@ public class NotificationsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = controll.notificationDestinationPaths();
+			result = service.notificationDestinationPaths();
 
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -189,7 +180,7 @@ public class NotificationsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = controll.notificationCommands();
+			result = service.notificationCommands();
 
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -210,7 +201,7 @@ public class NotificationsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = controll.notificationEvents();
+			result = service.notificationEvents();
 
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -231,7 +222,7 @@ public class NotificationsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = controll.notificationEventNotifications();
+			result = service.notificationEventNotifications();
 
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -252,7 +243,7 @@ public class NotificationsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = controll.notificationEventNotifications(notificationName);
+			result = service.notificationEventNotifications(notificationName);
 
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -299,7 +290,7 @@ public class NotificationsController {
 		// path.getTarget().get(0).getCommand().get(0).toString());
 
 		try {
-			result = (String) controll.notificationDestinationPathsPost(path);
+			result = (String) service.notificationDestinationPathsPost(path);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -348,7 +339,7 @@ public class NotificationsController {
 		logger.debug("adf222:::" + noti.getVarbind().getVbname());
 
 		try {
-			result = (String) controll
+			result = (String) service
 					.notificationsEventNotificationsPost(noti);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -385,7 +376,7 @@ public class NotificationsController {
 		}
 
 		try {
-			result = (String) controll.notificationDestinationPathsPut(path);
+			result = (String) service.notificationDestinationPathsPut(path);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -420,7 +411,7 @@ public class NotificationsController {
 		}
 
 		try {
-			result = (String) controll.notificationsEventNotificationsPut(noti);
+			result = (String) service.notificationsEventNotificationsPut(noti);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -470,7 +461,7 @@ public class NotificationsController {
 				}
 
 				try {
-					result = (String) controll
+					result = (String) service
 							.notificationsEventNotificationsStatusPut(
 									notificationName, status);
 				} catch (HandleException e) {
@@ -513,16 +504,14 @@ public class NotificationsController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	
-	
-	
+
 	// Notification Status Update
 	@RequestMapping(value = "/notificationConfig", method = RequestMethod.PUT)
 	public @ResponseBody
-	String notificationsConfigStatusPut(HttpServletRequest request) throws HandleException,
-			MapperException, ValidationException {
+	String notificationsConfigStatusPut(HttpServletRequest request)
+			throws HandleException, MapperException, ValidationException {
 
-		String result = null; 
+		String result = null;
 		String status = null;
 		logger.info(PATH + request.getRequestURI());
 
@@ -554,7 +543,7 @@ public class NotificationsController {
 				}
 
 				try {
-					result = (String) controll
+					result = (String) service
 							.notificationsConfigStatusPut(status);
 				} catch (HandleException e) {
 					logger.error("Failed in processing", e);
@@ -610,7 +599,7 @@ public class NotificationsController {
 		logger.debug("pathName::" + pathName);
 
 		try {
-			result = (String) controll
+			result = (String) service
 					.notificationDestinationPathsDelete(pathName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -635,7 +624,7 @@ public class NotificationsController {
 		logger.debug("notificationName::" + notificationName);
 
 		try {
-			result = (String) controll
+			result = (String) service
 					.notificationsEventNotificationsDelete(notificationName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);

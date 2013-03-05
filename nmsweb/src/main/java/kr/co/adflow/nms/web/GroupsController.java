@@ -6,12 +6,13 @@ import javax.servlet.http.HttpServletResponse;
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
 import kr.co.adflow.nms.web.mapper.UserAndGroupMapper;
-import kr.co.adflow.nms.web.process.GroupsProcess;
+import kr.co.adflow.nms.web.service.GroupsService;
 import kr.co.adflow.nms.web.util.UsersUtil;
 import kr.co.adflow.nms.web.vo.group.Groupinfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,8 +32,8 @@ public class GroupsController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(GroupsController.class);
-
-	private GroupsProcess controll = GroupsProcess.getPrcess();
+	@Autowired
+	private GroupsService service;
 	private UsersUtil ut = UsersUtil.getInstance();
 
 	// groups
@@ -43,7 +44,7 @@ public class GroupsController {
 		String result = null;
 
 		try {
-			result = (String) controll.groups();
+			result = (String) service.groups();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -71,7 +72,7 @@ public class GroupsController {
 	    	logger.debug("group::"+group.getUser());
 	    	xmlData=ut.XmlParsingGroup(group);
 		try {
-			result = (String) controll.groupsPost(xmlData);
+			result = (String) service.groupsPost(xmlData);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -90,7 +91,7 @@ public class GroupsController {
 		String result = null;
 
 		try {
-			result = (String) controll.groupsPut(groupname, username);
+			result = (String) service.groupsPut(groupname, username);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -109,7 +110,7 @@ public class GroupsController {
 		String result = null;
 
 		try {
-			result = (String) controll.groupsDelGroup(groupname);
+			result = (String) service.groupsDelGroup(groupname);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -129,7 +130,7 @@ public class GroupsController {
 		String result = null;
 
 		try {
-			result = (String) controll.groupsDelGroupUsers(groupname, username);
+			result = (String) service.groupsDelGroupUsers(groupname, username);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -147,7 +148,7 @@ public class GroupsController {
 		String result = null;
 
 		try {
-			result = (String) controll.groups(groupname);
+			result = (String) service.groups(groupname);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -165,7 +166,7 @@ public class GroupsController {
 		String result = null;
 
 		try {
-			result = (String) controll.groupsUsers(groupName);
+			result = (String) service.groupsUsers(groupName);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

@@ -1,4 +1,4 @@
-package kr.co.adflow.nms.web.process;
+package kr.co.adflow.nms.web.service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,42 +20,36 @@ import kr.co.adflow.nms.web.vo.user.Userinfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
-public class UsersProcess {
+@Service
+public class UserService {
 
 	private static final String METHOD = "method";
 	private static final String URL = "url";
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
-	private static final String NMSUrl = "http://192.168.0.63:8980/opennms/rest";
-	// private static final String NMSUrl =
-	// "http://localhost:8980/opennms/rest";
-
+	private @Value("#{config['NMSURL']}") String ipAddr;
+	private @Value("#{config['XMLPATH']}") String xmlPath;
 	private static final String Accept = "accept";
 	private static final String DATA = "data";
 	private static final String CONTENTTYPE = "contentType";
 	private static final Logger logger = LoggerFactory
-			.getLogger(UsersProcess.class);
-
-	public UsersProcess() {
-
-	}
-
-	public static UsersProcess process = new UsersProcess();
-
-	public static UsersProcess getPrcess() {
-		return process;
-	}
+			.getLogger(UserService.class);
+	@Autowired
+	private Handler handler;
 
 	// users
 	public String Users() throws HandleException {
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/users");
+			hash.put(URL, ipAddr + "/users");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -72,11 +66,11 @@ public class UsersProcess {
 	// users
 	public String UsersPost(String xmlData) throws HandleException {
 		try {
-			Handler handler = HandlerFactory.getHandler();
+	
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/users");
+			hash.put(URL, ipAddr + "/users");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
 			hash.put(CONTENTTYPE, "application/xml");
@@ -107,11 +101,11 @@ public class UsersProcess {
 	// users/{username}
 	public String Users(String username) throws HandleException {
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/users/" + username);
+			hash.put(URL, ipAddr + "/users/" + username);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -128,11 +122,11 @@ public class UsersProcess {
 	// users/{username} Delete
 	public String UsersDelete(String username) throws HandleException {
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/users/" + username);
+			hash.put(URL, ipAddr + "/users/" + username);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
 
@@ -155,7 +149,7 @@ public class UsersProcess {
 
 		try {
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = "C:\\temp\\users.xml";
+			String filePath = xmlPath+"users.xml";
 			Class<Userinfo> classname = Userinfo.class;
 			Userinfo info = new Userinfo();
 			Object ob = xUtil.xmlRead(filePath, classname, info);
@@ -170,7 +164,7 @@ public class UsersProcess {
 			}
 			if (idCheak) {
 				info.getUsers().getUser().add(user);
-				String filePath2 = "C:\\temp\\users.xml";
+				String filePath2 = xmlPath+"users.xml";
 				result = xUtil.xmlWrite(filePath2, classname, info);
 			} else {
 				logger.error("User :: Id Not Found");

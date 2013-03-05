@@ -1,4 +1,4 @@
-package kr.co.adflow.nms.web.process;
+package kr.co.adflow.nms.web.service;
 
 import java.util.HashMap;
 
@@ -8,42 +8,37 @@ import kr.co.adflow.nms.web.exception.HandleException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
-@Controller
-public class ForeignSourcesProcess {
+@Service
+public class ForeignSourcesService {
 	private static final String METHOD = "method";
 	private static final String URL = "url";
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
 	private static final String DATA = "data";
 	private static final String CONTENTTYPE = "contentType";
-	//private static final String NMSUrl = "http://192.168.0.63:8980/opennms/rest";
-	private static final String NMSUrl = "http://112.223.76.74:8980/opennms/rest";
+	private @Value("#{config['NMSURL']}") String ipAddr;
 	private static final String Accept = "accept";
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(ForeignSourcesProcess.class);
+			.getLogger(ForeignSourcesService.class);
 
-	private ForeignSourcesProcess() {
-
-	}
-
-	public static ForeignSourcesProcess process = new ForeignSourcesProcess();
-
-	public static ForeignSourcesProcess getPrcess() {
-		return process;
-	}
+	@Autowired
+	private Handler handler;
 
 	// foreignSources
 	public String foreignSources() throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources");
+			hash.put(URL, ipAddr + "/foreignSources");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -59,11 +54,11 @@ public class ForeignSourcesProcess {
 	public String foreignSourcesDefault() throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/default");
+			hash.put(URL, ipAddr + "/foreignSources/default");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -79,11 +74,11 @@ public class ForeignSourcesProcess {
 	public String foreignSourcesDeployed() throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/deployed");
+			hash.put(URL, ipAddr + "/foreignSources/deployed");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -99,11 +94,11 @@ public class ForeignSourcesProcess {
 	public String foreignSourcesDeployedCount() throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/deployed/count");
+			hash.put(URL, ipAddr + "/foreignSources/deployed/count");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -119,11 +114,11 @@ public class ForeignSourcesProcess {
 	public String foreignSources(String name) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/" + name);
+			hash.put(URL, ipAddr + "/foreignSources/" + name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -139,11 +134,11 @@ public class ForeignSourcesProcess {
 	public String foreignSourcesDetectors(String name) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/" + name + "/detectors");
+			hash.put(URL, ipAddr + "/foreignSources/" + name + "/detectors");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -160,11 +155,11 @@ public class ForeignSourcesProcess {
 			throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+			
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/" + name + "/detectors/"
+			hash.put(URL, ipAddr + "/foreignSources/" + name + "/detectors/"
 					+ detector);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -181,11 +176,11 @@ public class ForeignSourcesProcess {
 	public String foreignSourcesPolicies(String name) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+	
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/" + name + "/policies");
+			hash.put(URL, ipAddr + "/foreignSources/" + name + "/policies");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -204,11 +199,11 @@ public class ForeignSourcesProcess {
 			throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+	
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/" + name + "/policies/"
+			hash.put(URL, ipAddr + "/foreignSources/" + name + "/policies/"
 					+ policy);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -231,11 +226,11 @@ public class ForeignSourcesProcess {
 	public String foreignPostPro(String xmlData) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+			
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources");
+			hash.put(URL, ipAddr + "/foreignSources");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
 			hash.put(CONTENTTYPE, "application/xml");
@@ -256,11 +251,11 @@ public class ForeignSourcesProcess {
 	public String foreignDecPro(String xmlData,String name) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/"+name+"/detectors");
+			hash.put(URL, ipAddr + "/foreignSources/"+name+"/detectors");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
 			hash.put(CONTENTTYPE, "application/xml");
@@ -282,11 +277,11 @@ public class ForeignSourcesProcess {
 	public String foreignPolicesPro(String xmlData,String name) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/"+name+"/policies");
+			hash.put(URL, ipAddr + "/foreignSources/"+name+"/policies");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
 			hash.put(CONTENTTYPE, "application/xml");
@@ -308,11 +303,11 @@ public class ForeignSourcesProcess {
 	public String foreignPutNamePro(String name,String data) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/"+name);
+			hash.put(URL, ipAddr + "/foreignSources/"+name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "PUT");
 			hash.put(DATA, data);
@@ -335,11 +330,11 @@ public class ForeignSourcesProcess {
 	public String foreignDelNamePro(String name) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+			
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/"+name);
+			hash.put(URL, ipAddr + "/foreignSources/"+name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
 			
@@ -360,11 +355,11 @@ public class ForeignSourcesProcess {
 	public String foreignDelDecPro(String name,String dec) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/"+name+"/detectors/"+dec);
+			hash.put(URL, ipAddr + "/foreignSources/"+name+"/detectors/"+dec);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
 			
@@ -384,11 +379,11 @@ public class ForeignSourcesProcess {
 	public String foreignDelPolPro(String name,String policy) throws HandleException {
 		String result = null;
 		try {
-			Handler handler = HandlerFactory.getHandler();
+		
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, "admin");
 			hash.put(PASSWORD, "admin");
-			hash.put(URL, NMSUrl + "/foreignSources/"+name+"/policies/"+policy);
+			hash.put(URL, ipAddr + "/foreignSources/"+name+"/policies/"+policy);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
 			

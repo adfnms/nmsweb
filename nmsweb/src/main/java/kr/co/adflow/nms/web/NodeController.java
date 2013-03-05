@@ -6,7 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
-import kr.co.adflow.nms.web.process.NodeService;
+import kr.co.adflow.nms.web.service.MapsService;
+import kr.co.adflow.nms.web.service.NodeService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ public class NodeController {
 			.getLogger(NodeController.class);
 
 	@Autowired
-	private NodeService service;
+	private NodeService service; 
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String node() {

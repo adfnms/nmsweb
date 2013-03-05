@@ -1,4 +1,4 @@
-package kr.co.adflow.web.vo.foreign;
+package kr.co.adflow.nms.web.vo.foreign;
 
 import java.util.ArrayList;
 import java.util.List;

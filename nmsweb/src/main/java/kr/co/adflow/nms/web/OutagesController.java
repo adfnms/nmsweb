@@ -7,10 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
-import kr.co.adflow.nms.web.process.OutagesProcess;
+import kr.co.adflow.nms.web.service.OutagesService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,8 +33,8 @@ public class OutagesController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(OutagesController.class);
-
-	private OutagesProcess controll = OutagesProcess.getProcess();
+	@Autowired
+	private OutagesService service;
 
 	@RequestMapping(value = "/outages", method = RequestMethod.GET)
 	public @ResponseBody
@@ -62,7 +63,7 @@ public class OutagesController {
 			logger.debug("Param:::" + filter.toString());
 
 			try {
-				result = (String) controll
+				result = (String) service
 						.outagesFilter(filter.toString());
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
@@ -72,7 +73,7 @@ public class OutagesController {
 		} else {
 
 			try {
-				result = (String) controll.outages();
+				result = (String) service.outages();
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;
@@ -93,7 +94,7 @@ public class OutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.outages(id);
+			result = (String) service.outages(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -111,7 +112,7 @@ public class OutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.outagesCount();
+			result = (String) service.outagesCount();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -130,7 +131,7 @@ public class OutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.outagesForNode(nodeId);
+			result = (String) service.outagesForNode(nodeId);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

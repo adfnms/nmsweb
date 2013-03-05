@@ -1,4 +1,4 @@
-package kr.co.adflow.nms.web.process;
+package kr.co.adflow.nms.web.service;
 
 import java.util.HashMap;
 
@@ -8,6 +8,7 @@ import kr.co.adflow.nms.web.exception.HandleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,9 +25,11 @@ public class NodeService {
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
-	private static final String NMSUrl = "http://localhost:8980/opennms/rest";
+//	private static final String NMSUrl = "http://localhost:8980/opennms/rest";
 	// private static final String NMSUrl =
 	// "http://112.223.76.74:8980/opennms/rest";
+	private @Value("#{config['NMSURL']}") String ipAddr;
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(NodeService.class);
 
@@ -40,7 +43,7 @@ public class NodeService {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes?" + filter);
+		hash.put(URL, ipAddr + "/nodes?" + filter);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -58,10 +61,11 @@ public class NodeService {
 		// Handler handler = HandlerFactory.getHandler();
 		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
-
+		logger.debug("**************************");
+		logger.debug("ipADDR"+ipAddr);
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes?limit=0");
+		hash.put(URL, ipAddr + "/nodes?limit=0");
 		hash.put(Accept, "application/json");
 		hash.put(METHOD, "GET");
 
@@ -82,7 +86,7 @@ public class NodeService {
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/" + id);
+		hash.put(URL, ipAddr + "/nodes/" + id);
 		hash.put(Accept, "application/json");
 		hash.put(METHOD, "GET");
 
@@ -103,7 +107,7 @@ public class NodeService {
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces?limit=0");
+		hash.put(URL, ipAddr + "/nodes/" + id + "/ipinterfaces?limit=0");
 		hash.put(Accept, "application/json");
 		hash.put(METHOD, "GET");
 
@@ -128,7 +132,7 @@ public class NodeService {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces/" + ipAddress);
+		hash.put(URL, ipAddr + "/nodes/" + id + "/ipinterfaces/" + ipAddress);
 		hash.put(METHOD, "GET");
 
 		logger.debug("bbbbb::" + hash.get("URL").toString());
@@ -152,7 +156,7 @@ public class NodeService {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces/" + ipAddress
+		hash.put(URL, ipAddr + "/nodes/" + id + "/ipinterfaces/" + ipAddress
 				+ "/services?limit=0");
 		hash.put(METHOD, "GET");
 
@@ -175,7 +179,7 @@ public class NodeService {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces/" + ipAddress
+		hash.put(URL, ipAddr + "/nodes/" + id + "/ipinterfaces/" + ipAddress
 				+ "/services/" + service);
 		hash.put(METHOD, "GET");
 
@@ -198,7 +202,7 @@ public class NodeService {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/snmpinterfaces");
+		hash.put(URL, ipAddr + "/nodes/" + id + "/snmpinterfaces");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -221,7 +225,7 @@ public class NodeService {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/snmpinterfaces/" + ifIndex);
+		hash.put(URL, ipAddr + "/nodes/" + id + "/snmpinterfaces/" + ifIndex);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -243,7 +247,7 @@ public class NodeService {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/categories");
+		hash.put(URL, ipAddr + "/nodes/" + id + "/categories");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -266,7 +270,7 @@ public class NodeService {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/categories/" + categoryName);
+		hash.put(URL, ipAddr + "/nodes/" + id + "/categories/" + categoryName);
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -288,7 +292,7 @@ public class NodeService {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/assetRecord");
+		hash.put(URL, ipAddr + "/nodes/" + id + "/assetRecord");
 		hash.put(METHOD, "GET");
 
 		String result = null;
@@ -309,7 +313,7 @@ public class NodeService {
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/categories");
+		hash.put(URL, ipAddr + "/nodes/" + id + "/categories");
 		hash.put(METHOD, "POST");
 
 		String result = null;
@@ -331,7 +335,7 @@ public class NodeService {
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/" + id);
+		hash.put(URL, ipAddr + "/nodes/" + id);
 		hash.put(METHOD, "DELETE");
 
 		String result = null;
@@ -352,7 +356,7 @@ public class NodeService {
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces/" + ipAddress);
+		hash.put(URL, ipAddr + "/nodes/" + id + "/ipinterfaces/" + ipAddress);
 		hash.put(METHOD, "DELETE");
 
 		String result = null;
@@ -373,7 +377,7 @@ public class NodeService {
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/ipinterfaces/" + ipAddress
+		hash.put(URL, ipAddr + "/nodes/" + id + "/ipinterfaces/" + ipAddress
 				+ "/services/" + service);
 		hash.put(METHOD, "DELETE");
 
@@ -395,7 +399,7 @@ public class NodeService {
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/snmpinterfaces/" + ifIndex);
+		hash.put(URL, ipAddr + "/nodes/" + id + "/snmpinterfaces/" + ifIndex);
 		hash.put(METHOD, "DELETE");
 
 		String result = null;
@@ -416,7 +420,7 @@ public class NodeService {
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
-		hash.put(URL, NMSUrl + "/nodes/" + id + "/categories/" + categoryName);
+		hash.put(URL, ipAddr + "/nodes/" + id + "/categories/" + categoryName);
 		hash.put(METHOD, "DELETE");
 
 		String result = null;
