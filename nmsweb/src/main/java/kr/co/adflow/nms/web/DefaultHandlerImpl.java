@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * DefaultHandler Implements
+ * DefaultHandler Implements singleton
  * 
  * @author typark@adflow.co.kr
  * @version 1.0
@@ -25,26 +25,6 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 	private static final Logger logger = LoggerFactory
 			.getLogger(DefaultHandlerImpl.class);
 
-	public static int count = 0;
-
-	/**
-	 * singleton
-	 * 
-	 */
-	// public static DefaultHandlerImpl handler = new DefaultHandlerImpl();
-	//
-	public DefaultHandlerImpl() {
-		logger.debug("DefaultHandlerImpl created " + count++);
-	}
-
-	//
-	// public static Handler getInstance() {
-	// return handler;
-	// }
-
-	/**
-	 * 123456789011
-	 */
 	@Override
 	public String handle(HashMap map) throws HandleException {
 		HttpURLConnection conn = null;
