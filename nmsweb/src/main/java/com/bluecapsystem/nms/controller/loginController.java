@@ -23,6 +23,8 @@ import com.bluecapsystem.nms.define.Define;
 import com.bluecapsystem.nms.dto.UserInfoTbl;
 import com.bluecapsystem.nms.util.Util;
 
+import com.bluecapsystem.nms.define.NMSProperties;
+
 /**
  * @author KTH
  *	LogIn Controller
@@ -54,7 +56,7 @@ public class loginController {
 	 * @param userInfoTbl	荤侩磊 Bean
 	 * @return model
 	 */
-	@RequestMapping(value = "/admin/user/login")
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView memberLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
 			@RequestParam(value = "user-id", required = false)String userId,
 			@RequestParam(value = "password", required = false)String passWord,
@@ -64,9 +66,9 @@ public class loginController {
 		boolean result = false;
 		String message = "";
 		ModelAndView model = new ModelAndView();
-		System.out.println("--------userId--------"+userId);
-		//get userId Info
-		String dataUrl = "http://localhost:8080/nmsweb/users/"+userId;
+
+		//user info json url
+		String dataUrl = NMSProperties.getNmswebVersion()+"/users/"+userId;
 		String jsonStr = "";
 		
 		_LOGIN:
@@ -101,20 +103,14 @@ public class loginController {
 					
 					if(Id. equals(userId) && pwd.equals(passWord) ){//logIn Success and Session Process
 						
-						
-						//userInfoTbl.setUserId(Id);
-						//userInfoTbl.setPassword(pwd);
-						
 						//--------------------------技记 积己-----------------------------
 						
 						request.getSession().setAttribute(Define.USER_ID_KEY, Id); 
-						request.getSession().setAttribute(Define.FULL_NAME_KEY, name);	
+						request.getSession().setAttribute(Define.FULL_NAME_KEY, name);
+						request.getSession().setAttribute(Define.GROUP_ID_KEY, "");// 弊缝 汲沥
 						
 						//--------------------------技记 积己-----------------------------
 						
-						
-						
-						System.out.println(message);
 						result = true;
 						
 					}else{
@@ -141,6 +137,13 @@ public class loginController {
 		model.setViewName("jsonView");
 		
 		return model;
+	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	public String loginout(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		session.invalidate();
+		return "redirect:"+NMSProperties.getNmswebVersion()+"/index.do";
 	}
 }
 

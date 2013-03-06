@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndViewDefiningException;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.bluecapsystem.nms.define.Define;
+import com.bluecapsystem.nms.define.NMSProperties;
 
 public class SessionCheckInterceptor extends HandlerInterceptorAdapter{
 	
@@ -21,17 +22,18 @@ public class SessionCheckInterceptor extends HandlerInterceptorAdapter{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception 
 	{
-		logger.info("in preHandle");
+		
 		HttpSession session = request.getSession();
 		ModelAndView mnv = new ModelAndView();
 		
 		String reUrl = request.getRequestURI().toString();
+		String loginUtl = NMSProperties.getNmswebVersion()+"/login";
 		
 		logger.info("reDir >> " + reUrl);
 		mnv.addObject("reDir", reUrl);
-		mnv.setViewName(Define.CMS_LOGIN_URL);
+		mnv.setViewName(loginUtl);
 				
-		if(reUrl.equals(Define.CMS_LOGIN_URL) == true)
+		if(reUrl.equals(loginUtl) == true)
 		{
 			return super.preHandle(request, response, handler);
 		}

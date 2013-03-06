@@ -68,22 +68,22 @@ public class NodeService {
 	public String nodes() throws HandleException {
 
 		// push sample code
-		Set<WebSocketHandler> sockets = Pusher.getInstance().getSockets();
-
-		Iterator<WebSocketHandler> it = sockets.iterator();
-
-		for (WebSocketHandler socket : sockets) {
-			System.out.println("Trying to send to Member!");
-			if (socket.isOpen()) {
-				System.out.println("Sending!");
-				try {
-					socket.sendMessage("Sending a Message to you Guys! "
-							+ new Date());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		// Set<WebSocketHandler> sockets = Pusher.getInstance().getSockets();
+		//
+		// Iterator<WebSocketHandler> it = sockets.iterator();
+		//
+		// for (WebSocketHandler socket : sockets) {
+		// System.out.println("Trying to send to Member!");
+		// if (socket.isOpen()) {
+		// System.out.println("Sending!");
+		// try {
+		// socket.sendMessage("Sending a Message to you Guys! "
+		// + new Date());
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		// }
 		// sample end
 
 		HashMap hash = new HashMap();

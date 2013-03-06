@@ -31,7 +31,7 @@ public class UserRegController {
 	 * @param locale
 	 * @return
 	 */
-	@RequestMapping(value = "/admin/userMng/userReg", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/userMng/userReg")
 	public ModelAndView userManage(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale) {
 		
 		ModelAndView model =  new ModelAndView();
@@ -50,21 +50,22 @@ public class UserRegController {
 	 * @param userId
 	 * @return
 	 */
-	@RequestMapping(value = "/admin/userMng/checkUserId")
+	@RequestMapping(value = "/admin/userMng/checkUserId", method = RequestMethod.POST)
 	public ModelAndView checkUserId(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
 			@RequestParam(value = "user-Id", required = false)String userId)
 			
 		{
-		
-		
 		 
 		boolean result = false;
 		String message = "";
 		ModelAndView model = new ModelAndView();
-		
+	   
+		System.out.println("---------------------------------------");
+	    System.out.println("----------user-Id---------------"+userId);
+	    System.out.println("---------------------------------------");
+	    
 		//get userId Info
 		String dataUrl = "http://localhost:8080/v1/users/"+userId;
-		
 		String jsonStr = "";
 		
 		_CHECKID:
@@ -75,14 +76,14 @@ public class UserRegController {
 				
 				result = false;
 				
-				message = "아이디를 입력헤 주세요.";
+				message = "아이디를 입력해 주세요.";
 				
 				break _CHECKID;
 			
 				}else{
 					try {
-						//jsonStr = Util.getJsonStrToUrl(dataUrl); //GET JSON STRING TO USER INFO URL(UTIL) 
-						jsonStr = "{\"user-id\":\"adflow\",\"full-name\":\"adflow\",\"user-comments\":\"\",\"password\":\"21232F297A57A5A743894A0E4A801FC3\"}";
+						jsonStr = Util.getJsonStrToUrl(dataUrl); //GET JSON STRING TO USER INFO URL(UTIL) 
+						//jsonStr = "{\"user-id\":\"adflow\",\"full-name\":\"adflow\",\"user-comments\":\"\",\"password\":\"21232F297A57A5A743894A0E4A801FC3\"}";
 						
 						
 						ObjectMapper om = new ObjectMapper();
@@ -90,8 +91,10 @@ public class UserRegController {
 						
 						String Id = jNode.path("user-id").getTextValue();
 						
+						System.out.println("-----------------------------");
+						System.out.println("------------get-Id-----------"+Id);
+						System.out.println("-----------------------------");
 						
-					
 						if(Id. equals(userId)){//USERID CHECK PROCESS
 							result = false;
 							
