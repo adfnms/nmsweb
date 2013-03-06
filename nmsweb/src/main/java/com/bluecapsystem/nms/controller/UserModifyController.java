@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bluecapsystem.nms.util.Util;
+
 
 @Controller
 public class UserModifyController {
@@ -29,9 +31,8 @@ public class UserModifyController {
 	 * @param locale
 	 * @return
 	 */
-	@RequestMapping(value = "/admin/userMng/userModify")
+	@RequestMapping(value = "/admin/userMng/userModify", method = RequestMethod.POST)
 	public ModelAndView userManage(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
-						
 						@RequestParam(value = "user-id", required = false)String userId)
 	{
 		System.out.println("--------------userId----------------"+userId);
@@ -45,13 +46,15 @@ public class UserModifyController {
 		
 		//get userId Info
 		String dataUrl = "http://localhost:8080/v1/users/"+userId;
+		System.out.println("----------dataUrl-----------"+dataUrl);
 		
 		String jsonStr = "";
 		
 		try {
-			//jsonStr = Util.getJsonStrToUrl(dataUrl); //GET JSON STRING TO USER INFO URL(UTIL) 
-			jsonStr = "{\"user-id\":\"adflow\",\"full-name\":\"adflow\",\"user-comments\":\"\",\"password\":\"21232F297A57A5A743894A0E4A801FC3\"}";
+			jsonStr = Util.getJsonStrToUrl(dataUrl); //GET JSON STRING TO USER INFO URL(UTIL) 
+			//jsonStr = "{\"user-id\":\"adflow\",\"full-name\":\"adflow\",\"user-comments\":\"\",\"password\":\"21232F297A57A5A743894A0E4A801FC3\"}";
 			
+			System.out.println("----------jsonStr-----------"+jsonStr);
 			
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(jsonStr);
@@ -88,7 +91,7 @@ public class UserModifyController {
 	}
 	
 	
-	@RequestMapping(value = "/admin/userMng/getUserDetail", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/userMng/modify",  method = RequestMethod.POST)
 	public ModelAndView getUserDetailInfo(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
 						@RequestParam(value = "user-id", required = false)String userId)
 	{

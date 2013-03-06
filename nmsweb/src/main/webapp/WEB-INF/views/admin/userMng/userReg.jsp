@@ -11,12 +11,12 @@
 	<jsp:param value="사용자등록" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
-<script src="<c:url value="/js/userMng.js" />"></script>
+
+<script src="<c:url value="/resources/js/userMng.js" />"></script>
 <script type="text/javascript">
 	
 	// Reg User Info
 	function regMember(){
-		
 		
 		//Get userInfo 
 		var userId = $("#userInfoFrm input[name=user-id]").val();
@@ -27,11 +27,16 @@
 		var userComments = $("#userInfoFrm input[name=user-comments]").val();
 		var password = $("#userInfoFrm input[name=password]").val();
 		
-		
+		//alert("------userId-----"+userId);
+		//alert("------fullName-----"+fullName);
+		//alert("------userComments-----"+userComments);
+		//alert("------password-----"+password);
 	
 		//Post Json Info String url method
 		var str = getJSONStrToUser(userId, fullName, userComments, password);
 	
+		//alert(str);
+		
 		$.ajax({
 	
 			type : 'post',
@@ -42,7 +47,7 @@
 				alert('유저 리스트 가져오기 서비스 실패');
 			},
 			success : function(data) {
-				//alert(data);
+				alert("등록되었습니다.");
 			}
 		});
 	}
@@ -51,14 +56,10 @@
 	function checkUserId(userId){
 		
 		
-		alert("-------------checkUserId------------"+userId);
+		//alert("-------------checkUserId------------"+userId);
 		
 		$.ajax({
 			type:'post',
-			
-		 	//url:'/v1/admin/userMng/checkUserId.do', 
-			//대체 url:'<c:url value="/admin/userMng/checkUserId.do" />',
-			
 		 	url:'<c:url value="/admin/userMng/checkUserId.do" />',
 			data:'user-Id='+userId,
 			dataType:'json',

@@ -11,34 +11,70 @@
 	<jsp:param value="사용자등록" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
+<script src="<c:url value="/resources/js/userMng.js" />"></script>
 <script type="text/javascript">
 	
-	// Reg User Info
-	function regMember(){
-	 	
+	
+	
+	// Modify User Info
+	function modifyUser(){
+		
+		
 		//Get userInfo 
 		var userId = $("#userInfoFrm input[name=user-id]").val();
 		var fullName = $("#userInfoFrm input[name=full-name]").val();
 		var userComments = $("#userInfoFrm input[name=user-comments]").val();
 		var password = $("#userInfoFrm input[name=password]").val();
+		
+		alert(userId);
+		alert(fullName);
+		alert(userComments);
+		alert(password);
 	
 		//Post Json Info String url method
 		var str = getJSONStrToUser(userId, fullName, userComments, password);
-	
+	alert(str);
 		$.ajax({
 	
 			type : 'post',
 			url : 'http://localhost:8080/v1/users',
+			
 			contentType : 'application/json',
 			data : str,
 			error : function() {
 				alert('유저 리스트 가져오기 서비스 실패');
 			},
 			success : function(data) {
-				alert(data);
+				//alert(data);
 			}
 		});
 	}
+	
+	function deleteUser(){
+		
+		var userId = $("#userInfoFrm input[name=user-id]").val();
+		
+		
+		alert(userId);
+		
+		
+		
+		$.ajax({
+			
+			type : 'post',
+			url : 'http://localhost:8081/v1/users/'+userId,
+			contentType : 'application/json',
+			data : str,
+			error : function() {
+				alert('유저 리스트 가져오기 서비스 실패');
+			},
+			success : function(data) {
+				alert("삭제성공");
+			}
+		});
+	}
+	
+	
 </script>
 </head>
 
@@ -62,16 +98,13 @@
 				<h2 class="muted">개인정보</h2>
 			</div>
 			<div class="span9">	
-			<form id="testfrm" name = "memberInfoFrm">
-				<input type="hidden"   id="test"   name="test"   value=""> 
-			</FORM>
 			<form id="userInfoFrm" name = "userInfoFrm">
 				<div class="span6 control-group error">
 					<fieldset>
 						<label  class="muted" for="inputWarning">사용자 ID</label>
-						<input type="text"   id="user-id"   name="user-id"   placeholder="사용자 ID" value=""> 
+						<input type="text"   id="user-id"   name="user-id"   placeholder="사용자 ID" value="${Id}" readonly> 
 						<label  class="muted" for="inputWarning">이름</label>
-						<input type="text"    id="full-name"   name="full-name"  placeholder="이름" value=""> 
+						<input type="text"    id="full-name"   name="full-name"  placeholder="이름" value="${fullName}"> 
 						<label  class="muted"  for="inputWarning">Telephone PIN</label>
 						<input type="text"    id=""   name=""  placeholder="Telephone PIN"  value=""> 
 					</fieldset>
@@ -81,7 +114,7 @@
 						<label  class="muted"  for="inputWarning">비밀번호</label>
 						<input type="text"   id="password"   name="password"  placeholder="비밀번호"  value=""> 
 						<label  class="muted" for="inputWarning">소개</label>
-						<input type="text"   id="user-comments"   name="user-comments"  placeholder="소개"  value=""> 
+						<input type="text"   id="user-comments"   name="user-comments"  placeholder="소개"  value="${userComments}"> 
 						<label>&nbsp;</label>
 						<input type="hidden"> 
 					</fieldset>
@@ -128,11 +161,11 @@
 						<label>&nbsp;</label>
 							<div>
 								<table>
-									<colgroup><col width="20%"/><col width="60%"/><col width="20%"/></colgroup>
+									<colgroup><col width="20%"/><col width="30%"/><col width="30%"/></colgroup>
 									<tr>
 										<td></td>
-										<td><a class="btn btn-large btn-primary" href="javascript:regMember()">정보 수정</a></td>
-										<td><td>
+										<td><a class="btn btn-large btn-primary" href="javascript:modifyUser()">수정</a></td>
+										<td><a class="btn btn-large btn-primary" href="javascript:deleteUser()">삭제</a><td>
 									</tr>
 								</table>
 							</div>
