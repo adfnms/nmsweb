@@ -86,6 +86,7 @@ public class loginController {
 			}else{
 				
 				try {
+					System.out.println(dataUrl);
 					jsonStr = Util.getJsonStrToUrl(dataUrl);//get Json String to user Info Url(util) 
 					
 					ObjectMapper om = new ObjectMapper();
