@@ -10,6 +10,7 @@ import kr.co.adflow.nms.web.exception.HandleException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -100,6 +101,10 @@ public class NodeProcess {
 		hash.put(URL, NMSUrl + "/nodes/" + id);
 		hash.put(Accept, "application/json");
 		hash.put(METHOD, "GET");
+		
+		
+
+
 
 		String result = null;
 
@@ -138,8 +143,6 @@ public class NodeProcess {
 		Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 		
-		logger.debug("aaaaa::"+ipAddress);
-
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
 		hash.put(Accept, "application/json");
