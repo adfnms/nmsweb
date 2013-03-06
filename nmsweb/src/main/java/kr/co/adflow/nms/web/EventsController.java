@@ -7,11 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
-import kr.co.adflow.nms.web.process.AlarmsProcess;
-import kr.co.adflow.nms.web.process.EventsProcess;
+import kr.co.adflow.nms.web.service.AlarmsService;
+import kr.co.adflow.nms.web.service.EventsService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,8 +34,8 @@ public class EventsController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(EventsController.class);
-
-	private EventsProcess controll = EventsProcess.getProcess();
+	@Autowired
+	private EventsService service;
 
 	@RequestMapping(value = "/events", method = RequestMethod.GET)
 	public @ResponseBody
@@ -44,7 +45,7 @@ public class EventsController {
 		logger.info(PATH + request.getRequestURI());
 
 		// 2013-02-23
-		// Parameter check ÈÄ È£Ãß ºÐ±â
+		// Parameter check ï¿½ï¿½ È£ï¿½ï¿½ ï¿½Ð±ï¿½
 		Enumeration eParam = request.getParameterNames();
 
 		if (eParam.hasMoreElements()) {
@@ -58,12 +59,12 @@ public class EventsController {
 
 			}
 
-			// ¸¶Áö¸· "&" »èÁ¦.
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "&" ï¿½ï¿½ï¿½ï¿½.
 			filter.deleteCharAt(filter.length() - 1);
 			logger.debug("Param:::" + filter.toString());
 
 			try {
-				result = (String) controll
+				result = (String) service
 						.eventsFilter(filter.toString());
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
@@ -73,7 +74,7 @@ public class EventsController {
 		} else {
 
 			try {
-				result = (String) controll.events();
+				result = (String) service.events();
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;
@@ -94,7 +95,7 @@ public class EventsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.events(id);
+			result = (String) service.events(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -112,7 +113,7 @@ public class EventsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.eventsCount();
+			result = (String) service.eventsCount();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

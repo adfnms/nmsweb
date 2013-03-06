@@ -8,12 +8,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.ValidationException;
-import kr.co.adflow.nms.web.process.AcknowledgementsProcess;
-import kr.co.adflow.nms.web.process.AlarmsProcess;
-import kr.co.adflow.nms.web.process.EventsProcess;
+import kr.co.adflow.nms.web.service.AcknowledgementsService;
+import kr.co.adflow.nms.web.service.AlarmsService;
+import kr.co.adflow.nms.web.service.EventsService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,11 +39,10 @@ public class AlarmsController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(AlarmsController.class);
-
-	private AlarmsProcess controll = AlarmsProcess.getProcess();
-	private AcknowledgementsProcess controllAck = AcknowledgementsProcess
-			.getProcess();
-
+	@Autowired
+	private AlarmsService service;
+	@Autowired
+	private AcknowledgementsService controllAck ;
 	@RequestMapping(value = "/alarms", method = RequestMethod.GET)
 	public @ResponseBody
 	String alarms(HttpServletRequest request) throws HandleException {
@@ -70,7 +70,7 @@ public class AlarmsController {
 			logger.debug("Param:::" + filter.toString());
 
 			try {
-				result = (String) controll.alarmsFilter(filter.toString());
+				result = (String) service.alarmsFilter(filter.toString());
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;
@@ -79,7 +79,7 @@ public class AlarmsController {
 		} else {
 
 			try {
-				result = (String) controll.alarms();
+				result = (String) service.alarms();
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;
@@ -100,7 +100,7 @@ public class AlarmsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.alarms(id);
+			result = (String) service.alarms(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -118,7 +118,7 @@ public class AlarmsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.alarmsCount();
+			result = (String) service.alarmsCount();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -136,7 +136,7 @@ public class AlarmsController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.alarmsMINOR();
+			result = (String) service.alarmsMINOR();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

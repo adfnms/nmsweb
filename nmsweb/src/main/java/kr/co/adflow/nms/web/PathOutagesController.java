@@ -17,12 +17,13 @@ import javax.sql.DataSource;
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
 import kr.co.adflow.nms.web.mapper.PathOutagesMapper;
-import kr.co.adflow.nms.web.process.PathOutagesProcess;
+import kr.co.adflow.nms.web.service.PathOutagesService;
 import kr.co.adflow.nms.web.vo.PathOutage;
 import kr.co.adflow.nms.web.vo.SchoedOutage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,8 +46,8 @@ public class PathOutagesController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(PathOutagesController.class);
-
-	private PathOutagesProcess controll = PathOutagesProcess.getProcess();
+	@Autowired
+	private PathOutagesService service;
 	private PathOutagesMapper mapper = PathOutagesMapper.getMapper();
 
 
@@ -61,7 +62,7 @@ public class PathOutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.pathOutages();
+			result = (String) service.pathOutages();
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -104,7 +105,7 @@ public class PathOutagesController {
 		logger.debug("pathOutageList[0] Nodeid:::" + pathOutageList.get(0).getNodeid());
 
 		try {
-			result = (String) controll.pathOutagesPut(pathOutageList);
+			result = (String) service.pathOutagesPut(pathOutageList);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -126,7 +127,7 @@ public class PathOutagesController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) controll.pathOutagesDelete(nodeId);
+			result = (String) service.pathOutagesDelete(nodeId);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

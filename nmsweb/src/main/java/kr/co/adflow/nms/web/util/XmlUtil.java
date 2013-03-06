@@ -9,7 +9,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import kr.co.adflow.nms.web.process.NotificationsProcess;
+
+import kr.co.adflow.nms.web.service.NotificationsService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 public class XmlUtil {
 	private static final Logger logger = LoggerFactory
-			.getLogger(NotificationsProcess.class);
+			.getLogger(NotificationsService.class);
 	
 	public Object xmlRead(String filePath, Class classname, Object ob) throws Exception {
 		

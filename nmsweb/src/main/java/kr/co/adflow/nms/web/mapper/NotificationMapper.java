@@ -10,7 +10,7 @@ import java.util.Map;
 
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
-import kr.co.adflow.nms.web.process.AlarmsProcess;
+
 import kr.co.adflow.nms.web.vo.AssetRecord;
 import kr.co.adflow.nms.web.vo.Category;
 import kr.co.adflow.nms.web.vo.IpInterface;

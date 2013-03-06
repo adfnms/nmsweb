@@ -8,8 +8,8 @@ package kr.co.adflow.nms.web;
  */
 public class HandlerFactory {
 
-	public static Handler<?, ?> getHandler() {
-		return DefaultHandlerImpl.getInstance();
-	}
+	// public static Handler<?, ?> getHandler() {
+	// return DefaultHandlerImpl.getInstance();
+	// }
 
 }
