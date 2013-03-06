@@ -20,13 +20,11 @@
 	</bean>
 
 	<bean id="nmsProperties" class="com.bluecapsystem.nms.define.NMSProperties">
-
 		<property name="driverClassName" value="${jdbc.nms.driverClassName}" />
 		<property name="url" value="${jdbc.nms.url}" />
 		<property name="username" value="${jdbc.nms.username}" />
 		<property name="password" value="${jdbc.nms.password}" />
-		<property name="nmswebAddress" value="${nmsweb.address}" />
-
+		<property name="nmswebVersion" value="${nmsweb.version}" />
 	</bean>
 
 	<!-- ibatis 설정 -->

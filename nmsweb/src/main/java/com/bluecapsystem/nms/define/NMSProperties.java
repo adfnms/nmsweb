@@ -13,13 +13,14 @@ public class NMSProperties
 	private static String url;
 	private static String username;
 	private static String password;
-	private static String nmswebAddress;
+	private static String nmswebVersion;
 	
-	public static String getNmswebAddress() {
-		return nmswebAddress;
+	
+	public static String getNmswebVersion() {
+		return nmswebVersion;
 	}
-	public void setNmswebAddress(String nmswebAddress) {
-		NMSProperties.nmswebAddress = nmswebAddress;
+	public void setNmswebVersion(String nmswebVersion) {
+		NMSProperties.nmswebVersion = nmswebVersion;
 	}
 	public static String getDriverClassName() {
 		return driverClassName;
