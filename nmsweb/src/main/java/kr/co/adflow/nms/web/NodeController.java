@@ -126,7 +126,7 @@ public class NodeController {
 		return result;
 	}
 
-	@RequestMapping(value = "/nodes/{id}/ipinterfaces/{ipAddress}", method = RequestMethod.GET)
+	@RequestMapping(value = "/nodes/{id}/ipinterfaces/{ipAddress:.+}", method = RequestMethod.GET)
 	public @ResponseBody
 	String nodeIdIpinterfaces(HttpServletRequest request,
 			@PathVariable String id, @PathVariable String ipAddress)

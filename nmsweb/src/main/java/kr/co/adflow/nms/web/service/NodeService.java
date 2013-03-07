@@ -153,7 +153,7 @@ public class NodeService {
 		// Handler handler = HandlerFactory.getHandler();
 		HashMap hash = new HashMap();
 
-		logger.debug("aaaaa::" + ipAddress);
+		logger.debug("nodesIpInterfaces ipAddress ::" + ipAddress);
 
 		hash.put(USERNAME, "admin");
 		hash.put(PASSWORD, "admin");
@@ -161,7 +161,6 @@ public class NodeService {
 		hash.put(URL, ipAddr + "/nodes/" + id + "/ipinterfaces/" + ipAddress);
 		hash.put(METHOD, "GET");
 
-		logger.debug("bbbbb::" + hash.get("URL").toString());
 
 		String result = null;
 
