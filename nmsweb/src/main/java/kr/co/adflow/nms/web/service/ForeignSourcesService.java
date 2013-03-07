@@ -22,6 +22,8 @@ public class ForeignSourcesService {
 	private static final String DATA = "data";
 	private static final String CONTENTTYPE = "contentType";
 	private @Value("#{config['NMSURL']}") String ipAddr;
+	private @Value("#{config['LOGINID']}") String loginId;
+	private @Value("#{config['LOGINPASS']}") String loginPass;
 	private static final String Accept = "accept";
 
 	private static final Logger logger = LoggerFactory
@@ -36,8 +38,8 @@ public class ForeignSourcesService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -56,8 +58,8 @@ public class ForeignSourcesService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/default");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -76,8 +78,8 @@ public class ForeignSourcesService {
 		try {
 
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/deployed");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -96,8 +98,8 @@ public class ForeignSourcesService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/deployed/count");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -116,8 +118,8 @@ public class ForeignSourcesService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/" + name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -136,8 +138,8 @@ public class ForeignSourcesService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/" + name + "/detectors");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -157,8 +159,8 @@ public class ForeignSourcesService {
 		try {
 			
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/" + name + "/detectors/"
 					+ detector);
 			hash.put(Accept, "application/json");
@@ -178,8 +180,8 @@ public class ForeignSourcesService {
 		try {
 	
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/" + name + "/policies");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -201,8 +203,8 @@ public class ForeignSourcesService {
 		try {
 	
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/" + name + "/policies/"
 					+ policy);
 			hash.put(Accept, "application/json");
@@ -228,8 +230,8 @@ public class ForeignSourcesService {
 		try {
 			
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
@@ -253,8 +255,8 @@ public class ForeignSourcesService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/"+name+"/detectors");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
@@ -279,8 +281,8 @@ public class ForeignSourcesService {
 		try {
 
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/"+name+"/policies");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
@@ -305,8 +307,8 @@ public class ForeignSourcesService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/"+name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "PUT");
@@ -332,8 +334,8 @@ public class ForeignSourcesService {
 		try {
 			
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/"+name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
@@ -357,8 +359,8 @@ public class ForeignSourcesService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/"+name+"/detectors/"+dec);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
@@ -381,8 +383,8 @@ public class ForeignSourcesService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/"+name+"/policies/"+policy);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");

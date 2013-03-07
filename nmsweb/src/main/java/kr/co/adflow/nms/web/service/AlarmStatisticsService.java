@@ -20,8 +20,9 @@ public class AlarmStatisticsService {
 	private static final String URL = "url";
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
-//	private static final String NMSUrl = "http://192.168.0.63:8980/opennms/rest";
 	private @Value("#{config['NMSURL']}") String ipAddr;
+	private @Value("#{config['LOGINID']}") String loginId;
+	private @Value("#{config['LOGINPASS']}") String loginPass;
 	private static final String Accept = "accept";
 	private static final Logger logger = LoggerFactory
 			.getLogger(AlarmStatisticsService.class);
@@ -34,8 +35,8 @@ public class AlarmStatisticsService {
 		try {
 			
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/stats/alarms");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -56,8 +57,8 @@ public class AlarmStatisticsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);;
 			hash.put(URL, ipAddr + "/stats/alarms/by-severity");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");

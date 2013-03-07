@@ -34,6 +34,8 @@ public class AlarmsService {
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
 	private @Value("#{config['NMSURL']}") String ipAddr;
+	private @Value("#{config['LOGINID']}") String loginId;
+	private @Value("#{config['LOGINPASS']}") String loginPass;
 	private static final Logger logger = LoggerFactory
 			.getLogger(AlarmsService.class);
 	@Autowired
@@ -44,8 +46,8 @@ public class AlarmsService {
 		
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/alarms?"+filter);
 		hash.put(METHOD, "GET");
@@ -65,8 +67,8 @@ public class AlarmsService {
 		
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/alarms?limit=0");
 		hash.put(METHOD, "GET");
@@ -86,8 +88,8 @@ public class AlarmsService {
 		
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/alarms/"+id);
 		hash.put(METHOD, "GET");
@@ -107,8 +109,8 @@ public class AlarmsService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(URL, ipAddr + "/alarms/count");
 		hash.put(METHOD, "GET");
 
@@ -127,8 +129,8 @@ public class AlarmsService {
 		
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/alarms?comparator=ge&severity=MINOR");
 		hash.put(METHOD, "GET");

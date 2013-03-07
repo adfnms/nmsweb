@@ -27,6 +27,9 @@ public class AcknowledgementsService {
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
 	private @Value("#{config['NMSURL']}") String ipAddr;
+	private @Value("#{config['LOGINID']}") String loginId;
+	private @Value("#{config['LOGINPASS']}") String loginPass;
+	
 	private static final Logger logger = LoggerFactory
 			.getLogger(AcknowledgementsService.class);
 	@Autowired
@@ -38,8 +41,8 @@ public class AcknowledgementsService {
 		
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/acks?"+filter);
 		hash.put(METHOD, "GET");
@@ -59,8 +62,8 @@ public class AcknowledgementsService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/acks?limit=0");
 		hash.put(METHOD, "GET");
@@ -80,8 +83,8 @@ public class AcknowledgementsService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/acks/"+id);
 		hash.put(METHOD, "GET");
@@ -101,8 +104,8 @@ public class AcknowledgementsService {
 		
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(URL, ipAddr + "/acks/count");
 		hash.put(METHOD, "GET");
 
@@ -124,8 +127,8 @@ public class AcknowledgementsService {
 		
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(ContentType, "application/x-www-form-urlencoded");
 		hash.put(URL, ipAddr + "/acks?"+prams);

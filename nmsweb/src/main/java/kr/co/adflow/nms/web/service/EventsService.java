@@ -33,9 +33,9 @@ public class EventsService {
 	private static final String Accept = "accept";
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
-//	private static final String NMSUrl = "http://localhost:8980/opennms/rest";
-//	private static final String NMSUrl = "http://112.223.76.78:8980/opennms/rest";
 	private @Value("#{config['NMSURL']}") String ipAddr;
+	private @Value("#{config['LOGINID']}") String loginId;
+	private @Value("#{config['LOGINPASS']}") String loginPass;
 	private static final Logger logger = LoggerFactory
 			.getLogger(EventsService.class);
 
@@ -46,8 +46,8 @@ public class EventsService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/events?"+filter);
 		hash.put(METHOD, "GET");
@@ -67,8 +67,8 @@ public class EventsService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/events?limit=8");
 		hash.put(METHOD, "GET");
@@ -88,8 +88,8 @@ public class EventsService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(URL, ipAddr + "/events/count");
 		hash.put(METHOD, "GET");
 
@@ -108,8 +108,8 @@ public class EventsService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/events/"+id);
 		hash.put(METHOD, "GET");

@@ -35,9 +35,9 @@ public class ScheduledOutagesService {
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
-//	private static final String NMSUrl = "http://localhost:8980/opennms/rest";
-//	private static final String NMSUrl = "http://112.223.76.74:8980/opennms/rest";
 	private @Value("#{config['NMSURL']}") String ipAddr;
+	private @Value("#{config['LOGINID']}") String loginId;
+	private @Value("#{config['LOGINPASS']}") String loginPass;
 	private static final Logger logger = LoggerFactory
 			.getLogger(ScheduledOutagesService.class);
 
@@ -48,8 +48,8 @@ public class ScheduledOutagesService {
 		
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/sched-outages?"+filter);
 		hash.put(METHOD, "GET");
@@ -69,8 +69,8 @@ public class ScheduledOutagesService {
 
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/sched-outages");
 		hash.put(METHOD, "GET");
@@ -90,8 +90,8 @@ public class ScheduledOutagesService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/sched-outages/"+outageName);
 		hash.put(METHOD, "GET");
@@ -112,8 +112,8 @@ public class ScheduledOutagesService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(ContentType, "application/xml");
 		hash.put(URL, ipAddr + "/sched-outages");
 		hash.put(METHOD, "POST");
@@ -137,8 +137,8 @@ public class ScheduledOutagesService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(ContentType, "application/x-www-form-urlencoded");
 		hash.put(URL, ipAddr + "/sched-outages/"+outageName+"/notifd");
 		hash.put(METHOD, "PUT");
@@ -161,8 +161,8 @@ public class ScheduledOutagesService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(ContentType, "application/x-www-form-urlencoded");
 		hash.put(URL, ipAddr + "/sched-outages/"+outageName+"/collectd/"+packageName);
 		hash.put(METHOD, "PUT");
@@ -185,8 +185,8 @@ public class ScheduledOutagesService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(ContentType, "application/x-www-form-urlencoded");
 		hash.put(URL, ipAddr + "/sched-outages/"+outageName+"/pollerd/"+packageName);
 		hash.put(METHOD, "PUT");
@@ -209,8 +209,8 @@ public class ScheduledOutagesService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(ContentType, "application/x-www-form-urlencoded");
 		hash.put(URL, ipAddr + "/sched-outages/"+outageName+"/threshd/"+packageName);
 		hash.put(METHOD, "PUT");
@@ -233,8 +233,8 @@ public class ScheduledOutagesService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(URL, ipAddr + "/sched-outages/"+outageName);
 		hash.put(METHOD, "DELETE");
 		
@@ -255,8 +255,8 @@ public class ScheduledOutagesService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(URL, ipAddr + "/sched-outages/"+outageName+"/notifd");
 		hash.put(METHOD, "DELETE");
 		
@@ -278,8 +278,8 @@ public class ScheduledOutagesService {
 		
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(URL, ipAddr + "/sched-outages/"+outageName+"/collectd/"+packageName);
 		hash.put(METHOD, "DELETE");
 		
@@ -301,8 +301,8 @@ public class ScheduledOutagesService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(URL, ipAddr + "/sched-outages/"+outageName+"/pollerd/"+packageName);
 		hash.put(METHOD, "DELETE");
 		
@@ -324,8 +324,8 @@ public class ScheduledOutagesService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(URL, ipAddr + "/sched-outages/"+outageName+"/threshd/"+packageName);
 		hash.put(METHOD, "DELETE");
 		

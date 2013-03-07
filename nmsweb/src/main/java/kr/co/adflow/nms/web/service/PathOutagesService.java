@@ -47,6 +47,8 @@ public class PathOutagesService {
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
 	private @Value("#{config['NMSURL']}") String ipAddr;
+//	private @Value("#{config['LOGINID']}") String loginId;
+//	private @Value("#{config['LOGINPASS']}") String loginPass;
 	private static final Logger logger = LoggerFactory
 			.getLogger(PathOutagesService.class);
 

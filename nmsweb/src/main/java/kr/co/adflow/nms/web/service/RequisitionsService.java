@@ -19,8 +19,9 @@ public class RequisitionsService {
 	private static final String URL = "url";
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
-
 	private @Value("#{config['NMSURL']}") String ipAddr;
+	private @Value("#{config['LOGINID']}") String loginId;
+	private @Value("#{config['LOGINPASS']}") String loginPass;
 	private static final String Accept = "accept";
 	private static final String DATA = "data";
 	private static final String CONTENTTYPE = "contentType";
@@ -36,8 +37,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -56,8 +57,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/count");
 			hash.put(METHOD, "GET");
 
@@ -75,8 +76,8 @@ public class RequisitionsService {
 		try {
 			
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/deployed");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -95,8 +96,8 @@ public class RequisitionsService {
 		try {
 
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/deployed/count");
 			hash.put(METHOD, "GET");
 
@@ -114,8 +115,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -135,8 +136,8 @@ public class RequisitionsService {
 		try {
 	
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -156,8 +157,8 @@ public class RequisitionsService {
 		try {
 	;
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId);
 			hash.put(Accept, "application/json");
@@ -178,8 +179,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces");
 			hash.put(Accept, "application/json");
@@ -200,8 +201,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress);
 			hash.put(Accept, "application/json");
@@ -222,8 +223,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress + "/services");
 			hash.put(Accept, "application/json");
@@ -246,8 +247,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress + "/services/"
 					+ service);
@@ -269,8 +270,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/categories");
 			hash.put(Accept, "application/json");
@@ -291,8 +292,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/categories/" + categoryName);
 			hash.put(Accept, "application/json");
@@ -313,8 +314,8 @@ public class RequisitionsService {
 		try {
 			
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/assets");
 			hash.put(Accept, "application/json");
@@ -334,8 +335,8 @@ public class RequisitionsService {
 		try {
 			
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
@@ -356,8 +357,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
@@ -379,8 +380,8 @@ public class RequisitionsService {
 		try {
 			
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces");
 			hash.put(Accept, "application/json");
@@ -404,8 +405,8 @@ public class RequisitionsService {
 		try {
 			
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress + "/services");
 			hash.put(Accept, "application/json");
@@ -429,8 +430,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/categories");
 			hash.put(Accept, "application/json");
@@ -456,8 +457,8 @@ public class RequisitionsService {
 		try {
 	
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/assets");
 			hash.put(Accept, "application/json");
@@ -479,8 +480,8 @@ public class RequisitionsService {
 		try {
 			
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/import");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "PUT");
@@ -499,8 +500,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name
 					+ "/import?rescanExisting=false");
 			hash.put(Accept, "application/json");
@@ -521,8 +522,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "PUT");
@@ -544,8 +545,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId);
 			hash.put(Accept, "application/json");
@@ -568,8 +569,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress);
 			hash.put(Accept, "application/json");
@@ -591,8 +592,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
@@ -612,8 +613,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/deployed/" + name);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
@@ -634,8 +635,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId);
 			hash.put(Accept, "application/json");
@@ -658,8 +659,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress);
 			hash.put(Accept, "application/json");
@@ -682,8 +683,8 @@ public class RequisitionsService {
 		try {
 	
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/interfaces/" + ipAddress + "/services/"
 					+ service);
@@ -707,8 +708,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/categories/" + category);
 			hash.put(Accept, "application/json");
@@ -731,8 +732,8 @@ public class RequisitionsService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/requisitions/" + name + "/nodes/"
 					+ foreignId + "/assets/" + field);
 			hash.put(Accept, "application/json");

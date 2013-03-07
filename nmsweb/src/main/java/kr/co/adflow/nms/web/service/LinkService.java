@@ -19,6 +19,8 @@ public class LinkService {
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
 	private @Value("#{config['NMSURL']}") String ipAddr;
+	private @Value("#{config['LOGINID']}") String loginId;
+	private @Value("#{config['LOGINPASS']}") String loginPass;
 	private static final String Accept = "accept";
 	private static final Logger logger = LoggerFactory
 			.getLogger(LinkService.class);

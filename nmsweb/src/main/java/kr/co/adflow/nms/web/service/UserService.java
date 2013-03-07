@@ -34,6 +34,8 @@ public class UserService {
 	private static final String USERNAME = "username";
 	private @Value("#{config['NMSURL']}") String ipAddr;
 	private @Value("#{config['XMLPATH']}") String xmlPath;
+	private @Value("#{config['LOGINID']}") String loginId;
+	private @Value("#{config['LOGINPASS']}") String loginPass;
 	private static final String Accept = "accept";
 	private static final String DATA = "data";
 	private static final String CONTENTTYPE = "contentType";
@@ -47,8 +49,8 @@ public class UserService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/users");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -68,8 +70,8 @@ public class UserService {
 		try {
 	
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/users");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "POST");
@@ -103,8 +105,8 @@ public class UserService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/users/" + username);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -124,8 +126,8 @@ public class UserService {
 		try {
 		
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/users/" + username);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");

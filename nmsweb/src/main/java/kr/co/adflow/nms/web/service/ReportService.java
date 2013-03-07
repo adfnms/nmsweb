@@ -18,10 +18,10 @@ public class ReportService {
 	private static final String URL = "url";
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
-	private @Value("#{config['XMLPATH']}")
-	String xmlPath;
 	private @Value("#{config['REPORTURL']}")
 	String reportUrl;
+	private @Value("#{config['LOGINID']}") String loginId;
+	private @Value("#{config['LOGINPASS']}") String loginPass;
 
 	private static final String Accept = "accept";
 	private static final String DATA = "data";
@@ -40,8 +40,8 @@ public class ReportService {
 		try {
 
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, reportUrl + "node[" + nodeid + "].nodeSnmp[]");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -66,8 +66,8 @@ public class ReportService {
 		try {
 
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, reportUrl + "node[" + nodeid + "].nodeSnmp[]&relativetime=lastday");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -91,8 +91,8 @@ public class ReportService {
 		try {
 
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, reportUrl + "node[" + nodeid + "].nodeSnmp[]&relativetime=lastweek");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -116,8 +116,8 @@ public class ReportService {
 		try {
 
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, reportUrl + "node[" + nodeid + "].nodeSnmp[]&relativetime=lastmonth  ");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -141,8 +141,8 @@ public class ReportService {
 		try {
 
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, reportUrl + "node[" + nodeid + "].nodeSnmp[]&relativetime=lastyear");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
@@ -165,8 +165,8 @@ public class ReportService {
 
 		try {
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, reportUrl + "node[" + nodeid + "].responseTime["
 					+ ipaddr + "]");
 			hash.put(Accept, "application/json");
@@ -187,8 +187,8 @@ public class ReportService {
 
 		try {
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, reportUrl + "node[" + nodeid + "].responseTime["
 					+ ipaddr + "]&relativetime=lastweek");
 			hash.put(Accept, "application/json");
@@ -209,8 +209,8 @@ public class ReportService {
 
 		try {
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, reportUrl + "node[" + nodeid + "].responseTime["
 					+ ipaddr + "]&relativetime=lastmonth");
 			hash.put(Accept, "application/json");
@@ -230,8 +230,8 @@ public class ReportService {
 
 		try {
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, reportUrl + "node[" + nodeid + "].responseTime["
 					+ ipaddr + "]&relativetime=lastyear");
 			hash.put(Accept, "application/json");
@@ -252,8 +252,8 @@ public class ReportService {
 
 		try {
 			HashMap hash = new HashMap();
-			hash.put(USERNAME, "admin");
-			hash.put(PASSWORD, "admin");
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
 			hash.put(URL, reportUrl + "node[" + nodeid + "].responseTime["
 					+ ipaddr + "]&relativetime=lastday");
 			hash.put(Accept, "application/json");

@@ -34,6 +34,8 @@ public class PushService {
 	private static final String Accept = "accept";
 	private @Value("#{config['NMSURL']}")
 	String ipAddr;
+//	private @Value("#{config['LOGINID']}") String loginId;
+//	private @Value("#{config['LOGINPASS']}") String loginPass;
 	private static final Logger logger = LoggerFactory
 			.getLogger(PushService.class);
 	@Autowired

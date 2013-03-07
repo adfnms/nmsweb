@@ -50,6 +50,8 @@ public class NotificationsService {
 	private static final String Accept = "accept";
 	private @Value("#{config['XMLPATH']}") String xmlPath;
 	private @Value("#{config['NMSURL']}") String ipAddr;
+	private @Value("#{config['LOGINID']}") String loginId;
+	private @Value("#{config['LOGINPASS']}") String loginPass;
 	private static final Logger logger = LoggerFactory
 			.getLogger(NotificationsService.class);
 
@@ -60,8 +62,8 @@ public class NotificationsService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/notifications?" + filter);
 		hash.put(METHOD, "GET");
@@ -81,8 +83,8 @@ public class NotificationsService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/notifications?limit=0");
 		hash.put(METHOD, "GET");
@@ -102,8 +104,8 @@ public class NotificationsService {
 		
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(Accept, "application/json");
 		hash.put(URL, ipAddr + "/notifications/" + id);
 		hash.put(METHOD, "GET");
@@ -123,8 +125,8 @@ public class NotificationsService {
 	
 		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, "admin");
-		hash.put(PASSWORD, "admin");
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
 		hash.put(URL, ipAddr + "/notifications/count");
 		hash.put(METHOD, "GET");
 
