@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.util.UsersUtil;
+
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -33,7 +36,6 @@ import com.bluecapsystem.nms.define.NMSProperties;
 public class loginController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(loginController.class);
-	
 	
 	/**LogIn Main Controller
 	 * @param locale
@@ -98,7 +100,7 @@ public class loginController {
 					String name = jNode.path("full-name").getTextValue();
 					
 					//패스워드 인코딩
-					//passWord = new sun.misc.BASE64Encoder().encode(passWord.getBytes());		
+					passWord = UsersUtil.getInstance().encryptString(passWord);
 					
 					if(Id. equals(userId) && pwd.equals(passWord) ){//logIn Success and Session Process
 						
@@ -120,7 +122,7 @@ public class loginController {
 						break _LOGIN;
 					}
 					
-				} catch (IOException e) {
+				} catch (Exception e) {
 					result = false;
 					message = "아이디 및 비밀번호를 확인해 주세요.";
 					logger.error("get Json date false");

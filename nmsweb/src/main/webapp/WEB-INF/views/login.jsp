@@ -81,7 +81,7 @@
 		<form class="form-signin" id="form-logIn" name="form-logIn">
 			<h2 class="form-signin-heading">로그인</h2>
 			<input type="text"  id="user-id" name="user-id" class="input-block-level" placeholder="ID" value="admin"/>
-			<input type="password"  id="password" name="password" class="input-block-level" placeholder="Password" value="21232F297A57A5A743894A0E4A801FC3"/>
+			<input type="password"  id="password" name="password" class="input-block-level" placeholder="Password" value="admin"/>
 			<div>
 			<a class="btn btn-large btn-primary" href="javascript:memberLogIn()">로그인</a>
 			</div>
