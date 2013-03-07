@@ -2,7 +2,7 @@ function getTotalRequisitionsList(callback){
 	
 	$.ajax({
 		type:'get',
-		url:'/v1/requisitions/deployed',
+		url:'/v1/requisitions/deployed.json',
 		dataType:'json',
 		contentType: 'application/json',
 		error:function(data){

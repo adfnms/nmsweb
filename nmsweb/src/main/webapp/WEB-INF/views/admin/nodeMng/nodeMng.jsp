@@ -6,7 +6,7 @@
 <%@page import="com.bluecapsystem.nms.define.NMSProperties"%>
 <%@ page session="true"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
 <jsp:include page="/include/header.jsp">
 	<jsp:param value="노드관리" name="title" />
@@ -15,20 +15,26 @@
 <script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		//getTotalRequisitionsList(requisitionsList);
+		getTotalRequisitionsList(requisitionsList);
 	});
 	
 	function requisitionsList(jsonObj){
-		
-		alert(jsonObj);
 		
 		var objList = jsonObj["model-import"];
 		
 		for ( var i in objList) {
 
-			$('#requisitionsList').append(objList[i]["@foreign-source"]);
+			$('#requisitionsList').append(
+					"<option value="+objList[i]["@foreign-source"]+">"+objList[i]["@foreign-source"]+"</option>"
+			);
 			
 		}
+		
+	}
+	
+	function addCategories(){
+		
+		$('#cateDiv').after($('#cateDiv').clone().removeAttr("id"));
 	}
 </script>
 </head>
@@ -90,34 +96,28 @@
 						</h4>
 					</div>
 				</div>
-				<div class="row-fluid">
+				<div class="row-fluid" id="cateDiv">
 					<div class="span12">
 						<label class="span2 control-label">카테 고리</label>
 						<div class="span4 controls">
-							<input type="text">
+							<select>
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+							</select>
 						</div>
 						<label class="span2 control-label">카테 고리</label>
 						<div class="span4 controls">
-							<input type="text">
-						</div>
-					</div>
-				</div>
-				<div class="row-fluid">
-					<div class="span12">
-						<label class="span2 control-label">카테 고리</label>
-						<div class="span4 controls">
-							<input type="text">
-						</div>
-						<label class="span2 control-label">카테 고리</label>
-						<div class="span4 controls">
-							<input type="text">
+							<select>
+								<option>1</option>
+							</select>
 						</div>
 					</div>
 				</div>
 				<div class="row-fluid">
 					<div class="span11"></div>
 					<div class="span1">
-						<button type="button" class="btn btn-primary" title="카테고리 추가">+</button>
+						<button type="button" class="btn btn-primary" title="카테고리 추가" onclick="javascript:addCategories();">+</button>
 					</div>
 				</div>
 			</div>
@@ -153,7 +153,6 @@
 				</div>
 			</div>
 		</div>
-		
 		<div class="row-fluid">
 			<div class="span12">
 				<div class="span8"></div>

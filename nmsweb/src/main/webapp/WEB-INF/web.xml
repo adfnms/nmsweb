@@ -26,7 +26,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>*.json</url-pattern>
 		<url-pattern>*.do</url-pattern>
 		<url-pattern>*.view</url-pattern>
 		<url-pattern>*.pop</url-pattern>

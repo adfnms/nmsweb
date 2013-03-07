@@ -66,10 +66,13 @@ public class loginController {
 		boolean result = false;
 		String message = "";
 		ModelAndView model = new ModelAndView();
-
+		
 		//user info json url
-		String dataUrl = NMSProperties.getNmswebVersion()+"/users/"+userId;
+		String dataUrl = "http://"+request.getServerName()+":"+request.getServerPort()+"/"+
+						NMSProperties.getNmswebVersion()+"/users/"+userId+".json";
 		String jsonStr = "";
+		
+		System.out.println(dataUrl);
 		
 		_LOGIN:
 		
@@ -86,7 +89,7 @@ public class loginController {
 			}else{
 				
 				try {
-					System.out.println(dataUrl);
+					
 					jsonStr = Util.getJsonStrToUrl(dataUrl);//get Json String to user Info Url(util) 
 					
 					ObjectMapper om = new ObjectMapper();
@@ -96,22 +99,16 @@ public class loginController {
 					String pwd	= jNode.path("password").getTextValue();
 					String name = jNode.path("full-name").getTextValue();
 					
-					//-------------------------------------------------------
-					
-					//----------------password decoding later----------------
-					
-					//-------------------------------------------------------
+					//菩胶况靛 叼内爹
+					//passWord = new sun.misc.BASE64Encoder().encode(passWord.getBytes());		
 					
 					if(Id. equals(userId) && pwd.equals(passWord) ){//logIn Success and Session Process
 						
 						//--------------------------技记 积己-----------------------------
-						
 						request.getSession().setAttribute(Define.USER_ID_KEY, Id); 
 						request.getSession().setAttribute(Define.FULL_NAME_KEY, name);
 						request.getSession().setAttribute(Define.GROUP_ID_KEY, "");// 弊缝 汲沥
-						
 						//--------------------------技记 积己-----------------------------
-						
 						result = true;
 						
 					}else{
@@ -144,7 +141,7 @@ public class loginController {
 	public String loginout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.invalidate();
-		return "redirect:"+NMSProperties.getNmswebVersion()+"/index.do";
+		return "redirect:/"+NMSProperties.getNmswebVersion()+"/index.do";
 	}
 }
 

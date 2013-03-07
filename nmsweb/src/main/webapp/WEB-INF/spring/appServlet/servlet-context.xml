@@ -27,17 +27,13 @@
 	<beans:bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
 	<!-- // json -->
 	
-	<!-- interceptors -->
-	<interceptors>
-		
-		<!-- nms session interceptor -->
-		<interceptor>
-			<mapping path="*.do"/>
-			<beans:bean class="com.bluecapsystem.nms.interceptor.SessionCheckInterceptor" />
-		</interceptor>
-		
-	</interceptors>
-	<!-- // interceptors -->
+	<!-- nms session interceptor -->
+    <interceptors>
+    	<interceptor>
+	        <mapping path="/**/*.do" />
+	        <beans:bean class="com.bluecapsystem.nms.interceptor.SessionCheckInterceptor" />
+    	</interceptor>
+    </interceptors>
 	
 	<context:component-scan base-package="kr.co.adflow.nms.web" />
 	<context:component-scan base-package="com.bluecapsystem.nms" />

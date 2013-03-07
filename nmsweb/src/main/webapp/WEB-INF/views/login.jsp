@@ -49,14 +49,10 @@
  function memberLogIn(){
 	
 	var data = $("#form-logIn").serialize();
-	 
-	alert(data);
-		// -> view -- 화면
-		// -> do -- 무언가 처리하고 결과를 보여줄때
-		// -> pop -- 팝업
-	 $.ajax({
+
+	$.ajax({
 			type:'post',
-			url:'/v1/admin/user/login.do',
+			url:'/v1/login.do',
 			data: data,
 			dataType:'json',
 			error:function(res){

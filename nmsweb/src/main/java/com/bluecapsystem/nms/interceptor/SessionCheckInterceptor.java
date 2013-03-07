@@ -27,11 +27,11 @@ public class SessionCheckInterceptor extends HandlerInterceptorAdapter{
 		ModelAndView mnv = new ModelAndView();
 		
 		String reUrl = request.getRequestURI().toString();
-		String loginUtl = NMSProperties.getNmswebVersion()+"/login";
+		String loginUtl = "/"+NMSProperties.getNmswebVersion()+"/login.do";
 		
 		logger.info("reDir >> " + reUrl);
 		mnv.addObject("reDir", reUrl);
-		mnv.setViewName(loginUtl);
+		mnv.setViewName("/login");
 				
 		if(reUrl.equals(loginUtl) == true)
 		{
