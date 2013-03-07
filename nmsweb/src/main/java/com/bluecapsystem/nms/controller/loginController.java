@@ -69,7 +69,7 @@ public class loginController {
 		
 		//user info json url
 		String dataUrl = "http://"+request.getServerName()+":"+request.getServerPort()+"/"+
-						NMSProperties.getNmswebVersion()+"/users/"+userId+".json";
+						NMSProperties.getNmswebVersion()+"/users/"+userId;
 		String jsonStr = "";
 		
 		_LOGIN:
@@ -97,7 +97,7 @@ public class loginController {
 					String pwd	= jNode.path("password").getTextValue();
 					String name = jNode.path("full-name").getTextValue();
 					
-					//패스워드 디코딩
+					//패스워드 인코딩
 					//passWord = new sun.misc.BASE64Encoder().encode(passWord.getBytes());		
 					
 					if(Id. equals(userId) && pwd.equals(passWord) ){//logIn Success and Session Process
@@ -123,7 +123,7 @@ public class loginController {
 				} catch (IOException e) {
 					result = false;
 					message = "아이디 및 비밀번호를 확인해 주세요.";
-					logger.info("get Json date false");
+					logger.error("get Json date false");
 					e.printStackTrace();
 				}
 		

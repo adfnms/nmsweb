@@ -50,7 +50,7 @@
 							<b class = "caret"></b>
 						</a>
 						<ul class="dropdown-menu" >
-							<li><a href="#">노드관리</a></li>
+							<li><a href="/v1/admin/node.do">노드관리</a></li>
 							<li><a href="#">그룹관리</a></li>
 							<li><a href="#">사용자 관리</a></li>
 							<li><a href="#">사용자 설정</a></li>
