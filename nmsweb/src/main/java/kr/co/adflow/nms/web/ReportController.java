@@ -128,7 +128,7 @@ public class ReportController {
 	}
 
 	// resport ResponseTime
-	@RequestMapping(value = "/report/{nodeid}/responseTime/{ipaddr}", method = RequestMethod.GET)
+	@RequestMapping(value = "/report/{nodeid}/responseTime/{ipaddr:.+}", method = RequestMethod.GET)
 	public @ResponseBody
 	String reportNodeReponseTime(@PathVariable String nodeid,
 			@PathVariable String ipaddr, HttpServletRequest request)
@@ -167,7 +167,7 @@ public class ReportController {
 	
 	
 	//lastweek
-	@RequestMapping(value = "/report/{nodeid}/responseTime/{ipaddr}/b/week", method = RequestMethod.GET)
+	@RequestMapping(value = "/report/{nodeid}/responseTime/{ipaddr}/week", method = RequestMethod.GET)
 	public @ResponseBody
 	String reportNodeWeek(@PathVariable String nodeid,
 			@PathVariable String ipaddr, HttpServletRequest request)
@@ -186,7 +186,7 @@ public class ReportController {
 	}
 	
 	//lastmonth
-	@RequestMapping(value = "/report/{nodeid}/responseTime/{ipaddr}/b/month", method = RequestMethod.GET)
+	@RequestMapping(value = "/report/{nodeid}/responseTime/{ipaddr}/month", method = RequestMethod.GET)
 	public @ResponseBody
 	String reportNodeMonth(@PathVariable String nodeid,
 			@PathVariable String ipaddr, HttpServletRequest request)
@@ -205,7 +205,7 @@ public class ReportController {
 	}
 	
 	//lastyear
-	@RequestMapping(value = "/report/{nodeid}/responseTime/{ipaddr}/b/year", method = RequestMethod.GET)
+	@RequestMapping(value = "/report/{nodeid}/responseTime/{ipaddr}/year", method = RequestMethod.GET)
 	public @ResponseBody
 	String reportNodeYear(@PathVariable String nodeid,
 			@PathVariable String ipaddr, HttpServletRequest request)

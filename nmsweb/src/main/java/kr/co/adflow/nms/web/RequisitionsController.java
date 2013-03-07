@@ -199,7 +199,7 @@ public class RequisitionsController {
 
 	// /requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress}
 
-	@RequestMapping(value = "/requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress}", method = RequestMethod.GET)
+	@RequestMapping(value = "/requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress:.+}", method = RequestMethod.GET)
 	public @ResponseBody
 	String requisitionsNodesInterfaces(@PathVariable String name,
 			@PathVariable String foreignId, @PathVariable String ipAddress,
@@ -667,7 +667,7 @@ public class RequisitionsController {
 	// PUT
 	// requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress}
 
-	@RequestMapping(value = "/requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress:.+}", method = RequestMethod.PUT)
 	public @ResponseBody
 	String requisitionInterUpdate(@PathVariable String name,
 			@PathVariable String foreignId, @PathVariable String ipAddress,@RequestBody String data,
@@ -762,7 +762,7 @@ public class RequisitionsController {
 
 	// DELETE
 	// requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress}
-	@RequestMapping(value = "/requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress} ", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress:.+} ", method = RequestMethod.DELETE)
 	public @ResponseBody
 	String ReqInterfaceDel(@PathVariable String name,
 			@PathVariable String foreignId, @PathVariable String ipAddress,
