@@ -72,8 +72,6 @@ public class loginController {
 						NMSProperties.getNmswebVersion()+"/users/"+userId+".json";
 		String jsonStr = "";
 		
-		System.out.println(dataUrl);
-		
 		_LOGIN:
 		
 			if(userId== null || userId  == "" || passWord == null || passWord  == ""){// id , password null check
@@ -117,13 +115,14 @@ public class loginController {
 						
 						result = false;
 						
-						message = "아이디 및 비밀번호를 확이해 주세요.";
+						message = "아이디 및 비밀번호를 확인해 주세요.";
 						
 						break _LOGIN;
 					}
 					
 				} catch (IOException e) {
 					result = false;
+					message = "아이디 및 비밀번호를 확인해 주세요.";
 					logger.info("get Json date false");
 					e.printStackTrace();
 				}
