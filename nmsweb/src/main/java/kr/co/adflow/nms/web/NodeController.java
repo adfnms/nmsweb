@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.service.MapsService;
 import kr.co.adflow.nms.web.service.NodeService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,6 @@ public class NodeController {
 
 	private static final String RETURNRESULT = "result:::";
 	private static final String PATH = "path:::";
-
 	private static final Logger logger = LoggerFactory
 			.getLogger(NodeController.class);
 
