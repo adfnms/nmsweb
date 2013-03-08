@@ -2,7 +2,7 @@
  * User Manager Script
  */
 
-/** 사용자 기본정보 JSONSTRING 만들기
+/** ����� �⺻���� JSONSTRING �����
  * @param userId
  * @param fullName
  * @param comments
@@ -12,16 +12,32 @@
 function getJSONStrToUser(userId,fullName,comments,password){
 	
 	var str = "{\"user\":[{" +
-			"\"user_id\":\""+userId+"\"," +
-			"\"full_name\":\""+fullName+"\"," +
-			"\"user_comments\":\""+comments+"\"," +
+			"\"user-id\":\""+userId+"\"," +
+			"\"full-name\":\""+fullName+"\"," +
+			"\"user-comments\":\""+comments+"\"," +
 			"\"password\":\""+password+"\"}]}";
 	
 	return str;
 	
 }
 
-/** 사용자 기본정보 등록하기
+
+/**
+ * DELETE JSONSTRING �����
+ * @param userId
+ * @returns {String}
+ */
+function JSONStrToUserFordelete(userId){
+	
+	var str = "{\"user-id\":\""+userId+"\"}";
+	
+	return str;
+	
+}
+
+
+
+/** ����� �⺻���� ����ϱ�
  * @param userId
  * @param fullName
  * @param comments
@@ -50,8 +66,8 @@ function setUserBaseInfo(userId,fullName,comments,password){
 }
 
 
-/**사용자 전체 리스트 가져오기
- * @param callback 콜백함수
+/**����� ��ü ����Ʈ ��������
+ * @param callback �ݹ��Լ�
  */
 function getUserListTotal(callback){
 	
@@ -61,10 +77,10 @@ function getUserListTotal(callback){
 		dataType:'json',
 		contentType: 'application/json',
 		error:function(data){
-            alert('사용자 전체 리스트 가져오기 서비스 실패');
+            alert('����� ��ü ����Ʈ �������� ���� ����');
         },
         success: function(data){
-        	//콜백함수
+        	//�ݹ��Լ�
         	if( typeof callback == "function" ) {
 		        callback(data);
 		    }

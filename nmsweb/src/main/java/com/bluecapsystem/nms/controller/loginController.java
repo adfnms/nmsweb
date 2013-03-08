@@ -42,7 +42,7 @@ public class loginController {
 	 * @param model
 	 * @return	logIn
 	 */
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/login")
 	public String logIn(Locale locale, Model model) {
 		
 		return "login";

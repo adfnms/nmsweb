@@ -11,7 +11,7 @@
 	<jsp:param value="사용자등록" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
-<script src="<c:url value="/resources/js/userMng.js" />"></script>
+<script src="<c:url value="/resources/js/users.js" />"></script>
 <script type="text/javascript">
 	
 	
