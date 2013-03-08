@@ -4,7 +4,7 @@
 <%@ page session="false"%>
 
 <div class="masthead">
-	<h3 class="muted">Network manage System</h3>
+	<h3 class="muted"><a href="<c:url value="/index.do" />">Network manage System</a></h3>
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="container">
@@ -13,7 +13,7 @@
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Home</a>
 					</li>
 					<li class="dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">DashBoard</a>
+						<a class="dropdown-toggle" data-toggle="dropdown" href="<c:url value="/dashboard.do" />">DashBoard</a>
 					</li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">모니터링
@@ -22,7 +22,6 @@
 						<ul class="dropdown-menu" >
 							<li><a href="#">지도보기</a></li>
 							<li><a href="#">노드목록</a></li>
-							
 						</ul>
 					</li>
 					<li class="dropdown">
@@ -50,7 +49,7 @@
 							<b class = "caret"></b>
 						</a>
 						<ul class="dropdown-menu" >
-							<li><a href="/v1/admin/node.do">노드관리</a></li>
+							<li><a href="<c:url value="/admin/node.do" />">노드관리</a></li>
 							<li><a href="#">그룹관리</a></li>
 							<li><a href="#">사용자 관리</a></li>
 							<li><a href="#">사용자 설정</a></li>

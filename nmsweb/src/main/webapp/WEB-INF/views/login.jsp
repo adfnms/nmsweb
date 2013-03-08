@@ -52,24 +52,20 @@
 
 	$.ajax({
 			type:'post',
-			url:'/v1/login.do',
+			url:'<c:url value="/login.do" />',
 			data: data,
 			dataType:'json',
 			error:function(res){
 				
 				alert("서비스 실패.");
-				
+			
 	        },
 	        success: function(res){
-	        	
+	        	console.log(res);
 	        	if(res.result == true){
 	        	
-	        		document.location.href = "/v1/index.do";
+	        		document.location.href = '<c:url value="/index.do" />';
 	        		
-		   		}else{
-		   			
-		   			alert(res.message);
-		   			
 		   		}
 			}		
 	});
