@@ -60,6 +60,7 @@ public class UsersController {
 	}
 
 	// user POST
+	//testPost
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	public @ResponseBody
 	String usersPost(@RequestBody String data, HttpServletRequest request)
