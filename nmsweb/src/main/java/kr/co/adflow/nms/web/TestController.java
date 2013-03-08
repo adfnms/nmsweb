@@ -1,4 +1,4 @@
-/*package kr.co.adflow.nms.web;
+package kr.co.adflow.nms.web;
 
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
@@ -12,24 +12,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-*//**
+/**
  * TestController
  * 
  * @author typark@adflow.co.kr
  * @version 1.0
- *//*
+ */
 @Controller
 public class TestController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(TestController.class);
 
-	*//**
+	/**
 	 * sendNewSuspectEvent
 	 * 
 	 * @return The value input as a String.
 	 * @exception Exception
-	 *//*
+	 */
 	@RequestMapping(value = "/sendNewSuspectEvent", method = RequestMethod.GET)
 	public @ResponseBody
 	String sendNewSuspectEvent() throws Exception {
@@ -57,4 +56,3 @@ public class TestController {
 		}
 	}
 }
-*/
