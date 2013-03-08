@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author byun
- * ¿î¿µ°ü¸® > ³ëµå°ü¸®
+ * ìš´ì˜ê´€ë¦¬ > ë…¸ë“œê´€ë¦¬
  */
 @Controller
 public class NodeManagerController {

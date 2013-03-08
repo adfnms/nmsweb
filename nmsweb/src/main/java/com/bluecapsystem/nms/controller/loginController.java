@@ -53,16 +53,15 @@ public class loginController {
 	 * @param response
 	 * @param session
 	 * @param locale
-	 * @param userId  		»ç¿ëÀÚ ¾ÆÀÌµğ
-	 * @param passWord		ÆĞ½º¿öµå	
-	 * @param userInfoTbl	»ç¿ëÀÚ Bean
+	 * @param userId  		ë¡œê·¸ì¸ ID
+	 * @param passWord		ë¡œê·¸ì¸ PW	
+	 * @param userInfoTbl	
 	 * @return model
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView memberLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
 			@RequestParam(value = "user-id", required = false)String userId,
-			@RequestParam(value = "password", required = false)String passWord,
-			@ModelAttribute("UserInfoTbl") UserInfoTbl userInfoTbl)
+			@RequestParam(value = "password", required = false)String passWord)
 			 {
 		
 		boolean result = false;
@@ -78,11 +77,11 @@ public class loginController {
 		
 			if(userId== null || userId  == "" || passWord == null || passWord  == ""){// id , password null check
 			
-			logger.error("·Î±×ÀÎ µ¥ÀÌÅÍ ¾øÀ½");
+			logger.error("ì‚¬ìš©ì ID ë° PWê°€ ì—†ìŒ");
 			
 			result = false;
 			
-			message = "¾ÆÀÌµğ È¤Àº ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØ ÁÖ¼¼¿ä.";
+			message = "ì•„ì´ë”” ë˜ëŠ” íŒ¨ìŠ¤ì›Œë“œë¥¼ í™•ì¸í•˜ì„¸ìš”.";
 			
 			break _LOGIN;
 		
@@ -99,32 +98,32 @@ public class loginController {
 					String pwd	= jNode.path("password").getTextValue();
 					String name = jNode.path("full-name").getTextValue();
 					
-					//ÆĞ½º¿öµå ÀÎÄÚµù
+					//ë¹„ë°€ë²ˆí˜¸ ì¸ì½”ë”©
 					passWord = UsersUtil.getInstance().encryptString(passWord);
 					
 					if(Id. equals(userId) && pwd.equals(passWord) ){//logIn Success and Session Process
 						
-						//--------------------------¼¼¼Ç »ı¼º-----------------------------
+						//--------------------------ì„¸ì…˜ ìƒì„±-----------------------------
 						request.getSession().setAttribute(Define.USER_ID_KEY, Id); 
 						request.getSession().setAttribute(Define.FULL_NAME_KEY, name);
-						request.getSession().setAttribute(Define.GROUP_ID_KEY, "");// ±×·ì ¼³Á¤
-						//--------------------------¼¼¼Ç »ı¼º-----------------------------
+						request.getSession().setAttribute(Define.GROUP_ID_KEY, "");// ï¿½×·ï¿½ ï¿½ï¿½ï¿½ï¿½
+						//--------------------------ì„¸ì…˜ ìƒì„±-----------------------------
 						result = true;
 						
 					}else{
 						
-						logger.error("¾ÆÀÌµğ ¹× ºñ¹Ğ¹øÈ£ ÀÏÄ¡ ÇÏÁö ¾ÊÀ½");
+						logger.error("ì•„ì´ë”” ë° ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜ í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 						
 						result = false;
 						
-						message = "¾ÆÀÌµğ ¹× ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØ ÁÖ¼¼¿ä.";
+						message = "ì•„ì´ë”” ë° ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜ í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.";
 						
 						break _LOGIN;
 					}
 					
 				} catch (Exception e) {
 					result = false;
-					message = "¾ÆÀÌµğ ¹× ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØ ÁÖ¼¼¿ä.";
+					message = "ì•„ì´ë”” ë° ë¹„ë°€ë²ˆí˜¸ë¥¼ í™•ì¸í•˜ì„¸ìš”.";
 					logger.error("get Json date false");
 					e.printStackTrace();
 				}

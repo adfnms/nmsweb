@@ -17,6 +17,7 @@
 
 	<script src="<c:url value="/resources/js/common/json2.js" />"></script>
 	<script src="<c:url value="/resources/js/common/jquery-1.8.2.js" />"></script>
+	<script src="<c:url value="/resources/js/common.js" />"></script>
 	
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-transition.js" />"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-alert.js" />"></script>

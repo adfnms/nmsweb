@@ -11,7 +11,7 @@
 	<jsp:param value="노드관리" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
-<script src="<c:url value="/resources/js/requisitions.jsp" />"></script>
+<script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		getTotalRequisitionsList(requisitionsList);

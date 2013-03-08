@@ -43,10 +43,10 @@ public class SessionCheckInterceptor extends HandlerInterceptorAdapter{
 			throw new ModelAndViewDefiningException(mnv);
 		}
 		
-		// login »óÅÂ check
+		// login ID check
 		String 	userId = (String)session.getAttribute(Define.USER_ID_KEY);
 		
-		// ·Î±×ÀÎ ¾ÈµÇ¾î ÀÖ´Ù¸é...
+		// ë¡œê·¸ì¸ ë˜ì–´ìˆì§€ ì•ŠìŒ
 		if(userId == null)
 		{
 			throw new ModelAndViewDefiningException(mnv);
