@@ -1,6 +1,6 @@
 package kr.co.adflow.nms.web.util;
 
-import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.vo.foreign.ForDetector;
 import kr.co.adflow.nms.web.vo.foreign.ForPoliceS;
 import kr.co.adflow.nms.web.vo.foreign.ForPutName;
@@ -31,7 +31,7 @@ public class ForeignUtil {
 	// <foreign-source name="testzzzzz"/>
 	//{"foreign-source":[{"name":"testzzzzz"}]}
 	public String xmlParsingForeign(ForeignInfo forInfo)
-			throws HandleException {
+			throws UtilException {
 		String data = null;
 		try {
 			String name = forInfo.getName();
@@ -40,7 +40,7 @@ public class ForeignUtil {
 			data = bf.toString();
 			logger.debug("xmldata::" + data);
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
@@ -50,7 +50,7 @@ public class ForeignUtil {
 	//foreignSources/{name}/detectors 
 	
 	public String xmlParsingDetector(ForDetector detector)
-			throws HandleException {
+			throws UtilException {
 		String data = null;
 		try {
 			String name = detector.getName();
@@ -60,7 +60,7 @@ public class ForeignUtil {
 			data = bf.toString();
 			logger.debug("xmldata::" + data);
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
@@ -72,7 +72,7 @@ public class ForeignUtil {
 		
 
 	public String xmlParsingPolices(ForPoliceS polices)
-			throws HandleException {
+			throws UtilException {
 		String data = null;
 		try {
 			String name = polices.getName();
@@ -87,13 +87,13 @@ public class ForeignUtil {
 			data = bf.toString();
 			logger.debug("xmldata::" + data);
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
 	//{"name":"data"}
 	public String ParsingPutName(ForPutName putName)
-			throws HandleException {
+			throws UtilException {
 		String data = null;
 		try {
 			String name = putName.getName();
@@ -104,7 +104,7 @@ public class ForeignUtil {
 			data = bf.toString();
 			logger.debug("convertApplication::" + data);
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}

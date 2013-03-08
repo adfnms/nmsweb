@@ -1,7 +1,7 @@
 package kr.co.adflow.nms.web.util;
 
 import kr.co.adflow.nms.web.DefaultHandlerImpl;
-import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.vo.group.Groupinfo;
 import kr.co.adflow.nms.web.vo.user.UserInit;
 
@@ -32,7 +32,7 @@ public class UsersUtil {
 	
 
 
-	public String XmlParsingUser(UserInit userinit) throws HandleException {
+	public String XmlParsingUser(UserInit userinit) throws UtilException {
 		String data = null;
 		try {
 			String name = userinit.getFullName();
@@ -58,7 +58,7 @@ public class UsersUtil {
 
 			data=bf.toString();
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
@@ -66,7 +66,7 @@ public class UsersUtil {
 	
 	//<group><name>adflow222</name><comments>The adflow222</comments><user>chan222</user></group>
 	
-	public String XmlParsingGroup(Groupinfo groupinfo) throws HandleException {
+	public String XmlParsingGroup(Groupinfo groupinfo) throws UtilException {
 		String data = null;
 		try {
 			String name = groupinfo.getName();
@@ -89,7 +89,7 @@ public class UsersUtil {
 
 			data=bf.toString();
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
@@ -97,7 +97,7 @@ public class UsersUtil {
 	
 
 	// String Pass md5
-	public static String encryptString(String src) throws HandleException {
+	public static String encryptString(String src) throws UtilException {
 		String upperCase = null;
 		try {
 			java.security.MessageDigest md5 = null;
@@ -119,7 +119,7 @@ public class UsersUtil {
 			upperCase = temp.toUpperCase();
 
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return upperCase;
 	}

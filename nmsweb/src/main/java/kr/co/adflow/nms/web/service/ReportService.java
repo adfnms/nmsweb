@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import kr.co.adflow.nms.web.Handler;
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.util.ReportUtil;
 
 import org.slf4j.Logger;
@@ -20,8 +21,10 @@ public class ReportService {
 	private static final String USERNAME = "username";
 	private @Value("#{config['REPORTURL']}")
 	String reportUrl;
-	private @Value("#{config['LOGINID']}") String loginId;
-	private @Value("#{config['LOGINPASS']}") String loginPass;
+	private @Value("#{config['LOGINID']}")
+	String loginId;
+	private @Value("#{config['LOGINPASS']}")
+	String loginPass;
 
 	private static final String Accept = "accept";
 	private static final String DATA = "data";
@@ -36,7 +39,7 @@ public class ReportService {
 	// node[53].nodeSnmp[]
 	public String reportNode(String nodeid) throws HandleException {
 		String result = null;
-		String jsonResult = null;
+		
 		try {
 
 			HashMap hash = new HashMap();
@@ -47,121 +50,124 @@ public class ReportService {
 			hash.put(METHOD, "GET");
 
 			result = (String) handler.handle(hash);
-
-			jsonResult = util.graphUrl(result);
+	
 
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		logger.debug("JSONRESULT:::" + jsonResult);
-		return jsonResult;
+		logger.debug("result:::" + result);
+		return result;
 	}
-	
+
 	// node[53].nodeSnmp[]
-	
-	//&relativetime=lastday
+
+	// &relativetime=lastday
 	public String reportNodeDay(String nodeid) throws HandleException {
 		String result = null;
-		String jsonResult = null;
+	
 		try {
 
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
-			hash.put(URL, reportUrl + "node[" + nodeid + "].nodeSnmp[]&relativetime=lastday");
+			hash.put(URL, reportUrl + "node[" + nodeid
+					+ "].nodeSnmp[]&relativetime=lastday");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
 			result = (String) handler.handle(hash);
 
-			jsonResult = util.graphUrl(result);
+		;
 
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		logger.debug("JSONRESULT:::" + jsonResult);
-		return jsonResult;
+		logger.debug("result:::" + result);
+		return result;
 	}
-	
+
 	// node[53].nodeSnmp[]
-	//&relativetime=lastweek
+	// &relativetime=lastweek
 	public String reportNodeWeek(String nodeid) throws HandleException {
 		String result = null;
-		String jsonResult = null;
+	
 		try {
 
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
-			hash.put(URL, reportUrl + "node[" + nodeid + "].nodeSnmp[]&relativetime=lastweek");
+			hash.put(URL, reportUrl + "node[" + nodeid
+					+ "].nodeSnmp[]&relativetime=lastweek");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
 			result = (String) handler.handle(hash);
 
-			jsonResult = util.graphUrl(result);
+		
 
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		logger.debug("JSONRESULT:::" + jsonResult);
-		return jsonResult;
+		logger.debug("result:::" + result);
+		return result;
 	}
-	
+
 	// node[53].nodeSnmp[]
-	//&relativetime=lastmonth    
+	// &relativetime=lastmonth
 	public String reportNodeMonth(String nodeid) throws HandleException {
 		String result = null;
-		String jsonResult = null;
+
 		try {
 
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
-			hash.put(URL, reportUrl + "node[" + nodeid + "].nodeSnmp[]&relativetime=lastmonth  ");
+			hash.put(URL, reportUrl + "node[" + nodeid
+					+ "].nodeSnmp[]&relativetime=lastmonth  ");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
 			result = (String) handler.handle(hash);
 
-			jsonResult = util.graphUrl(result);
+			
 
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		logger.debug("JSONRESULT:::" + jsonResult);
-		return jsonResult;
+		logger.debug("result:::" + result);
+		return result;
 	}
-	
+
 	// node[53].nodeSnmp[]
-	//&relativetime=lastyear
+	// &relativetime=lastyear
 	public String reportNodeYear(String nodeid) throws HandleException {
 		String result = null;
-		String jsonResult = null;
+		
 		try {
 
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
-			hash.put(URL, reportUrl + "node[" + nodeid + "].nodeSnmp[]&relativetime=lastyear");
+			hash.put(URL, reportUrl + "node[" + nodeid
+					+ "].nodeSnmp[]&relativetime=lastyear");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
 			result = (String) handler.handle(hash);
 
-			jsonResult = util.graphUrl(result);
+		
 
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		logger.debug("JSONRESULT:::" + jsonResult);
-		return jsonResult;
+	
+		return result;
 	}
 
 	public String resportResponse(String nodeid, String ipaddr)
 			throws HandleException {
 		String result = null;
-		String jsonResult = null;
+	
 
 		try {
 			HashMap hash = new HashMap();
@@ -172,18 +178,18 @@ public class ReportService {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 			result = (String) handler.handle(hash);
-			jsonResult = util.graphUrl(result);
+		
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		return jsonResult;
+		return result;
 	}
-	
-	//lastweek
+
+	// lastweek
 	public String resportWeek(String nodeid, String ipaddr)
 			throws HandleException {
 		String result = null;
-		String jsonResult = null;
+
 
 		try {
 			HashMap hash = new HashMap();
@@ -194,18 +200,18 @@ public class ReportService {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 			result = (String) handler.handle(hash);
-			jsonResult = util.graphUrl(result);
+			
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		return jsonResult;
+		return result;
 	}
-	
-	//lastmonth
+
+	// lastmonth
 	public String resportMonth(String nodeid, String ipaddr)
 			throws HandleException {
 		String result = null;
-		String jsonResult = null;
+	
 
 		try {
 			HashMap hash = new HashMap();
@@ -216,17 +222,18 @@ public class ReportService {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 			result = (String) handler.handle(hash);
-			jsonResult = util.graphUrl(result);
+		
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		return jsonResult;
+		return result;
 	}
-	//,lastyear
+
+	// ,lastyear
 	public String resportYear(String nodeid, String ipaddr)
 			throws HandleException {
 		String result = null;
-		String jsonResult = null;
+		
 
 		try {
 			HashMap hash = new HashMap();
@@ -237,18 +244,18 @@ public class ReportService {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 			result = (String) handler.handle(hash);
-			jsonResult = util.graphUrl(result);
+		
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		return jsonResult;
+		return result;
 	}
-	
-	//lastday
+
+	// lastday
 	public String resportDay(String nodeid, String ipaddr)
 			throws HandleException {
 		String result = null;
-		String jsonResult = null;
+	
 
 		try {
 			HashMap hash = new HashMap();
@@ -259,11 +266,11 @@ public class ReportService {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 			result = (String) handler.handle(hash);
-			jsonResult = util.graphUrl(result);
+		
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		return jsonResult;
+		return result;
 	}
 
 }

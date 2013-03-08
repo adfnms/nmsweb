@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
+import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.mapper.RequisitionsMapper;
 import kr.co.adflow.nms.web.service.RequisitionsService;
 import kr.co.adflow.nms.web.util.RequisitionsUtil;
@@ -339,7 +340,7 @@ public class RequisitionsController {
 	@RequestMapping(value = "/requisitions", method = RequestMethod.POST)
 	public @ResponseBody
 	String requisitionsPost(@RequestBody String data, HttpServletRequest request)
-			throws HandleException, MapperException {
+			throws HandleException, MapperException,UtilException {
 
 		Requisitionsinfo requisitions = null;
 		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
@@ -397,6 +398,8 @@ public class RequisitionsController {
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		}catch(UtilException e){
+			
 		}
 		logger.debug(RETURNRESULT + result);
 		return result;
@@ -408,7 +411,7 @@ public class RequisitionsController {
 	public @ResponseBody
 	String requisitionsPostNodesInterfaces(@PathVariable String name,
 			@PathVariable String foreignId, @RequestBody String data,
-			HttpServletRequest request) throws HandleException, MapperException {
+			HttpServletRequest request) throws HandleException, MapperException,UtilException {
 
 		RequisitionsNodesInterface nodeInterface = null;
 		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
@@ -432,6 +435,9 @@ public class RequisitionsController {
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		}catch(UtilException e){
+			logger.error("Failed in util..", e);
+			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
 		return result;
@@ -446,7 +452,7 @@ public class RequisitionsController {
 	String requisitionServices(@PathVariable String name,
 			@PathVariable String foreignId, @PathVariable String ipAddress,
 			@RequestBody String data, HttpServletRequest request)
-			throws HandleException, MapperException {
+			throws HandleException, MapperException ,UtilException{
 
 		kr.co.adflow.nms.web.vo.requisition.RequisitionsService rservice = null;
 		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
@@ -470,6 +476,9 @@ public class RequisitionsController {
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		}catch (UtilException e){
+			logger.error("Failed in util..", e);
+			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
 		return result;
@@ -483,7 +492,7 @@ public class RequisitionsController {
 	public @ResponseBody
 	String requisitionCategories(@PathVariable String name,
 			@PathVariable String foreignId, @RequestBody String data,
-			HttpServletRequest request) throws HandleException, MapperException {
+			HttpServletRequest request) throws HandleException, MapperException,UtilException {
 
 		RequisitionsCategory category = null;
 		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
@@ -507,6 +516,9 @@ public class RequisitionsController {
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		}catch(UtilException e){
+			logger.error("Failed in util..", e);
+			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
 		return result;
@@ -521,7 +533,7 @@ public class RequisitionsController {
 	public @ResponseBody
 	String requisitionAssets(@PathVariable String name,
 			@PathVariable String foreignId, @RequestBody String data,
-			HttpServletRequest request) throws HandleException, MapperException {
+			HttpServletRequest request) throws HandleException, MapperException,UtilException {
 
 		RequisitionsAssets assets = null;
 		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
@@ -544,6 +556,9 @@ public class RequisitionsController {
 					foreignId);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
+			throw e;
+		}catch(UtilException e){
+			logger.error("Failed in util..", e);
 			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
@@ -601,7 +616,7 @@ public class RequisitionsController {
 	public @ResponseBody
 	String requisitionNameUpdate(@PathVariable String name,
 			@RequestBody String data, HttpServletRequest request)
-			throws HandleException, MapperException {
+			throws HandleException, MapperException,UtilException {
 
 		logger.info(PATH + request.getRequestURL());
 		logger.info(DATA + name);
@@ -623,6 +638,9 @@ public class RequisitionsController {
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		}catch(UtilException e){
+			logger.error("Failed in util..", e);
+			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
 		return result;
@@ -635,7 +653,7 @@ public class RequisitionsController {
 	public @ResponseBody
 	String requisitionNodesUpdate(@PathVariable String name,
 			@PathVariable String foreignId, @RequestBody String data,
-			HttpServletRequest request) throws HandleException, MapperException {
+			HttpServletRequest request) throws HandleException, MapperException,UtilException {
 
 		logger.info(PATH + request.getRequestURL());
 		logger.info(DATA + name);
@@ -659,6 +677,9 @@ public class RequisitionsController {
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		}catch(UtilException e){
+			logger.error("Failed in util..", e);
+			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
 		return result;
@@ -671,7 +692,7 @@ public class RequisitionsController {
 	public @ResponseBody
 	String requisitionInterUpdate(@PathVariable String name,
 			@PathVariable String foreignId, @PathVariable String ipAddress,@RequestBody String data,
-			HttpServletRequest request) throws HandleException, MapperException{
+			HttpServletRequest request) throws HandleException, MapperException,UtilException{
 
 		logger.info(PATH + request.getRequestURL());
 		logger.info(DATA + name);
@@ -692,6 +713,9 @@ public class RequisitionsController {
 					ipAddress,parSingData);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
+			throw e;
+		}catch(UtilException e){
+			logger.error("Failed in util..", e);
 			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
@@ -858,6 +882,13 @@ public class RequisitionsController {
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	public String processHandleException(HandleException e) {
+		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+				+ "\",\"message\":\"" + e.getMessage() + "\"}";
+	}
+	@ExceptionHandler(UtilException.class)
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ResponseBody
+	public String processUtilException(HandleException e) {
 		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
 				+ "\",\"message\":\"" + e.getMessage() + "\"}";
 	}

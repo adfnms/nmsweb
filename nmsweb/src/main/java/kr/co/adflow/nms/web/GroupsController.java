@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
+import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.mapper.UserAndGroupMapper;
 import kr.co.adflow.nms.web.service.GroupsService;
 import kr.co.adflow.nms.web.util.UsersUtil;
@@ -57,24 +58,29 @@ public class GroupsController {
 	@RequestMapping(value = "/groups", method = RequestMethod.POST)
 	public @ResponseBody
 	String groupsPost(@RequestBody String data, HttpServletRequest request)
-			throws HandleException, MapperException {
+			throws HandleException, MapperException, UtilException {
 		logger.info(PATH + request.getRequestURL());
 		logger.debug(INVALUE + data);
 		String result = null;
-		Groupinfo group=null;
-		String xmlData=null;
-		UserAndGroupMapper tcMapper=UserAndGroupMapper.getMapper();
-		//<group><name>adflow222</name><comments>The adflow222</comments><user>chan222</user></group>
+		Groupinfo group = null;
+		String xmlData = null;
+		UserAndGroupMapper tcMapper = UserAndGroupMapper.getMapper();
+		// <group><name>adflow222</name><comments>The
+		// adflow222</comments><user>chan222</user></group>
 
-	    	group=tcMapper.groupInfo(data);
-	    	logger.debug("group::"+group.getComments());
-	    	logger.debug("group::"+group.getName());
-	    	logger.debug("group::"+group.getUser());
-	    	xmlData=ut.XmlParsingGroup(group);
+		group = tcMapper.groupInfo(data);
+		logger.debug("group::" + group.getComments());
+		logger.debug("group::" + group.getName());
+		logger.debug("group::" + group.getUser());
 		try {
+			xmlData = ut.XmlParsingGroup(group);
+
 			result = (String) service.groupsPost(xmlData);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
+			throw e;
+		} catch (UtilException e) {
+			logger.error("Failed in Util", e);
 			throw e;
 		}
 		return result;
@@ -187,6 +193,15 @@ public class GroupsController {
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	public String processHandleException(HandleException e) {
+		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+				+ "\",\"message\":\"" + e.getMessage() + "\"}";
+	}
+	
+	
+	@ExceptionHandler(UtilException.class)
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ResponseBody
+	public String processUtilException(HandleException e) {
 		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
 				+ "\",\"message\":\"" + e.getMessage() + "\"}";
 	}

@@ -10,6 +10,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 
+import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.service.NotificationsService;
 
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ public class XmlUtil {
 	private static final Logger logger = LoggerFactory
 			.getLogger(NotificationsService.class);
 	
-	public Object xmlRead(String filePath, Class classname, Object ob) throws Exception {
+	public Object xmlRead(String filePath, Class classname, Object ob) throws UtilException {
 		
         try {
         	
@@ -35,15 +36,15 @@ public class XmlUtil {
             
             logger.debug("xml Read : success");
             
-        } catch (JAXBException e) {
-        	throw e;
+        } catch (Exception e) {
+        	throw new UtilException(e);
         }
         return ob;
 		
 	}
 	
 	public String xmlWrite(String filePath, Class classname, Object ob)
-			throws Exception {
+			throws UtilException {
 		
 		String result = "Faile";
 
@@ -66,10 +67,9 @@ public class XmlUtil {
 			
 			result = "success";
 
-		} catch (JAXBException e) {
-			throw e;
-		} catch (IOException e) {
-			throw e;
+	
+		} catch (Exception e) {
+			throw new UtilException(e);
 		}
 
 		return result;

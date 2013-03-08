@@ -4,7 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.service.ReportService;
+import kr.co.adflow.nms.web.util.ReportUtil;
 import kr.co.adflow.nms.web.util.UsersUtil;
 
 import org.slf4j.Logger;
@@ -29,6 +31,8 @@ public class ReportController {
 			.getLogger(UsersController.class);
 	@Autowired
 	private ReportService service;
+	@Autowired
+	private ReportUtil rutil;
 	private static final String INVALUE = "invalue:::";
 	private UsersUtil ut = UsersUtil.getInstance();
 
@@ -36,95 +40,116 @@ public class ReportController {
 	@RequestMapping(value = "/report/{nodeid}/nodesnmp", method = RequestMethod.GET)
 	public @ResponseBody
 	String reportNodeSnmp(@PathVariable String nodeid,
-			HttpServletRequest request) throws HandleException {
+			HttpServletRequest request) throws HandleException, UtilException {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
-
+		String jsonResult = null;
 		try {
 			result = (String) service.reportNode(nodeid);
+
+			jsonResult = rutil.graphUrl(result);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		} catch (UtilException e) {
+			logger.error("Failed in Util..", e);
+			throw e;
 		}
-		logger.debug(RETURNRESULT + result);
-		return result;
+		logger.debug(RETURNRESULT + jsonResult);
+		return jsonResult;
 	}
-	
 
-	// resport nodeSnmp 
-	//&relativetime=lastday
+	// resport nodeSnmp
+	// &relativetime=lastday
 	@RequestMapping(value = "/report/{nodeid}/nodesnmp/day", method = RequestMethod.GET)
 	public @ResponseBody
 	String reportNodeSnmpDay(@PathVariable String nodeid,
-			HttpServletRequest request) throws HandleException {
+			HttpServletRequest request) throws HandleException, UtilException {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
-
+		String jsonResult = null;
 		try {
 			result = (String) service.reportNodeDay(nodeid);
+			jsonResult = rutil.graphUrl(result);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		} catch (UtilException e) {
+			logger.error("Failed in util", e);
+			throw e;
 		}
-		logger.debug(RETURNRESULT + result);
-		return result;
+		logger.debug(RETURNRESULT + jsonResult);
+		return jsonResult;
 	}
 
 	// resport nodeSnmp
-	//lastweek    
+	// lastweek
 	@RequestMapping(value = "/report/{nodeid}/nodesnmp/week", method = RequestMethod.GET)
 	public @ResponseBody
 	String reportNodeSnmpWeek(@PathVariable String nodeid,
-			HttpServletRequest request) throws HandleException {
+			HttpServletRequest request) throws HandleException, UtilException {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
-
+		String jsonResult = null;
 		try {
 			result = (String) service.reportNodeWeek(nodeid);
+			jsonResult = rutil.graphUrl(result);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		} catch (UtilException e) {
+			logger.error("Failed in util", e);
+			throw e;
 		}
-		logger.debug(RETURNRESULT + result);
-		return result;
+		logger.debug(RETURNRESULT + jsonResult);
+		return jsonResult;
 	}
 
 	// resport nodeSnmp
-	//,lastmonth    
+	// ,lastmonth
 	@RequestMapping(value = "/report/{nodeid}/nodesnmp/month", method = RequestMethod.GET)
 	public @ResponseBody
 	String reportNodeSnmpMonth(@PathVariable String nodeid,
-			HttpServletRequest request) throws HandleException {
+			HttpServletRequest request) throws HandleException, UtilException {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
+		String jsonResult = null;
 
 		try {
 			result = (String) service.reportNodeMonth(nodeid);
+			jsonResult = rutil.graphUrl(result);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		} catch (UtilException e) {
+			logger.error("Failed in util", e);
+			throw e;
 		}
-		logger.debug(RETURNRESULT + result);
-		return result;
+		logger.debug(RETURNRESULT + jsonResult);
+		return jsonResult;
 	}
 
 	// resport nodeSnmp
-	//,lastyear
+	// ,lastyear
 	@RequestMapping(value = "/report/{nodeid}/nodesnmp/year", method = RequestMethod.GET)
 	public @ResponseBody
 	String reportNodeSnmpYear(@PathVariable String nodeid,
-			HttpServletRequest request) throws HandleException {
+			HttpServletRequest request) throws HandleException, UtilException {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
-
+		String jsonResult = null;
 		try {
 			result = (String) service.reportNodeYear(nodeid);
+			jsonResult = rutil.graphUrl(result);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		} catch (UtilException e) {
+			logger.error("Failed in util", e);
+			throw e;
 		}
-		logger.debug(RETURNRESULT + result);
-		return result;
+		logger.debug(RETURNRESULT + jsonResult);
+		return jsonResult;
 	}
 
 	// resport ResponseTime
@@ -132,90 +157,111 @@ public class ReportController {
 	public @ResponseBody
 	String reportNodeReponseTime(@PathVariable String nodeid,
 			@PathVariable String ipaddr, HttpServletRequest request)
-			throws HandleException {
+			throws HandleException, UtilException {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
-
+		String jsonResult = null;
 		try {
 			result = (String) service.resportResponse(nodeid, ipaddr);
+			jsonResult = rutil.graphUrl(result);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		} catch (UtilException e) {
+			logger.error("Failed in util", e);
+			throw e;
 		}
-		logger.debug(RETURNRESULT + result);
-		return result;
+		logger.debug(RETURNRESULT + jsonResult);
+		return jsonResult;
 	}
-	
-	//&reports=all&relativetime=lastday
+
+	// &reports=all&relativetime=lastday
 	@RequestMapping(value = "/report/{nodeid}/responseTime/{ipaddr}/day", method = RequestMethod.GET)
 	public @ResponseBody
 	String reportNodeDay(@PathVariable String nodeid,
 			@PathVariable String ipaddr, HttpServletRequest request)
-			throws HandleException {
+			throws HandleException, UtilException {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
-
+		String jsonResult = null;
 		try {
 			result = (String) service.resportDay(nodeid, ipaddr);
+			jsonResult = rutil.graphUrl(result);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		} catch (UtilException e) {
+			logger.error("Failed in util", e);
+			throw e;
 		}
-		logger.debug(RETURNRESULT + result);
-		return result;
+		logger.debug(RETURNRESULT + jsonResult);
+		return jsonResult;
 	}
-	
-	
-	//lastweek
+
+	// lastweek
 	@RequestMapping(value = "/report/{nodeid}/responseTime/{ipaddr}/week", method = RequestMethod.GET)
 	public @ResponseBody
 	String reportNodeWeek(@PathVariable String nodeid,
 			@PathVariable String ipaddr, HttpServletRequest request)
-			throws HandleException {
+			throws HandleException, UtilException {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
+		String jsonResult = null;
 
 		try {
 			result = (String) service.resportWeek(nodeid, ipaddr);
+			jsonResult = rutil.graphUrl(result);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		} catch (UtilException e) {
+			logger.error("Failed in util", e);
+			throw e;
 		}
-		logger.debug(RETURNRESULT + result);
-		return result;
+		logger.debug(RETURNRESULT + jsonResult);
+		return jsonResult;
 	}
-	
-	//lastmonth
+
+	// lastmonth
 	@RequestMapping(value = "/report/{nodeid}/responseTime/{ipaddr}/month", method = RequestMethod.GET)
 	public @ResponseBody
 	String reportNodeMonth(@PathVariable String nodeid,
 			@PathVariable String ipaddr, HttpServletRequest request)
-			throws HandleException {
+			throws HandleException, UtilException {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
-
+		String jsonResult = null;
 		try {
 			result = (String) service.resportMonth(nodeid, ipaddr);
+			jsonResult = rutil.graphUrl(result);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		} catch (UtilException e) {
+			logger.error("Failed in util", e);
+			throw e;
 		}
-		logger.debug(RETURNRESULT + result);
-		return result;
+		logger.debug(RETURNRESULT + jsonResult);
+		return jsonResult;
 	}
-	
-	//lastyear
+
+	// lastyear
 	@RequestMapping(value = "/report/{nodeid}/responseTime/{ipaddr}/year", method = RequestMethod.GET)
 	public @ResponseBody
 	String reportNodeYear(@PathVariable String nodeid,
 			@PathVariable String ipaddr, HttpServletRequest request)
-			throws HandleException {
+			throws HandleException,UtilException {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
+		String jsonResult = null;
 
 		try {
 			result = (String) service.resportYear(nodeid, ipaddr);
+			jsonResult = rutil.graphUrl(result);
 		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		} catch (UtilException e) {
 			logger.error("Failed in processing", e);
 			throw e;
 		}
@@ -236,6 +282,14 @@ public class ReportController {
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	public String processHandleException(HandleException e) {
+		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+				+ "\",\"message\":\"" + e.getMessage() + "\"}";
+	}
+
+	@ExceptionHandler(UtilException.class)
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ResponseBody
+	public String processUtilException(HandleException e) {
 		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
 				+ "\",\"message\":\"" + e.getMessage() + "\"}";
 	}

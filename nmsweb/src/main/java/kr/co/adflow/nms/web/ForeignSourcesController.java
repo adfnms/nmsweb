@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
+import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.mapper.ForeignMapper;
 import kr.co.adflow.nms.web.service.ForeignSourcesService;
 import kr.co.adflow.nms.web.util.ForeignUtil;
@@ -35,7 +36,7 @@ public class ForeignSourcesController {
 			.getLogger(ForeignSourcesController.class);
 	@Autowired
 	private ForeignSourcesService service;
-	private static final String DATA="data::";
+	private static final String DATA = "data::";
 
 	// foreignSources
 	@RequestMapping(value = "/foreignSources", method = RequestMethod.GET)
@@ -209,7 +210,7 @@ public class ForeignSourcesController {
 	@RequestMapping(value = "/foreignSources", method = RequestMethod.POST)
 	public @ResponseBody
 	String foreignPost(@RequestBody String data, HttpServletRequest request)
-			throws HandleException, MapperException {
+			throws HandleException, MapperException,UtilException {
 		logger.info(PATH + request.getRequestURL());
 		logger.debug(INVALUE + data);
 		String result = null;
@@ -231,6 +232,9 @@ public class ForeignSourcesController {
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		} catch (UtilException e) {
+			logger.error("Failed in util..", e);
+			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
 		return result;
@@ -240,13 +244,13 @@ public class ForeignSourcesController {
 	// <detector
 	// class="org.opennms.netmgt.provision.detector.simple.HttpDetector"
 	// name="chan2"/>
-	//{"detector":[{"class":"org.opennms.netmgt.provision.detector.simple.HttpDetector","name":"chan2"}]}
+	// {"detector":[{"class":"org.opennms.netmgt.provision.detector.simple.HttpDetector","name":"chan2"}]}
 	// foreignSources/{name}/detectors
 
 	@RequestMapping(value = "/foreignSources/{name}/detectors", method = RequestMethod.POST)
 	public @ResponseBody
 	String foreignDetector(@RequestBody String data, @PathVariable String name,
-			HttpServletRequest request) throws HandleException, MapperException {
+			HttpServletRequest request) throws HandleException, MapperException,UtilException {
 		logger.info(PATH + request.getRequestURL());
 		logger.debug(INVALUE + data);
 		String result = null;
@@ -268,23 +272,30 @@ public class ForeignSourcesController {
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		} catch (UtilException e) {
+			logger.error("Failed in util..", e);
+			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	//POST
-	//foreignSources/{name}/policies 
-	//<policy class="org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy" name="pol2chan">
-	//<parameter value="DISABLE_COLLECTION" key="action"/><parameter value="ALL_PARAMETERS" key="matchBehavior"/></policy>
-	
+
+	// POST
+	// foreignSources/{name}/policies
+	// <policy
+	// class="org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy"
+	// name="pol2chan">
+	// <parameter value="DISABLE_COLLECTION" key="action"/><parameter
+	// value="ALL_PARAMETERS" key="matchBehavior"/></policy>
+
 	@RequestMapping(value = "/foreignSources/{name}/policies", method = RequestMethod.POST)
 	public @ResponseBody
 	String foreignPolicies(@RequestBody String data, @PathVariable String name,
-			HttpServletRequest request) throws HandleException, MapperException {
+			HttpServletRequest request) throws HandleException, MapperException,UtilException {
 		logger.info(PATH + request.getRequestURL());
 		logger.debug(INVALUE + data);
 		String result = null;
-	    ForPoliceS polices=null;
+		ForPoliceS polices = null;
 		String xmlData = null;
 		ForeignMapper mapper = ForeignMapper.getMapper();
 
@@ -302,47 +313,54 @@ public class ForeignSourcesController {
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
+		}catch(UtilException e){
+			logger.error("Failed in util..", e);
+			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	
-	//foreignSources/{name} 	
+
+	// foreignSources/{name}
 	// PUT
-	//{"name":"chan"}
+	// {"name":"chan"}
 	@RequestMapping(value = "/foreignSources/{name}", method = RequestMethod.PUT)
 	public @ResponseBody
-	String foreignPutName(@RequestBody String data,@PathVariable String name,
-			HttpServletRequest request) throws HandleException,MapperException {
+	String foreignPutName(@RequestBody String data, @PathVariable String name,
+			HttpServletRequest request) throws HandleException, MapperException ,UtilException{
 
 		logger.info(PATH + request.getRequestURL());
 		logger.info(DATA + name);
 		logger.info(DATA + data);
-		ForPutName putName=null;
+		ForPutName putName = null;
 		ForeignMapper mapper = ForeignMapper.getMapper();
-		try{
+		try {
 			putName = mapper.foreignPutName(data);
-			
-		}catch(MapperException e){
+
+		} catch (MapperException e) {
 			logger.error("Failed in mapping", e);
 			throw e;
 		}
-		
+
 		String result = null;
-		
+
 		try {
 			ForeignUtil ut = ForeignUtil.getInstance();
-			String 	convertdata=ut.ParsingPutName(putName);
-			result = (String) service.foreignPutNamePro(name,convertdata);
+			String convertdata = ut.ParsingPutName(putName);
+			result = (String) service.foreignPutNamePro(name, convertdata);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
+			throw e;
+		}catch(UtilException e){
+			logger.error("Failed in util..", e);
 			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	//DELETE
-	//foreignSources/{name} 
+
+	// DELETE
+	// foreignSources/{name}
 	@RequestMapping(value = "/foreignSources/{name}", method = RequestMethod.DELETE)
 	public @ResponseBody
 	String foreignDeleteName(@PathVariable String name,
@@ -351,7 +369,7 @@ public class ForeignSourcesController {
 		logger.info(PATH + request.getRequestURL());
 		logger.info(DATA + name);
 		String result = null;
-		
+
 		try {
 
 			result = (String) service.foreignDelNamePro(name);
@@ -362,18 +380,20 @@ public class ForeignSourcesController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	//DEL
-	//foreignSources/{name}/detectors/{detector} 
-	
+
+	// DEL
+	// foreignSources/{name}/detectors/{detector}
+
 	@RequestMapping(value = "/foreignSources/{name}/detectors/{detector}", method = RequestMethod.DELETE)
 	public @ResponseBody
-	String foreignDeleteDec(@PathVariable String name,@PathVariable String detector,
-			HttpServletRequest request) throws HandleException {
+	String foreignDeleteDec(@PathVariable String name,
+			@PathVariable String detector, HttpServletRequest request)
+			throws HandleException {
 
 		logger.info(PATH + request.getRequestURL());
 		logger.info(DATA + name);
 		String result = null;
-		
+
 		try {
 
 			result = (String) service.foreignDelDecPro(name, detector);
@@ -384,17 +404,19 @@ public class ForeignSourcesController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	//DEL
-	//foreignSources/{name}/policies/{policy} 
+
+	// DEL
+	// foreignSources/{name}/policies/{policy}
 	@RequestMapping(value = "/foreignSources/{name}/policies/{policy}", method = RequestMethod.DELETE)
 	public @ResponseBody
-	String foreignDeletePoli(@PathVariable String name,@PathVariable String policy,
-			HttpServletRequest request) throws HandleException {
+	String foreignDeletePoli(@PathVariable String name,
+			@PathVariable String policy, HttpServletRequest request)
+			throws HandleException {
 
 		logger.info(PATH + request.getRequestURL());
 		logger.info(DATA + name);
 		String result = null;
-		
+
 		try {
 
 			result = (String) service.foreignDelPolPro(name, policy);
@@ -405,8 +427,7 @@ public class ForeignSourcesController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
-	
-	
+
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
 	public String processException(Exception e, HttpServletResponse response) {
@@ -419,6 +440,14 @@ public class ForeignSourcesController {
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	public String processHandleException(HandleException e) {
+		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+				+ "\",\"message\":\"" + e.getMessage() + "\"}";
+	}
+
+	@ExceptionHandler(UtilException.class)
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ResponseBody
+	public String processUtilException(HandleException e) {
 		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
 				+ "\",\"message\":\"" + e.getMessage() + "\"}";
 	}

@@ -2,6 +2,8 @@ package kr.co.adflow.nms.web.util;
 
 import java.util.ArrayList;
 
+import kr.co.adflow.nms.web.exception.UtilException;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,7 +20,7 @@ public class ReportUtil {
 	private @Value("#{config['OPENNMS']}")
 	String opennmUrl;
 
-	public String graphUrl(String data) {
+	public String graphUrl(String data) throws UtilException {
 
 		String result = "";
 		try {
@@ -48,7 +50,7 @@ public class ReportUtil {
 			result = bf.toString();
 			logger.debug("UTILresult::" + result);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new UtilException(e);
 		}
 		return result;
 

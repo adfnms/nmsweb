@@ -7,6 +7,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
+import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.mapper.UserAndGroupMapper;
 import kr.co.adflow.nms.web.service.NodeService;
 import kr.co.adflow.nms.web.service.UserService;
@@ -41,7 +42,6 @@ public class UsersController {
 	private static final String XMLDATA = "xmlData:::";
 	private UsersUtil ut = UsersUtil.getInstance();
 
-
 	// users
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public @ResponseBody
@@ -63,8 +63,7 @@ public class UsersController {
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	public @ResponseBody
 	String usersPost(@RequestBody String data, HttpServletRequest request)
-			throws HandleException, MapperException, JAXBException,
-			ParserConfigurationException {
+			throws HandleException, MapperException, UtilException {
 
 		logger.info(PATH + request.getRequestURL());
 		logger.debug(INVALUE + data);
@@ -85,6 +84,9 @@ public class UsersController {
 
 		} catch (MapperException e) {
 			logger.error("Failed in processing", e);
+			throw e;
+		} catch (UtilException e) {
+			logger.error("Failed in util..", e);
 			throw e;
 		}
 
@@ -107,7 +109,7 @@ public class UsersController {
 		String result = null;
 		UserAndGroupMapper tcmapper = UserAndGroupMapper.getMapper();
 		User user = new User();
-		
+
 		try {
 			user = tcmapper.userInfoMapping(data);
 		} catch (MapperException e) {
@@ -173,6 +175,14 @@ public class UsersController {
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	public String processHandleException(HandleException e) {
+		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+				+ "\",\"message\":\"" + e.getMessage() + "\"}";
+	}
+
+	@ExceptionHandler(UtilException.class)
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ResponseBody
+	public String processUtilException(HandleException e) {
 		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
 				+ "\",\"message\":\"" + e.getMessage() + "\"}";
 	}

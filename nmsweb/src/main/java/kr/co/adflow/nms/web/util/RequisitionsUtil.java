@@ -3,7 +3,7 @@ package kr.co.adflow.nms.web.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.vo.requisition.ReqPutForID;
 import kr.co.adflow.nms.web.vo.requisition.ReqPutIP;
 import kr.co.adflow.nms.web.vo.requisition.ReqPutName;
@@ -32,7 +32,7 @@ public class RequisitionsUtil {
 	}
 
 	public String xmlParsingRequisitions(Requisitionsinfo requisition)
-			throws HandleException {
+			throws UtilException {
 		String data = null;
 		try {
 			String foreign = requisition.getForeignsource();
@@ -43,7 +43,7 @@ public class RequisitionsUtil {
 			data = bf.toString();
 			logger.debug("xmldata::" + data);
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
@@ -51,7 +51,7 @@ public class RequisitionsUtil {
 	// <node node-label="zzzzzzz" foreign-id="13622227" building="test001"/>
 	// {"node[{"node-label:"zzzzzzz","foreign-id":"13622227","building":"test001"}]};
 	public String xmlParsingRequisitionsNodes(RequisitionsNodes nodes)
-			throws HandleException {
+			throws UtilException {
 		String data = null;
 		try {
 			String nodeLable = nodes.getNodelabel();
@@ -65,7 +65,7 @@ public class RequisitionsUtil {
 			data = bf.toString();
 			logger.debug("xmldata::" + data);
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
@@ -74,7 +74,7 @@ public class RequisitionsUtil {
 	// <interface snmp-primary="P" status="1" ip-addr="59.150.236.73"
 	// descr="bcs_test"/>
 	public String xmlParsingRequisitionsNodesInterfaces(
-			RequisitionsNodesInterface nodeInterface) throws HandleException {
+			RequisitionsNodesInterface nodeInterface) throws UtilException {
 		String data = null;
 		try {
 			String descr = nodeInterface.getDescr();
@@ -90,14 +90,14 @@ public class RequisitionsUtil {
 			data = bf.toString();
 			logger.debug("xmldata::" + data);
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
 
 	// <monitored-service service-name="ICMP"/>
 	public String xmlParsingRequisitionsService(RequisitionsService services)
-			throws HandleException {
+			throws UtilException {
 		String data = null;
 		try {
 			String servicesName = services.getServicename();
@@ -109,7 +109,7 @@ public class RequisitionsUtil {
 			data = bf.toString();
 			logger.debug("xmldata::" + data);
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
@@ -117,7 +117,7 @@ public class RequisitionsUtil {
 	// requisitions/{name}/nodes/{foreignId}/categories
 	// <category name="Production"/>
 	public String xmlParsingReqCategory(RequisitionsCategory category)
-			throws HandleException {
+			throws UtilException {
 		String data = null;
 		try {
 			String categoryName = category.getName();
@@ -129,7 +129,7 @@ public class RequisitionsUtil {
 			data = bf.toString();
 			logger.debug("xmldata::" + data);
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
@@ -139,7 +139,7 @@ public class RequisitionsUtil {
 	// {"asset":[{"value":"test","name":"admin"}]}	
 	
 	public String xmlParsingReqAssets(RequisitionsAssets assets)
-			throws HandleException {
+			throws UtilException {
 		String data = null;
 		try {
 			String assetsName = assets.getName();
@@ -153,13 +153,13 @@ public class RequisitionsUtil {
 			data = bf.toString();
 			logger.debug("xmldata::" + data);
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
 	
 	public String ParsingReqNameData(ReqPutName putName)
-			throws HandleException {
+			throws UtilException {
 		String data = null;
 		try {
 			String foreignSource = putName.getForeignsource();
@@ -173,14 +173,14 @@ public class RequisitionsUtil {
 			data = bf.toString();
 			logger.debug("parSingdata::" + data);
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
 	
 	// foreign-id="123455"
 	public String ParsingReqPutID(ReqPutForID putId)
-			throws HandleException {
+			throws UtilException {
 		String data = null;
 		try {
 			String foreignId = putId.getForeignid();
@@ -194,14 +194,14 @@ public class RequisitionsUtil {
 			data = bf.toString();
 			logger.debug("parSingdata::" + data);
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
 	
 	//ip-addr=127.0.0.2
 	public String ParsingReqPutIP(ReqPutIP putIP)
-			throws HandleException {
+			throws UtilException {
 		String data = null;
 		try {
 			String IPaddr = putIP.getIpaddr();
@@ -215,7 +215,7 @@ public class RequisitionsUtil {
 			data = bf.toString();
 			logger.debug("parSingdata::" + data);
 		} catch (Exception e) {
-			throw new HandleException(e);
+			throw new UtilException(e);
 		}
 		return data;
 	}
