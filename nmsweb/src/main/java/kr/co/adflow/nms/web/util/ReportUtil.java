@@ -34,15 +34,17 @@ public class ReportUtil {
 			}
 
 			StringBuffer bf = new StringBuffer();
+			bf.append("{");
 			for (int i = 1; i < arr.size(); i++) {
 				logger.debug("arr:::" + arr.get(i));
-				bf.append("{\"url\":\"");
+				bf.append("\"url" + i + "\":\"");
 				bf.append(opennmUrl);
-				bf.append(arr.get(i));
-				bf.append("\"}");
+				bf.append(arr.get(i)+"\"");
 				bf.append(",");
+
 			}
-			bf.delete(bf.length()-1, bf.length());
+			bf.delete(bf.length()-3, bf.length());
+			bf.append("\"}");
 			result = bf.toString();
 			logger.debug("UTILresult::" + result);
 		} catch (Exception e) {
