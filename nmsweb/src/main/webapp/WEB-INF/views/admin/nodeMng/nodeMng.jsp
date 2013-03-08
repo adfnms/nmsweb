@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@page import="com.bluecapsystem.nms.define.NMSProperties"%>
 <%@ page session="true"%>
 <!DOCTYPE html>
 <html lang="ko">
@@ -12,7 +11,7 @@
 	<jsp:param value="노드관리" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
-<script src="<c:url value="/resources/js/requisitions.js" />"></script>
+<script src="<c:url value="/resources/js/requisitions.jsp" />"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		getTotalRequisitionsList(requisitionsList);

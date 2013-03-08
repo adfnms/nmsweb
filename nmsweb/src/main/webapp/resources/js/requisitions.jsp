@@ -1,8 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@page import="com.bluecapsystem.nms.define.NMSProperties"%>
 function getTotalRequisitionsList(callback){
 	
 	$.ajax({
 		type:'get',
-		url:'/v1/requisitions/deployed.json',
+		url:'/<%=NMSProperties.getNmswebVersion() %>/requisitions/deployed.json',
 		dataType:'json',
 		contentType: 'application/json',
 		error:function(data){
