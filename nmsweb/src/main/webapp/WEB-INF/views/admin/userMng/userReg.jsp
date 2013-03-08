@@ -93,97 +93,163 @@
 		
 		<!-- Example row of columns -->
 		
-		<div class="row-fluid">
+<div class="row-fluid">
 			<div class="span9">
+				<ul class="breadcrumb well well-small">
+					<li><a href="#">Home</a> <span class="divider">/</span></li>
+					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
+					<li class="active">사용자 등록</li>
+				</ul>
 			</div>
-
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
-		
 		<div class="row-fluid">
-			<div class="span9">
-				<h2 class="muted">개인정보</h2>
-			</div>
-			<div class="span9">	
-			<form id="testfrm" name = "memberInfoFrm">
-				<input type="hidden"   id="test"   name="test"   value=""> 
-			</FORM>
-			<form id="userInfoFrm" name = "userInfoFrm">
-				<div class="span6 control-group error">
-					<fieldset>
-						<label  class="muted" for="inputWarning">*사용자 ID</label>
-						<input type="text"   id="user-id"   name="user-id"   placeholder="사용자 ID" value=""> 
-						<label  class="muted" for="inputWarning">*이름</label>
-						<input type="text"    id="full-name"   name="full-name"  placeholder="이름" value=""> 
-						<label  class="muted"  for="inputWarning">Telephone PIN</label>
-						<input type="text"    id=""   name=""  placeholder="Telephone PIN"  value=""> 
-					</fieldset>
+			<div class="span9 well well-small">
+				<div class="row-fluid">
+					<div class="span12">
+						<h4>
+							개인정보 <span class="label label-info">필수 입력 사항</span>
+						</h4>
+					</div>
 				</div>
-				<div class="span6  control-group error">
-					<fieldset>
-						<label  class="muted"  for="inputWarning">*비밀번호</label>
-						<input type="text"   id="password"   name="password"  placeholder="비밀번호"  value=""> 
-						<label  class="muted" for="inputWarning">*소개</label>
-						<input type="text"   id="user-comments"   name="user-comments"  placeholder="소개"  value=""> 
-						<label>&nbsp;</label>
-						<input type="hidden"> 
-					</fieldset>
-				</div>
-				</form>
-			</div>
-			
-		</div>
-		<div class="row-fluid">
-			<div class="span9">
-				<h2 class="muted">알림정보</h2>
-			</div>
-			<div class="span9">	
-			<form id="memberInfoFrm" name = "memberInfoFrm" method="post">
-				<div class="span6 control-group info">
-					<fieldset>
-						<label  class="muted" for="inputInfo">이메일</label>
-						<input  type="text"   id="email"   name="email"  placeholder="이메일"> 
-						<label  class="muted" for="inputInfo">XMPP Address</label>
-						<input type="text"   id="xmppAddress"   name="xmppAddress"  placeholder="XMPP Address"> 
-						<label  class="muted" for="inputInfo">Numeric Service</label>
-						<input type="text"   id="numericPage"   name="numericPage"  placeholder="Numeric Service"> 
-						<label  class="muted" for="inputInfo">Text Service</label>
-						<input type="text"   id="textPage"   name="textPage"  placeholder="Text Service"> 
-						<label  class="muted" for="inputInfo">Work Phone</label>
-						<input type="text"   id="workPhone"   name="workPhone"  placeholder="Work Phone"> 
-						<label  class="muted" for="inputInfo">Home Phone</label>
-						<input type="text"   id="homePhone"   name="homePhone"  placeholder="Home Phone"> 
-					</fieldset>
-				</div>
-				<div class="span6 control-group info">
-					<fieldset>
-						<label  class="muted" for="inputInfo">Pager Email</label>
-						<input type="text"   id="pagerEmail"   name="pagerEmail"  placeholder="Pager Email"> 
-						<label  class="muted" for="inputInfo">Microblog Username</label>
-						<input type="text"   id="microblog"   name="microblog"  placeholder="Microblog Username"> 
-						<label  class="muted" for="inputInfo">Numeric PIN</label>
-						<input type="text"   id="numericPin"   name="numericPin"  placeholder="Numeric PIN"> 
-						<label  class="muted" for="inputInfo">Text PIN</label>
-						<input type="text"   id="textPin"   name="textPin"  placeholder="Text PIN"> 
-						<label  class="muted" for="inputInfo">Mobile Phone</label>
-						<input type="text"   id="mobilePhone"   name="mobilePhone"  placeholder="Mobile Phone"> 
-						<label>&nbsp;</label>
-						<label>&nbsp;</label>
-							<div>
-								<table>
-									<colgroup><col width="20%"/><col width="60%"/><col width="20%"/></colgroup>
-									<tr>
-										<td></td>
-										<td><a class="btn btn-large btn-primary" href="javascript:regMember()">사용자 등록</a></td>
-										<td><td>
-									</tr>
-								</table>
+				<form id="userInfoFrm" name = "userInfoFrm">
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">IP 주소</label>
+							<div class="span4 controls">
+								<input type="text">
 							</div>
-					</fieldset>
-				</div>
+							<label class="span2 control-label">노드명</label>
+							<div class="span4 controls">
+								<input type="text"   id="user-id"   name="user-id"   placeholder="사용자 ID" value=""> 
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">IP 주소</label>
+							<div class="span4 controls">
+								<input type="text"    id="full-name"   name="full-name"  placeholder="이름" value=""> 
+							</div>
+							<label class="span2 control-label">노드명</label>
+							<div class="span4 controls">
+								<input type="text"   id="password"   name="password"  placeholder="비밀번호"  value=""> 
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">IP 주소</label>
+							<div class="span4 controls">
+								<input type="text"   id="user-comments"   name="user-comments"  placeholder="소개"  value=""> 
+							</div>
+							<label class="span2 control-label">노드명</label>
+							<div class="span4 controls">
+								<input type="text"    id=""   name=""  placeholder="Telephone PIN"  value=""> 
+							</div>
+						</div>
+					</div>
 				</form>
 			</div>
 		</div>
+		<div class="row-fluid">
+		
+			<div class="span9 well well-small">
+				<div class="row-fluid">
+					<div class="span12">
+						<h4>
+							알림정보 <span class="label label-alert">선택 입력 사항</span>
+						</h4>
+					</div>
+				</div>
+				<form id="memberInfoFrm" name = "memberInfoFrm" method="post">
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">IP 주소</label>
+							<div class="span4 controls">
+								<input  type="text"   id="email"   name="email"  placeholder="이메일"> 
+							</div>
+							<label class="span2 control-label">노드명</label>
+							<div class="span4 controls">
+								<input type="text"   id="xmppAddress"   name="xmppAddress"  placeholder="XMPP Address"> 
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">IP 주소</label>
+							<div class="span4 controls">
+								<input type="text"   id="numericPage"   name="numericPage"  placeholder="Numeric Service"> 
+							</div>
+							<label class="span2 control-label">노드명</label>
+							<div class="span4 controls">
+								<input type="text"   id="textPage"   name="textPage"  placeholder="Text Service"> 
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">IP 주소</label>
+							<div class="span4 controls">
+								<input type="text"   id="workPhone"   name="workPhone"  placeholder="Work Phone"> 
+							</div>
+							<label class="span2 control-label">노드명</label>
+							<div class="span4 controls">
+								<input type="text"   id="homePhone"   name="homePhone"  placeholder="Home Phone"> 
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">IP 주소</label>
+							<div class="span4 controls">
+								<input type="text"   id="pagerEmail"   name="pagerEmail"  placeholder="Pager Email"> 
+							</div>
+							<label class="span2 control-label">노드명</label>
+							<div class="span4 controls">
+								<input type="text"   id="microblog"   name="microblog"  placeholder="Microblog Username"> 
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">IP 주소</label>
+							<div class="span4 controls">
+								<input type="text"   id="numericPin"   name="numericPin"  placeholder="Numeric PIN"> 
+							</div>
+							<label class="span2 control-label">노드명</label>
+							<div class="span4 controls">
+								<input type="text"   id="textPin"   name="textPin"  placeholder="Text PIN"> 
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">IP 주소</label>
+							<div class="span4 controls">
+								<input type="text"   id="mobilePhone"   name="mobilePhone"  placeholder="Mobile Phone"> 
+							</div>
+							<label class="span2 control-label">노드명</label>
+							<div class="span4 controls">
+								<input type="text">
+							</div>
+						</div>
+					</div>
+				</form>
+			
+			<hr>
+		
+		</div>
+		<div class="row-fluid">
+				<div class="span12">
+					<div class="span8"></div>
+					<div class="span1">
+						<a type="button" class="btn btn-primary" title="" href="javascript:regMember()">저장</a>
+					</div>
+				</div>
+			</div>
+		
+		
 		<hr>
 	</div>
 	<!-- /container -->
