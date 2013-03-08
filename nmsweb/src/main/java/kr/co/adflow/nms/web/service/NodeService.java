@@ -1,5 +1,9 @@
 package kr.co.adflow.nms.web.service;
 
+import groovy.lang.GroovyClassLoader;
+import groovy.lang.GroovyObject;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,7 +25,7 @@ import org.springframework.stereotype.Service;
  * NodeProcess
  * 
  * @author kicho@adflow.co.kr
- * @version 1.1
+ * @version 1.2
  */
 @Service
 public class NodeService {
@@ -36,6 +40,8 @@ public class NodeService {
 	String ipAddr;
 	private @Value("#{config['LOGINID']}") String loginId;
 	private @Value("#{config['LOGINPASS']}") String loginPass;
+	
+	private @Value("#{config['GROOVYPATH']}") String groovyPath;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(NodeService.class);
@@ -451,6 +457,31 @@ public class NodeService {
 
 		try {
 			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	public String nodeIpPost(String ip) throws HandleException {
+
+		String result = null;
+
+		try {
+			ClassLoader parent = getClass().getClassLoader();
+			GroovyClassLoader loader = new GroovyClassLoader(parent);
+			Class groovyClass = loader.parseClass(new File(
+					groovyPath+"sendNewSuspectEvent.groovy"));
+
+			// let's call some method on an instance
+			GroovyObject groovyObject = (GroovyObject) groovyClass
+					.newInstance();
+			String[] args = { ip, "127.0.0.1" };
+			Object ret = groovyObject.invokeMethod("sendNewSuspectEvent", args);
+			
+			logger.debug("ret :" + ret);
+			result ="{\"result\":\"success\"}";
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
