@@ -12,6 +12,7 @@
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/users.js" />"></script>
+<script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script type="text/javascript">
 	
 	
@@ -32,8 +33,8 @@
 		$.ajax({
 	
 			type : 'post',
-			url : 'http://localhost:8080/v1/users',
-			
+			url : '<c:url value="/users"/>',
+			//url : 'http://localhost:8080/v1/users',
 			contentType : 'application/json',
 			data : str,
 			error : function() {
@@ -51,10 +52,10 @@
 		
 		$.ajax({
 			
-			type : 'post',
-			url : 'http://localhost:8081/v1/users/'+userId,
+			type : 'delete',
+			url : 'http://localhost:8080/v1/users/'+userId,
 			contentType : 'application/json',
-			data : str,
+			
 			error : function() {
 				alert('삭제 서비스 실패');
 			},
@@ -221,7 +222,7 @@
 				</form>
 			<hr>
 		</div>
-		<div class="row-fluid">
+			<div class="row-fluid">
 				<div class="span12">
 					<div class="span7"></div>
 					<div class="span1">

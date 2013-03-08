@@ -41,7 +41,7 @@
 		$.ajax({
 	
 			type : 'post',
-			url : '/users',
+			url : '<c:url value="/users"/>',
 			contentType : 'application/json',
 			data : str,
 			error : function() {
@@ -61,7 +61,7 @@
 		
 		$.ajax({
 			type:'post',
-		 	url:'<c:url value="/admin/userMng/checkUserId.do" />',
+		 	url:'<c:url value="/admin/userMng/checkUserId.do"/>',
 			data:'user-Id='+userId,
 			dataType:'json',
 			error:function(res){
@@ -237,11 +237,9 @@
 						</div>
 					</div>
 				</form>
-			
 			<hr>
-		
 		</div>
-		<div class="row-fluid">
+			<div class="row-fluid">
 				<div class="span12">
 					<div class="span8"></div>
 					<div class="span1">
