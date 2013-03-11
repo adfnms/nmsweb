@@ -1,9 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page session="true"%>
+<%@page import="com.bluecapsystem.nms.define.Define"%>
+<%
+boolean g_isLogin 	= false;
+String userId = null;
+
+try{
+	userId	= session.getAttribute(Define.USER_ID_KEY).toString(); 
+}catch(Exception ex){
+	g_isLogin = false;
+}
+
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,8 +39,8 @@
 		var userComments = $("#userInfoFrm input[name=user-comments]").val();
 		var password = $("#userInfoFrm input[name=password]").val();
 		
-		//alert("------userId-----"+userId);
-		//alert("------fullName-----"+fullName);
+		alert("------userId-----"+userId);
+		alert("------fullName-----"+fullName);
 		//alert("------userComments-----"+userComments);
 		//alert("------password-----"+password);
 	
@@ -51,6 +62,8 @@
 				alert("등록되었습니다.");
 			}
 		});
+		
+		regToDb(userId,fullName);
 	}
 	
 	
@@ -83,6 +96,36 @@
 	});
 		
 	}
+	
+	function regToDb(userId,fullName){
+		
+		alert("---------regToDb------userId----------"+userId);
+		alert("---------regToDb----fullName------------"+fullName);
+		
+		$.ajax({
+			type:'post',
+		 	url:'<c:url value="/admin/userMng/regToDb.do"/>',
+			data:'user-Id='+userId+"&fullName="+fullName,
+			dataType:'json',
+			error:function(res){
+				
+				alert("DB 등록 실패");
+					
+	        },
+	        success: function(res){
+	        	
+	        	if(res.result == false){
+	        	
+	        		alert(res.message);
+	        		
+		   		}else{
+		   			
+ 			//------------성공 내용 추가-------------
+		   		}
+			}		
+	});
+	}	
+	
 </script>
 </head>
 
@@ -114,6 +157,8 @@
 					</div>
 				</div>
 				<form id="userInfoFrm" name = "userInfoFrm">
+				<input type="hidden" name="regrId" value="<%= userId %>"  protect="true" />
+				<input type="hidden" name="modrId" value="<%= userId %>"  protect="true" />
 					<div class="row-fluid">
 						<div class="span12">
 							<label class="span2 control-label">IP 주소</label>

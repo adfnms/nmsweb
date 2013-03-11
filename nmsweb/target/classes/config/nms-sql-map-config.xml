@@ -7,4 +7,5 @@
 		lazyLoadingEnabled="true" maxRequests="256" maxSessions="20"
 		maxTransactions="5" useStatementNamespaces="true" />
 
+	<sqlMap resource="sqls/sample.xml" />
 </sqlMapConfig>

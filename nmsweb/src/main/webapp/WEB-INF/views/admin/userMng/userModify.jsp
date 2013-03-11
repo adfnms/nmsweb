@@ -4,6 +4,20 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page session="true"%>
+<%@page import="com.bluecapsystem.nms.define.Define"%>
+<%
+boolean g_isLogin 	= false;
+String userId = null;
+
+try{
+	userId	= session.getAttribute(Define.USER_ID_KEY).toString(); 
+	
+}catch(Exception ex){
+	g_isLogin = false;
+}
+
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,6 +58,22 @@
 				//alert(data);
 			}
 		});
+		
+		modifyToDb();
+	}
+	
+	function modifyToDb(){
+		
+		//var userId = $("#userInfoFrm input[name=user-id]").val();
+		//var fullName = $("#userInfoFrm input[name=full-name]").val();
+		//var regrId = $("#userInfoFrm input[name=full-name]").val();
+		//var modrId = $("#userInfoFrm input[name=full-name]").val();
+		
+		var frm = document.getElementById("userInfoFrm");
+		//frm.action = "<c:url value="/admin/userMng/modifyToDb.do"/>";
+		frm.action = "/admin/userMng/modifyToDb.do";
+	    frm.submit();
+		
 	}
 	
 	function deleteUser(){
@@ -63,7 +93,20 @@
 				alert("삭제성공");
 			}
 		});
+		
+		deleteToDb();
 	}
+	
+	function deleteToDb(){
+		
+		//var userId = $("#userInfoFrm input[name=user-id]").val();
+		
+		var frm = document.getElementById("userInfoFrm");
+		//frm.action = '<c:url value="/admin/userMng/modifyToDb.do"/>';
+		frm.action = "/admin/userMng/modifyToDb.do";
+	    frm.submit();
+	}
+	
 	
 	
 </script>
@@ -97,6 +140,8 @@
 					</div>
 				</div>
 				<form id="userInfoFrm" name = "userInfoFrm">
+				<input type="hidden" name="regrId" value="<%= userId %>"  protect="true" />
+				<input type="hidden" name="modrId" value="<%= userId %>"  protect="true" />
 					<div class="row-fluid">
 						<div class="span12">
 							<label class="span2 control-label">IP 주소</label>
