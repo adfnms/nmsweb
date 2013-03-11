@@ -1,0 +1,10 @@
+target/*
+target/classes/config/*
+.classpath
+.project
+.settings/*
+.springBeans
+build.properties
+*.class
+.launch
+.*launch

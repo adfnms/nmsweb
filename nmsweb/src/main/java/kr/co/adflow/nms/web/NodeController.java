@@ -285,6 +285,29 @@ public class NodeController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
+	
+	
+	
+	// /// POST /////
+	@RequestMapping(value = "/nodes/scan/{ip:.+}", method = RequestMethod.POST)
+	public @ResponseBody
+	String nodeIpPost(HttpServletRequest request, @PathVariable String ip)
+			throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) service.nodeIpPost(ip);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
 
 	// /// DELETE /////
 	@RequestMapping(value = "/nodes/{id}", method = RequestMethod.DELETE)
