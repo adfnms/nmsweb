@@ -25,11 +25,11 @@
 						</ul>
 					</li>
 					<li class="dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">검색
+						<a class="dropdown-toggle" data-toggle="dropdown" href="<c:url value="/node/search.do" />">검색
 							<b class = "caret"></b>
 						</a>
 						<ul class="dropdown-menu" >
-							<li><a href="#">노드검색</a></li>
+							<li><a href="<c:url value="/node/search.do" />">노드검색</a></li>
 							<li><a href="#">장애검색</a></li>
 						</ul>
 					</li>
