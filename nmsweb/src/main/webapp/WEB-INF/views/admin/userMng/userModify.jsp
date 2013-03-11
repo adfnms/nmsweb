@@ -4,6 +4,20 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page session="true"%>
+<%@page import="com.bluecapsystem.nms.define.Define"%>
+<%
+boolean g_isLogin 	= false;
+String userId = null;
+
+try{
+	userId	= session.getAttribute(Define.USER_ID_KEY).toString(); 
+	
+}catch(Exception ex){
+	g_isLogin = false;
+}
+
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +26,7 @@
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/users.js" />"></script>
+<script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script type="text/javascript">
 	
 	
@@ -32,8 +47,8 @@
 		$.ajax({
 	
 			type : 'post',
-			url : 'http://localhost:8080/v1/users',
-			
+			url : '<c:url value="/users"/>',
+			//url : 'http://localhost:8080/v1/users',
 			contentType : 'application/json',
 			data : str,
 			error : function() {
@@ -43,6 +58,22 @@
 				//alert(data);
 			}
 		});
+		
+		modifyToDb();
+	}
+	
+	function modifyToDb(){
+		
+		//var userId = $("#userInfoFrm input[name=user-id]").val();
+		//var fullName = $("#userInfoFrm input[name=full-name]").val();
+		//var regrId = $("#userInfoFrm input[name=full-name]").val();
+		//var modrId = $("#userInfoFrm input[name=full-name]").val();
+		
+		var frm = document.getElementById("userInfoFrm");
+		//frm.action = "<c:url value="/admin/userMng/modifyToDb.do"/>";
+		frm.action = "/admin/userMng/modifyToDb.do";
+	    frm.submit();
+		
 	}
 	
 	function deleteUser(){
@@ -51,10 +82,10 @@
 		
 		$.ajax({
 			
-			type : 'post',
-			url : 'http://localhost:8081/v1/users/'+userId,
+			type : 'delete',
+			url : 'http://localhost:8080/v1/users/'+userId,
 			contentType : 'application/json',
-			data : str,
+			
 			error : function() {
 				alert('삭제 서비스 실패');
 			},
@@ -62,7 +93,20 @@
 				alert("삭제성공");
 			}
 		});
+		
+		deleteToDb();
 	}
+	
+	function deleteToDb(){
+		
+		//var userId = $("#userInfoFrm input[name=user-id]").val();
+		
+		var frm = document.getElementById("userInfoFrm");
+		//frm.action = '<c:url value="/admin/userMng/modifyToDb.do"/>';
+		frm.action = "/admin/userMng/modifyToDb.do";
+	    frm.submit();
+	}
+	
 	
 	
 </script>
@@ -96,6 +140,8 @@
 					</div>
 				</div>
 				<form id="userInfoFrm" name = "userInfoFrm">
+				<input type="hidden" name="regrId" value="<%= userId %>"  protect="true" />
+				<input type="hidden" name="modrId" value="<%= userId %>"  protect="true" />
 					<div class="row-fluid">
 						<div class="span12">
 							<label class="span2 control-label">IP 주소</label>
@@ -221,7 +267,7 @@
 				</form>
 			<hr>
 		</div>
-		<div class="row-fluid">
+			<div class="row-fluid">
 				<div class="span12">
 					<div class="span7"></div>
 					<div class="span1">

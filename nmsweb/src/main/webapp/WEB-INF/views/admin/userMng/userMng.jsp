@@ -22,31 +22,25 @@
 	});
 
 	function callbackUseList(jsonObj) {
-
+		console.log(jsonObj);
 		var str = "";
 
-		
-		
-		console.log(jsonObj["@count"]);
-		
-		
 		var userObj = jsonObj["user"];
 		
 		for ( var i in userObj) {
-
-			str += "<tr onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
-			str += "	<td>";
+			str += "<tr>";
+			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
 			str += userObj[i]["user-id"];
 			str += "	</td>";
-			str += "	<td>";
+			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
 			str += userObj[i]["full-name"];
 			str += "	</td>";
-			str += "	<td>";
+			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
 			str += userObj[i]["user-comments"];
 			str += "	</td>";
-// 			str += "	<td>";
-// 			str += jsonObj.user[i].password;
-// 			str += "	</td>";
+			str += "	<td>";
+ 			str += "<a type=\"button\" class=\"btn \ href=\"javascript:deleteUser();\">삭제</a>";
+ 			str += "	</td>";
 			str += "</tr>";
 		}
 
@@ -55,41 +49,13 @@
 
 	function getUserDetail(user_id){
 		
-		
-		
-		alert("-------------------user_id--------------------"+user_id);
-		
-		$("#userIdFrm").find('[name=user_id]:input').val(user_id);
+		$("#userIdFrm").find('[name=user-id]:input').val(user_id);
 		
 		var frm = document.getElementById("userIdFrm");
 		
-		frm.action = "/v1/admin/userMng/userModify.do?user-Id="+user_id;
+		frm.action = "/v1/admin/userMng/userModify.do";
 		frm.submit();
 		
-		/*  $.ajax({
-			
-			 type:'post',
-		 	url:'<c:url value="/admin/userMng/userModify.do" />',
-			data:'user-Id='+user_id,
-			dataType:'json',
-			error:function(res){
-				
-				alert("서비스 실패");
-					
-	        },
-	        success: function(res){
-	        	
-	        	if(res.result == false){
-	        	
-	        		alert(res.message);
-	        		
-		   		}else{
-		   			var url = "/v1/admin/userMng/userModify.do?user-Id="+user_id;
-		   			window.open(url,'userModify','width=1160,height=640,scrolling=no, scrollbars=no');
- 			
-		   		}
-			}		
-	});  */
 		
 	}
 </script>
@@ -102,7 +68,11 @@
 
 		<div class="row-fluid">
 			<div class="span9">
-				<h2 class="muted">운영관리 > 사용자 관리</h2>
+				<ul class="breadcrumb well well-small">
+					<li><a href="#">Home</a> <span class="divider">/</span></li>
+					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
+					<li class="active">사용자 관리</li>
+				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
@@ -110,7 +80,7 @@
 		<div class="row-fluid">
 			<div class="span9">
 			<form  id="userIdFrm" name="userIdFrm" method="post">
-				<input type="hidden" id ="user_id" name="user_id" value="" />
+				<input type="hidden" id ="user-id" name="user-id" value="" />
 			</form>
 				<table class="table table-striped" id="userListTable">
 					<colgroup>
@@ -128,6 +98,15 @@
 					
 				</table>
 			</div>
+				<div class="row-fluid">
+					<div class="span12">
+						<div class="span7"></div>
+						<div class="span2">
+							<a type="button" class="btn btn-primary" title="" href="/v1/admin/userMng/userReg.do">+ 사용자 추가</a>
+						</div>
+					</div>
+				</div>
+			
 		</div>
 		<hr>
 	</div>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.bluecapsystem.nms.user">
+
+ 
+
+
+
+	
+	
+	
+    
+     
+   
+
+	
+	<update id="updateEtcProgram" parameterClass="com.bluecapsystem.cms.dto.EtcProgramTbl">
+    	UPDATE ETC_PROGRAM_TBL   
+    	 
+     	SET 
+			
+			ETC_TYPE =#etcType#,
+			ETC_GENRE1=#etcGenre1#,
+			ETC_GENRE2=#etcGenre2#, 
+			ETC_GENRE3=#etcGenre3#, 
+			ETC_LANGUAGE=#etcLanguage#,   
+			ETC_TITLE	=#etcTitle#,
+			ETC_BODY=#etcBody#,
+			ETC_TARGET	=#etcTarget#,
+			ETC_USE_NAME=#etcUseName#,
+			ETC_GRO_NAME=#etcGroName#,
+			ETC_START_TERM	=#etcStartTerm#, 
+			ETC_END_TERM =#etcEndTerm#, 
+			ETC_RUNTIME =#etcRuntime#,
+			MOD_DT	=SYSDATE,
+			USE_YN 		=#useYn#
+			
+   			WHERE 
+   			ETC_ID =#etcId#
+    </update> 
+    
+     <update id="delEtcProgram" parameterClass="com.bluecapsystem.cms.dto.EtcProgramTbl">
+    	UPDATE ETC_PROGRAM_TBL
+    	
+    	
+    	SET 
+    	MOD_DT	=SYSDATE,
+    	MODRID	=#modrId#,
+    	USE_YN 		=#useYn#
+    	
+    	WHERE ETC_ID =#etcId#
+    </update>
+    
+    <insert id="insertEtcProgram" parameterClass="com.bluecapsystem.cms.dto.EtcProgramTbl">
+		
+		<selectKey keyProperty="seq" resultClass="java.lang.Integer">
+			select SEQ_ETC.NEXTVAL from dual
+     	</selectKey>
+
+     	INSERT INTO ETC_PROGRAM_TBL (
+     		
+     		SEQ,ETC_ID,ETC_TYPE,ETC_GENRE1,ETC_GENRE2,ETC_GENRE3,ETC_LANGUAGE,ETC_TITLE,ETC_BODY,ETC_TARGET,ETC_USE_NAME,ETC_GRO_NAME,
+     		ETC_START_TERM,ETC_END_TERM,ETC_RUNTIME,ETC_IMAGE,REGRID,REG_DT,MODRID,MOD_DT,USE_YN
+			
+			) VALUES (
+     		
+     		#seq#,(#etcType#||'_'||TO_CHAR(SYSDATE,'YYYYMMDDhhmiss')||'_'||#seq#),#etcType#,#etcGenre1#,#etcGenre2#,#etcGenre3#,#etcLanguage#,#etcTitle#,#etcBody#,#etcTarget#,#etcUseName#,#etcGroName#,
+     		#etcStartTerm#,#etcEndTerm#,#etcRuntime#,#etcImage#,#regrId#,SYSDATE,#modrId#,SYSDATE,#useYn#
+     	)
+
+    </insert>
+    
+
+</sqlMap>
