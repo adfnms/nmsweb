@@ -1,75 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
-<sqlMap namespace="com.bluecapsystem.nms.user">
+<sqlMap namespace="com.bluecapsystem.nms.userManager">
 
- 
-
-
-
-	
-	
-	
-    
-     
-   
-
-	
-	<update id="updateEtcProgram" parameterClass="com.bluecapsystem.cms.dto.EtcProgramTbl">
-    	UPDATE ETC_PROGRAM_TBL   
-    	 
-     	SET 
-			
-			ETC_TYPE =#etcType#,
-			ETC_GENRE1=#etcGenre1#,
-			ETC_GENRE2=#etcGenre2#, 
-			ETC_GENRE3=#etcGenre3#, 
-			ETC_LANGUAGE=#etcLanguage#,   
-			ETC_TITLE	=#etcTitle#,
-			ETC_BODY=#etcBody#,
-			ETC_TARGET	=#etcTarget#,
-			ETC_USE_NAME=#etcUseName#,
-			ETC_GRO_NAME=#etcGroName#,
-			ETC_START_TERM	=#etcStartTerm#, 
-			ETC_END_TERM =#etcEndTerm#, 
-			ETC_RUNTIME =#etcRuntime#,
-			MOD_DT	=SYSDATE,
-			USE_YN 		=#useYn#
-			
-   			WHERE 
-   			ETC_ID =#etcId#
-    </update> 
-    
-     <update id="delEtcProgram" parameterClass="com.bluecapsystem.cms.dto.EtcProgramTbl">
-    	UPDATE ETC_PROGRAM_TBL
-    	
-    	
-    	SET 
-    	MOD_DT	=SYSDATE,
-    	MODRID	=#modrId#,
-    	USE_YN 		=#useYn#
-    	
-    	WHERE ETC_ID =#etcId#
-    </update>
-    
-    <insert id="insertEtcProgram" parameterClass="com.bluecapsystem.cms.dto.EtcProgramTbl">
+	<!-- User Info Insert -->
+    <insert id="regToDb" parameterClass="com.bluecapsystem.nms.dto.UserTbl">
 		
-		<selectKey keyProperty="seq" resultClass="java.lang.Integer">
-			select SEQ_ETC.NEXTVAL from dual
-     	</selectKey>
-
-     	INSERT INTO ETC_PROGRAM_TBL (
+     	INSERT INTO USER_TBL (
      		
-     		SEQ,ETC_ID,ETC_TYPE,ETC_GENRE1,ETC_GENRE2,ETC_GENRE3,ETC_LANGUAGE,ETC_TITLE,ETC_BODY,ETC_TARGET,ETC_USE_NAME,ETC_GRO_NAME,
-     		ETC_START_TERM,ETC_END_TERM,ETC_RUNTIME,ETC_IMAGE,REGRID,REG_DT,MODRID,MOD_DT,USE_YN
+     		user_id, user_nm, user_grade, group_id, regrid, reg_dt, modrid, mod_dt, use_yn
 			
 			) VALUES (
      		
-     		#seq#,(#etcType#||'_'||TO_CHAR(SYSDATE,'YYYYMMDDhhmiss')||'_'||#seq#),#etcType#,#etcGenre1#,#etcGenre2#,#etcGenre3#,#etcLanguage#,#etcTitle#,#etcBody#,#etcTarget#,#etcUseName#,#etcGroName#,
-     		#etcStartTerm#,#etcEndTerm#,#etcRuntime#,#etcImage#,#regrId#,SYSDATE,#modrId#,SYSDATE,#useYn#
-     	)
+     		#userId#, #userNm#, #userGrade#, #groupId#, #regrId#, date(now()), #modrId#, date(now()), #useYn#
+     	);
 
     </insert>
+    
+    <!--User Info Modify-->
+	<update id="modifyToDb" parameterClass="com.bluecapsystem.nms.dto.UserTbl">
+    	UPDATE USER_TBL  
+    	 
+     	SET 
+			
+				user_id		=#userId#, 
+				user_nm		=#userNm#, 
+				user_grade	=#userGrade#, 
+				group_id	=#groupId#, 
+				regrid		=#regrId#, 
+				reg_dt		=date(now()), 
+				modrid		=#modrId#, 
+				mod_dt		=date(now()), 
+				use_yn		=#useYn#
+			
+   			WHERE 
+   				user_id=#userId#
+    </update> 
+ 
+	 <!-- User Info Delete -->   
+     <update id="deleteToDb" parameterClass="com.bluecapsystem.nms.dto.UserTbl">
+    	UPDATE USER_TBL
+    	
+    	SET 
+    	mod_dt		=date(now()), 
+    	modrid		=#modrId#, 
+    	use_yn		=#useYn#
+    	
+    	WHERE user_id=#userId#
+    </update>
     
 
 </sqlMap>
