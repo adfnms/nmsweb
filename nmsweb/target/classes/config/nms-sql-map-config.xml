@@ -8,4 +8,5 @@
 		maxTransactions="5" useStatementNamespaces="true" />
 
 	<sqlMap resource="sqls/sample.xml" />
+	<sqlMap resource="sqls/nms/userManager.xml" />
 </sqlMapConfig>

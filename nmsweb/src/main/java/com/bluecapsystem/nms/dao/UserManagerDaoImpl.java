@@ -15,7 +15,7 @@ public class UserManagerDaoImpl extends BaseDao implements UserManagerDao{
 	
 
 	@Override
-	@Resource(name="cmsSqlMapClient")
+	@Resource(name="nmsSqlMapClient")
 	public void setSuperSqlMapClient(SqlMapClient sqlMapClient) {
 		super.setSqlMapClient(sqlMapClient);
 		
