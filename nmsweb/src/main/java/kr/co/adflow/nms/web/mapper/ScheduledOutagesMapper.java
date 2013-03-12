@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  * ScheduledOutagesMapper
  * 
  * @author kicho@adflow.co.kr
- * @version 1.1
+ * @version 1.2
  */
 
 public class ScheduledOutagesMapper {
@@ -21,17 +21,6 @@ public class ScheduledOutagesMapper {
 	private static final Logger logger = LoggerFactory
 			.getLogger(ScheduledOutagesMapper.class);
 	
-	/**
-	 * singleton
-	 * 
-	 */
-	private ScheduledOutagesMapper() {
-	}
-	public static ScheduledOutagesMapper mapper = new ScheduledOutagesMapper();
-
-	public static ScheduledOutagesMapper getMapper() {
-		return mapper;
-	}
 
 	public SchoedOutage schoedOutageMapping(String jdata) throws MapperException {
 

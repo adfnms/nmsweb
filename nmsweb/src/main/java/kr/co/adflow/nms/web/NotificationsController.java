@@ -1,5 +1,6 @@
 package kr.co.adflow.nms.web;
 
+import java.net.URLEncoder;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +36,8 @@ public class NotificationsController {
 	private static final String RETURNRESULT = "result:::";
 	private static final String PATH = "path:::";
 
-	private NotificationMapper mapper = NotificationMapper.getMapper();
+	@Autowired
+	private NotificationMapper mapper;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(NotificationsController.class);
@@ -58,7 +60,12 @@ public class NotificationsController {
 
 			while (eParam.hasMoreElements()) {
 				String pName = (String) eParam.nextElement();
-				String pValue = request.getParameter(pName);
+				String pValue = null;
+				if(pName.equals("query")){
+					pValue = URLEncoder.encode(request.getParameter(pName));
+				}else {
+					pValue = request.getParameter(pName);
+				}
 
 				filter.append(pName + "=" + pValue + "&");
 

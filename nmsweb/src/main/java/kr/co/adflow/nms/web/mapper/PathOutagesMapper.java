@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * ScheduledOutagesMapper
  * 
  * @author kicho@adflow.co.kr
- * @version 1.1
+ * @version 1.2
  */
 
 public class PathOutagesMapper {
@@ -44,17 +44,6 @@ public class PathOutagesMapper {
 	private static final Logger logger = LoggerFactory
 			.getLogger(PathOutagesMapper.class);
 	
-	/**
-	 * singleton
-	 * 
-	 */
-	private PathOutagesMapper() {
-	}
-	public static PathOutagesMapper mapper = new PathOutagesMapper();
-
-	public static PathOutagesMapper getMapper() {
-		return mapper;
-	}
 
 	public List<PathOutage> pathOutagesMapper(String jdata) throws MapperException {
 

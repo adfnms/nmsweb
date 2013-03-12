@@ -1,5 +1,7 @@
 package kr.co.adflow.nms.web;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -43,7 +45,7 @@ public class EventsController {
 
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
-
+		
 		// 2013-02-23
 		// Parameter check �� ȣ�� �б�
 		Enumeration eParam = request.getParameterNames();
@@ -53,7 +55,12 @@ public class EventsController {
 
 			while (eParam.hasMoreElements()) {
 				String pName = (String) eParam.nextElement();
-				String pValue = request.getParameter(pName);
+				String pValue = null;
+				if(pName.equals("query")){
+					pValue = URLEncoder.encode(request.getParameter(pName));
+				}else {
+					pValue = request.getParameter(pName);
+				}
 
 				filter.append(pName + "=" + pValue + "&");
 
@@ -64,8 +71,12 @@ public class EventsController {
 			logger.debug("Param:::" + filter.toString());
 
 			try {
-				result = (String) service
-						.eventsFilter(filter.toString());
+				
+				
+				result = (String) service.eventsFilter(filter.toString());
+//				result = (String) service.eventsFilter("query=this_.nodeId%20%3D%20'28'");
+				
+				
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;

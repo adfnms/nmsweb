@@ -48,7 +48,8 @@ public class PathOutagesController {
 			.getLogger(PathOutagesController.class);
 	@Autowired
 	private PathOutagesService service;
-	private PathOutagesMapper mapper = PathOutagesMapper.getMapper();
+	@Autowired
+	private PathOutagesMapper mapper;
 
 
 	@RequestMapping(value = "/pathOutages", method = RequestMethod.GET)

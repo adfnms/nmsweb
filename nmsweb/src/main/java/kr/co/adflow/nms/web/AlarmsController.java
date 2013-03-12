@@ -1,5 +1,6 @@
 package kr.co.adflow.nms.web;
 
+import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * AlarmsController
  * 
  * @author kicho@adflow.co.kr
- * @version 1.1
+ * @version 1.2
  */
 @Controller
 public class AlarmsController {
@@ -59,7 +60,12 @@ public class AlarmsController {
 
 			while (eParam.hasMoreElements()) {
 				String pName = (String) eParam.nextElement();
-				String pValue = request.getParameter(pName);
+				String pValue = null;
+				if(pName.equals("query")){
+					pValue = URLEncoder.encode(request.getParameter(pName));
+				}else {
+					pValue = request.getParameter(pName);
+				}
 
 				filter.append(pName + "=" + pValue + "&");
 

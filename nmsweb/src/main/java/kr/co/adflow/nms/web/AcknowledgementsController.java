@@ -1,5 +1,6 @@
 package kr.co.adflow.nms.web;
 
+import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -54,7 +55,12 @@ public class AcknowledgementsController {
 
 			while (eParam.hasMoreElements()) {
 				String pName = (String) eParam.nextElement();
-				String pValue = request.getParameter(pName);
+				String pValue = null;
+				if(pName.equals("query")){
+					pValue = URLEncoder.encode(request.getParameter(pName));
+				}else {
+					pValue = request.getParameter(pName);
+				}
 
 				filter.append(pName + "=" + pValue + "&");
 

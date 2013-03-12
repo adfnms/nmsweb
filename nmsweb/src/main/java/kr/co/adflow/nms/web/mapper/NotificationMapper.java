@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * ScheduledOutagesMapper
  * 
  * @author kicho@adflow.co.kr
- * @version 1.1
+ * @version 1.2
  */
 
 public class NotificationMapper {
@@ -45,18 +45,6 @@ public class NotificationMapper {
 	private static final Logger logger = LoggerFactory
 			.getLogger(NotificationMapper.class);
 
-	/**
-	 * singleton
-	 * 
-	 */
-	private NotificationMapper() {
-	}
-
-	public static NotificationMapper mapper = new NotificationMapper();
-
-	public static NotificationMapper getMapper() {
-		return mapper;
-	}
 
 	public Path destinationPathMapping(String jdata) throws MapperException {
 

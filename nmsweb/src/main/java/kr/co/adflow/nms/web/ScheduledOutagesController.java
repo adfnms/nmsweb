@@ -1,5 +1,6 @@
 package kr.co.adflow.nms.web;
 
+import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -45,7 +46,8 @@ public class ScheduledOutagesController {
 	@Autowired
 	private ScheduledOutagesService service;
 
-	private ScheduledOutagesMapper mapper = ScheduledOutagesMapper.getMapper();
+	@Autowired
+	private ScheduledOutagesMapper mapper;
 
 	@RequestMapping(value = "/sched-outages", method = RequestMethod.GET)
 	public @ResponseBody
@@ -63,7 +65,12 @@ public class ScheduledOutagesController {
 
 			while (eParam.hasMoreElements()) {
 				String pName = (String) eParam.nextElement();
-				String pValue = request.getParameter(pName);
+				String pValue = null;
+				if(pName.equals("query")){
+					pValue = URLEncoder.encode(request.getParameter(pName));
+				}else {
+					pValue = request.getParameter(pName);
+				}
 
 				filter.append(pName + "=" + pValue + "&");
 
