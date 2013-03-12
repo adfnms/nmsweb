@@ -1,16 +1,17 @@
-/** Get a list of outages
+/** Get a list of events
  * @param callback
+ * @param data
  */
-function getTotalOutagesList(callback,data) {
+function getTotalEvenstList(callback,data) {
 
 	$.ajax({
 		type : 'get',
-		url : '/' + version + '/outages',
+		url : '/' + version + '/events',
 		dataType : 'json',
-		data: data,
 		contentType : 'application/json',
+		data : data,
 		error : function(data) {
-			alert('모든 중단정보 가져오기 실패');
+			alert('이벤트 리스트 가져오기 서비스 실패');
 		},
 		success : function(data) {
 			// 콜백함수
@@ -22,18 +23,16 @@ function getTotalOutagesList(callback,data) {
 
 }
 
-
-
 /** Get a list of outages for nodeId
  * @param callback
  * @param nodeId
  */
-function getOutagesForNode(callback,nodeId) {
+function getEventsForNode(callback,nodeId) {
 
 	if(nodeId == null){
 		alert("노드 아이디가 없습니다.");
 		return;
 	}
 	
-	getTotalOutagesList(callback,"this_.nodeId%20%3D%20'"+nodeId+"'");
+	getTotalEvenstList(callback,"this_.nodeId%20%3D%20'"+nodeId+"'");
 }

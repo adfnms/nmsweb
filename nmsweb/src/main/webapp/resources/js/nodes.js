@@ -50,6 +50,10 @@ function searchNodeList(callback, nodeId, ipAddress, seviceName) {
 	});
 }
 
+/** Get a specific node, by ID
+ * @param callback
+ * @param nodeId
+ */
 function getSpecificNode(callback, nodeId){
 	
 	if(nodeId == ""){
@@ -63,7 +67,7 @@ function getSpecificNode(callback, nodeId){
 		dataType : 'json',
 		contentType : 'application/json',
 		error : function(data) {
-			alert(nodeId+'노드 정보 가져오기 서비스 실패');
+			alert("["+nodeId+'] 노드 정보 가져오기 서비스 실패');
 		},
 		success : function(data) {
 			// 콜백함수
@@ -72,4 +76,5 @@ function getSpecificNode(callback, nodeId){
 			}
 		}
 	});
+	return true;	
 }

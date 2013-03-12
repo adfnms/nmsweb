@@ -43,8 +43,6 @@ public class NodeSearchController
 	{
 		ModelAndView model = new ModelAndView();
 
-		System.out.println("==== Node Description : nodeId ["+nodeId+"] ====");
-		
 		model.addObject("nodeId",nodeId);
 		model.setViewName("/monitering/node/nodeDesc");
 		return model;

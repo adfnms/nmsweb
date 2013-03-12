@@ -117,19 +117,19 @@
 					</div>
 					<div class="row-fluid">
 						<div class="span12">
-							<div class="row-fluid" id="cateDiv">
+							<div class="row-fluid">
 								<div class="span12">
 									<label class="span2 control-label">노드명</label>
 									<div class="span4 controls">
-										<input type="text" id="label" name="label" value=""/>
+										<input type="text" id="label" class="span12" name="label" value=""/>
 									</div>
 									<label class="span2 control-label">노드 ID</label>
 									<div class="span4 controls">
-										<input type="text" id="id" name="id" value=""/>
+										<input type="text" id="id" class="span12" name="id" value=""/>
 									</div>
 								</div>
 							</div>
-							<div class="row-fluid" id="cateDiv">
+							<div class="row-fluid">
 								<div class="span12">
 									<label class="span2 control-label">제공 서비스</label>
 									<div class="span4 controls">
@@ -167,7 +167,7 @@
 									</div>
 									<label class="span2 control-label">TCP/IP 주소</label>
 									<div class="span4 controls">
-										<input type="text" placeholder="*.*.*.*" id="ipAddress"  name="ipAddress" value=""/>
+										<input type="text" placeholder="*.*.*.*" id="ipAddress" class="span12"  name="ipAddress" value=""/>
 									</div>
 								</div>
 							</div>
@@ -199,7 +199,7 @@
 									</div>
 								</div>
 							</div> -->
-							<div class="row-fluid" id="cateDiv">
+							<div class="row-fluid">
 								<div class="span12">
 									<div class="span9"></div>
 									<div class="span3">
