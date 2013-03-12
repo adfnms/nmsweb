@@ -1,26 +1,20 @@
 package kr.co.adflow.nms.web.mapper;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import kr.co.adflow.nms.web.exception.MapperException;
 import kr.co.adflow.nms.web.vo.AssetRecord;
 import kr.co.adflow.nms.web.vo.Category;
 import kr.co.adflow.nms.web.vo.IpInterface;
 import kr.co.adflow.nms.web.vo.Node;
-import kr.co.adflow.nms.web.vo.Service;
 import kr.co.adflow.nms.web.vo.SnmpInterface;
 
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
+import org.springframework.stereotype.Service;
 
 /**
  * nodeMapping
@@ -28,6 +22,8 @@ import org.codehaus.jackson.type.TypeReference;
  * @author kicho@adflow.co.kr
  * @version 1.1
  */
+
+@Service
 public class NodeMapper {
 
 	public Node nodeMapping(String jdata) throws MapperException {
@@ -267,9 +263,9 @@ public class NodeMapper {
 	}
 	
 	
-	public Service[] serviceMappingAll(String jdata) throws MapperException {
+	public kr.co.adflow.nms.web.vo.Service[] serviceMappingAll(String jdata) throws MapperException {
 
-		Service[] service = null;
+		kr.co.adflow.nms.web.vo.Service[] service = null;
 		int count = 0;
 
 		try {
@@ -283,7 +279,7 @@ public class NodeMapper {
 			
 			count = Integer.parseInt(jNode.path("@count").getTextValue());
 			
-			service = new Service[count];
+			service = new kr.co.adflow.nms.web.vo.Service[count];
 			
 			
 			if (jNode.path("service").isArray()) {
@@ -296,7 +292,7 @@ public class NodeMapper {
 					System.out.println("111111 : "+ i);
 					
 					
-					service[i] = new Service();
+					service[i] = new kr.co.adflow.nms.web.vo.Service();
 					temp = it.next();
 					service[i].setStatus(temp.path("@status").getTextValue());
 					service[i].setSource(temp.path("@source").getTextValue());
@@ -308,7 +304,7 @@ public class NodeMapper {
 					service[i].setNotify(temp.path("notify").getTextValue());
 					
 					
-					Service.ServiceType serviceType = new Service.ServiceType();
+					kr.co.adflow.nms.web.vo.Service.ServiceType serviceType = new kr.co.adflow.nms.web.vo.Service.ServiceType();
 					serviceType.setId(temp.path("serviceType").path("@id").getTextValue());
 					serviceType.setId(temp.path("serviceType").path("name").getTextValue());
 					
@@ -316,7 +312,7 @@ public class NodeMapper {
 					
 				}
 			} else{
-				service[0] = new Service();
+				service[0] = new kr.co.adflow.nms.web.vo.Service();
 
 				service[0].setStatus(jNode.path("service").path("@status").getTextValue());
 				service[0].setSource(jNode.path("service").path("@source").getTextValue());
@@ -325,7 +321,7 @@ public class NodeMapper {
 				service[0].setNotify(jNode.path("service").path("notify").getTextValue());
 				
 				
-				Service.ServiceType serviceType = new Service.ServiceType();
+				kr.co.adflow.nms.web.vo.Service.ServiceType serviceType = new kr.co.adflow.nms.web.vo.Service.ServiceType();
 				serviceType.setId(jNode.path("service").path("serviceType").path("@id").getTextValue());
 				serviceType.setId(jNode.path("service").path("serviceType").path("name").getTextValue());
 				
@@ -340,9 +336,9 @@ public class NodeMapper {
 		return service;
 	}
 	
-	public Service serviceMapping(String jdata) throws MapperException {
+	public kr.co.adflow.nms.web.vo.Service serviceMapping(String jdata) throws MapperException {
 
-		Service service = new Service();
+		kr.co.adflow.nms.web.vo.Service service = new kr.co.adflow.nms.web.vo.Service();
 
 		try {
 			ObjectMapper om = new ObjectMapper();
@@ -358,7 +354,7 @@ public class NodeMapper {
 			service.setNotify(jNode.path("notify").getTextValue());
 			
 			
-			Service.ServiceType serviceType = new Service.ServiceType();
+			kr.co.adflow.nms.web.vo.Service.ServiceType serviceType = new kr.co.adflow.nms.web.vo.Service.ServiceType();
 			serviceType.setId(jNode.path("serviceType").path("@id").getTextValue());
 			serviceType.setId(jNode.path("serviceType").path("name").getTextValue());
 			

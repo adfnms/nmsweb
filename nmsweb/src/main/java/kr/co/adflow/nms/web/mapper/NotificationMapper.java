@@ -1,37 +1,20 @@
 package kr.co.adflow.nms.web.mapper;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
-import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
 
-import kr.co.adflow.nms.web.vo.AssetRecord;
-import kr.co.adflow.nms.web.vo.Category;
-import kr.co.adflow.nms.web.vo.IpInterface;
-import kr.co.adflow.nms.web.vo.Node;
-import kr.co.adflow.nms.web.vo.SchoedOutage;
-import kr.co.adflow.nms.web.vo.Service;
-import kr.co.adflow.nms.web.vo.SnmpInterface;
-import kr.co.adflow.nms.web.vo.DestPath.*;
+import kr.co.adflow.nms.web.vo.DestPath.Path;
+import kr.co.adflow.nms.web.vo.DestPath.Target;
 import kr.co.adflow.nms.web.vo.notifications.Notification;
 import kr.co.adflow.nms.web.vo.notifications.Parameter;
 import kr.co.adflow.nms.web.vo.notifications.Varbind;
 
-import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * ScheduledOutagesMapper
@@ -40,6 +23,7 @@ import org.slf4j.LoggerFactory;
  * @version 1.2
  */
 
+@Service
 public class NotificationMapper {
 
 	private static final Logger logger = LoggerFactory

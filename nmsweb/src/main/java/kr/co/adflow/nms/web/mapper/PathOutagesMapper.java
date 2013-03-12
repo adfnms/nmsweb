@@ -17,7 +17,7 @@ import kr.co.adflow.nms.web.vo.IpInterface;
 import kr.co.adflow.nms.web.vo.Node;
 import kr.co.adflow.nms.web.vo.PathOutage;
 import kr.co.adflow.nms.web.vo.SchoedOutage;
-import kr.co.adflow.nms.web.vo.Service;
+import org.springframework.stereotype.Service;
 import kr.co.adflow.nms.web.vo.SnmpInterface;
 import kr.co.adflow.nms.web.vo.DestPath.Path;
 
@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
  * @version 1.2
  */
 
+@Service
 public class PathOutagesMapper {
 	
 	private static final Logger logger = LoggerFactory
