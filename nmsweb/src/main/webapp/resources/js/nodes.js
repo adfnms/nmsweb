@@ -49,3 +49,27 @@ function searchNodeList(callback, nodeId, ipAddress, seviceName) {
 		}
 	});
 }
+
+function getSpecificNode(callback, nodeId){
+	
+	if(nodeId == ""){
+		alert("노드 아이디 정보가 없습니다.");
+		return;
+	}
+	
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/nodes/'+nodeId,
+		dataType : 'json',
+		contentType : 'application/json',
+		error : function(data) {
+			alert(nodeId+'노드 정보 가져오기 서비스 실패');
+		},
+		success : function(data) {
+			// 콜백함수
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+}

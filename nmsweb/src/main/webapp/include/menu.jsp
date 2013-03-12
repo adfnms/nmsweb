@@ -29,7 +29,7 @@
 							<b class = "caret"></b>
 						</a>
 						<ul class="dropdown-menu" >
-							<li><a href="<c:url value="/node/search.do" />">노드검색</a></li>
+							<li><a href="<c:url value="/monitering/node/search.do" />">노드검색</a></li>
 							<li><a href="#">장애검색</a></li>
 						</ul>
 					</li>

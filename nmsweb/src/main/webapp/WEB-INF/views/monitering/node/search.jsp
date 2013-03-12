@@ -29,14 +29,14 @@
 		var str = "<tr>";
 
 		if(1 == jsonObj["@totalCount"]){
-			str += "<td><a href='#'>"+nodeObj["@id"]+"</a></td>";
-			str += "<td><a href='#'>"+nodeObj["@label"]+"</a></td>";
+			str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="+nodeObj["@id"]+"'>"+nodeObj["@id"]+"</a></td>";
+			str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="+nodeObj["@id"]+"'>"+nodeObj["@label"]+"</a></td>";
 		}else{
 			
 			for ( var i in nodeObj) {
 				
-				str += "<td><a href='#'>"+nodeObj[i]["@id"]+"</a></td>";
-				str += "<td><a href='#'>"+nodeObj[i]["@label"]+"</a></td>";
+				str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="+nodeObj[i]["@id"]+"'>"+nodeObj[i]["@id"]+"</a></td>";
+				str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="+nodeObj[i]["@id"]+"'>"+nodeObj[i]["@label"]+"</a></td>";
 				
 				if( i % 2 == 1 ){
 					str += "</tr><tr>";
