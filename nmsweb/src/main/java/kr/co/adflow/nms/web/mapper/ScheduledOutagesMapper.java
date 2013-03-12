@@ -7,6 +7,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
  * @version 1.2
  */
 
+@Service
 public class ScheduledOutagesMapper {
 	
 	private static final Logger logger = LoggerFactory
