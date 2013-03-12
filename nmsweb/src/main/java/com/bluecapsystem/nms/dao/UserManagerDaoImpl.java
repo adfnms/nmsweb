@@ -1,5 +1,7 @@
 package com.bluecapsystem.nms.dao;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Repository;
@@ -29,6 +31,7 @@ public class UserManagerDaoImpl extends BaseDao implements UserManagerDao{
 		try{
 			
 			super.getSqlMapClientTemplate().insert("com.bluecapsystem.nms.userManager.regToDb", userTbl);
+			
 			
 			
 		}catch(Exception ex)
@@ -71,5 +74,11 @@ try{
 		
 	}
 	
+	@Override
+	public UserTbl selectToDb(Map<String, Object> params) {
+		System.out.println("------------3-UserManagerDaoImpl-selectToDb------------");
+		return (UserTbl) getSqlMapClientTemplate().queryForObject("com.bluecapsystem.nms.userManager.selectToDb", params);
+		
+	}
 
 }

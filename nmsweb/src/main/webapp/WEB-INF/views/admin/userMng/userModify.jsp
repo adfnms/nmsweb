@@ -174,7 +174,7 @@ try{
 							</div>
 							<label class="span2 control-label">Telephone PIN</label>
 							<div class="span4 controls">
-								<input type="text"    id=""   name=""  placeholder="Telephone PIN"  value=""> 
+								<input type="text"    id=""   name=""  placeholder="Telephone PIN"  value="${userInfo.regrId}"> 
 							</div>
 						</div>
 					</div>

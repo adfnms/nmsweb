@@ -1,5 +1,7 @@
 package com.bluecapsystem.nms.dao;
 
+import java.util.Map;
+
 import com.bluecapsystem.nms.dto.UserTbl;
 
 public interface UserManagerDao {
@@ -23,4 +25,6 @@ public interface UserManagerDao {
 	 */
 	public void deleteToDb(UserTbl userTbl);
 	
+	
+	public UserTbl selectToDb(Map<String, Object> params);
 }

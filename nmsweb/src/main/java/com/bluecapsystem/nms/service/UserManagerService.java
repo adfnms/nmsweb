@@ -1,6 +1,7 @@
 package com.bluecapsystem.nms.service;
 
 import com.bluecapsystem.nms.dto.UserTbl;
+import com.bluecapsystem.nms.util.OutParam;
 
 public interface UserManagerService {
 	
@@ -25,5 +26,11 @@ public interface UserManagerService {
 	 */
 	public boolean deleteToDb(UserTbl userTbl);
 	
-
+	/**
+	 *  select database test
+	 * @param userId
+	 * @param newsTbl
+	 * @return
+	 */
+	public boolean selectToDb(String date, OutParam <UserTbl> UserTbl);
 }

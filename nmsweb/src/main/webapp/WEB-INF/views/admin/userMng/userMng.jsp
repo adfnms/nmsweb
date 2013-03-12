@@ -39,7 +39,7 @@
 			str += userObj[i]["user-comments"];
 			str += "	</td>";
 			str += "	<td>";
- 			str += "<a type=\"button\" class=\"btn \ href=\"javascript:deleteUser();\">삭제</a>";
+ 			str += "<a type=\"button\" class=\"btn\" href=\"javascript:deleteUser('"+userObj[i]["user-id"]+"');\">삭제</a>";
  			str += "	</td>";
 			str += "</tr>";
 		}
@@ -57,6 +57,27 @@
 		frm.submit();
 		
 		
+	}
+	
+function deleteUser(userId){
+		
+		alert("----deleteUser-----userId--->"+userId);
+		
+		$.ajax({
+			
+			type : 'delete',
+			url : 'http://localhost:8080/v1/users/'+userId,
+			contentType : 'application/json',
+			
+			error : function() {
+				alert('삭제 서비스 실패');
+			},
+			success : function(data) {
+				alert("삭제성공");
+			}
+		});
+		
+		deleteToDb();
 	}
 </script>
 </head>

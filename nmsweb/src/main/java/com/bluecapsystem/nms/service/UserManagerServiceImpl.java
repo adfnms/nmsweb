@@ -1,11 +1,15 @@
 package com.bluecapsystem.nms.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bluecapsystem.frm.BaseService;
 import com.bluecapsystem.nms.dao.UserManagerDao;
 import com.bluecapsystem.nms.dto.UserTbl;
+import com.bluecapsystem.nms.util.OutParam;
 
 
 @Service(value = "UserManagerService")
@@ -84,7 +88,38 @@ public class UserManagerServiceImpl  extends BaseService implements UserManagerS
 		return ret;
 	}
 
+	@Override
+	public boolean selectToDb(String userId, OutParam<UserTbl> userTbl) {
+		boolean ret = false;
+		userTbl.set(null);
+		UserTbl UserTbl = new UserTbl();
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("userId",userId);
+		
+		try
+		{
+			UserTbl = userManagerDao.selectToDb(params);
+			
+			userTbl.set(UserTbl);
+			
+			System.out.println("-------------2-selectToDb-SERVICE-IMPL---------------"+userTbl);
+			
+			ret = true;
+			
+		}catch(Exception ex){
+			
+			ex.printStackTrace();
+			
+			ret = false;
+		
+		}finally{
+			
+		}
+		return ret;
+	}
+	}
+
 	
 	
 
-}
+

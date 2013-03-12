@@ -49,5 +49,14 @@
     	WHERE user_id=#userId#
     </update>
     
+    <select id="selectToDb" resultClass="com.bluecapsystem.nms.dto.UserTbl">
+		SELECT now() as regrId;
+		
+			<!-- MODRID	as	modrId
+		
+		FROM  USER_TBL
+			
+			WHERE user_id=#userId# -->
+  	</select>
 
 </sqlMap>

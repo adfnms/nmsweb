@@ -16,6 +16,7 @@ public class UserTbl {
 	private String modrId;
 	private Timestamp modDt; 
 	private String useYn;
+	
 	public String getUserId() {
 		return userId;
 	}
