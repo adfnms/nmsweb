@@ -162,17 +162,22 @@ public class AdminTestService {
 				}
 
 			}
-
-			for (int j = 0; j < arrSplitValue.size(); j++) {
-				logger.debug("arrSplitValueAfter::" + arrSplitValue.get(j));
-				sbuf.append(arrSplitValue.get(j) + ",");
+			if (arrSplitValue.size() == 0) {
+				logger.debug("size is 0");
+				String empty = "";
+				properties.setProperty(adminKey, empty);
+				properties.store(new FileOutputStream(permissionUrl), null);
+			} else {
+				for (int j = 0; j < arrSplitValue.size(); j++) {
+					logger.debug("arrSplitValueAfter::" + arrSplitValue.get(j));
+					sbuf.append(arrSplitValue.get(j) + ",");
+				}
+				String deleteData = sbuf.delete(sbuf.length() - 1,
+						sbuf.length()).toString();
+				logger.debug("deleteData::" + deleteData);
+				properties.setProperty(adminKey, deleteData);
+				properties.store(new FileOutputStream(permissionUrl), null);
 			}
-
-			String deleteData = sbuf.delete(sbuf.length() - 1, sbuf.length())
-					.toString();
-			logger.debug("deleteData::" + deleteData);
-			properties.setProperty(adminKey, deleteData);
-			properties.store(new FileOutputStream(permissionUrl), null);
 
 		} catch (Exception e) {
 			throw new HandleException(e);
@@ -230,16 +235,22 @@ public class AdminTestService {
 
 			}
 
-			for (int j = 0; j < arrSplitValue.size(); j++) {
-				logger.debug("arrSplitValueAfter::" + arrSplitValue.get(j));
-				sbuf.append(arrSplitValue.get(j) + ",");
+			if (arrSplitValue.size() == 0) {
+				logger.debug("size is 0");
+				String empty = "";
+				properties.setProperty(dashKey, empty);
+				properties.store(new FileOutputStream(permissionUrl), null);
+			} else {
+				for (int j = 0; j < arrSplitValue.size(); j++) {
+					logger.debug("arrSplitValueAfter::" + arrSplitValue.get(j));
+					sbuf.append(arrSplitValue.get(j) + ",");
+				}
+				String deleteData = sbuf.delete(sbuf.length() - 1,
+						sbuf.length()).toString();
+				logger.debug("deleteData::" + deleteData);
+				properties.setProperty(dashKey, deleteData);
+				properties.store(new FileOutputStream(permissionUrl), null);
 			}
-
-			String deleteData = sbuf.delete(sbuf.length() - 1, sbuf.length())
-					.toString();
-			logger.debug("DeleteDATA::" + deleteData);
-			properties.setProperty(dashKey, deleteData);
-			properties.store(new FileOutputStream(permissionUrl), null);
 
 		} catch (Exception e) {
 			throw new HandleException(e);

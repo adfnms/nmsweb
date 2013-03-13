@@ -24,7 +24,7 @@ public class AdminTestController {
 	
 	@Autowired
 	AdminTestService service;
-		@RequestMapping(value = "/admin/{id}", method = RequestMethod.PUT)
+		@RequestMapping(value = "/adminuser/{id}", method = RequestMethod.PUT)
 		public @ResponseBody
 		String adminPage(@PathVariable String id, HttpServletRequest request)
 				throws HandleException {
@@ -41,7 +41,7 @@ public class AdminTestController {
 			return result;
 		}
 		
-		@RequestMapping(value = "/dashboard/{id}", method = RequestMethod.PUT)
+		@RequestMapping(value = "/dashboarduser/{id}", method = RequestMethod.PUT)
 		public @ResponseBody
 		String dashBoardPage(@PathVariable String id, HttpServletRequest request)
 				throws HandleException {
@@ -58,7 +58,7 @@ public class AdminTestController {
 			return result;
 		}
 		
-		@RequestMapping(value = "/admin/del/{id}", method = RequestMethod.DELETE)
+		@RequestMapping(value = "/adminuser/del/{id}", method = RequestMethod.DELETE)
 		public @ResponseBody
 		String adminPageDel(@PathVariable String id, HttpServletRequest request)
 				throws HandleException {
@@ -75,7 +75,7 @@ public class AdminTestController {
 			return result;
 		}
 		
-		@RequestMapping(value = "/dashboard/del/{id}", method = RequestMethod.DELETE)
+		@RequestMapping(value = "/dashboarduser/del/{id}", method = RequestMethod.DELETE)
 		public @ResponseBody
 		String dashBoardPageDel(@PathVariable String id, HttpServletRequest request)
 				throws HandleException {
@@ -110,7 +110,7 @@ public class AdminTestController {
 			return result;
 		}
 		
-		@RequestMapping(value = "/dashuser", method = RequestMethod.GET)
+		@RequestMapping(value = "/dashboarduser", method = RequestMethod.GET)
 		public @ResponseBody
 		String dashUser(HttpServletRequest request)
 				throws HandleException {
