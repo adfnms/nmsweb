@@ -293,6 +293,63 @@ public class NodeController {
 		return result;
 	}
 	
+	@RequestMapping(value = "/serviceList", method = RequestMethod.GET)
+	public @ResponseBody
+	String serviceList(HttpServletRequest request)
+			throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) service.serviceList();
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
+	@RequestMapping(value = "/nodes/searchService/{serviceId}", method = RequestMethod.GET)
+	public @ResponseBody
+	String nodeSearchService(HttpServletRequest request, @PathVariable String serviceId)
+			throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) service.nodeSearchService(serviceId);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
+	@RequestMapping(value = "/nodes/searchIp/{iplike:.+}", method = RequestMethod.GET)
+	public @ResponseBody
+	String nodeSearchIp(HttpServletRequest request, @PathVariable String iplike)
+			throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) service.nodeSearchIp(iplike);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
 	
 	
 	// /// POST /////
