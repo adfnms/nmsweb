@@ -5,10 +5,17 @@ import groovy.lang.GroovyObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 
 import kr.co.adflow.nms.web.Handler;
 import kr.co.adflow.nms.web.exception.HandleException;
@@ -487,6 +494,193 @@ public class NodeService {
 		}
 
 		return result;
+	}
+	
+	
+	public String serviceList() throws HandleException {
+
+		StringBuffer result = new StringBuffer();
+
+		Statement stmt = null;
+		ResultSet rst = null;
+		Connection conn = null;
+		String sql = null;
+
+		try {
+			Context ctx = new InitialContext();
+			if (ctx == null)
+				throw new Exception("Boom - No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+			if (ds != null) {
+				conn = ds.getConnection();
+
+				if (conn != null) {
+					stmt = conn.createStatement();
+					sql = "SELECT serviceid, servicename FROM service";
+
+					logger.debug("sql:::" + sql);
+					rst = stmt.executeQuery(sql);
+
+					result.append("{\"services\":[");
+					while (rst.next()) {
+
+						result.append("{\"serviceid\":\"" + rst.getInt(1) + "\",");
+						result.append("\"servicename\":\""
+								+ rst.getString(2) + "\"},");
+
+					}
+
+					rst.close();
+
+					// last "&" delete.
+					result.deleteCharAt(result.length() - 1);
+					result.append("]}");
+					logger.debug("ResultSet Json:::" + result.toString());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
+
+		return result.toString();
+	}
+	
+	public String nodeSearchService(String serviceId) throws HandleException {
+
+		StringBuffer result = new StringBuffer();
+
+		Statement stmt = null;
+		ResultSet rst = null;
+		Connection conn = null;
+		String sql = null;
+
+		try {
+			Context ctx = new InitialContext();
+			if (ctx == null)
+				throw new Exception("Boom - No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+			if (ds != null) {
+				conn = ds.getConnection();
+
+				if (conn != null) {
+					stmt = conn.createStatement();
+					sql = "SELECT nodeid, nodelabel FROM node WHERE nodeid in (SELECT nodeid FROM ifservices WHERE status != 'D' AND serviceid = "+serviceId+" GROUP BY nodeid)";
+
+					logger.debug("sql:::" + sql);
+					rst = stmt.executeQuery(sql);
+
+					result.append("{\"nodes\":[");
+					while (rst.next()) {
+
+						result.append("{\"nodeid\":\"" + rst.getInt(1) + "\",");
+						result.append("\"nodelabel\":\""
+								+ rst.getString(2) + "\"},");
+
+					}
+
+					rst.close();
+
+					// last "&" delete.
+					result.deleteCharAt(result.length() - 1);
+					result.append("]}");
+					logger.debug("ResultSet Json:::" + result.toString());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
+
+		return result.toString();
+	}
+	
+	public String nodeSearchIp(String iplike) throws HandleException {
+
+		StringBuffer result = new StringBuffer();
+
+		Statement stmt = null;
+		ResultSet rst = null;
+		Connection conn = null;
+		String sql = null;
+
+		try {
+			Context ctx = new InitialContext();
+			if (ctx == null)
+				throw new Exception("Boom - No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+			if (ds != null) {
+				conn = ds.getConnection();
+
+				if (conn != null) {
+					stmt = conn.createStatement();
+					sql = "SELECT nodeid, nodelabel FROM node WHERE nodeid in (SELECT nodeid  FROM ipinterface WHERE iplike(ipaddr,'"+iplike+"'))";
+
+					logger.debug("sql:::" + sql);
+					rst = stmt.executeQuery(sql);
+
+					result.append("{\"nodes\":[");
+					while (rst.next()) {
+
+						result.append("{\"nodeid\":\"" + rst.getInt(1) + "\",");
+						result.append("\"nodelabel\":\""
+								+ rst.getString(2) + "\"},");
+
+					}
+
+					rst.close();
+
+					// last "&" delete.
+					result.deleteCharAt(result.length() - 1);
+					result.append("]}");
+					logger.debug("ResultSet Json:::" + result.toString());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
+
+		return result.toString();
 	}
 
 }
