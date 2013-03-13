@@ -643,7 +643,7 @@ public class NodeService {
 
 				if (conn != null) {
 					stmt = conn.createStatement();
-					sql = "SELECT nodeid, nodelabel FROM node WHERE nodeid in (SELECT nodeid  FROM ipinterface WHERE iplike(ipaddr,'"+iplike+"'))";
+					sql = "SELECT nodeid, nodelabel FROM node WHERE nodeid in (SELECT nodeid  FROM ipinterface WHERE iplike(ipaddr,'"+iplike+"') AND ismanaged = 'M')";
 
 					logger.debug("sql:::" + sql);
 					rst = stmt.executeQuery(sql);
