@@ -23,16 +23,22 @@ function getTotalEvenstList(callback,data) {
 
 }
 
-/** Get a list of outages for nodeId
+/** Get a list of outages for nodeId [recent]
+ * 최근 recentCount개 의 Events 목록
  * @param callback
  * @param nodeId
+ * @param recentCount
  */
-function getEventsForNode(callback,nodeId) {
+function getEventsForNode(callback,nodeId,recentCount) {
 
 	if(nodeId == null){
 		alert("노드 아이디가 없습니다.");
 		return;
 	}
 	
-	getTotalEvenstList(callback,"this_.nodeId%20%3D%20'"+nodeId+"'");
+	//var data = "query=this_.nodeId = '"+nodeId+"' AND this_.iflostservice > '"+new Date().format("yyyy-MM-ddTHH:MM:ss")+"'";
+	var query = encodeURI("query=this_.nodeId = '"+nodeId+"'");
+	var filter ="&orderBy=eventTime&order=desc&limit="+recentCount;
+
+	getTotalEvenstList(callback,query+filter);
 }

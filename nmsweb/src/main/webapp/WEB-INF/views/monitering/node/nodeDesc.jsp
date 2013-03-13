@@ -19,10 +19,10 @@
 
 		getSpecificNode(addNodeDesc, "${nodeId}");
 
-		getOutagesForNode(addOutages, "${nodeId}");
+		getOutagesForNode(addOutages, "${nodeId}", "10");
 
-		getEventsForNode(addEvents, "${nodeId}");
-		
+		getEventsForNode(addEvents, "${nodeId}", "10");
+
 	});
 
 	function addNodeDesc(jsonObj) {
@@ -45,8 +45,8 @@
 		if (categories != null) {
 
 			var scmStr = "	<div class='row-fluid'>"
-					+ "		<h5>감시&nbsp;카테고리&nbsp;회원&nbsp;[" + categories.length
-					+ "]</h5>" + "	</div>" + "	<div class='row-fluid'>"
+					+ "		<h5>감시&nbsp;카테고리&nbsp;회원&nbsp;</h5></div>"
+					+ "	<div class='row-fluid'>"
 					+ "		<div class='span12 well well-small'>";
 
 			if (categories.length > 1) {
@@ -73,29 +73,64 @@
 
 	/* Recent Outages */
 	function addOutages(jsonObj) {
+
 		console.log(jsonObj);
-		var outages = jsonObj;
+
+		var outages = jsonObj["outage"];
 
 		if (outages != null) {
 
-			var scmStr = "	<div class='row-fluid'>" + "		<h5>중단&nbsp;목록&nbsp;["
-					+ outages["@count"] + "]</h5>" + "	</div>"
+			var scmStr = "	<div class='row-fluid'>"
+					+ "		<h5>중단&nbsp;목록&nbsp;["
+					+ jsonObj["@count"]
+					+ "]</h5>"
+					+ "	</div>"
 					+ "	<div class='row-fluid'>"
-					+ "		<div class='span12 well well-small'>";
-
+					+ "		<div class='span12 well well-small'>"
+					+ "<table class='table table-striped'>"
+					+ "<tr><th>Interface</th><th>service</th><th>Lost</th><th>Regained</th><th>Id</th></tr>";
 			if (outages.length > 1) {
 
 				for ( var i in outages) {
-					scmStr += "<div class='row-fluid'>" + "	<a href='#'>"
-							+ outages[i]["@name"] + "</a>" + "</div>";
+
+					scmStr += "<tr>";
+					scmStr += "<td><a href='#'>" + outages[i]["ipAddress"]
+							+ "</a></td>";
+					scmStr += "<td><a href='#'>"
+							+ nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"], "name")
+							+ "</a></td>";
+					scmStr += "<td>"
+							+ new Date(nullCheckJsonObject(outages[i]["serviceLostEvent"], "time"))
+									.format('yy-MM-dd hh:mm:ss') + "</td>";
+					scmStr += "<td>"
+							+ new Date(
+									nullCheckJsonObject(outages[i]["serviceRegainedEvent"], "time"))
+									.format('yy-MM-dd hh:mm:ss') + "</td>";
+					scmStr += "<td><a href='#'>" + outages[i]["@id"]
+							+ "</a></td>";
+					scmStr += "</tr>";
 				}
 
 			} else {
-				scmStr += "<div class='row-fluid'>" + "	<a href='#'>"
-						+ outages["@name"] + "</a>" + "</div>";
+				scmStr += "<tr>";
+				scmStr += "<td><a href='#'>" + outages["ipAddress"]
+						+ "</a></td>";
+				scmStr += "<td><a href='#'>"
+						+ nullCheckJsonObject(outages["serviceLostEvent"]["serviceType"], "name")
+						+ "</a></td>";
+				scmStr += "<td>"
+						+ new Date(nullCheckJsonObject(outages["serviceLostEvent"], "time"))
+								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				scmStr += "<td>"
+						+ new Date(
+								nullCheckJsonObject(outages["serviceRegainedEvent"], "time"))
+								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				scmStr += "<td><a href='#'>" + outages["@id"]
+						+ "</a></td>";
+				scmStr += "</tr>";
 			}
 
-			scmStr += "</div>";
+			scmStr += "</table></div>";
 			$('#rightDiv').append(scmStr);
 
 		}
@@ -103,32 +138,50 @@
 		return true;
 	}
 	/*//Recent Outages */
-	
+
 	/* Recent Outages */
 	function addEvents(jsonObj) {
+		console.log(jsonObj);
 
-		var events = jsonObj;
+		var events = jsonObj["event"];
 
 		if (events != null) {
 
-			var scmStr = "	<div class='row-fluid'>" + "<h5>이벤트&nbsp;목록&nbsp;["
-					+ events["@count"] + "]</h5>" + "	</div>"
+			var scmStr = "	<div class='row-fluid'>"
+					+ "		<h5>이벤트&nbsp;목록&nbsp;["
+					+ jsonObj["@count"]
+					+ "]</h5>"
+					+ "	</div>"
 					+ "	<div class='row-fluid'>"
-					+ "		<div class='span12 well well-small'>";
-
+					+ "		<div class='span12 well well-small'>"
+					+ "<table class='table table-striped'>"
+					+ "<tr><th>EventId</th><th>time</th><th>stats</th><th>Message</th></tr>";
 			if (events.length > 1) {
 
 				for ( var i in events) {
-					scmStr += "<div class='row-fluid'>" + "	<a href='#'>"
-							+ events[i]["@name"] + "</a>" + "</div>";
+					scmStr += "<tr>";
+					scmStr += "<td><a href='#'>" + events[i]["@id"]
+							+ "</a></td>";
+					scmStr += "<td><a href='#'>"
+							+ new Date(events[i]["createTime"])
+									.format('yy-MM-dd hh:mm:ss') + "</a></td>";
+					scmStr += "<td>" + events[i]["@severity"] + "</td>";
+					scmStr += "<td>" + events[i]["logMessage"] + "</td>";
+					scmStr += "</tr>";
 				}
 
 			} else {
-				scmStr += "<div class='row-fluid'>" + "	<a href='#'>"
-						+ events["@name"] + "</a>" + "</div>";
+				scmStr += "<tr>";
+				scmStr += "<td><a href='#'>" + events["@id"] + "</a></td>";
+				scmStr += "<td><a href='#'>"
+						+ new Date(events["createTime"])
+								.format('yy-MM-dd hh:mm:ss') + "</a></td>";
+				scmStr += "<td>" + events["@severity"] + "</td>";
+				scmStr += "<td>" + events["logMessage"] + "</td>";
+				scmStr += "</tr>";
 			}
 
-			scmStr += "</div>";
+			scmStr += "</table></div>";
 			$('#rightDiv').append(scmStr);
 
 		}
@@ -145,7 +198,7 @@
 		<jsp:include page="/include/menu.jsp" />
 
 		<div class="row-fluid">
-			<div class="span10">
+			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value="/index.do" />" />Home</a> <span
 						class="divider">/</span></li>
@@ -158,19 +211,22 @@
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
 		<div class="row-fluid">
-			<div class="span10 well well-small">
+			<div class="span12 well well-small">
 				<div class="row-fluid">
-					<div class="span6">
+					<div class="span12">
 						<h4 id="nodeLabel">노드정보</h4>
-					</div>
-					<div class="span6">
-						<jsp:include page="/include/statsBar.jsp" />
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row-fluid">
-			<div class="span5">
+			<div class="span9"></div>
+			<div class="span3">
+				<jsp:include page="/include/statsBar.jsp" />
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span4">
 				<div class="row-fluid">
 					<h5>가용성</h5>
 				</div>
@@ -232,21 +288,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="span5" id="rightDiv">
-				<div class="row-fluid">
-					<h5>공지</h5>
-				</div>
-				<div class="row-fluid">
-					<div class="span12 well well-small">
-						<div class="row-fluid">
-							나의 공지 <a href="#">[ 바로가기 ]</a>
-						</div>
-						<div class="row-fluid">
-							나의 확인된 공지 <a href="#">[ 바로가기 ]</a>
-						</div>
-					</div>
-				</div>
-			</div>
+			<div class="span8" id="rightDiv"></div>
 		</div>
 
 	</div>
