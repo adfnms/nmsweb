@@ -542,7 +542,7 @@ public class NodeService {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HandleException(e);
 		} finally {
 			if (stmt != null)
 				try {
@@ -604,7 +604,7 @@ public class NodeService {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HandleException(e);
 		} finally {
 			if (stmt != null)
 				try {
@@ -666,7 +666,7 @@ public class NodeService {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HandleException(e);
 		} finally {
 			if (stmt != null)
 				try {

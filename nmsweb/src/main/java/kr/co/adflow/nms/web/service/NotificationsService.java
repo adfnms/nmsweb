@@ -1,8 +1,15 @@
 package kr.co.adflow.nms.web.service;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Locale;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 
 import kr.co.adflow.nms.web.DefaultHandlerImpl;
 import kr.co.adflow.nms.web.Handler;
@@ -860,5 +867,228 @@ public class NotificationsService {
 
 		return result;
 	}
+	
+	public String notificationsSearchUser(String userName) throws HandleException {
+
+		StringBuffer result = new StringBuffer();
+
+		Statement stmt = null;
+		ResultSet rst = null;
+		Connection conn = null;
+		String sql = null;
+
+		try {
+			Context ctx = new InitialContext();
+			if (ctx == null)
+				throw new Exception("Boom - No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+			if (ds != null) {
+				conn = ds.getConnection();
+
+				if (conn != null) {
+					stmt = conn.createStatement();
+					sql = "SELECT notifyid, textmsg, subject, numericmsg, pagetime, respondtime, answeredby, nodeid, interfaceid, serviceid, queueid, eventid, eventuei, notifconfigname"+
+						  " FROM notifications WHERE answeredBy is null and notifyid in (SELECT DISTINCT usersnotified.notifyid FROM usersnotified WHERE usersnotified.userid='"+userName+"')";
+
+					logger.debug("sql:::" + sql);
+					rst = stmt.executeQuery(sql);
+
+					result.append("{\"notifications\":[");
+					while (rst.next()) {
+
+						result.append("{\"notifyid\":\"" + rst.getInt(1) + "\",");
+						result.append("\"textmsg\":\""+ rst.getString(2) + "\",");
+						result.append("\"subject\":\""+ rst.getString(3) + "\",");
+						result.append("\"numericmsg\":\""+ rst.getString(4) + "\",");
+						result.append("\"pagetime\":\""+ rst.getString(5) + "\",");
+						result.append("\"respondtime\":\""+ rst.getString(6) + "\",");
+						result.append("\"answeredby\":\""+ rst.getString(7) + "\",");
+						result.append("\"nodeid\":\""+ rst.getInt(8) + "\",");
+						result.append("\"interfaceid\":\""+ rst.getString(9) + "\",");
+						result.append("\"serviceid\":\""+ rst.getInt(10) + "\",");
+						result.append("\"queueid\":\""+ rst.getString(11) + "\",");
+						result.append("\"eventid\":\""+ rst.getInt(12) + "\",");
+						result.append("\"eventuei\":\""+ rst.getString(13) + "\",");
+						result.append("\"notifconfigname\":\""+ rst.getString(14) + "\"},");
+
+					}
+
+					rst.close();
+
+					// last "&" delete.
+					result.deleteCharAt(result.length() - 1);
+					result.append("]}");
+					logger.debug("ResultSet Json:::" + result.toString());
+				}
+			}
+		} catch (Exception e) {
+			throw new HandleException(e);
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
+
+		return result.toString();
+	}
+	
+	public String notificationsAllAck() throws HandleException {
+
+		StringBuffer result = new StringBuffer();
+
+		Statement stmt = null;
+		ResultSet rst = null;
+		Connection conn = null;
+		String sql = null;
+
+		try {
+			Context ctx = new InitialContext();
+			if (ctx == null)
+				throw new Exception("Boom - No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+			if (ds != null) {
+				conn = ds.getConnection();
+
+				if (conn != null) {
+					stmt = conn.createStatement();
+					sql = "SELECT notifyid, textmsg, subject, numericmsg, pagetime, respondtime, answeredby, nodeid, interfaceid, serviceid, queueid, eventid, eventuei, notifconfigname"+
+						  " FROM notifications WHERE answeredBy is not null";
+
+					logger.debug("sql:::" + sql);
+					rst = stmt.executeQuery(sql);
+
+					result.append("{\"notifications\":[");
+					while (rst.next()) {
+
+						result.append("{\"notifyid\":\"" + rst.getInt(1) + "\",");
+						result.append("\"textmsg\":\""+ rst.getString(2) + "\",");
+						result.append("\"subject\":\""+ rst.getString(3) + "\",");
+						result.append("\"numericmsg\":\""+ rst.getString(4) + "\",");
+						result.append("\"pagetime\":\""+ rst.getString(5) + "\",");
+						result.append("\"respondtime\":\""+ rst.getString(6) + "\",");
+						result.append("\"answeredby\":\""+ rst.getString(7) + "\",");
+						result.append("\"nodeid\":\""+ rst.getInt(8) + "\",");
+						result.append("\"interfaceid\":\""+ rst.getString(9) + "\",");
+						result.append("\"serviceid\":\""+ rst.getInt(10) + "\",");
+						result.append("\"queueid\":\""+ rst.getString(11) + "\",");
+						result.append("\"eventid\":\""+ rst.getInt(12) + "\",");
+						result.append("\"eventuei\":\""+ rst.getString(13) + "\",");
+						result.append("\"notifconfigname\":\""+ rst.getString(14) + "\"},");
+
+					}
+
+					rst.close();
+
+					// last "&" delete.
+					result.deleteCharAt(result.length() - 1);
+					result.append("]}");
+					logger.debug("ResultSet Json:::" + result.toString());
+				}
+			}
+		} catch (Exception e) {
+			throw new HandleException(e);
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
+
+		return result.toString();
+	}
+	
+	public String notificationsAllOutstand() throws HandleException {
+
+		StringBuffer result = new StringBuffer();
+
+		Statement stmt = null;
+		ResultSet rst = null;
+		Connection conn = null;
+		String sql = null;
+
+		try {
+			Context ctx = new InitialContext();
+			if (ctx == null)
+				throw new Exception("Boom - No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+			if (ds != null) {
+				conn = ds.getConnection();
+
+				if (conn != null) {
+					stmt = conn.createStatement();
+					sql = "SELECT notifyid, textmsg, subject, numericmsg, pagetime, respondtime, answeredby, nodeid, interfaceid, serviceid, queueid, eventid, eventuei, notifconfigname"+
+						  " FROM notifications WHERE answeredBy is null";
+
+					logger.debug("sql:::" + sql);
+					rst = stmt.executeQuery(sql);
+
+					result.append("{\"notifications\":[");
+					while (rst.next()) {
+
+						result.append("{\"notifyid\":\"" + rst.getInt(1) + "\",");
+						result.append("\"textmsg\":\""+ rst.getString(2) + "\",");
+						result.append("\"subject\":\""+ rst.getString(3) + "\",");
+						result.append("\"numericmsg\":\""+ rst.getString(4) + "\",");
+						result.append("\"pagetime\":\""+ rst.getString(5) + "\",");
+						result.append("\"respondtime\":\""+ rst.getString(6) + "\",");
+						result.append("\"answeredby\":\""+ rst.getString(7) + "\",");
+						result.append("\"nodeid\":\""+ rst.getInt(8) + "\",");
+						result.append("\"interfaceid\":\""+ rst.getString(9) + "\",");
+						result.append("\"serviceid\":\""+ rst.getInt(10) + "\",");
+						result.append("\"queueid\":\""+ rst.getString(11) + "\",");
+						result.append("\"eventid\":\""+ rst.getInt(12) + "\",");
+						result.append("\"eventuei\":\""+ rst.getString(13) + "\",");
+						result.append("\"notifconfigname\":\""+ rst.getString(14) + "\"},");
+
+					}
+
+					rst.close();
+
+					// last "&" delete.
+					result.deleteCharAt(result.length() - 1);
+					result.append("]}");
+					logger.debug("ResultSet Json:::" + result.toString());
+				}
+			}
+		} catch (Exception e) {
+			throw new HandleException(e);
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
+
+		return result.toString();
+	}
+
 
 }
