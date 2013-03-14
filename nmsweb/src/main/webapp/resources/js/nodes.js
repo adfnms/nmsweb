@@ -108,16 +108,16 @@ function searchNodeFromServiceId(callback, serviceId) {
 			alert("[" + ipAddress + '] 서비스 정보 검색 실패');
 		},
 		success : function(data) {
-			
+
 			data = JSON.stringify(data).replaceAll('"nodeid"', '"@id"');
-			data =data.replaceAll('"nodelabel"', '"@label"');
+			data = data.replaceAll('"nodelabel"', '"@label"');
 			data = JSON.parse(data);
-			
+
 			// 콜백함수
-			if (typeof callback == "function") { 
-				callback(data); 
+			if (typeof callback == "function") {
+				callback(data);
 			}
-			
+
 		}
 	});
 
@@ -145,16 +145,48 @@ function searchNodeFromIpAddress(callback, ipAddress) {
 			alert("[" + ipAddress + '] 아이피 정보 검색 실패');
 		},
 		success : function(data) {
-			
+
 			data = JSON.stringify(data).replaceAll('"nodeid"', '"@id"');
-			data =data.replaceAll('"nodelabel"', '"@label"');
+			data = data.replaceAll('"nodelabel"', '"@label"');
 			data = JSON.parse(data);
-			
+
 			// 콜백함수
-			if (typeof callback == "function") { 
-				callback(data); 
+			if (typeof callback == "function") {
+				callback(data);
 			}
-			
+
+		}
+	});
+
+}
+
+/**
+ * Get the list of IP interfaces associated with the given node
+ * 
+ * @param callback
+ * @param nodeId
+ */
+function getInterfacesFromNodeId(callback, nodeId) {
+
+	if (nodeId == "") {
+		alert("노드 ID가 없습니다.");
+		return;
+	}
+
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/nodes/' + nodeId + '/ipinterfaces',
+		dataType : 'json',
+		contentType : 'application/json',
+		error : function(data) {
+			alert("[" + nodeId + '] 인터페이스 정보 검색 실패');
+		},
+		success : function(data) {
+
+			if (typeof callback == "function") {
+				callback(data);
+			}
+
 		}
 	});
 

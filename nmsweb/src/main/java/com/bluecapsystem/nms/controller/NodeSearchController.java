@@ -47,5 +47,20 @@ public class NodeSearchController
 		model.setViewName("/monitering/node/nodeDesc");
 		return model;
 	}
-	
+
+	/**
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/monitering/node/interfaceDesc", method = RequestMethod.GET)
+	public ModelAndView interfaceDescription(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "intf", required = false)String intf)
+	{
+		ModelAndView model = new ModelAndView();
+
+		model.addObject("intf",intf);
+		model.setViewName("/monitering/node/interfaceDesc");
+		return model;
+	}
 }

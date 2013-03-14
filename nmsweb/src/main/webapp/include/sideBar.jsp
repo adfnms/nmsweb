@@ -5,7 +5,7 @@
 $(document).ready(function(){
 	
 	rePositionSideBar();
-	$(window).resize( function(e){rePositionSideBar();});
+	$(window).resize( function(e){ rePositionSideBar();});
 	
 });
 
