@@ -102,7 +102,7 @@ public class PathOutagesService {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HandleException(e);
 		} finally {
 			if (stmt != null)
 				try {
@@ -154,7 +154,7 @@ public class PathOutagesService {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new HandleException(e);
 		} finally {
 			if (stmt != null)
 				try {

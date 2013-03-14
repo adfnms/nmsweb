@@ -261,6 +261,71 @@ public class NotificationsController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
+	
+	
+	@RequestMapping(value = "/notifications/searchUser/{userName}", method = RequestMethod.GET)
+	public @ResponseBody
+	String notificationsSearchUser(HttpServletRequest request, @PathVariable String userName)
+			throws HandleException {
+
+		String result = null;
+		
+		
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) service.notificationsSearchUser(userName);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
+	@RequestMapping(value = "/notifications/allOutstand", method = RequestMethod.GET)
+	public @ResponseBody
+	String notificationsAllOutstand(HttpServletRequest request)
+			throws HandleException {
+
+		String result = null;
+		
+		
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) service.notificationsAllOutstand();
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
+	@RequestMapping(value = "/notifications/allAck", method = RequestMethod.GET)
+	public @ResponseBody
+	String notificationsAllAck(HttpServletRequest request)
+			throws HandleException {
+
+		String result = null;
+		
+		
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) service.notificationsAllAck();
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
 
 	// /// POST /////
 	@RequestMapping(value = "/notifications/destinationPaths", method = RequestMethod.POST)
@@ -358,6 +423,10 @@ public class NotificationsController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
+	
+	
+
+	
 
 	// /// PUT /////
 	@RequestMapping(value = "/notifications/destinationPaths", method = RequestMethod.PUT)
