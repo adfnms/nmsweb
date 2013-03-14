@@ -1,7 +1,9 @@
 package kr.co.adflow.nms.web.service;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,15 +13,23 @@ import kr.co.adflow.nms.web.exception.HandleException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.test.context.ContextConfiguration;
 
 @Service
 public class AdminTestService {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(AdminTestService.class);
-
+	
 	// ADMINPAGE=role.admin.users
 	// DASHPAGE=role.dashboard.users
 	private @Value("#{config['ADMINPAGE']}")
@@ -29,6 +39,7 @@ public class AdminTestService {
 	private @Value("#{config['PERMISSIONURL']}")
 	String permissionUrl;
 
+	
 	public String adminPerId(String id) throws HandleException {
 		logger.debug("DATA::" + id);
 		Properties properties = new Properties();
@@ -381,5 +392,18 @@ public class AdminTestService {
 
 		return result;
 	}
+
+//	public String test() throws IOException {
+//		logger.debug("intest");
+//		
+//		String testPass = (String) configProperties.get("LOGINPASS");
+//		logger.debug("testPass::" + testPass);
+//		
+//		FileSystemResource resource = new FileSystemResource("/WEB-INF/content/somecontent.txt");
+//		
+//		configProperties.setProperty("LOGINPASS", "ddddd");
+//		configProperties.store(new FileOutputStream("file:///WEB-INF/properties/config.properties"), null);
+//		return "succed";
+//	}
 
 }
