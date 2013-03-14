@@ -6156,3 +6156,24 @@ a.badge:focus {
 .affix {
   position: fixed;
 }
+.critical{
+	background-image: -webkit-linear-gradient(top, #DC0A0B, #DC0A0B) !important;
+}
+.major{
+	background-image: -webkit-linear-gradient(top, #F3A717, #F3A717) !important;
+}
+.warning{
+	background-image: -webkit-linear-gradient(top, #00FFFF, #00FFFF) !important;
+}
+.normal{
+	background-image: -webkit-linear-gradient(top, #008001, #008001) !important;
+}
+.minor{
+	background-image: -webkit-linear-gradient(top, #FFFF01, #FFFF01) !important;
+}
+.cleared{
+	background-image: -webkit-linear-gradient(top, #C0BEBF, #C0BEBF) !important;
+}
+.indeterminate{
+	background-image: -webkit-linear-gradient(top, #ADD9E6, #ADD9E6) !important;
+}

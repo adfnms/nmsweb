@@ -8,7 +8,7 @@
 <html lang="ko">
 <head>
 <jsp:include page="/include/header.jsp">
-	<jsp:param value="노드관리" name="title" />
+	<jsp:param value="노드 검색" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
