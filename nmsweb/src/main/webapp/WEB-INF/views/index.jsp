@@ -36,11 +36,11 @@
 
 <body>
 	<div class="container">
-
+		
 		<jsp:include page="/include/menu.jsp" />
 
 		<div class="row-fluid">
-			<div class="span10">
+			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value='/index.do'/>">Home</a></li>
 				</ul>
@@ -48,7 +48,7 @@
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
 		<div class="row-fluid">
-			<div class="span10">
+			<div class="span12">
 				<div class="row-fluid">
 					<div class="span12">
 						<div class="span3">
@@ -198,9 +198,8 @@
 				</div>
 			</div>
 		</div>
-
 		<hr>
 	</div>
-	<!-- /container -->
+<!-- /container -->
 </body>
 </html>

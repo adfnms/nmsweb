@@ -12,58 +12,85 @@
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/service.js" />"></script>
 <script type="text/javascript">
-	var pageNum = "1";
 	$(document).ready(function() {
-		
-		getNodeList();
-		
+
+		getNodeTotalList(addNodeLists, null);
+
+		getServiceList(addServiceList);
+
 	});
-	
+
 	//callback 함수 jsonObj를 이용 파싱 후 append
 	function addNodeLists(jsonObj) {
-		console.log(jsonObj);
+		console.log()
 		$('#nodeListTable').empty();
 
-		var nodeObj = jsonObj["node"];
+		var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
 		var str = "<tr>";
 
-		if(1 == jsonObj["@totalCount"]){
-			str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="+nodeObj["@id"]+"'>"+nodeObj["@id"]+"</a></td>";
-			str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="+nodeObj["@id"]+"'>"+nodeObj["@label"]+"</a></td>";
-		}else{
-			
+		if (1 == jsonObj["@totalCount"]) {
+			str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="
+					+ nodeObj["@id"] + "'>" + nodeObj["@id"] + "</a></td>";
+			str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="
+					+ nodeObj["@id"] + "'>" + nodeObj["@label"] + "</a></td>";
+		} else {
+
 			for ( var i in nodeObj) {
-				
-				str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="+nodeObj[i]["@id"]+"'>"+nodeObj[i]["@id"]+"</a></td>";
-				str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="+nodeObj[i]["@id"]+"'>"+nodeObj[i]["@label"]+"</a></td>";
-				
-				if( i % 2 == 1 ){
+
+				str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="
+						+ nodeObj[i]["@id"]
+						+ "'>"
+						+ nodeObj[i]["@id"]
+						+ "</a></td>";
+				str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="
+						+ nodeObj[i]["@id"]
+						+ "'>"
+						+ nodeObj[i]["@label"]
+						+ "</a></td>";
+
+				if (i % 2 == 1) {
 					str += "</tr><tr>";
 				}
-				
-			}	
-			
+
+			}
+
 		}
-		
+
 		str += "</tr>";
 
 		$('#nodeListTable').append(str);
-		
-		//페이징 HTML 가져오기
-		getPagingHtml($('#pagingDiv'), "goSearchPageing", jsonObj["@totalCount"], pageNum, "10", "10" );
-	}
-	
-	//노드 리스트 가져오기
-	function getNodeList(){
-		
-		var data = getFromToInputValue($('#searchNodeFrm'));
 
-		getNodeTotalList(addNodeLists,data);
-		
+		//페이징 HTML 가져오기
+		//getPagingHtml($('#pagingDiv'), "goSearchPageing", jsonObj["@totalCount"], pageNum, "10", "10" );
 	}
+
 	
-	function goSearchPageing(pageNm){
+	//서비스 리스트 가져오기
+	function addServiceList(jsonObj) {
+
+		var services = jsonObj["services"];
+
+		var optionStr = "";
+		if (services.length > 1) {
+
+			for ( var i in services) {
+				optionStr += "<option value='"+services[i]["serviceid"]+"'>"
+						+ services[i]["servicename"] + "</option>";
+			}
+
+		} else {
+			optionStr += "<option value='"+services["serviceid"]+"'>"
+					+ services["servicename"] + "</option>";
+
+		}
+
+		$('#serviceId').append(optionStr);
+	}
+
+	//페이징 처리 스크립트
+	/* function goSearchPageing(pageNm){
 		
 		pageNum = pageNm;
 		
@@ -73,19 +100,38 @@
 		
 		getNodeList();
 		
+	} */
+
+	//노드명 & 노드 ID 검색 버튼
+	function schNodeFromNameId() {
+
+	 	var id = $('#searchNodeFrm input[name=id]').val() == "" ? "" : "id="+$('#searchNodeFrm input[name=id]').val();
+	 	var label = $('#searchNodeFrm input[name=label]').val() == "" ? "" : "&label="+$('#searchNodeFrm input[name=label]').val();
+		//var serviceId = $('#searchNodeFrm select[name=serviceId]').val();
+		//var ipAddress = $('#searchNodeFrm input[name=ipAddress]').val();
+
+		var data = id+label;
+		
+		getNodeTotalList(addNodeLists, data);
+
 	}
 	
-	//검색 버튼
-	function searchNode(){
+	//서비스 검색 버튼
+	function schNodeFromService() {
+
+		var serviceId = $('#searchNodeFrm select[name=serviceId]').val();
 		
-		//기본설정으로 되돌리기
-		pageNum = "1";
-		$('#searchNodeFrm input[name=limit]').val("10");
-		$('#searchNodeFrm input[name=orderBy]').val("id");
-		$('#searchNodeFrm input[name=offset]').val("0");
-			
-		getNodeList();
+		searchNodeFromServiceId(addNodeLists, serviceId);
+
+	}
+	
+	//아이피 검색 버튼
+	function schNodeFromIpAddress() {
+
+		var ipAddress = $('#searchNodeFrm input[name=ipAddress]').val();
 		
+		searchNodeFromIpAddress(addNodeLists, ipAddress);
+
 	}
 </script>
 </head>
@@ -96,7 +142,7 @@
 		<jsp:include page="/include/menu.jsp" />
 
 		<div class="row-fluid">
-			<div class="span10">
+			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value="/index.do" />" />Home</a> <span class="divider">/</span></li>
 					<li class="active">노드검색</li>
@@ -105,11 +151,8 @@
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
 		<form id="searchNodeFrm" name="searchNodeFrm">
-			<input type="hidden" id="limit" name="limit" value="10"/>
-			<input type="hidden" id="orderBy" name="orderBy" value="id"/>
-			<input type="hidden" id="offset" name="offset" value="0"/>
 			<div class="row-fluid">
-				<div class="span10 well well-small">
+				<div class="span12 well well-small">
 					<div class="row-fluid">
 						<div class="span12">
 							<h4>노드 검색</h4>
@@ -121,53 +164,40 @@
 								<div class="span12">
 									<label class="span2 control-label">노드명</label>
 									<div class="span4 controls">
-										<input type="text" id="label" class="span12" name="label" value=""/>
+										<input type="text" id="label" class="span12" name="label"
+											value="" />
 									</div>
 									<label class="span2 control-label">노드 ID</label>
-									<div class="span4 controls">
-										<input type="text" id="id" class="span12" name="id" value=""/>
+									<div class="span3 controls">
+										<input type="text" id="id" class="span12" name="id" value="" />
+									</div>
+									<div class="span1">
+										<button type="button" class="btn btn-primary span12" title="검색"
+											onclick="javascript:schNodeFromNameId();">검색</button>
 									</div>
 								</div>
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
 									<label class="span2 control-label">제공 서비스</label>
-									<div class="span4 controls">
-										<select class="span12" id="seviceName" name="seviceName">
+									<div class="span3 controls">
+										<select class="span12" id="serviceId" name="serviceId">
 											<option value="">선택해주세요.</option>
-											<option value="DNS">DNS</option>
-											<option value="Dell-OpenManage">Dell-OpenManage</option>
-											<option value="FTP">FTP</option>
-											<option value="HP Insight Manager">HP Insight Manager</option>
-											<option value="HTTP">HTTP</option>
-											<option value="HTTP-8080">HTTP-8080</option>
-											<option value="HTTPS">HTTPS</option>
-											<option value="HypericAgent">HypericAgent</option>
-											<option value="HypericHQ">HypericHQ</option>
-											<option value="ICMP">ICMP</option>
-											<option value="IMAP">IMAP</option>
-											<option value="MSExchange">MSExchange</option>
-											<option value="MySQL">MySQL</option>
-											<option value="NRPE">NRPE</option>
-											<option value="NRPE-NoSSL">NRPE-NoSSL</option>
-											<option value="OpenNMS-JVM">OpenNMS-JVM</option>
-											<option value="Oracle">Oracle</option>
-											<option value="POP3">POP3</option>
-											<option value="Postgres">Postgres</option>
-											<option value="Router">Router</option>
-											<option value="SMTP">SMTP</option>
-											<option value="SNMP">SNMP</option>
-											<option value="SQLServer">SQLServer</option>
-											<option value="SSH">SSH</option>
-											<option value="SVC">SVC</option>
-											<option value="StrafePing">StrafePing</option>
-											<option value="Telnet">Telnet</option>
-											<option value="Windows-Task-Scheduler">Windows-Task-Scheduler</option>
 										</select>
 									</div>
+									<div class="span1">
+										<button type="button" class="btn btn-primary span12" title="검색"
+											onclick="javascript:schNodeFromService();">검색</button>
+									</div>
+									
 									<label class="span2 control-label">TCP/IP 주소</label>
-									<div class="span4 controls">
-										<input type="text" placeholder="*.*.*.*" id="ipAddress" class="span12"  name="ipAddress" value=""/>
+									<div class="span3 controls">
+										<input type="text" placeholder="*.*.*.*" id="ipAddress"
+											class="span12" name="ipAddress" value="" />
+									</div>
+									<div class="span1">
+										<button type="button" class="btn btn-primary span12" title="검색"
+											onclick="javascript:schNodeFromIpAddress();">검색</button>
 									</div>
 								</div>
 							</div>
@@ -201,12 +231,10 @@
 							</div> -->
 							<div class="row-fluid">
 								<div class="span12">
-									<div class="span9"></div>
-									<div class="span3">
-										<button type="button" class="btn btn-primary span6"
-											title="검색" onclick="javascript:location.reload();">Clean</button>
-										<button type="button" class="btn btn-primary span6"
-											title="검색" onclick="javascript:searchNode();">검색</button>
+									<div class="span10"></div>
+									<div class="span2">
+										<button type="button" class="btn btn-primary span12" title="검색"
+											onclick="javascript:location.reload();">Clean</button>
 									</div>
 								</div>
 							</div>
@@ -216,7 +244,7 @@
 			</div>
 		</form>
 		<div class="row-fluid">
-			<div class="span10 well well-small">
+			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12">
 						<h4>노드 목록</h4>
