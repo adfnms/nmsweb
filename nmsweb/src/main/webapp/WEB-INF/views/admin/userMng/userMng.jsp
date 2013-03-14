@@ -61,7 +61,6 @@
 	
 function deleteUser(userId){
 		
-		alert("----deleteUser-----userId--->"+userId);
 		
 		$.ajax({
 			
@@ -88,7 +87,7 @@ function deleteUser(userId){
 		<jsp:include page="/include/menu.jsp" />
 
 		<div class="row-fluid">
-			<div class="span9">
+			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">Home</a> <span class="divider">/</span></li>
 					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
@@ -99,7 +98,7 @@ function deleteUser(userId){
 		</div>
 
 		<div class="row-fluid">
-			<div class="span9">
+			<div class="span12">
 			<form  id="userIdFrm" name="userIdFrm" method="post">
 				<input type="hidden" id ="user-id" name="user-id" value="" />
 			</form>
@@ -121,7 +120,7 @@ function deleteUser(userId){
 			</div>
 				<div class="row-fluid">
 					<div class="span12">
-						<div class="span7"></div>
+						<div class="span10"></div>
 						<div class="span2">
 							<a type="button" class="btn btn-primary" title="" href="/v1/admin/userMng/userReg.do">+ 사용자 추가</a>
 						</div>

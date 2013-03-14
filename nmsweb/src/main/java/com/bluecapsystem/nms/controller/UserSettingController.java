@@ -18,9 +18,32 @@ public class UserSettingController
 	public ModelAndView setting(HttpServletRequest request, HttpServletResponse response)
 	{
 		ModelAndView model = new ModelAndView();
-		model.setViewName("/admin/userMng/userSetting");
+		model.setViewName("/admin/userSetting/userSetting");
 		return model;
 	}
-
+	
+	@RequestMapping(value = "/admin/setting/addEvent")
+	public ModelAndView addEvent(HttpServletRequest request, HttpServletResponse response)
+	{
+		ModelAndView model = new ModelAndView();
+		model.setViewName("/admin/userSetting/userAddEvent");
+		return model;
+	}
+	
+	@RequestMapping(value = "/admin/setting/addMessage")
+	public ModelAndView addMessage(HttpServletRequest request, HttpServletResponse response)
+	{
+		ModelAndView model = new ModelAndView();
+		model.setViewName("/admin/userSetting/userAddMessage");
+		return model;
+	}
+	
+	@RequestMapping(value = "/admin/setting/detailNodeInfo")
+	public ModelAndView getNodeIdDetailInfo(HttpServletRequest request, HttpServletResponse response)
+	{
+		ModelAndView model = new ModelAndView();
+		model.setViewName("/admin/userSetting/nodeInfo");
+		return model;
+	}
 	
 }

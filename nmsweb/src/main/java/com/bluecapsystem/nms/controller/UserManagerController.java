@@ -51,13 +51,24 @@ public class UserManagerController {
 	}
 	
 	@RequestMapping(value = "/admin/userMng/userReg")
-	public ModelAndView getUserDetailInfo(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
+	public ModelAndView userReg(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
 						@RequestParam(value = "user-id", required = false)String userId)
 	{
 		
 		ModelAndView model =  new ModelAndView();
 		
 		model.setViewName("/admin/userMng/userReg");
+		
+		return model;
+	}
+	
+	@RequestMapping(value = "/admin/userMng/modify",  method = RequestMethod.POST)
+	public ModelAndView modify(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
+						@RequestParam(value = "user-id", required = false)String userId)
+	{
+		ModelAndView model =  new ModelAndView();
+		
+		model.setViewName("/admin/userMng/userModify");
 		
 		return model;
 	}
@@ -81,16 +92,10 @@ public class UserManagerController {
 		String message = "";
 		ModelAndView model = new ModelAndView();
 	   
-		System.out.println("---------------------------------------");
-	    System.out.println("-----1--checkUserId---user-Id---------------"+userId);
-	    System.out.println("---------------------------------------");
-	    
+		
 		//get userId Info
 		//String dataUrl = "http://localhost:8080/v1/users/"+userId;
 		String dataUrl = "http://"+request.getServerName()+":"+request.getServerPort()+"/"+NMSProperties.getNmswebVersion()+"/users/"+userId;
-		System.out.println("---------------------------------------");
-		System.out.println("-------2--checkUserId--dataUrl------------"+dataUrl);
-		System.out.println("---------------------------------------");
 		String jsonStr = "";
 		
 		_CHECKID:
@@ -109,14 +114,11 @@ public class UserManagerController {
 					try {
 						jsonStr = Util.getJsonStrToUrl(dataUrl); //GET JSON STRING TO USER INFO URL(UTIL) 
 						
+						System.out.println("-----------------jsonStr---------------"+jsonStr);
 						ObjectMapper om = new ObjectMapper();
 						JsonNode jNode = om.readTree(jsonStr);
 						
 						String Id = jNode.path("user-id").getTextValue();
-						
-						System.out.println("-----------------------------");
-						System.out.println("----3---checkUserId-----get-Id-----------"+Id);
-						System.out.println("-----------------------------");
 						
 						if(Id. equals(userId)){//USERID CHECK PROCESS
 							result = false;
@@ -130,14 +132,17 @@ public class UserManagerController {
 						}else{
 						
 						result = true;
-						
+						//------------------
+						//   아이디 체크 성콩시 데이터 값을 갖고 오지 못해서 
+						//   오류가 나지만 등록은 문제되지 않는다. 후에 조정 필요
+						//------------------
 						}
 						
 					} catch (IOException e) {
 						
 						result = false;
 						logger.info("get Json date false");
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 					
 				}	
@@ -160,7 +165,6 @@ public class UserManagerController {
 	public ModelAndView userManage(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
 						@RequestParam(value = "user-id", required = false)String userId)
 	{
-		System.out.println("--------------userId----------------"+userId);
 		
 		boolean result = false;
 		
@@ -173,7 +177,6 @@ public class UserManagerController {
 		
 		//get userId Info
 		String dataUrl = "http://localhost:8080/v1/users/"+userId;
-		System.out.println("----------dataUrl-----------"+dataUrl);
 		
 		String jsonStr = "";
 		
@@ -191,14 +194,10 @@ public class UserManagerController {
 			String password = jNode.path("password").getTextValue();
 			
 			if(userManagerService.selectToDb(userId,UserTbl )==false){
-				System.out.println("------------1-UserManagerController-------------");
 				logger.error("User info select to database error");
 			}
 			
 			userInfo = UserTbl.get();
-				System.out.println("-----------------------------");
-				/*System.out.println(userInfo.getRegrId());*/
-				System.out.println("-----------------------------");
 	
 			model.addObject("userInfo",userInfo);
 			model.addObject("Id",Id);
@@ -247,20 +246,15 @@ public class UserManagerController {
 			try{
 				
 				String Id =(String) session.getAttribute(Define.USER_ID_KEY);
-				
-				System.out.println("---------------------------------------");
-			    System.out.println("-----regToDb-----user-Id---------------"+userId);
-			    System.out.println("-----regToDb-----user-Id----------------"+session.getAttribute(Define.USER_ID_KEY));
-			    System.out.println("-----regToDb-----Id----------------"+Id);
-			    System.out.println("-----regToDb-----fullName---------------"+userNm);
-			    System.out.println("---------------------------------------");
 			    
-			    
+			    userTbl.setUserId(userId);
+			    userTbl.setUserNm(userNm);
+			    userTbl.setModrId(Id);
+			    userTbl.setRegrId(Id);
 			    userTbl.setUseYn("Y");
-			    //userTbl.setModrId(session.getAttribute(Define.USER_ID_KEY));
-			    //userTbl.setRegrId(session.getAttribute(Define.USER_ID_KEY));
-				    if(userManagerService.regToDb (userTbl)==false){
-						
+				   
+			    if(userManagerService.regToDb (userTbl)==false){
+				    	
 						logger.error("USER INFO REGISTER TO DATABASE ERROR ");
 					}
 				}catch (Exception e) {
@@ -288,7 +282,10 @@ public class UserManagerController {
 		
 		ModelAndView model = new ModelAndView();
 		try{
+			String Id =(String) session.getAttribute(Define.USER_ID_KEY);
 			
+			userTbl.setModrId(Id);
+		    userTbl.setRegrId(Id);
 			userTbl.setUseYn("Y");
 			
 			if(userManagerService.modifyToDb(userTbl)==false){
@@ -317,7 +314,10 @@ public class UserManagerController {
 	{
 		ModelAndView model = new ModelAndView();
 		try{
+			String Id =(String) session.getAttribute(Define.USER_ID_KEY);
 			
+			userTbl.setModrId(Id);
+		    userTbl.setRegrId(Id);
 			userTbl.setUseYn("N");
 			
 			if(userManagerService.deleteToDb(userTbl)==false){

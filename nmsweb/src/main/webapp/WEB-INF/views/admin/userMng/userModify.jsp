@@ -40,34 +40,35 @@ try{
 		var fullName = $("#userInfoFrm input[name=full-name]").val();
 		var userComments = $("#userInfoFrm input[name=user-comments]").val();
 		var password = $("#userInfoFrm input[name=password]").val();
+	
+		alert("-------modifyUser--userId---------"+userId);
+		alert("-------modifyUser---fullName--------"+fullName);
+		alert("-------modifyUser---userComments-------"+userComments);
+		alert("-------modifyUser----password-------"+password);
+		
 		
 		//Post Json Info String url method
 		var str = getJSONStrToUser(userId, fullName, userComments, password);
-	
+		
+		alert("------------------str-------------------"+str);
+		//alert(str);
 		$.ajax({
-	
 			type : 'post',
 			url : '<c:url value="/users"/>',
-			//url : 'http://localhost:8080/v1/users',
 			contentType : 'application/json',
 			data : str,
 			error : function() {
-				alert('유저 리스트 가져오기 서비스 실패');
+				alert('유저 정보 수정 서비스 실패');
 			},
 			success : function(data) {
-				//alert(data);
+				alert(" 수정 되었습니다.");
+				modifyToDb();
 			}
 		});
-		
-		modifyToDb();
 	}
 	
+	
 	function modifyToDb(){
-		
-		//var userId = $("#userInfoFrm input[name=user-id]").val();
-		//var fullName = $("#userInfoFrm input[name=full-name]").val();
-		//var regrId = $("#userInfoFrm input[name=full-name]").val();
-		//var modrId = $("#userInfoFrm input[name=full-name]").val();
 		
 		var frm = document.getElementById("userInfoFrm");
 		//frm.action = "<c:url value="/admin/userMng/modifyToDb.do"/>";
@@ -121,17 +122,17 @@ try{
 		<!-- Example row of columns -->
 		
 		<div class="row-fluid">
-			<div class="span9">
+			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">Home</a> <span class="divider">/</span></li>
-					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
-					<li class="active">사용자 등록</li>
+					<li><a href="/v1/admin/userMng.do">사용자관리</a> <span class="divider">/</span></li>
+					<li class="active">사용자 수정</li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
 		<div class="row-fluid">
-			<div class="span9 well well-small">
+			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12">
 						<h4>
@@ -183,7 +184,7 @@ try{
 		</div>
 		<div class="row-fluid">
 		
-			<div class="span9 well well-small">
+			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12">
 						<h4>
@@ -269,7 +270,7 @@ try{
 		</div>
 			<div class="row-fluid">
 				<div class="span12">
-					<div class="span7"></div>
+					<div class="span10"></div>
 					<div class="span1">
 						<a type="button" class="btn btn-primary" title="" href="javascript:modifyUser()">수정</a>
 					</div>

@@ -39,10 +39,6 @@ try{
 		var userComments = $("#userInfoFrm input[name=user-comments]").val();
 		var password = $("#userInfoFrm input[name=password]").val();
 		
-		alert("------userId-----"+userId);
-		alert("------fullName-----"+fullName);
-		//alert("------userComments-----"+userComments);
-		//alert("------password-----"+password);
 	
 		//Post Json Info String url method
 		var str = getJSONStrToUser(userId, fullName, userComments, password);
@@ -99,8 +95,6 @@ try{
 	
 	function regToDb(userId,fullName){
 		
-		alert("---------regToDb------userId----------"+userId);
-		alert("---------regToDb----fullName------------"+fullName);
 		
 		$.ajax({
 			type:'post',
@@ -138,17 +132,17 @@ try{
 		<!-- Example row of columns -->
 		
 		<div class="row-fluid">
-			<div class="span9">
+			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">Home</a> <span class="divider">/</span></li>
-					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
+					<li><a href="/v1/admin/userMng.do">사용자관리</a> <span class="divider">/</span></li>
 					<li class="active">사용자 등록</li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
 		<div class="row-fluid">
-			<div class="span9 well well-small">
+			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12">
 						<h4>
@@ -200,7 +194,7 @@ try{
 		</div>
 		<div class="row-fluid">
 		
-			<div class="span9 well well-small">
+			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12">
 						<h4>
@@ -286,7 +280,7 @@ try{
 		</div>
 			<div class="row-fluid">
 				<div class="span12">
-					<div class="span8"></div>
+					<div class="span11"></div>
 					<div class="span1">
 						<a type="button" class="btn btn-primary" title="" href="javascript:regMember()">저장</a>
 					</div>
