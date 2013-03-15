@@ -32,10 +32,14 @@ public class UserService {
 	private static final String URL = "url";
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
-	private @Value("#{config['NMSURL']}") String ipAddr;
-	private @Value("#{config['XMLPATH']}") String xmlPath;
-	private @Value("#{config['LOGINID']}") String loginId;
-	private @Value("#{config['LOGINPASS']}") String loginPass;
+	private @Value("#{config['NMSURL']}")
+	String ipAddr;
+	private @Value("#{config['XMLPATH']}")
+	String xmlPath;
+	private @Value("#{config['LOGINID']}")
+	String loginId;
+	private @Value("#{config['LOGINPASS']}")
+	String loginPass;
 	private static final String Accept = "accept";
 	private static final String DATA = "data";
 	private static final String CONTENTTYPE = "contentType";
@@ -47,7 +51,7 @@ public class UserService {
 	// users
 	public String Users() throws HandleException {
 		try {
-		
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
@@ -68,7 +72,7 @@ public class UserService {
 	// users
 	public String UsersPost(String xmlData) throws HandleException {
 		try {
-	
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
@@ -103,7 +107,7 @@ public class UserService {
 	// users/{username}
 	public String Users(String username) throws HandleException {
 		try {
-		
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
@@ -124,7 +128,7 @@ public class UserService {
 	// users/{username} Delete
 	public String UsersDelete(String username) throws HandleException {
 		try {
-		
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
@@ -143,36 +147,33 @@ public class UserService {
 	}
 
 	// users/detail
-	public String userPostDetail(kr.co.adflow.nms.web.vo.user.User user)
-			throws HandleException {
+	public String userPostDetail(String id,
+			kr.co.adflow.nms.web.vo.user.User user) throws HandleException {
 		String result = null;
 		kr.co.adflow.nms.web.vo.user.Users users = new kr.co.adflow.nms.web.vo.user.Users();
-		logger.debug("postDetail");
-
 		try {
+			logger.debug("serviceId::" + id);
 			XmlUtil xUtil = new XmlUtil();
-			String filePath = xmlPath+"users.xml";
+			String filePath = xmlPath + "users.xml";
 			Class<Userinfo> classname = Userinfo.class;
 			Userinfo info = new Userinfo();
 			Object ob = xUtil.xmlRead(filePath, classname, info);
 			info = (Userinfo) ob;
 			int size = info.getUsers().getUser().size();
-			boolean idCheak = false;
 			for (int i = 0; i < size; i++) {
-				if (user.getUserId().equals(
-						info.getUsers().getUser().get(i).getUserId())) {
-					idCheak = true;
+
+				if (id.equals(info.getUsers().getUser().get(i).getUserId())) {
+					for (int j = 0; j < user.getContact().size(); j++) {
+						info.getUsers().getUser().get(i).getContact()
+								.add(user.getContact().get(j));
+					}
+
 				}
+
 			}
-			if (idCheak) {
-				info.getUsers().getUser().add(user);
-				String filePath2 = xmlPath+"users.xml";
-				result = xUtil.xmlWrite(filePath2, classname, info);
-			} else {
-				logger.error("User :: Id Not Found");
-				throw new HandleException(
-						"User :: Id Not Found");
-			}
+
+			String filePath2 = xmlPath + "users.xml";
+			result = xUtil.xmlWrite(filePath2, classname, info);
 
 		} catch (Exception e) {
 

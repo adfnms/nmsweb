@@ -36,6 +36,8 @@ public class ForeignSourcesController {
 			.getLogger(ForeignSourcesController.class);
 	@Autowired
 	private ForeignSourcesService service;
+	@Autowired
+	ForeignMapper mapper;
 	private static final String DATA = "data::";
 
 	// foreignSources
@@ -216,7 +218,6 @@ public class ForeignSourcesController {
 		String result = null;
 		ForeignInfo forInfo = null;
 		String xmlData = null;
-		ForeignMapper mapper = ForeignMapper.getMapper();
 
 		try {
 			forInfo = mapper.foreignInput(data);
@@ -256,7 +257,7 @@ public class ForeignSourcesController {
 		String result = null;
 		ForDetector detector = null;
 		String xmlData = null;
-		ForeignMapper mapper = ForeignMapper.getMapper();
+	
 
 		try {
 			detector = mapper.foreignDetectorMap(data);
@@ -297,7 +298,7 @@ public class ForeignSourcesController {
 		String result = null;
 		ForPoliceS polices = null;
 		String xmlData = null;
-		ForeignMapper mapper = ForeignMapper.getMapper();
+		
 
 		try {
 			polices = mapper.foreignPolicesMap(data);
@@ -333,7 +334,7 @@ public class ForeignSourcesController {
 		logger.info(DATA + name);
 		logger.info(DATA + data);
 		ForPutName putName = null;
-		ForeignMapper mapper = ForeignMapper.getMapper();
+		
 		try {
 			putName = mapper.foreignPutName(data);
 

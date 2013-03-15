@@ -15,23 +15,13 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.stereotype.Service;
+@Service
 public class UserAndGroupMapper {
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserAndGroupMapper.class);
 
-	/**
-	 * singleton
-	 * 
-	 */
-	private UserAndGroupMapper() {
-	}
 
-	public static UserAndGroupMapper mapper = new UserAndGroupMapper();
-
-	public static UserAndGroupMapper getMapper() {
-		return mapper;
-	}
 
 	public User userInfoMapping(String data) throws MapperException {
 
@@ -41,7 +31,6 @@ public class UserAndGroupMapper {
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
 			if (jNode.path("user").isArray()) {
-				logger.debug("mapper step...2");
 				JsonNode temp = null;
 				JsonNode temp2 = null;
 				JsonNode temp3 = null;
@@ -58,23 +47,18 @@ public class UserAndGroupMapper {
 					user.setUserComments(temp.path("user-comments")
 							.getTextValue());
 					user.setUserId(temp.path("user-id").getTextValue());
-					logger.debug("mapper step 4....");
 					if (temp.path("dutySchedule").isArray()) {
-						logger.debug("step...duty..");
 						Iterator<JsonNode> it2 = temp.path("dutySchedule")
 								.iterator();
 						while (it2.hasNext()) {
-							System.out.println("mapper step...4");
 							temp2 = it2.next();
 							user.getDutySchedule().add(temp2.getTextValue());
 						}
 					}
 
 					if (temp.path("contact").isArray()) {
-						logger.debug("step...contact");
 						Iterator<JsonNode> it3 = temp.path("contact")
 								.iterator();
-						System.out.println("mapper contact...5");
 						while (it3.hasNext()) {
 							Contact contact = new Contact();
 							temp3 = it3.next();
@@ -101,17 +85,15 @@ public class UserAndGroupMapper {
 		UserInit init = new UserInit();
 
 		try {
-			logger.debug("mapper step...1");
+
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
 			if (jNode.path("user").isArray()) {
-			logger.debug("if..");
 			JsonNode temp = null;
 
 			Iterator<JsonNode> it = jNode.path("user").iterator();
 
 			while (it.hasNext()) {
-				logger.debug("mapper step...3");
 				temp = it.next();
 				init.setFullName(temp.path("full-name").getTextValue());
 				init.setPassword(temp.path("password").getTextValue());
@@ -120,7 +102,7 @@ public class UserAndGroupMapper {
 
 			}
 			
-			logger.debug("intit:::"+init.getPassword());
+			logger.debug("init.getPassword():::"+init.getPassword());
 			}
 		} catch (Exception e) {
 			throw new MapperException(e);
@@ -134,17 +116,17 @@ public class UserAndGroupMapper {
 		Groupinfo grou= new Groupinfo();
 
 		try {
-			logger.debug("mapper step...1");
+
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
 			if (jNode.path("group").isArray()) {
-			logger.debug("if..");
+
 			JsonNode temp = null;
 
 			Iterator<JsonNode> it = jNode.path("group").iterator();
 
 			while (it.hasNext()) {
-				logger.debug("mapper step...3");
+	
 				temp = it.next();
 				grou.setComments(temp.path("comments").getTextValue());
 				grou.setName(temp.path("name").getTextValue());
@@ -153,9 +135,9 @@ public class UserAndGroupMapper {
 
 			}
 			
-			logger.debug("grou:::"+grou.getComments());
-			logger.debug("grou:::"+grou.getName());
-			logger.debug("grou:::"+grou.getUser());
+			logger.debug("grou.getComments():::"+grou.getComments());
+			logger.debug("grou.getName():::"+grou.getName());
+			logger.debug("grou.getUser():::"+grou.getUser());
 			
 			}
 		} catch (Exception e) {

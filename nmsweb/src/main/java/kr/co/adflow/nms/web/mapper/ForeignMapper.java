@@ -16,23 +16,13 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ForeignMapper {
 	private static final Logger logger = LoggerFactory
 			.getLogger(ForeignMapper.class);
 
-	/**
-	 * singleton
-	 * 
-	 */
-	private ForeignMapper() {
-	}
-
-	public static ForeignMapper mapper = new ForeignMapper();
-
-	public static ForeignMapper getMapper() {
-		return mapper;
-	}
 
 	// <foreign-source name="testzzzzz"/>
 	// {"foreign-source":[{"name":"testzzzzz"}]}

@@ -137,7 +137,7 @@ public class GroupsService {
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		return result;
+		return "200ok";
 	}
 
 	// group Del group user del //groups/{groupname}/users/{username}
@@ -159,7 +159,7 @@ public class GroupsService {
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		return result;
+		return "200ok";
 	}
 
 	// groups/{groupname}/users

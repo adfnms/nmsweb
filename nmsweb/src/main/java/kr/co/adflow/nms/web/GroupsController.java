@@ -35,6 +35,8 @@ public class GroupsController {
 			.getLogger(GroupsController.class);
 	@Autowired
 	private GroupsService service;
+	@Autowired
+	UserAndGroupMapper tcMapper;
 	private UsersUtil ut = UsersUtil.getInstance();
 
 	// groups
@@ -64,17 +66,17 @@ public class GroupsController {
 		String result = null;
 		Groupinfo group = null;
 		String xmlData = null;
-		UserAndGroupMapper tcMapper = UserAndGroupMapper.getMapper();
+
 		// <group><name>adflow222</name><comments>The
 		// adflow222</comments><user>chan222</user></group>
 
 		group = tcMapper.groupInfo(data);
-		logger.debug("group::" + group.getComments());
-		logger.debug("group::" + group.getName());
-		logger.debug("group::" + group.getUser());
+		logger.debug("group.getComments()::" + group.getComments());
+		logger.debug("group.getName()::" + group.getName());
+		logger.debug("group.getUser()::" + group.getUser());
 		try {
 			xmlData = ut.XmlParsingGroup(group);
-
+			logger.debug("xmlData::" + xmlData);
 			result = (String) service.groupsPost(xmlData);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -83,6 +85,7 @@ public class GroupsController {
 			logger.error("Failed in Util", e);
 			throw e;
 		}
+		logger.debug(RETURNRESULT + result);
 		return result;
 	}
 
@@ -94,6 +97,8 @@ public class GroupsController {
 			@PathVariable String username, HttpServletRequest request)
 			throws HandleException {
 		logger.info(PATH + request.getRequestURL());
+		logger.debug("GroupNAME::"+groupname);
+		logger.debug("UserNAME::"+username);
 		String result = null;
 
 		try {
@@ -163,7 +168,9 @@ public class GroupsController {
 		return result;
 	}
 
-	// groups/{groupname}/users
+/*
+ * 404!!!!
+ * 	// groups/{groupname}/users
 	@RequestMapping(value = "/groups/{groupName}/users", method = RequestMethod.GET)
 	public @ResponseBody
 	String groupsUsers(@PathVariable String groupName,
@@ -179,7 +186,7 @@ public class GroupsController {
 		}
 		logger.debug(RETURNRESULT + result);
 		return result;
-	}
+	}*/
 
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
@@ -196,8 +203,7 @@ public class GroupsController {
 		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
 				+ "\",\"message\":\"" + e.getMessage() + "\"}";
 	}
-	
-	
+
 	@ExceptionHandler(UtilException.class)
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody

@@ -44,6 +44,8 @@ public class RequisitionsController {
 			.getLogger(RequisitionsController.class);
 	@Autowired
 	private RequisitionsService service;
+	@Autowired
+	RequisitionsMapper mapper;
 
 	// requisitions
 	@RequestMapping(value = "/requisitions", method = RequestMethod.GET)
@@ -343,7 +345,6 @@ public class RequisitionsController {
 			throws HandleException, MapperException,UtilException {
 
 		Requisitionsinfo requisitions = null;
-		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
 		String xmlData = null;
 		logger.info(PATH + request.getRequestURL());
 		logger.info(DATA + data);
@@ -378,7 +379,6 @@ public class RequisitionsController {
 			throws HandleException, MapperException {
 
 		RequisitionsNodes renodes = null;
-		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
 		String xmlData = null;
 		logger.info(PATH + request.getRequestURL());
 		logger.info(DATA + data);
@@ -414,7 +414,6 @@ public class RequisitionsController {
 			HttpServletRequest request) throws HandleException, MapperException,UtilException {
 
 		RequisitionsNodesInterface nodeInterface = null;
-		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
 		String xmlData = null;
 		logger.info(PATH + request.getRequestURL());
 		logger.info(DATA + data);
@@ -455,7 +454,6 @@ public class RequisitionsController {
 			throws HandleException, MapperException ,UtilException{
 
 		kr.co.adflow.nms.web.vo.requisition.RequisitionsService rservice = null;
-		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
 		String xmlData = null;
 		logger.info(PATH + request.getRequestURL());
 		logger.info(DATA + data);
@@ -495,7 +493,6 @@ public class RequisitionsController {
 			HttpServletRequest request) throws HandleException, MapperException,UtilException {
 
 		RequisitionsCategory category = null;
-		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
 		String xmlData = null;
 		logger.info(PATH + request.getRequestURL());
 		logger.info(DATA + data);
@@ -536,7 +533,7 @@ public class RequisitionsController {
 			HttpServletRequest request) throws HandleException, MapperException,UtilException {
 
 		RequisitionsAssets assets = null;
-		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
+	
 		String xmlData = null;
 		logger.info(PATH + request.getRequestURL());
 		logger.info(DATA + data);
@@ -624,7 +621,7 @@ public class RequisitionsController {
 		String result = null;
 
 		ReqPutName reqPutName = null;
-		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
+		
 		try {
 			reqPutName = mapper.reqPutName(data);
 		} catch (MapperException e) {
@@ -660,7 +657,7 @@ public class RequisitionsController {
 		logger.info("bodyData::" + data);
 		String result = null;
 		ReqPutForID putForId = null;
-		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
+	
 		try {
 			putForId = mapper.reqPutId(data);
 		} catch (MapperException e) {
@@ -699,7 +696,6 @@ public class RequisitionsController {
 		logger.info("bodyData::" + data);
 		String result = null;
 		ReqPutIP putIP = null;
-		RequisitionsMapper mapper = RequisitionsMapper.getMapper();
 		try {
 			putIP = mapper.reqPutIP(data);
 		} catch (MapperException e) {

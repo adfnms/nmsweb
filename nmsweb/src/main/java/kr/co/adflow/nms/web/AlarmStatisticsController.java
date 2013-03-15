@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class AlarmStatisticsController {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(RequisitionsController.class);
+			.getLogger(AlarmStatisticsController.class);
 	private static final String RETURNRESULT = "result:::";
 	private static final String PATH = "path:::";
 	@Autowired

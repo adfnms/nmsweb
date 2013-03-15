@@ -1,8 +1,5 @@
 package kr.co.adflow.nms.web;
 
-import java.io.IOException;
-import java.util.Properties;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,7 +24,7 @@ public class AdminTestController {
 	private static final String PATH = "path:::";
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(GraphController.class);
+			.getLogger(AdminTestController.class);
 
 	@Autowired
 	AdminTestService service;
@@ -115,6 +112,9 @@ public class AdminTestController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
+	
+	
+
 	
 	
 	

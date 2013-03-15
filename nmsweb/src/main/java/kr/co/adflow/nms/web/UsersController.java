@@ -38,6 +38,9 @@ public class UsersController {
 			.getLogger(UsersController.class);
 	@Autowired
 	private UserService service;
+	@Autowired
+	UserAndGroupMapper tcmapper;
+	
 	private static final String INVALUE = "invalue:::";
 	private static final String XMLDATA = "xmlData:::";
 	private UsersUtil ut = UsersUtil.getInstance();
@@ -72,7 +75,6 @@ public class UsersController {
 		String result = null;
 		UserInit userinit = null;
 		String xmlData = null;
-		UserAndGroupMapper tcmapper = UserAndGroupMapper.getMapper();
 		try {
 
 			userinit = tcmapper.initUser(data);
@@ -82,7 +84,7 @@ public class UsersController {
 			logger.debug("md5pass:" + md5);
 			userinit.setPassword(md5);
 			xmlData = ut.XmlParsingUser(userinit);
-			logger.debug(xmlData);
+			logger.debug("xmlDATA::"+xmlData);
 
 		} catch (MapperException e) {
 			logger.error("Failed in processing", e);
@@ -102,14 +104,13 @@ public class UsersController {
 	}
 
 	// user POST
-	@RequestMapping(value = "/users/detail", method = RequestMethod.POST)
+	@RequestMapping(value = "/users/detail/{id}", method = RequestMethod.POST)
 	public @ResponseBody
-	String usersPostDetail(@RequestBody String data, HttpServletRequest request)
+	String usersPostDetail(@PathVariable String id,@RequestBody String data, HttpServletRequest request)
 			throws HandleException, MapperException {
 		logger.info(PATH + request.getRequestURL());
 		logger.debug(INVALUE + data);
 		String result = null;
-		UserAndGroupMapper tcmapper = UserAndGroupMapper.getMapper();
 		User user = new User();
 
 		try {
@@ -120,7 +121,7 @@ public class UsersController {
 		}
 
 		try {
-			result = (String) service.userPostDetail(user);
+			result = (String) service.userPostDetail(id,user);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

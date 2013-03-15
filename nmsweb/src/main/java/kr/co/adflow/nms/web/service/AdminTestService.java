@@ -1,9 +1,7 @@
 package kr.co.adflow.nms.web.service;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,16 +11,8 @@ import kr.co.adflow.nms.web.exception.HandleException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.test.context.ContextConfiguration;
 
 @Service
 public class AdminTestService {
@@ -41,11 +31,12 @@ public class AdminTestService {
 
 	
 	public String adminPerId(String id) throws HandleException {
-		logger.debug("DATA::" + id);
+		logger.debug("AddDATA::" + id);
 		Properties properties = new Properties();
 		HashMap hashData = new HashMap();
 		ArrayList arr = new ArrayList();
 		InputStream is = null;
+		String result=null;
 		try {
 			is = new FileInputStream(permissionUrl);
 			properties.load(is);
@@ -59,12 +50,14 @@ public class AdminTestService {
 			String hashValue = null;
 			for (int i = 0; i < arr.size(); i++) {
 				if (arr.get(i).equals(adminKey)) {
-					String data = (String) hashData.get(adminKey);
+				String 	data = (String) hashData.get(adminKey);
 					if (data.equals("")) {
+						result=id;
 						properties.setProperty(adminKey, id);
 						properties.store(new FileOutputStream(permissionUrl),
 								null);
 					} else {
+						result=data+","+id;
 						properties.setProperty(adminKey, data + "," + id);
 						properties.store(new FileOutputStream(permissionUrl),
 								null);
@@ -83,16 +76,17 @@ public class AdminTestService {
 			}
 
 		}
-
+		logger.debug("setPropertiesData::"+result);
 		return "succed";
 	}
 
 	public String dashboardPage(String id) throws HandleException {
-		logger.debug("DATA::" + id);
+		logger.debug("addDATA::" + id);
 		Properties properties = new Properties();
 		HashMap hashData = new HashMap();
 		ArrayList arr = new ArrayList();
 		InputStream is = null;
+		String result=null;
 		try {
 			is = new FileInputStream(permissionUrl);
 			properties.load(is);
@@ -108,10 +102,12 @@ public class AdminTestService {
 				if (arr.get(i).equals(dashKey)) {
 					String data = (String) hashData.get(dashKey);
 					if (data.equals("")) {
+						result=id;
 						properties.setProperty(dashKey, id);
 						properties.store(new FileOutputStream(permissionUrl),
 								null);
 					} else {
+						result=data+","+id;
 						properties.setProperty(dashKey, data + "," + id);
 						properties.store(new FileOutputStream(permissionUrl),
 								null);
@@ -130,12 +126,12 @@ public class AdminTestService {
 			}
 
 		}
-
+		logger.debug("setPropertiesData::"+result);
 		return "succed";
 	}
 
 	public String adminDel(String id) throws HandleException {
-		logger.debug("DATA::" + id);
+		logger.debug("delDATA::" + id);
 		Properties properties = new Properties();
 		HashMap hashData = new HashMap();
 		ArrayList arrKey = new ArrayList();
@@ -166,9 +162,7 @@ public class AdminTestService {
 			}
 
 			for (int i = 0; i < arrSplitValue.size(); i++) {
-				logger.debug("arrSplitValueBefore:::" + arrSplitValue.get(i));
 				if (arrSplitValue.get(i).equals(id)) {
-					System.out.println("if..");
 					arrSplitValue.remove(i);
 				}
 
@@ -180,12 +174,11 @@ public class AdminTestService {
 				properties.store(new FileOutputStream(permissionUrl), null);
 			} else {
 				for (int j = 0; j < arrSplitValue.size(); j++) {
-					logger.debug("arrSplitValueAfter::" + arrSplitValue.get(j));
 					sbuf.append(arrSplitValue.get(j) + ",");
 				}
 				String deleteData = sbuf.delete(sbuf.length() - 1,
 						sbuf.length()).toString();
-				logger.debug("deleteData::" + deleteData);
+				logger.debug("setPropertyData::" + deleteData);
 				properties.setProperty(adminKey, deleteData);
 				properties.store(new FileOutputStream(permissionUrl), null);
 			}
@@ -207,7 +200,7 @@ public class AdminTestService {
 	}
 
 	public String dashBoardDel(String id) throws HandleException {
-		logger.debug("DATA::" + id);
+		logger.debug("delDATA::" + id);
 		Properties properties = new Properties();
 		HashMap hashData = new HashMap();
 		ArrayList arrKey = new ArrayList();
@@ -238,9 +231,7 @@ public class AdminTestService {
 			}
 
 			for (int i = 0; i < arrSplitValue.size(); i++) {
-				logger.debug("arrSplitValueBefore:::" + arrSplitValue.get(i));
 				if (arrSplitValue.get(i).equals(id)) {
-					System.out.println("if..");
 					arrSplitValue.remove(i);
 				}
 
@@ -253,12 +244,12 @@ public class AdminTestService {
 				properties.store(new FileOutputStream(permissionUrl), null);
 			} else {
 				for (int j = 0; j < arrSplitValue.size(); j++) {
-					logger.debug("arrSplitValueAfter::" + arrSplitValue.get(j));
+				
 					sbuf.append(arrSplitValue.get(j) + ",");
 				}
 				String deleteData = sbuf.delete(sbuf.length() - 1,
 						sbuf.length()).toString();
-				logger.debug("deleteData::" + deleteData);
+				logger.debug("setPropertyData::" + deleteData);
 				properties.setProperty(dashKey, deleteData);
 				properties.store(new FileOutputStream(permissionUrl), null);
 			}
@@ -286,6 +277,7 @@ public class AdminTestService {
 		ArrayList arrKey = new ArrayList();
 		InputStream is = null;
 		String result = null;
+
 		try {
 			is = new FileInputStream(permissionUrl);
 			properties.load(is);
@@ -310,9 +302,9 @@ public class AdminTestService {
 				arrSplitValue.add(values[i]);
 
 			}
+		
 			sbuf.append("{");
 			for (int i = 0; i < arrSplitValue.size(); i++) {
-				logger.debug("arrSplitValue:::" + arrSplitValue.get(i));
 				sbuf.append("\"adminUser" + i + "\":\"");
 				sbuf.append(arrSplitValue.get(i) + "\"");
 				sbuf.append(",");
@@ -332,7 +324,7 @@ public class AdminTestService {
 			}
 
 		}
-
+		logger.debug("ServiceReturn::"+result);
 		return result;
 	}
 
@@ -343,6 +335,7 @@ public class AdminTestService {
 		ArrayList arrKey = new ArrayList();
 		InputStream is = null;
 		String result = null;
+		
 		try {
 			is = new FileInputStream(permissionUrl);
 			properties.load(is);
@@ -369,7 +362,6 @@ public class AdminTestService {
 			}
 			sbuf.append("{");
 			for (int i = 0; i < arrSplitValue.size(); i++) {
-				logger.debug("arrSplitValue:::" + arrSplitValue.get(i));
 				sbuf.append("\"dashUser" + i + "\":\"");
 				sbuf.append(arrSplitValue.get(i) + "\"");
 				sbuf.append(",");
@@ -389,7 +381,7 @@ public class AdminTestService {
 			}
 
 		}
-
+		logger.debug("ServiceReturn::"+result);
 		return result;
 	}
 

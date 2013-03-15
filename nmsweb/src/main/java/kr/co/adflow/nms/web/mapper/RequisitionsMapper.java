@@ -19,24 +19,14 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RequisitionsMapper {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(RequisitionsMapper.class);
 
-	/**
-	 * singleton
-	 * 
-	 */
-	private RequisitionsMapper() {
-	}
-
-	public static RequisitionsMapper mapper = new RequisitionsMapper();
-
-	public static RequisitionsMapper getMapper() {
-		return mapper;
-	}
 
 	// <model-import foreign-source="chandjdjdj"/>
 	public Requisitionsinfo requisitionsInfo(String data)
