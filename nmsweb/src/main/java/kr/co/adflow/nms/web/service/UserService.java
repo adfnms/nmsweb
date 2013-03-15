@@ -15,6 +15,7 @@ import kr.co.adflow.nms.web.HandlerFactory;
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.util.XmlUtil;
 import kr.co.adflow.nms.web.vo.DestPath.DestinationPaths;
+import kr.co.adflow.nms.web.vo.user.Contact;
 import kr.co.adflow.nms.web.vo.user.User;
 import kr.co.adflow.nms.web.vo.user.Userinfo;
 
@@ -160,8 +161,8 @@ public class UserService {
 			Object ob = xUtil.xmlRead(filePath, classname, info);
 			info = (Userinfo) ob;
 			int size = info.getUsers().getUser().size();
-			for (int i = 0; i < size; i++) {
 
+			for (int i = 0; i < size; i++) {
 				if (id.equals(info.getUsers().getUser().get(i).getUserId())) {
 					for (int j = 0; j < user.getContact().size(); j++) {
 						info.getUsers().getUser().get(i).getContact()
@@ -182,4 +183,40 @@ public class UserService {
 		return result;
 	}
 
+	// users/detail
+	public String userPostDetailDel(String id,
+			kr.co.adflow.nms.web.vo.user.User user) throws HandleException {
+		String result = null;
+		kr.co.adflow.nms.web.vo.user.Users users = new kr.co.adflow.nms.web.vo.user.Users();
+		try {
+			logger.debug("serviceId::" + id);
+			XmlUtil xUtil = new XmlUtil();
+			String filePath = xmlPath + "users.xml";
+			Class<Userinfo> classname = Userinfo.class;
+			Userinfo info = new Userinfo();
+			Object ob = xUtil.xmlRead(filePath, classname, info);
+			info = (Userinfo) ob;
+			int size = info.getUsers().getUser().size();
+			for (int i = 0; i < size; i++) {
+				if (id.equals(info.getUsers().getUser().get(i).getUserId())) {
+					for (int j = 0; j < info.getUsers().getUser().get(i)
+							.getContact().size(); j++) {
+						for (int k = 0; k < user.getContact().size(); k++) {
+							if(user.getContact().get(k).getType().equals(info.getUsers().getUser().get(i).getContact().get(j).getType())){
+								info.getUsers().getUser().get(i).getContact().remove(j);
+							}
+						}
+					}
+				}
+			}
+
+			String filePath2 = xmlPath + "users.xml";
+			result = xUtil.xmlWrite(filePath2, classname, info);
+
+		} catch (Exception e) {
+
+			throw new HandleException(e);
+		}
+		return result;
+	}
 }

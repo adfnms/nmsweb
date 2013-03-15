@@ -128,6 +128,33 @@ public class UsersController {
 		}
 		return "succed";
 	}
+	
+	// user POST
+		@RequestMapping(value = "/users/detail/del/{id}", method = RequestMethod.POST)
+		public @ResponseBody
+		String usersPostDetailDel(@PathVariable String id,@RequestBody String data, HttpServletRequest request)
+				throws HandleException, MapperException {
+			logger.info(PATH + request.getRequestURL());
+			logger.debug(INVALUE + data);
+			String result = null;
+			User user = new User();
+
+			try {
+				user = tcmapper.userInfoMapping(data);
+			} catch (MapperException e) {
+				logger.error("Failed in processing", e);
+				throw e;
+			}
+
+			try {
+				result = (String) service.userPostDetailDel(id,user);
+			} catch (HandleException e) {
+				logger.error("Failed in processing", e);
+				throw e;
+			}
+			return "succed";
+		}
+	
 
 	// users/{username} Delete
 	@RequestMapping(value = "/users/{username}", method = RequestMethod.DELETE)
