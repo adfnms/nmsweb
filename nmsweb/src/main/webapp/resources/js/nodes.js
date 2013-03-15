@@ -191,3 +191,41 @@ function getInterfacesFromNodeId(callback, nodeId) {
 	});
 
 }
+
+/** ************************ view String edit **************************** */
+
+/**
+ * categories 정보를 table 테그 Str로 만들어준다.
+ * 
+ * @param jsonObj
+ *            jsonObj["categories"]
+ */
+function getTabletagToCategoryJsonObj(jsonObj) {
+	
+	var categories = jsonObj;
+	var str = "";
+	
+	if (categories != undefined) {
+		
+		str = "	<div class='row-fluid'>"
+			+ "		<h5>감시&nbsp;카테고리&nbsp;회원&nbsp;</h5></div>"
+			+ "	<div class='row-fluid'>"
+			+ "		<div class='span12 well well-small'>";
+		
+		if (categories.length > 1) {
+
+			for ( var i in categories) {
+				str += "<div class='row-fluid'>" + "	<a href='#'>"
+						+ categories[i]["@name"] + "</a>" + "</div>";
+			}
+
+		} else {
+			str += "<div class='row-fluid'>" + "	<a href='#'>"
+					+ categories["@name"] + "</a>" + "</div>";
+		}
+
+		str += "</div>";
+	}
+	
+	return str;
+}

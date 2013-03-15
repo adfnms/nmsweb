@@ -15,16 +15,32 @@
 <script src="<c:url value="/resources/js/service.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+		
+		var id = $('#searchNodeFrm input[name=id]').val();
+	 	var label = $('#searchNodeFrm input[name=label]').val();
+		var serviceId = $('#searchNodeFrm select[name=serviceId]').val();
+		var ipAddress = $('#searchNodeFrm input[name=ipAddress]').val();
+	 	
+		if(id != "" || label != ""){
+			schNodeFromNameId();
+		}else if(serviceId != ""){
+			schNodeFromService();
+		}else if(ipAddress != ""){
+			schNodeFromIpAddress();
+		}else{
+			/* 모든 데이터를 id로 정렬하여 가져온다 */
+			getNodeTotalList(addNodeLists, "orderBy=id&limit=0");	
+		}
+		
 
-		getNodeTotalList(addNodeLists, null);
-
+		/* Service list */
 		getServiceList(addServiceList);
 
 	});
 
 	//callback 함수 jsonObj를 이용 파싱 후 append
 	function addNodeLists(jsonObj) {
-		console.log()
+		
 		$('#nodeListTable').empty();
 
 		var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
@@ -67,27 +83,22 @@
 	}
 
 	
-	//서비스 리스트 가져오기
+	/* Service list Callback */
 	function addServiceList(jsonObj) {
 
-		var services = jsonObj["services"];
-
-		var optionStr = "";
-		if (services.length > 1) {
-
-			for ( var i in services) {
-				optionStr += "<option value='"+services[i]["serviceid"]+"'>"
-						+ services[i]["servicename"] + "</option>";
-			}
-
-		} else {
-			optionStr += "<option value='"+services["serviceid"]+"'>"
-					+ services["servicename"] + "</option>";
-
-		}
-
+		var optionStr = getOptiontagToServiceList(jsonObj);
+		var setOption = "${serviceId}"; 
+		
 		$('#serviceId').append(optionStr);
+		
+		//지정된 value값에 맞는 option 설정
+		if(setOption != null || setOption != ""){
+			$('#serviceId option[value='+setOption+']').attr("selected", "selected");
+		} 
+		
+
 	}
+	/*//Service list Callback*/
 
 	//페이징 처리 스크립트
 	/* function goSearchPageing(pageNm){
@@ -102,7 +113,7 @@
 		
 	} */
 
-	//노드명 & 노드 ID 검색 버튼
+	/* nodeNm & nodeId button */
 	function schNodeFromNameId() {
 
 	 	var id = $('#searchNodeFrm input[name=id]').val() == "" ? "" : "id="+$('#searchNodeFrm input[name=id]').val();
@@ -115,8 +126,9 @@
 		getNodeTotalList(addNodeLists, data);
 
 	}
+	/*//nodeNm & nodeId button */
 	
-	//서비스 검색 버튼
+	/* service search button */
 	function schNodeFromService() {
 
 		var serviceId = $('#searchNodeFrm select[name=serviceId]').val();
@@ -124,8 +136,9 @@
 		searchNodeFromServiceId(addNodeLists, serviceId);
 
 	}
+	/*//service search button */
 	
-	//아이피 검색 버튼
+	/* ipAddress search button */
 	function schNodeFromIpAddress() {
 
 		var ipAddress = $('#searchNodeFrm input[name=ipAddress]').val();
@@ -133,6 +146,7 @@
 		searchNodeFromIpAddress(addNodeLists, ipAddress);
 
 	}
+	/*//ipAddress search button */
 </script>
 </head>
 
@@ -162,14 +176,14 @@
 						<div class="span12">
 							<div class="row-fluid">
 								<div class="span12">
-									<label class="span2 control-label">노드명</label>
+									<label class="span2 control-label" for="label">노드명</label>
 									<div class="span4 controls">
 										<input type="text" id="label" class="span12" name="label"
-											value="" />
+											value="${nodeLabel}" />
 									</div>
-									<label class="span2 control-label">노드 ID</label>
+									<label class="span2 control-label" for="id">노드 ID</label>
 									<div class="span3 controls">
-										<input type="text" id="id" class="span12" name="id" value="" />
+										<input type="text" id="id" class="span12" name="id" value="${nodeId}" />
 									</div>
 									<div class="span1">
 										<button type="button" class="btn btn-primary span12" title="검색"
@@ -179,7 +193,7 @@
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<label class="span2 control-label">제공 서비스</label>
+									<label class="span2 control-label" for="serviceId">제공 서비스</label>
 									<div class="span3 controls">
 										<select class="span12" id="serviceId" name="serviceId">
 											<option value="">선택해주세요.</option>
@@ -190,10 +204,10 @@
 											onclick="javascript:schNodeFromService();">검색</button>
 									</div>
 									
-									<label class="span2 control-label">TCP/IP 주소</label>
+									<label class="span2 control-label" for="ipAddress">TCP/IP 주소</label>
 									<div class="span3 controls">
 										<input type="text" placeholder="*.*.*.*" id="ipAddress"
-											class="span12" name="ipAddress" value="" />
+											class="span12" name="ipAddress" value="${ipAddress}" />
 									</div>
 									<div class="span1">
 										<button type="button" class="btn btn-primary span12" title="검색"

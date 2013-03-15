@@ -25,9 +25,28 @@ public class NodeSearchController
 	 * @return
 	 */
 	@RequestMapping(value = "/monitering/node/search", method = RequestMethod.GET)
-	public ModelAndView searchNode(HttpServletRequest request, HttpServletResponse response)
+	public ModelAndView searchNode(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "id", required = false)String nodeId,
+			@RequestParam(value = "label", required = false)String nodeLabel,
+			@RequestParam(value = "serviceId", required = false)String serviceId,
+			@RequestParam(value = "ipAddress", required = false)String ipAddress)
 	{
+		
+		System.out.println("==============");
+		
+		System.out.println("nodeId: "+nodeId);
+		System.out.println("nodeLabel: "+nodeLabel);
+		System.out.println("serviceId: "+serviceId);
+		System.out.println("ipAddress: "+ipAddress);
+		
+		System.out.println("==============");
+		
 		ModelAndView model = new ModelAndView();
+		model.addObject("nodeId",nodeId);
+		model.addObject("nodeLabel",nodeLabel);
+		model.addObject("serviceId",serviceId);
+		model.addObject("ipAddress",ipAddress);
+		
 		model.setViewName("/monitering/node/search");
 		return model;
 	}
@@ -55,12 +74,14 @@ public class NodeSearchController
 	 */
 	@RequestMapping(value = "/monitering/node/interfaceDesc", method = RequestMethod.GET)
 	public ModelAndView interfaceDescription(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "nodeId", required = false)String nodeId,
 			@RequestParam(value = "intf", required = false)String intf)
 	{
 		ModelAndView model = new ModelAndView();
 
 		model.addObject("intf",intf);
-		model.setViewName("/monitering/node/interfaceDesc");
+		model.addObject("nodeId",nodeId);
+		model.setViewName("/monitering/node/interface/interfaceDesc");
 		return model;
 	}
 }

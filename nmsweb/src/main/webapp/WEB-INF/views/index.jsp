@@ -13,13 +13,17 @@
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/outages.js" />"></script>
+<script src="<c:url value="/resources/js/service.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		getTotalOutagesList(outageList,null);
+		
+		getServiceList(addServiceList);
 	});
 
 	function outageList(jsonObj) {
 
+		
 		console.log(jsonObj);
 		var outageObj = jsonObj["outage"];
 
@@ -30,6 +34,14 @@
 		}
 		
 		
+	}
+	
+	//서비스 리스트 가져오기
+	function addServiceList(jsonObj) {
+
+		var optionStr = getOptiontagToServiceList(jsonObj);
+		$('#serviceId').append(optionStr);
+
 	}
 </script>	
 </head>
@@ -67,30 +79,47 @@
 									<h4>Quick Search</h4>
 								</div>
 							</div>
-							<div class="well well-small">
-								<div class="row-fluid">
-									<div class="span12">
-										<form>
+							<div class="row-fluid">
+								<div class="span12">
+									<form action="<c:url value="/monitering/node/search.do" />">
+										<div class="well well-small">
 											<fieldset>
-												<label for="">노드 ID</label><input type="text" class="span12">
+												<label for="id" class="span6">노드 ID</label><input type="text" id="id" name="id" class="span6">
 											</fieldset>
 											<fieldset>
-												<label for="">노드명</label><input type="text"  class="span12">
+												<label for="label" class="span6">노드명</label><input type="text" id="label" name="label" class="span6">
 											</fieldset>
 											<fieldset>
-												<label for="">TCP/IP</label><input type="text" class="span12">
+												<div class="span6"></div>
+												<input type="submit" class="btn btn-primary span6" title="Quick Search" value="검색">
+											</fieldset>
+										</div>
+									</form>
+									<form action="<c:url value="/monitering/node/search.do" />">
+										<div class="well well-small">
+											<fieldset>
+												<label for="ipAddress" class="span6">TCP/IP</label><input type="text" name="ipAddress" id="ipAddress" class="span6">
 											</fieldset>
 											<fieldset>
-												<label for="">서비스</label>
-												<select class="span12">
-													<option>DNS</option>
+												<div class="span6"></div>
+												<input type="submit" class="btn btn-primary span6" title="Quick Search" value="검색">
+											</fieldset>
+										</div>
+									</form>
+									<form action="<c:url value="/monitering/node/search.do" />">
+										<div class="well well-small">
+											<fieldset>
+												<label for="serviceId" class="span6">서비스</label>
+												<select class="span6" id="serviceId" name="serviceId">
+													<option value="">선택</option>
 												</select>
 											</fieldset>
 											<fieldset>
-												<button type="button" class="btn btn-primary span12" title="Quick Search" onclick="#">검색</button>
+												<div class="span6"></div>
+												<input type="submit" class="btn btn-primary span6" title="Quick Search" value="검색">
 											</fieldset>
-										</form>
-									</div>
+										</div>
+									</form>
 								</div>
 							</div>
 						</div>

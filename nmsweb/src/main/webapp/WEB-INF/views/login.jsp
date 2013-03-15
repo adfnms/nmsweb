@@ -61,7 +61,6 @@
 			
 	        },
 	        success: function(res){
-	        	console.log(res);
 	        	if(res.result == true){
 	        	
 	        		document.location.href = '<c:url value="/index.do" />';
