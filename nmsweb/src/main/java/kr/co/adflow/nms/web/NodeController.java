@@ -1,12 +1,16 @@
 package kr.co.adflow.nms.web;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.exception.MapperException;
+import kr.co.adflow.nms.web.mapper.NodeMapper;
+import kr.co.adflow.nms.web.mapper.PathOutagesMapper;
 import kr.co.adflow.nms.web.service.MapsService;
 import kr.co.adflow.nms.web.service.NodeService;
 import org.slf4j.Logger;
@@ -16,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,6 +39,9 @@ public class NodeController {
 
 	@Autowired
 	private NodeService service; 
+	
+	@Autowired
+	private NodeMapper mapper;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String node() {
@@ -349,6 +357,7 @@ public class NodeController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
+	
 	
 	
 	

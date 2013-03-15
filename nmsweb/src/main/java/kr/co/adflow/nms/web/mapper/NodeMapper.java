@@ -1,5 +1,6 @@
 package kr.co.adflow.nms.web.mapper;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import kr.co.adflow.nms.web.exception.MapperException;
@@ -572,6 +573,42 @@ public class NodeMapper {
 
 		return assetRecord;
 	}
+	
+	public ArrayList idList(String jdata) throws MapperException {
+		
+		ArrayList idList = new ArrayList();
+
+		try {
+			ObjectMapper om = new ObjectMapper();
+//			Map<String, Object> m = om.readValue(jdata, new TypeReference<Map<String, Object>>(){});
+//			System.out.println("json to object : " + m);
+			
+			JsonNode jNode = om.readTree(jdata);
+			if (jNode.path("category").isArray()) {
+				
+				Iterator<JsonNode> it = jNode.path("category").iterator();
+				
+				while (it.hasNext()) {
+					JsonNode temp = (JsonNode) it.next();
+					idList.add(temp.path("id").getTextValue());
+					
+				}
+
+			} else{
+				
+				idList.add(jNode.path("id").getTextValue());
+
+			}
+
+
+		} catch (Exception e) {
+			throw new MapperException(e);
+		}
+
+		return idList;
+	}
+	
+	
 
 
 }
