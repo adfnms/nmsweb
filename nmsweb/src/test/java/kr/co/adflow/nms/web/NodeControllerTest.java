@@ -1,30 +1,81 @@
 package kr.co.adflow.nms.web;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static org.hamcrest.Matchers.containsString;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Properties;
+
+import javax.swing.text.AbstractDocument.Content;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class NodeControllerTest extends AbstractContextControllerTests {
 
 	private MockMvc mockMvc;
+	
+	HashMap hashData = new HashMap();
+	
+	String id= null;
+	String ipAddress =null;
+	String serviceName= null;
+	String ifIndex= null;
+	String categoryName= null;
+	String serviceId= null;
+	String iplike= null;
+	String ip= null;
+
+	Properties properties = new Properties();
 
 	@Before
 	public void setup() {
 		mockMvc = webAppContextSetup(this.wac).build();
 	}
+	
+	 @Before
+	 public void configload() {
+//	  Properties properties = new Properties();
+	  
+	  InputStream is = null;
+	  try {
+	   is = new FileInputStream("src/test/properties/node.properties");
+	   properties.load(is);
+	   
+	   id = properties.getProperty("id");
+	   ipAddress = properties.getProperty("ipAddress");
+	   serviceName = properties.getProperty("serviceName");
+	   ifIndex = properties.getProperty("ifIndex");
+	   categoryName = properties.getProperty("categoryName");
+	   serviceId = properties.getProperty("serviceId");
+	   iplike = properties.getProperty("iplike");
+	   ip = properties.getProperty("ip");
+	   
+
+//	   for (String key : properties.stringPropertyNames()) {
+//	    String value = properties.getProperty(key);
+//	    System.out.println("value:"+value);
+//	    hashData.put(key, value);
+//
+//	   }
+	  } catch (Exception e) {
+
+	  }
+	 }
 	
 
 	// get
@@ -35,29 +86,173 @@ public class NodeControllerTest extends AbstractContextControllerTests {
 				.andExpect(
 						content().contentType("application/json;charset=UTF-8"));
 	}
-
-	// post
+	
 	@Test
-	public void nodeIpPost() throws Exception {
-
-		mockMvc.perform(post("/nodes/scan/192.168.0.1").content("test".getBytes())).andExpect(
-				status().isOk());
-
-		// mockMvc.perform(
-		// request(HttpMethod.POST, "/nodes/scan/{ip}", "192.168.0.1")
-		// .content("testData".getBytes())).andExpect(
-		// status().isOk());
+	public void nodeId() throws Exception {
+		mockMvc.perform(get("/nodes/"+id).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						content().contentType("application/json;charset=UTF-8"));
 	}
-
-	// put
-
-	// delete
+	
 	@Test
-	public void nodesDelete() throws Exception {
-
-		mockMvc.perform(delete("/nodes/1000")).andExpect(status().is(500));
-
-		// mockMvc.perform(request(HttpMethod.DELETE, "/nodes/{id}", "1000"))
-		// .andExpect(status().is(500));
+	public void nodeIdIpinterfaces() throws Exception {
+		mockMvc.perform(get("/nodes/"+id+"/ipinterfaces").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						content().contentType("application/json;charset=UTF-8"))
+				.andExpect(content().string(containsString("@totalCount")));
 	}
+	
+	@Test
+	public void nodeIdIpinterfacesIpAddress() throws Exception {
+		mockMvc.perform(get("/nodes/"+id+"/ipinterfaces/"+ipAddress).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						content().contentType("application/json;charset=UTF-8"));
+	}
+	
+	@Test
+	public void nodeIdIpinterfacesService() throws Exception {
+		mockMvc.perform(get("/nodes/"+id+"/ipinterfaces/"+ipAddress+"/services").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						content().contentType("application/json;charset=UTF-8"));
+	}
+	
+	@Test
+	public void nodeIdIpinterfacesServiceServiceName() throws Exception {
+		mockMvc.perform(get("/nodes/"+id+"/ipinterfaces/"+ipAddress+"/services"+serviceName).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						content().contentType("application/json;charset=UTF-8"));
+	}
+	
+	@Test
+	public void nodeSnmpinterfaces() throws Exception {
+		mockMvc.perform(get("/nodes/"+id+"/snmpinterfaces").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						content().contentType("application/json;charset=UTF-8"));
+	}
+	
+	@Test
+	public void nodeSnmpinterfacesIfIndex() throws Exception {
+		mockMvc.perform(get("/nodes/"+id+"/snmpinterfaces/"+ifIndex).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						content().contentType("application/json;charset=UTF-8"));
+	}
+	
+	@Test
+	public void nodeCategories() throws Exception {
+		mockMvc.perform(get("/nodes/"+id+"/categories").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						content().contentType("application/json;charset=UTF-8"));
+	}
+	
+	@Test
+	public void nodeCategoriesCategoryName() throws Exception {
+		mockMvc.perform(get("/nodes/"+id+"categories/"+categoryName).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						content().contentType("application/json;charset=UTF-8"));
+	}
+	
+	@Test
+	public void nodeAssetRecord() throws Exception {
+		mockMvc.perform(get("/nodes/"+id+"/assetRecord").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						content().contentType("application/json;charset=UTF-8"));
+	}
+	
+	@Test
+	public void serviceList() throws Exception {
+		mockMvc.perform(get("/serviceList").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						content().contentType("application/json;charset=UTF-8"));
+	}
+	
+	
+	@Test
+	public void nodeSearchService() throws Exception {
+		mockMvc.perform(get("/nodes/searchService/"+serviceId).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						content().contentType("application/json;charset=UTF-8"));
+	}
+	
+	
+	@Test
+	public void nodeSearchIp() throws Exception {
+		mockMvc.perform(get("/nodes/searchIp/"+iplike).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						content().contentType("application/json;charset=UTF-8"));
+	}
+	
+	
+	
+
+//	// post
+//	@Test
+//	public void nodeIpPost() throws Exception {
+//
+//		mockMvc.perform(post("/nodes/scan/"+ip).content("test".getBytes())).andExpect(
+//				status().isOk());
+//
+//		// mockMvc.perform(
+//		// request(HttpMethod.POST, "/nodes/scan/{ip}", "192.168.0.1")
+//		// .content("testData".getBytes())).andExpect(
+//		// status().isOk());
+//	}
+//
+//	// put
+//
+//	// delete
+//	@Test
+//	public void nodesIpInterfacesServicesDelete() throws Exception {
+//
+//		mockMvc.perform(delete("/nodes/"+id+"/ipinterfaces/"+ipAddress+"/services"+serviceName)).andExpect(status().isOk());
+//
+//		// mockMvc.perform(request(HttpMethod.DELETE, "/nodes/{id}", "1000"))
+//		// .andExpect(status().is(500));
+//	}
+//	@Test
+//	public void nodesIpinterfacesDelete() throws Exception {
+//
+//		mockMvc.perform(delete("/nodes/"+id+"/ipinterfaces/"+ipAddress)).andExpect(status().isOk());
+//
+//		// mockMvc.perform(request(HttpMethod.DELETE, "/nodes/{id}", "1000"))
+//		// .andExpect(status().is(500));
+//	}
+//	@Test
+//	public void nodesSnmpinterfacesDelete() throws Exception {
+//
+//		mockMvc.perform(delete("/nodes/"+id+"/snmpinterfaces/"+ifIndex)).andExpect(status().isOk());
+//
+//		// mockMvc.perform(request(HttpMethod.DELETE, "/nodes/{id}", "1000"))
+//		// .andExpect(status().is(500));
+//	}
+//	@Test
+//	public void nodesCategoriesDelete() throws Exception {
+//
+//		mockMvc.perform(delete("/nodes/"+id+"categories/"+categoryName)).andExpect(status().isOk());
+//
+//		// mockMvc.perform(request(HttpMethod.DELETE, "/nodes/{id}", "1000"))
+//		// .andExpect(status().is(500));
+//	}
+//
+//	@Test
+//	public void nodesDelete() throws Exception {
+//
+//		mockMvc.perform(delete("/nodes/"+id)).andExpect(status().isOk());
+//
+//		// mockMvc.perform(request(HttpMethod.DELETE, "/nodes/{id}", "1000"))
+//		// .andExpect(status().is(500));
+//	}
+	
 }
