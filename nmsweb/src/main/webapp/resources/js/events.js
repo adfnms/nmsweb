@@ -86,12 +86,12 @@ function getTabletagToEventJsonObj(jsonObj){
 				+ "	<div class='row-fluid'>"
 				+ "		<div class='span12 well well-small'>"
 				+ "<table class='table'>"
-				+ "<tr><th>EventId</th><th>time</th><th>stats</th><th class='span4'>Message</th></tr>";
+				+ "<tr><th>이벤트ID</th><th>시간</th><th>상태</th><th class='span4'>메세지</th></tr>";
 		if (jsonObj["@count"] > 1) {
 
 			for ( var i in events) {
 				str += "<tr>";
-				str += "<td><a href='#'>" + events[i]["@id"]
+				str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+"'>" + events[i]["@id"]
 						+ "</a></td>";
 				str += "<td>"
 						+ new Date(events[i]["createTime"])
@@ -117,4 +117,98 @@ function getTabletagToEventJsonObj(jsonObj){
 	}
 
 	return str;
+}
+
+/** 이벤트 정보를 div 형태로 만들어줌 
+ * @param jsonObj
+ */
+function getEventinfoBox(jsonObj){
+	console.log(jsonObj);
+	var eventInfoStr = 	'<div class="row-fluid">'+
+						'	<div class="span12">'+
+						'		<h5>이벤트&nbsp;['+jsonObj["event"]["@id"]+']</h5>'+
+						'	</div>'+
+						'</div>'+
+						'<div class="row-fluid">'+
+						'	<div class="span12 well well-small">'+
+						'	<table class="table table-striped">'+
+						'		<tr>'+
+						'			<th>상태</th>'+
+						'			<td>'+jsonObj["event"]["@severity"]+'</td>'+
+						'			<th>노드</th>'+
+						'			<td>'+
+						'				<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+jsonObj["event"]["nodeId"]+'">'+
+											jsonObj["event"]["nodeLabel"]+
+						'				</a>'+
+						'			</td>'+
+						'			<th>확인자</th>'+
+						'			<td></td>'+
+						'		</tr>'+
+						'		<tr>'+
+						'			<th>시간</th>'+
+						'			<td>'+new Date(jsonObj["event"]["time"]).format('yy-MM-dd hh:mm:ss')+'</td>'+
+						'			<th>인터페이스</th>'+
+						'			<td>'+
+						'				<a href="/'+version+'/search/node/interfaceDesc.do?nodeId='+jsonObj["event"]["nodeId"]+'&intf='+jsonObj["event"]["ipAddress"]+'">'+
+											jsonObj["event"]["ipAddress"]+
+						'				</a>'+
+						'			</td>'+
+						'			<th>승인 시간</th>'+
+						'			<td></td>'+
+						'		</tr>'+
+						'		<tr>'+
+						'			<th>서비스</th>'+
+						'			<td><a href="">'+nullCheckJsonObject(jsonObj["event"]["serviceType"], ["name"])+'</a></td>'+
+						'			<td colspan="4"></td>'+
+						'		</tr> '+
+						'		<tr>'+
+						'			<th>Uei</th>'+
+						'			<td>'+jsonObj["event"]["uei"]+'</td>'+
+						'			<td colspan="4"></td>'+
+						'		</tr>'+
+						'	</table>'+
+						'	</div>'+
+						'</div>';
+	return eventInfoStr;
+	
+}
+
+/** 이벤트 정보를 div 형태로 만들어줌 
+ * @param jsonObj
+ */
+function getEventLogBox(jsonObj){
+
+	var eventLogStr = 	'<div class="row-fluid">'+
+						'	<div class="span12">'+
+						'		<h5>로그&nbsp;메시지</h5>'+
+						'	</div>'+
+						'</div>'+
+						'<div class="row-fluid">'+
+						'	<div class="span12 well well-small">'+
+								jsonObj["event"]["logMessage"]+
+						'	</div>'+
+						'</div>';
+	
+	return eventLogStr;
+
+}
+
+/** 이벤트 정보를 div 형태로 만들어줌 
+ * @param jsonObj
+ */
+function getEventDescBox(jsonObj){
+
+	var eventDescStr = 	'<div class="row-fluid">'+
+						'	<div class="span12">'+
+						'		<h5>설명</h5>'+
+						'	</div>'+
+						'</div>'+
+						'<div class="row-fluid">'+
+						'	<div class="span12 well well-small">'+
+								jsonObj["event"]["description"]+
+						'	</div>'+
+						'</div>';
+	
+	return eventDescStr;
+
 }

@@ -47,20 +47,20 @@
 		var str = "<tr>";
 
 		if (1 == jsonObj["@totalCount"]) {
-			str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="
+			str += "<td><a href='<c:url value="/search/node/nodeDesc.do" />?nodeId="
 					+ nodeObj["@id"] + "'>" + nodeObj["@id"] + "</a></td>";
-			str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="
+			str += "<td><a href='<c:url value="/search/node/nodeDesc.do" />?nodeId="
 					+ nodeObj["@id"] + "'>" + nodeObj["@label"] + "</a></td>";
 		} else {
 
 			for ( var i in nodeObj) {
 
-				str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="
+				str += "<td><a href='<c:url value="/search/node/nodeDesc.do" />?nodeId="
 						+ nodeObj[i]["@id"]
 						+ "'>"
 						+ nodeObj[i]["@id"]
 						+ "</a></td>";
-				str += "<td><a href='<c:url value="/monitering/node/nodeDesc.do" />?nodeId="
+				str += "<td><a href='<c:url value="/search/node/nodeDesc.do" />?nodeId="
 						+ nodeObj[i]["@id"]
 						+ "'>"
 						+ nodeObj[i]["@label"]

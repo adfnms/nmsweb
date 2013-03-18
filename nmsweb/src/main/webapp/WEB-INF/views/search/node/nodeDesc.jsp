@@ -76,7 +76,7 @@
 		
 		$("#leftDiv").empty();
 		/* 아이피 해더 만들기 */
-		var headStr = '<a href="<c:url value="/monitering/node/interfaceDesc.do?nodeId=${nodeId}&intf='
+		var headStr = '<a href="<c:url value="/search/node/interfaceDesc.do?nodeId=${nodeId}&intf='
 			+ ipAddress + '" />"><h5>' + ipAddress + '</h5></a>';
 			
 		var str = getTabletagToServiceJsonObj(jsonObj);
@@ -98,7 +98,7 @@
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value="/index.do" />" />Home</a> <span
 						class="divider">/</span></li>
-					<li><a href="<c:url value="/monitering/node/search.do" />" />노드검색</a>
+					<li><a href="<c:url value="/search/node.do" />" />노드검색</a>
 						<span class="divider">/</span></li>
 					<li class="active">노드</li>
 				</ul>

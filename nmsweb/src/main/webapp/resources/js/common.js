@@ -200,3 +200,21 @@ function nullCheckJsonObject(parentObj, childName) {
 	return strValue;
 
 }
+
+
+function statsToStringFromStatoCode(code){
+	var statsStr = "";
+
+	switch(code){
+		case 'N','n':{
+			statsStr ="모니터링 되지 않음";
+			break;
+		}
+		default:{
+			statsStr ="모니터링 중";
+			break;
+		}
+	}
+	
+	return statsStr;
+}

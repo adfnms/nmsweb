@@ -117,6 +117,7 @@ function getServiceFromNodeId(callback, nodeId) {
 
 }
 
+
 /**Get the IP interface for the given node
  * @param callback
  * @param nodeId
@@ -150,6 +151,40 @@ function getServiceFromNodeidIpaddress(callback, nodeId, ipAddress){
 
 
 
+
+/**
+ * Get the IP interface for the given node 
+ * 
+ * @param callback
+ * @param nodeId
+ * @param ipAddress
+ */
+function getServiceInfo(callback, nodeId, ipAddress, serviceNm) {
+
+	if (nodeId == "") {
+		alert("노드 ID가 없습니다.");
+		return;
+	}
+
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/nodes/' + nodeId + '/ipinterfaces/' + ipAddress + '/services/' + serviceNm,
+		dataType : 'json',
+		contentType : 'application/json',
+		error : function(data) {
+			alert("[" + nodeId + '] 서비스 정보 검색 실패');
+		},
+		success : function(data) {
+
+			// 콜백함수
+			if (typeof callback == "function") {
+				callback(data, nodeId, ipAddress);
+			}
+
+		}
+	});
+
+}
 
 
 /************************** view String edit *****************************/
@@ -221,4 +256,32 @@ function getOptiontagToServiceList(jsonObj) {
 	}
 
 	return optionStr;
+}
+
+/** 이벤트 정보를 table 테그 Str로 만들어준다. 
+ * @param jsonObj
+ */
+function getServiceInfoBox(jsonObj, nodeId, ipAddress, serviceNm){
+	
+	var stats = statsToStringFromStatoCode(jsonObj["@status"]);
+		
+	var serviceInfoStr = 	'<div class="row-fluid">'+
+							'	<h5>일반</h5>'+
+							'</div>'+
+							'<div class="row-fluid">'+
+							'	<div class="span12 well well-small">'+
+							'		<table class="table table-striped">'+
+							'			<tr>'+
+							'				<th>인터페이스</th>'+
+							'				<td>'+ipAddress+'</td>'+
+							'			</tr>'+
+							'			<tr>'+
+							'				<th>폴링 상태</th>'+
+							'				<td>'+stats+'</td>'+
+							'			</tr>'+
+							'		</table>'+
+							'	</div>'+
+							'</div>';
+	
+	return serviceInfoStr;
 }
