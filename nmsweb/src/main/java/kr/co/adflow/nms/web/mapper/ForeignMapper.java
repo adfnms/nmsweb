@@ -30,12 +30,9 @@ public class ForeignMapper {
 		ForeignInfo foreig = new ForeignInfo();
 		try {
 			logger.debug("mappingdata::" + data);
-			logger.debug("mapper step...1");
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			logger.debug("mapper step...2");
 			if (jNode.path("foreign-source").isArray()) {
-				logger.debug("if..");
 				JsonNode temp = null;
 
 				Iterator<JsonNode> it = jNode.path("foreign-source").iterator();
@@ -65,18 +62,14 @@ public class ForeignMapper {
 		ForDetector detector = new ForDetector();
 		try {
 			logger.debug("mappingdata::" + data);
-			logger.debug("mapper step...1");
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			logger.debug("mapper step...2");
 			if (jNode.path("detector").isArray()) {
-				logger.debug("if..");
 				JsonNode temp = null;
 
 				Iterator<JsonNode> it = jNode.path("detector").iterator();
 
 				while (it.hasNext()) {
-					logger.debug("mapper step...3");
 					temp = it.next();
 					detector.setIsclass(temp.path("class").getTextValue());
 					detector.setName(temp.path("name").getTextValue());
@@ -100,38 +93,30 @@ public class ForeignMapper {
 	// <parameter value="DISABLE_COLLECTION" key="action"/><parameter
 	// value="ALL_PARAMETERS" key="matchBehavior"/></policy>
 
-	// {"policy":[{"class":"a","name":"b"},"parameter":[{"value":"c","key":"d"}],"parameter":[{"value":"e","key":"f"}]]}
-
-	// "{"policy": {"class": "","name": "","parameter": [{value: "","key": ""},{"value": "","key": ""}]}}";
+	
+	
 	public ForPoliceS foreignPolicesMap(String data) throws MapperException {
 		ForPoliceS polices = new ForPoliceS();
 		try {
 			logger.debug("mappingdata::" + data);
-			logger.debug("mapper step...1");
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			logger.debug("mapper step...2");
 			if (jNode.path("policy").isArray()) {
-				logger.debug("if..");
 				JsonNode temp = null;
 
 				Iterator<JsonNode> it = jNode.path("policy").iterator();
 
 				while (it.hasNext()) {
-					logger.debug("mapper step...3");
 					temp = it.next();
 					polices.setIsclass(temp.path("class").getTextValue());
 					polices.setName(temp.path("name").getTextValue());
 
 					if (temp.path("parameter").isArray()) {
-					
-						logger.debug("if2..");
 						JsonNode temp2 = null;
 
 						Iterator<JsonNode> it2 = temp.path("parameter")
 								.iterator();
 						while (it2.hasNext()) {
-							logger.debug("while it2 step...");
 							ForParam par=new ForParam();
 							temp2 = it2.next();
 							
@@ -143,8 +128,6 @@ public class ForeignMapper {
 				}
 
 				logger.debug("polices.getName():::" + polices.getName());
-				logger.debug("polices.getUser().get(0).getKey():::"+ polices.getUser().get(0).getKey());
-				logger.debug("polices.getUser().get(0).getKey():::"+ polices.getUser().get(1).getKey());
 				
 
 			}
@@ -159,10 +142,8 @@ public class ForeignMapper {
 		ForPutName putName=new ForPutName();
 		try {
 			logger.debug("mappingdata::" + data);
-			logger.debug("mapper step...1");
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			logger.debug("mapper step...2");
 			jNode.path("name");
 
 			

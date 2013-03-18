@@ -39,7 +39,7 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 
 			// 2013-02-22
 			// kicho@adflow.co.kr
-			// "Content-Type" 추가
+			// "Content-Type" 異붽�
 			if (map.containsKey("contentType")) {
 				conn.setRequestProperty("Content-Type",
 						(String) map.get("contentType"));
@@ -53,7 +53,7 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 
 			// 2013-02-21
 			// kicho@adflow.co.kr
-			// POST, PUT Data 추가
+			// POST, PUT Data 異붽�
 			if (map.containsKey("data")) {
 
 				conn.setDoOutput(true);

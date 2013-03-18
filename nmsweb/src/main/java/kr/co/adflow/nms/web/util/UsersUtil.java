@@ -28,10 +28,6 @@ public class UsersUtil {
 		return util;
 	}
 
-	
-	
-
-
 	public String XmlParsingUser(UserInit userinit) throws UtilException {
 		String data = null;
 		try {

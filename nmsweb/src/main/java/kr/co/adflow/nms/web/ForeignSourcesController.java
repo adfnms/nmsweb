@@ -93,7 +93,7 @@ public class ForeignSourcesController {
 		return result;
 	}
 
-	// foreignSources/deployed/count *Exception!!!!!!
+	// foreignSources/deployed/count 
 
 	@RequestMapping(value = "/foreignSources/deployed/count", method = RequestMethod.GET)
 	public @ResponseBody

@@ -56,7 +56,7 @@ public class ForeignSourcesService {
 	public String foreignSourcesDefault() throws HandleException {
 		String result = null;
 		try {
-		
+			
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
@@ -101,7 +101,6 @@ public class ForeignSourcesService {
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/foreignSources/deployed/count");
-			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
 			result = (String) handler.handle(hash);
