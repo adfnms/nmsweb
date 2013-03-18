@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
 public class RequisitionsController {
-	private static final String RETURNRESULT = "result:::";
+	private static final String RETURNRESULT = "Controllerresult:::";
 	private static final String PATH = "path:::";
 	private static final String DATA = "data:::";
 	private static final Logger logger = LoggerFactory
@@ -737,7 +737,7 @@ public class RequisitionsController {
 			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
-		return "200ok";
+		return result;
 	}
 
 	// DELETE
@@ -757,7 +757,7 @@ public class RequisitionsController {
 			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
-		return "200ok";
+		return result;
 	}
 
 	// DELETE
@@ -778,7 +778,7 @@ public class RequisitionsController {
 			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
-		return "200ok";
+		return result;
 	}
 
 	// DELETE
@@ -799,7 +799,7 @@ public class RequisitionsController {
 			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
-		return "200ok";
+		return result;
 	}
 
 	// DELETE
@@ -821,7 +821,7 @@ public class RequisitionsController {
 			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
-		return "200ok";
+		return result;
 	}
 
 	// DELETE
@@ -843,7 +843,7 @@ public class RequisitionsController {
 			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
-		return "200ok";
+		return result;
 	}
 
 	// DELETE
@@ -864,7 +864,7 @@ public class RequisitionsController {
 			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
-		return "200ok";
+		return result;
 	}
 
 	@ExceptionHandler(Exception.class)

@@ -71,7 +71,6 @@ public class RequisitionsMapper {
 				Iterator<JsonNode> it = jNode.path("node").iterator();
 
 				while (it.hasNext()) {
-					logger.debug("mapper step...3");
 					temp = it.next();
 					requisiNodes.setNodelabel(temp.path("node-label")
 							.getTextValue());
@@ -137,14 +136,13 @@ public class RequisitionsMapper {
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
 			if (jNode.path("monitored-service").isArray()) {
-				logger.debug("if..");
+			
 				JsonNode temp = null;
 
 				Iterator<JsonNode> it = jNode.path("monitored-service")
 						.iterator();
 
 				while (it.hasNext()) {
-					logger.debug("mapper step...3");
 					temp = it.next();
 					service.setServicename(temp.path("service-name")
 							.getTextValue());
