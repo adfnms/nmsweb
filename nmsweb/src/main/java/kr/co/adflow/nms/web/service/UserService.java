@@ -51,6 +51,7 @@ public class UserService {
 
 	// users
 	public String Users() throws HandleException {
+		String result = null;
 		try {
 
 			HashMap hash = new HashMap();
@@ -60,18 +61,18 @@ public class UserService {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		logger.debug("ServiceRetunData::" + result);
+		return result;
 	}
 
 	// users
 	public String UsersPost(String xmlData) throws HandleException {
+		String result = null;
 		try {
 
 			HashMap hash = new HashMap();
@@ -83,14 +84,13 @@ public class UserService {
 			hash.put(CONTENTTYPE, "application/xml");
 			hash.put(DATA, xmlData);
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		logger.debug("ServiceRetunData::" + result);
+		return result;
 	}
 
 	/*
@@ -107,6 +107,7 @@ public class UserService {
 
 	// users/{username}
 	public String Users(String username) throws HandleException {
+		String result = null;
 		try {
 
 			HashMap hash = new HashMap();
@@ -116,18 +117,18 @@ public class UserService {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		logger.debug("ServiceRetunData::" + result);
+		return result;
 	}
 
 	// users/{username} Delete
 	public String UsersDelete(String username) throws HandleException {
+		String result = null;
 		try {
 
 			HashMap hash = new HashMap();
@@ -137,14 +138,13 @@ public class UserService {
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
 
-			String result = null;
-
 			result = (String) handler.handle(hash);
-			return result;
+			result = "{\"result\":\"success\"}";
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-
+		logger.debug("ServiceRetunData::" + result);
+		return result;
 	}
 
 	// users/detail
@@ -161,6 +161,24 @@ public class UserService {
 			Object ob = xUtil.xmlRead(filePath, classname, info);
 			info = (Userinfo) ob;
 			int size = info.getUsers().getUser().size();
+			for (int i = 0; i < size; i++) {
+				int contentSize = info.getUsers().getUser().get(i).getContact()
+						.size();
+				for (int j = 0; j < contentSize; j++) {
+					for (int k = 0; k < user.getContact().size(); k++) {
+						if (user.getContact()
+								.get(k)
+								.getType()
+								.equals(info.getUsers().getUser().get(i)
+										.getContact().get(j).getType())
+								&& id.equals(info.getUsers().getUser().get(i)
+										.getUserId())) {
+							throw new HandleException("Contact already Type...");
+						}
+					}
+
+				}
+			}
 
 			for (int i = 0; i < size; i++) {
 				if (id.equals(info.getUsers().getUser().get(i).getUserId())) {
@@ -175,11 +193,15 @@ public class UserService {
 
 			String filePath2 = xmlPath + "users.xml";
 			result = xUtil.xmlWrite(filePath2, classname, info);
-
+			logger.debug("xUtil.xmlWriteResult::" + result);
+			result = "{\"result\":\"success\"}";
 		} catch (Exception e) {
 
 			throw new HandleException(e);
 		}
+
+		logger.debug("ServiceRetunData::" + result);
+
 		return result;
 	}
 
@@ -202,8 +224,13 @@ public class UserService {
 					for (int j = 0; j < info.getUsers().getUser().get(i)
 							.getContact().size(); j++) {
 						for (int k = 0; k < user.getContact().size(); k++) {
-							if(user.getContact().get(k).getType().equals(info.getUsers().getUser().get(i).getContact().get(j).getType())){
-								info.getUsers().getUser().get(i).getContact().remove(j);
+							if (user.getContact()
+									.get(k)
+									.getType()
+									.equals(info.getUsers().getUser().get(i)
+											.getContact().get(j).getType())) {
+								info.getUsers().getUser().get(i).getContact()
+										.remove(j);
 							}
 						}
 					}
@@ -217,6 +244,8 @@ public class UserService {
 
 			throw new HandleException(e);
 		}
+		logger.debug("ServiceRetunData::" + result);
+		result = "{\"result\":\"success\"}";
 		return result;
 	}
 }

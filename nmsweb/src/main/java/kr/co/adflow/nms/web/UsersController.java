@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 public class UsersController {
 
-	private static final String RETURNRESULT = "result:::";
+	private static final String RETURNRESULT = "Controllerresult:::";
 	private static final String PATH = "path:::";
 
 	private static final Logger logger = LoggerFactory
@@ -40,7 +40,7 @@ public class UsersController {
 	private UserService service;
 	@Autowired
 	UserAndGroupMapper tcmapper;
-	
+
 	private static final String INVALUE = "invalue:::";
 	private static final String XMLDATA = "xmlData:::";
 	private UsersUtil ut = UsersUtil.getInstance();
@@ -63,8 +63,8 @@ public class UsersController {
 	}
 
 	// user POST
-	//testPost
-	//123123
+	// testPost
+	// 123123
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	public @ResponseBody
 	String usersPost(@RequestBody String data, HttpServletRequest request)
@@ -84,7 +84,7 @@ public class UsersController {
 			logger.debug("md5pass:" + md5);
 			userinit.setPassword(md5);
 			xmlData = ut.XmlParsingUser(userinit);
-			logger.debug("xmlDATA::"+xmlData);
+			logger.debug("xmlDATA::" + xmlData);
 
 		} catch (MapperException e) {
 			logger.error("Failed in processing", e);
@@ -100,13 +100,42 @@ public class UsersController {
 			logger.error("Failed in processing", e);
 			throw e;
 		}
+		logger.debug(RETURNRESULT + result);
 		return result;
 	}
 
 	// user POST Add
 	@RequestMapping(value = "/users/detail/{id}", method = RequestMethod.POST)
 	public @ResponseBody
-	String usersPostDetail(@PathVariable String id,@RequestBody String data, HttpServletRequest request)
+	String usersPostDetail(@PathVariable String id, @RequestBody String data,
+			HttpServletRequest request) throws HandleException, MapperException {
+		logger.info(PATH + request.getRequestURL());
+		logger.debug(INVALUE + data);
+		String result = null;
+		User user = new User();
+
+		try {
+			user = tcmapper.userInfoMapping(data);
+		} catch (MapperException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		try {
+			result = (String) service.userPostDetail(id, user);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+
+	// user POST del "/users/detail/del/{id}"
+	@RequestMapping(value = "/users/detail/del/{id}", method = RequestMethod.POST)
+	public @ResponseBody
+	String usersPostDetailDel(@PathVariable String id,
+			@RequestBody String data, HttpServletRequest request)
 			throws HandleException, MapperException {
 		logger.info(PATH + request.getRequestURL());
 		logger.debug(INVALUE + data);
@@ -121,40 +150,14 @@ public class UsersController {
 		}
 
 		try {
-			result = (String) service.userPostDetail(id,user);
+			result = (String) service.userPostDetailDel(id, user);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
 		}
-		return "succed";
+		logger.debug(RETURNRESULT + result);
+		return result;
 	}
-	
-	// user POST del "/users/detail/del/{id}"
-		@RequestMapping(value = "/users/detail/del/{id}", method = RequestMethod.POST)
-		public @ResponseBody
-		String usersPostDetailDel(@PathVariable String id,@RequestBody String data, HttpServletRequest request)
-				throws HandleException, MapperException {
-			logger.info(PATH + request.getRequestURL());
-			logger.debug(INVALUE + data);
-			String result = null;
-			User user = new User();
-
-			try {
-				user = tcmapper.userInfoMapping(data);
-			} catch (MapperException e) {
-				logger.error("Failed in processing", e);
-				throw e;
-			}
-
-			try {
-				result = (String) service.userPostDetailDel(id,user);
-			} catch (HandleException e) {
-				logger.error("Failed in processing", e);
-				throw e;
-			}
-			return "succed";
-		}
-	
 
 	// users/{username} Delete
 	@RequestMapping(value = "/users/{username}", method = RequestMethod.DELETE)
