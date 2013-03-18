@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 public class GraphControllerTest extends AbstractContextControllerTests {
 
 	private MockMvc mockMvc;
-	HashMap hashData = new HashMap();
+	Properties properties = new Properties();
 
 	@Before
 	public void setup() {
@@ -33,19 +33,13 @@ public class GraphControllerTest extends AbstractContextControllerTests {
 	@Before
 	public void configload() {
 
-		Properties properties = new Properties();
+	
 
 		InputStream is = null;
 		try {
 			is = new FileInputStream(
 					"src/test/java/properties/graph.properties");
 			properties.load(is);
-
-			for (String key : properties.stringPropertyNames()) {
-				String value = properties.getProperty(key);
-				hashData.put(key, value);
-
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,7 +55,7 @@ public class GraphControllerTest extends AbstractContextControllerTests {
 	///graph/{nodeid}
 	@Test
 	public void graphGetResourceId() throws Exception{
-		String id=(String)hashData.get("graphNodeid");
+		String id=(String)properties.get("graphNodeid");
 		mockMvc.perform(get("/graph/"+id).accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk());
 	}
@@ -70,32 +64,32 @@ public class GraphControllerTest extends AbstractContextControllerTests {
 	
 	@Test
 	public void graphGetGraphData() throws Exception{
-		String id=(String)hashData.get("graphResourceid");
+		String id=(String)properties.get("graphResourceid");
 		mockMvc.perform(get("/graph/resource/"+id).accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk());
 	}
 	
 	@Test
 	public void graphGetGraphDay() throws Exception{
-		String id=(String)hashData.get("graphResourceid");
+		String id=(String)properties.get("graphResourceid");
 		mockMvc.perform(get("/graph/resource/"+id+"/day").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk());
 	}
 	@Test
 	public void graphGetGraphWeek() throws Exception{
-		String id=(String)hashData.get("graphResourceid");
+		String id=(String)properties.get("graphResourceid");
 		mockMvc.perform(get("/graph/resource/"+id+"/week").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk());
 	}
 	@Test
 	public void graphGetGraphMonth() throws Exception{
-		String id=(String)hashData.get("graphResourceid");
+		String id=(String)properties.get("graphResourceid");
 		mockMvc.perform(get("/graph/resource/"+id+"/month").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk());
 	}
 	@Test
 	public void graphGetGraphYear() throws Exception{
-		String id=(String)hashData.get("graphResourceid");
+		String id=(String)properties.get("graphResourceid");
 		mockMvc.perform(get("/graph/resource/"+id+"/year").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk());
 	}

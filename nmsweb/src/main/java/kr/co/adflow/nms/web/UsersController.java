@@ -103,7 +103,7 @@ public class UsersController {
 		return result;
 	}
 
-	// user POST
+	// user POST Add
 	@RequestMapping(value = "/users/detail/{id}", method = RequestMethod.POST)
 	public @ResponseBody
 	String usersPostDetail(@PathVariable String id,@RequestBody String data, HttpServletRequest request)
@@ -129,7 +129,7 @@ public class UsersController {
 		return "succed";
 	}
 	
-	// user POST
+	// user POST del "/users/detail/del/{id}"
 		@RequestMapping(value = "/users/detail/del/{id}", method = RequestMethod.POST)
 		public @ResponseBody
 		String usersPostDetailDel(@PathVariable String id,@RequestBody String data, HttpServletRequest request)

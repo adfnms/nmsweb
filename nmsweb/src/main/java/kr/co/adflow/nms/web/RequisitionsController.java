@@ -248,7 +248,7 @@ public class RequisitionsController {
 
 	// requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress}/services/{service}
 
-	@RequestMapping(value = "/requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress}/services/{service}", method = RequestMethod.GET)
+	@RequestMapping(value = "/requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress}/services/{service1}", method = RequestMethod.GET)
 	public @ResponseBody
 	String requisitionsNodesInterfacesServices(@PathVariable String name,
 			@PathVariable String foreignId, @PathVariable String ipAddress,
@@ -369,8 +369,9 @@ public class RequisitionsController {
 		return result;
 	}
 
-	// <node node-label="zzzzzzz" foreign-id="13622227" building="test001"/>
-	// {"node[{"node-label:"zzzzzzz","foreign-id":"13622227","building":"test001"}]};
+	// <node node-label="testCaseNode" foreign-id="13622227" building="test001"/>
+	// {"node[{"node-label:"testCaseNode","foreign-id":"13622227","building":"test001"}]};
+	/// requisitions/{name}/nodes
 	// !!!POST
 	@RequestMapping(value = "/requisitions/{name}/nodes ", method = RequestMethod.POST)
 	public @ResponseBody
@@ -803,7 +804,7 @@ public class RequisitionsController {
 
 	// DELETE
 	// requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress}/services/{service}
-	@RequestMapping(value = "/requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress}/services/{service}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/requisitions/{name}/nodes/{foreignId}/interfaces/{ipAddress}/services/{service2}", method = RequestMethod.DELETE)
 	public @ResponseBody
 	String ReqInterfaceDel(@PathVariable String name,
 			@PathVariable String foreignId, @PathVariable String ipAddress,

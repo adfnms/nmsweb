@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 public class AdminTestControllerTest extends AbstractContextControllerTests {
 
 	private MockMvc mockMvc;
-	HashMap hashData = new HashMap();
+	Properties properties = new Properties();
 
 	@Before
 	public void setup() {
@@ -32,72 +32,61 @@ public class AdminTestControllerTest extends AbstractContextControllerTests {
 	@Before
 	public void configload() {
 
-		Properties properties = new Properties();
-
 		InputStream is = null;
 		try {
 			is = new FileInputStream(
 					"src/test/java/properties/admintest.properties");
 			properties.load(is);
-
-			for (String key : properties.stringPropertyNames()) {
-				String value = properties.getProperty(key);
-				hashData.put(key, value);
-
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	
-	//Add
+	// Add
 	@Test
 	public void adminUserPut() throws Exception {
-		String data = (String) hashData.get("adminuseradd");
-		mockMvc.perform(put("/adminuser/"+data)).andExpect(content().string("succed"));
+		String data = (String) properties.get("adminuseradd");
+		mockMvc.perform(put("/adminuser/" + data)).andExpect(
+				content().string("succed"));
 	}
-	//get
+
+	// get
 	@Test
 	public void adminUser() throws Exception {
 		mockMvc.perform(get("/adminuser"));
 	}
-	
-	//Del
+
+	// Del
 	@Test
 	public void adminUserDelete() throws Exception {
-		String data = (String) hashData.get("adminuseradd");
-		mockMvc.perform(delete("/adminuser/del/"+data)).andExpect(content().string("succed"));
+		String data = (String) properties.get("adminuseradd");
+		mockMvc.perform(delete("/adminuser/del/" + data)).andExpect(
+				content().string("succed"));
 	}
-	
-	//dashboarduser
-	
 
-	//add
+	// dashboarduser
+
+	// add
 	@Test
 	public void dashUserPut() throws Exception {
-		String id = (String) hashData.get("dashuseradd");
-		mockMvc.perform(put("/dashboarduser/"+id)).andExpect(content().string("succed"));
+		String id = (String) properties.get("dashuseradd");
+		mockMvc.perform(put("/dashboarduser/" + id)).andExpect(
+				content().string("succed"));
 	}
-	//get
+
+	// get
 	@Test
 	public void dashUser() throws Exception {
 		mockMvc.perform(get("/dashboarduser"));
 	}
-	//del
-	///dashboarduser/del/{id}
+
+	// del
+	// /dashboarduser/del/{id}
 	@Test
 	public void dashUserDelete() throws Exception {
-		String id = (String) hashData.get("dashuseradd");
-		mockMvc.perform(delete("/dashboarduser/del/"+id)).andExpect(content().string("succed"));
+		String id = (String) properties.get("dashuseradd");
+		mockMvc.perform(delete("/dashboarduser/del/" + id)).andExpect(
+				content().string("succed"));
 	}
-	
-	
+
 }
-
-
-
-
-
-
-

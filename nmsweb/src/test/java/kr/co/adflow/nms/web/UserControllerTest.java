@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserControllerTest extends AbstractContextControllerTests {
@@ -62,13 +63,43 @@ public class UserControllerTest extends AbstractContextControllerTests {
 				.andExpect(status().isOk());
 	}
 
-	// /users/detail  etc xml modify Post
+	// users/{username}
+	
+	// /users GET
+	@Test
+	public void usersGetName() throws Exception {
+		String data=(String)hashData.get("delUser");
+		mockMvc.perform(get("/users/"+data)).andExpect(status().isOk());
+	}
+
+
+	// // users/{username} Delete
+	//
+	@Test
+	public void usersDelete() throws Exception {
+		String data = (String) hashData.get("delUser");
+		mockMvc.perform(delete("/users/" + data)).andExpect(status().isOk());
+	}
+
+	// /users/detail etc xml modify Post
 	@Test
 	public void userPostDetail() throws Exception {
 		String data = (String) hashData.get("userdetail");
-		String id="chantest";
-		mockMvc.perform(post("/users/detail/"+id).content(data))
+		String id = (String) hashData.get("userdetailId");
+		mockMvc.perform(post("/users/detail/" + id).content(data)).andExpect(
+				status().isOk());
+	}
+
+	// user POST del "/users/detail/del/{id}"
+
+	@Test
+	public void userPostDetailDel() throws Exception {
+		String data = (String) hashData.get("userdetail");
+		String id = (String) hashData.get("userdetailId");
+		mockMvc.perform(post("/users/detail/del/" + id).content(data))
 				.andExpect(status().isOk());
 	}
+	
+	
 
 }

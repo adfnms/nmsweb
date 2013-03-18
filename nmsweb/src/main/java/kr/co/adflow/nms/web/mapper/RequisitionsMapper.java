@@ -33,18 +33,14 @@ public class RequisitionsMapper {
 			throws MapperException {
 		Requisitionsinfo requisitions = new Requisitionsinfo();
 		try {
-			logger.debug("mapper step...1");
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			logger.debug("mapper step...2");
 			if (jNode.path("model-import").isArray()) {
-				logger.debug("if..");
 				JsonNode temp = null;
 
 				Iterator<JsonNode> it = jNode.path("model-import").iterator();
 
 				while (it.hasNext()) {
-					logger.debug("mapper step...3");
 					temp = it.next();
 					requisitions.setForeignsource(temp.path("foreign-source")
 							.getTextValue());
@@ -67,12 +63,9 @@ public class RequisitionsMapper {
 		RequisitionsNodes requisiNodes = new RequisitionsNodes();
 		try {
 			logger.debug("mappingdata::" + data);
-			logger.debug("mapper step...1");
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			logger.debug("mapper step...2");
 			if (jNode.path("node").isArray()) {
-				logger.debug("if..");
 				JsonNode temp = null;
 
 				Iterator<JsonNode> it = jNode.path("node").iterator();
@@ -105,18 +98,14 @@ public class RequisitionsMapper {
 		RequisitionsNodesInterface nodesInterface = new RequisitionsNodesInterface();
 		try {
 			logger.debug("mappingdata::" + data);
-			logger.debug("mapper step...1");
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			logger.debug("mapper step...2");
 			if (jNode.path("interface").isArray()) {
-				logger.debug("if..");
 				JsonNode temp = null;
 
 				Iterator<JsonNode> it = jNode.path("interface").iterator();
 
 				while (it.hasNext()) {
-					logger.debug("mapper step...3");
 					temp = it.next();
 					nodesInterface
 							.setStatus(temp.path("status").getTextValue());
@@ -145,10 +134,8 @@ public class RequisitionsMapper {
 		RequisitionsService service = new RequisitionsService();
 		try {
 			logger.debug("mappingdata::" + data);
-			logger.debug("mapper step...1");
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			logger.debug("mapper step...2");
 			if (jNode.path("monitored-service").isArray()) {
 				logger.debug("if..");
 				JsonNode temp = null;
@@ -182,18 +169,14 @@ public class RequisitionsMapper {
 		RequisitionsCategory category = new RequisitionsCategory();
 		try {
 			logger.debug("mappingdata::" + data);
-			logger.debug("mapper step...1");
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			logger.debug("mapper step...2");
 			if (jNode.path("category").isArray()) {
-				logger.debug("if..");
 				JsonNode temp = null;
 
 				Iterator<JsonNode> it = jNode.path("category").iterator();
 
 				while (it.hasNext()) {
-					logger.debug("mapper step...3");
 					temp = it.next();
 					category.setName(temp.path("name").getTextValue());
 
@@ -218,18 +201,14 @@ public class RequisitionsMapper {
 		RequisitionsAssets assets = new RequisitionsAssets();
 		try {
 			logger.debug("mappingdata::" + data);
-			logger.debug("mapper step...1");
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			logger.debug("mapper step...2");
-			if (jNode.path("asset").isArray()) {
-				logger.debug("if..");
+			if (jNode.path("asset").isArray()) {		
 				JsonNode temp = null;
 
 				Iterator<JsonNode> it = jNode.path("asset").iterator();
 
 				while (it.hasNext()) {
-					logger.debug("mapper step...3");
 					temp = it.next();
 					assets.setName(temp.path("name").getTextValue());
 					assets.setValue(temp.path("value").getTextValue());
@@ -250,10 +229,8 @@ public class RequisitionsMapper {
 		ReqPutName reqPutName = new ReqPutName();
 		try {
 			logger.debug("mappingdata::" + data);
-			logger.debug("mapper step...1");
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			logger.debug("mapper step...2");
 			jNode.path("foreign-source");
 
 			reqPutName.setForeignsource(jNode.path("foreign-source")
@@ -273,10 +250,8 @@ public class RequisitionsMapper {
 		ReqPutForID reqPutId = new ReqPutForID();
 		try {
 			logger.debug("mappingdata::" + data);
-			logger.debug("mapper step...1");
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			logger.debug("mapper step...2");
 			jNode.path("foreign-id");
 
 			reqPutId.setForeignid(jNode.path("foreign-id")
@@ -297,10 +272,8 @@ public class RequisitionsMapper {
 		ReqPutIP reqPutIP = new ReqPutIP();
 		try {
 			logger.debug("mappingdata::" + data);
-			logger.debug("mapper step...1");
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			logger.debug("mapper step...2");
 			jNode.path("ip-addr");
 
 			reqPutIP.setIpaddr(jNode.path("ip-addr")
