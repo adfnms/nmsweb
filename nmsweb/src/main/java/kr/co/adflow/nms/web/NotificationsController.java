@@ -266,15 +266,70 @@ public class NotificationsController {
 	@RequestMapping(value = "/notifications/searchUser/{userName}", method = RequestMethod.GET)
 	public @ResponseBody
 	String notificationsSearchUser(HttpServletRequest request, @PathVariable String userName)
-			throws HandleException {
+			throws HandleException, ValidationException {
 
 		String result = null;
 		
 		
 		logger.info(PATH + request.getRequestURI());
+		
+		String pagetime = null;
+		Integer limit = null;
+
+		Enumeration eParam = request.getParameterNames();	
 
 		try {
-			result = (String) service.notificationsSearchUser(userName);
+			
+			if (eParam.hasMoreElements()) {
+				StringBuffer filter = new StringBuffer();
+
+				while (eParam.hasMoreElements()) {
+					String pName = (String) eParam.nextElement();
+
+					if(pName.equals("limit")){
+						limit = Integer.parseInt(request.getParameter(pName));
+						
+					}else if(pName.equals("pagetime")) {
+						pagetime = request.getParameter(pName);
+						logger.debug("pagetime ::;"+pagetime);
+					}
+
+				}
+			}
+			
+			if(pagetime.equals(null) || limit==null){
+				
+				logger.error("Must supply the 'pagetime' and 'limit' parameter");
+				try {
+					throw new ValidationException(
+							"Must supply the 'pagetime' and 'limit'  parameter");
+				} catch (ValidationException e) {
+					throw e;
+				}
+			}else {
+				result = (String) service.notificationsSearchUser(userName, pagetime, limit);
+			}
+			
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
+	@RequestMapping(value = "/notifications/searchUser/{userName}/count", method = RequestMethod.GET)
+	public @ResponseBody
+	String notificationsSearchUserCount(HttpServletRequest request, @PathVariable String userName)
+			throws HandleException, ValidationException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) service.notificationsSearchUserCount(userName);
+			
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

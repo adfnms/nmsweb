@@ -868,7 +868,62 @@ public class NotificationsService {
 		return result;
 	}
 	
-	public String notificationsSearchUser(String userName) throws HandleException {
+	public String notificationsSearchUserCount(String userName) throws HandleException {
+
+		StringBuffer result = new StringBuffer();
+
+		Statement stmt = null;
+		ResultSet rst = null;
+		Connection conn = null;
+		String sql = null;
+
+		try {
+			Context ctx = new InitialContext();
+			if (ctx == null)
+				throw new Exception("Boom - No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+			if (ds != null) {
+				conn = ds.getConnection();
+
+				if (conn != null) {
+					stmt = conn.createStatement();
+					sql = "SELECT count(notifyid)"+
+						  " FROM notifications WHERE answeredBy is null and notifyid in (SELECT DISTINCT usersnotified.notifyid FROM usersnotified WHERE usersnotified.userid='"+userName+"')";
+
+					logger.debug("sql:::" + sql);
+					rst = stmt.executeQuery(sql);
+
+					while (rst.next()) {
+
+						result.append("{\"count\":\"" + rst.getInt(1) + "\"}");
+
+					}
+					rst.close();
+					logger.debug("ResultSet Json:::" + result.toString());
+				}
+			}
+		} catch (Exception e) {
+			throw new HandleException(e);
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
+
+		return result.toString();
+	}
+	
+	public String notificationsSearchUser(String userName, String pagetime, int limit) throws HandleException {
 
 		StringBuffer result = new StringBuffer();
 
@@ -891,10 +946,12 @@ public class NotificationsService {
 				if (conn != null) {
 					stmt = conn.createStatement();
 					sql = "SELECT notifyid, textmsg, subject, numericmsg, pagetime, respondtime, answeredby, nodeid, interfaceid, serviceid, queueid, eventid, eventuei, notifconfigname"+
-						  " FROM notifications WHERE answeredBy is null and notifyid in (SELECT DISTINCT usersnotified.notifyid FROM usersnotified WHERE usersnotified.userid='"+userName+"')";
+						  " FROM notifications WHERE answeredBy is null and pagetime < '"+ pagetime +"' and notifyid in (SELECT DISTINCT usersnotified.notifyid FROM usersnotified WHERE usersnotified.userid='"+userName+"') Order by pagetime desc";
 
 					logger.debug("sql:::" + sql);
 					rst = stmt.executeQuery(sql);
+					
+					int count = 0;
 
 					result.append("{\"notifications\":[");
 					while (rst.next()) {
@@ -913,6 +970,11 @@ public class NotificationsService {
 						result.append("\"eventid\":\""+ rst.getInt(12) + "\",");
 						result.append("\"eventuei\":\""+ rst.getString(13) + "\",");
 						result.append("\"notifconfigname\":\""+ rst.getString(14) + "\"},");
+						
+						count++;
+						if (count >= limit){
+							break;
+						}
 
 					}
 
