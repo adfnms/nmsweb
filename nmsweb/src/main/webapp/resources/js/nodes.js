@@ -22,6 +22,9 @@ function getNodeTotalList(callback, data) {
 			// 콜백함수
 			if (typeof callback == "function") {
 				callback(data);
+			}else{
+				console.log(data);
+				return data;
 			}
 		}
 	});

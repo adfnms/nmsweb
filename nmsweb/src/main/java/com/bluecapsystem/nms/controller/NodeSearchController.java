@@ -24,7 +24,7 @@ public class NodeSearchController
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "/monitering/node/search", method = RequestMethod.GET)
+	@RequestMapping(value = "/search/node")
 	public ModelAndView searchNode(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "id", required = false)String nodeId,
 			@RequestParam(value = "label", required = false)String nodeLabel,
@@ -32,22 +32,13 @@ public class NodeSearchController
 			@RequestParam(value = "ipAddress", required = false)String ipAddress)
 	{
 		
-		System.out.println("==============");
-		
-		System.out.println("nodeId: "+nodeId);
-		System.out.println("nodeLabel: "+nodeLabel);
-		System.out.println("serviceId: "+serviceId);
-		System.out.println("ipAddress: "+ipAddress);
-		
-		System.out.println("==============");
-		
 		ModelAndView model = new ModelAndView();
 		model.addObject("nodeId",nodeId);
 		model.addObject("nodeLabel",nodeLabel);
 		model.addObject("serviceId",serviceId);
 		model.addObject("ipAddress",ipAddress);
 		
-		model.setViewName("/monitering/node/search");
+		model.setViewName("/search/node/search");
 		return model;
 	}
 	
@@ -56,14 +47,14 @@ public class NodeSearchController
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "/monitering/node/nodeDesc", method = RequestMethod.GET)
+	@RequestMapping(value = "/search/node/nodeDesc")
 	public ModelAndView nodeDescription(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "nodeId", required = false)String nodeId)
 	{
 		ModelAndView model = new ModelAndView();
 
 		model.addObject("nodeId",nodeId);
-		model.setViewName("/monitering/node/nodeDesc");
+		model.setViewName("/search/node/nodeDesc");
 		return model;
 	}
 
@@ -72,7 +63,7 @@ public class NodeSearchController
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "/monitering/node/interfaceDesc", method = RequestMethod.GET)
+	@RequestMapping(value = "/search/node/interfaceDesc")
 	public ModelAndView interfaceDescription(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "nodeId", required = false)String nodeId,
 			@RequestParam(value = "intf", required = false)String intf)
@@ -81,7 +72,68 @@ public class NodeSearchController
 
 		model.addObject("intf",intf);
 		model.addObject("nodeId",nodeId);
-		model.setViewName("/monitering/node/interface/interfaceDesc");
+		model.setViewName("/search/node/interface/interfaceDesc");
+		return model;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @param eventId
+	 * @return
+	 */
+	@RequestMapping(value = "/search/event/eventDesc")
+	public ModelAndView eventDescription(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "eventId", required = false)String eventId)
+	{
+		ModelAndView model = new ModelAndView();
+		
+		model.addObject("eventId",eventId);
+		model.setViewName("/search/event/eventDesc");
+		
+		return model;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @param eventId
+	 * @return
+	 */
+	@RequestMapping(value = "/search/outage/outageDesc")
+	public ModelAndView outageDescription(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "outageId", required = false)String outageId)
+	{
+		ModelAndView model = new ModelAndView();
+		
+		model.addObject("outageId",outageId);
+		model.setViewName("/search/outage/outageDesc");
+		
+		return model;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @param nodeId
+	 * @param intf
+	 * @param serviceId
+	 * @return
+	 */
+	@RequestMapping(value = "/search/service/serviceDesc")
+	public ModelAndView serviceDescription(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "nodeId", required = false)String nodeId,
+			@RequestParam(value = "intf", required = false)String intf,
+			@RequestParam(value = "serviceNm", required = false)String serviceNm)
+	{
+		ModelAndView model = new ModelAndView();
+		
+		model.addObject("nodeId",nodeId);
+		model.addObject("intf",intf);
+		model.addObject("serviceNm",serviceNm);
+		
+		model.setViewName("/search/node/interface/service/serviceDesc");
+		
 		return model;
 	}
 }

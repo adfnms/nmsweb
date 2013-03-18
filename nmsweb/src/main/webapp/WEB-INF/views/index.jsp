@@ -81,7 +81,7 @@
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<form action="<c:url value="/monitering/node/search.do" />">
+									<form action="<c:url value="/search/node.do" />">
 										<div class="well well-small">
 											<fieldset>
 												<label for="id" class="span6">노드 ID</label><input type="text" id="id" name="id" class="span6">
@@ -95,7 +95,7 @@
 											</fieldset>
 										</div>
 									</form>
-									<form action="<c:url value="/monitering/node/search.do" />">
+									<form action="<c:url value="/search/node.do" />">
 										<div class="well well-small">
 											<fieldset>
 												<label for="ipAddress" class="span6">TCP/IP</label><input type="text" name="ipAddress" id="ipAddress" class="span6">
@@ -106,7 +106,7 @@
 											</fieldset>
 										</div>
 									</form>
-									<form action="<c:url value="/monitering/node/search.do" />">
+									<form action="<c:url value="/search/node.do" />">
 										<div class="well well-small">
 											<fieldset>
 												<label for="serviceId" class="span6">서비스</label>
