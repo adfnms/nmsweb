@@ -34,24 +34,15 @@ try{
 	// Modify User Info
 	function modifyUser(){
 		
-		
 		//Get userInfo 
 		var userId = $("#userInfoFrm input[name=user-id]").val();
 		var fullName = $("#userInfoFrm input[name=full-name]").val();
 		var userComments = $("#userInfoFrm input[name=user-comments]").val();
 		var password = $("#userInfoFrm input[name=password]").val();
-	
-		alert("-------modifyUser--userId---------"+userId);
-		alert("-------modifyUser---fullName--------"+fullName);
-		alert("-------modifyUser---userComments-------"+userComments);
-		alert("-------modifyUser----password-------"+password);
-		
 		
 		//Post Json Info String url method
 		var str = getJSONStrToUser(userId, fullName, userComments, password);
 		
-		alert("------------------str-------------------"+str);
-		//alert(str);
 		$.ajax({
 			type : 'post',
 			url : '<c:url value="/users"/>',
@@ -62,50 +53,58 @@ try{
 			},
 			success : function(data) {
 				alert(" 수정 되었습니다.");
-				modifyToDb();
+				
+				modifyToDb(userId);
 			}
 		});
 	}
 	
 	
-	function modifyToDb(){
+	function modifyToDb(userId){
 		
 		var frm = document.getElementById("userInfoFrm");
 		//frm.action = "<c:url value="/admin/userMng/modifyToDb.do"/>";
 		frm.action = "/admin/userMng/modifyToDb.do";
 	    frm.submit();
+	    $(location).attr('href', "/v1/admin/userMng.do");
 		
 	}
 	
 	function deleteUser(){
 		
+			
 		var userId = $("#userInfoFrm input[name=user-id]").val();
 		
-		$.ajax({
+			$.ajax({
+				
+				type : 'delete',
+				url : 'http://localhost:8080/v1/users/'+userId,
+				contentType : 'application/json',
+				dataType:'json',
+				error : function(data) {
+					alert('삭제 서비스 실패');
+				},
+				success : function(data) {
+					alert("삭제성공");
+					
+					deleteToDb(userId);
+				}
+			});
 			
-			type : 'delete',
-			url : 'http://localhost:8080/v1/users/'+userId,
-			contentType : 'application/json',
-			
-			error : function() {
-				alert('삭제 서비스 실패');
-			},
-			success : function(data) {
-				alert("삭제성공");
-			}
-		});
-		
-		deleteToDb();
-	}
+		}
 	
-	function deleteToDb(){
+	function deleteToDb(userId){
 		
-		//var userId = $("#userInfoFrm input[name=user-id]").val();
 		
 		var frm = document.getElementById("userInfoFrm");
+		
+		
 		//frm.action = '<c:url value="/admin/userMng/modifyToDb.do"/>';
-		frm.action = "/admin/userMng/modifyToDb.do";
-	    frm.submit();
+		frm.action = "/v1/admin/userMng/deleteToDb.do";
+	   
+		frm.submit();
+		
+		$(location).attr('href', "/v1/admin/userMng.do");
 	}
 	
 	
@@ -151,7 +150,7 @@ try{
 							</div>
 							<label class="span2 control-label">사용자 ID</label>
 							<div class="span4 controls">
-								<input type="text"   id="user-id"   name="user-id"   placeholder="사용자 ID" value="${Id}"> 
+								<input type="text"   id="user-id"   name="user-id"   placeholder="사용자 ID" value="${Id}" readonly> 
 							</div>
 						</div>
 					</div>
@@ -175,7 +174,8 @@ try{
 							</div>
 							<label class="span2 control-label">Telephone PIN</label>
 							<div class="span4 controls">
-								<input type="text"    id=""   name=""  placeholder="Telephone PIN"  value="${userInfo.regrId}"> 
+								<input type="text"    id=""   name=""  placeholder="Telephone PIN" >
+								<%-- <input type="text"    id=""   name=""  placeholder="Telephone PIN"  value="${userInfo.regrId}">  --%>
 							</div>
 						</div>
 					</div>
@@ -275,7 +275,7 @@ try{
 						<a type="button" class="btn btn-primary" title="" href="javascript:modifyUser()">수정</a>
 					</div>
 					<div class="span1">
-						<a type="button" class="btn btn-primary" title="" href="javascript: deleteUser()">삭제</a>
+						<a type="button" class="btn btn-primary" title="" href="javascript:deleteUser()">삭제</a>
 					</div>
 				</div>
 			</div>

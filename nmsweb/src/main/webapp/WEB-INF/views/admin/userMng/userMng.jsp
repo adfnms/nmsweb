@@ -13,6 +13,7 @@
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/users.js" />"></script>
+<script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		
@@ -60,24 +61,38 @@
 	}
 	
 function deleteUser(userId){
-		
+	
+	$("#userIdFrm").find('[name=user-id]:input').val(userId);
 		
 		$.ajax({
 			
 			type : 'delete',
 			url : 'http://localhost:8080/v1/users/'+userId,
 			contentType : 'application/json',
-			
-			error : function() {
+			dataType:'json',
+			error : function(data) {
 				alert('삭제 서비스 실패');
 			},
 			success : function(data) {
 				alert("삭제성공");
+				
+				deleteToDb(userId);
 			}
 		});
 		
-		deleteToDb();
 	}
+	
+function deleteToDb(userId){
+	
+	//var userId = $("#userInfoFrm input[name=user-id]").val();
+	
+	var frm = document.getElementById("userIdFrm");
+	
+	
+	//frm.action = '<c:url value="/admin/userMng/modifyToDb.do"/>';
+	frm.action = "/v1/admin/userMng/deleteToDb.do";
+    frm.submit();
+}
 </script>
 </head>
 
@@ -102,7 +117,7 @@ function deleteUser(userId){
 			<form  id="userIdFrm" name="userIdFrm" method="post">
 				<input type="hidden" id ="user-id" name="user-id" value="" />
 			</form>
-				<table class="table table-striped" id="userListTable">
+				<table class="table table-striped" id="userListTable" >
 					<colgroup>
 						<col class="span2"/>
 						<col class="span3"/>

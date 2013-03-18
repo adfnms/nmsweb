@@ -13,53 +13,44 @@
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/users.js" />"></script>
+<script src="<c:url value="/resources/js/setting.js" />"></script>
+<script src="<c:url value="/resources/js/notification.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		
+		/*My Notification List*/
+		getUserNotiList(userNotificationList, "${userId}", "5");
 		
-		getNotificationListToId(callbackUseList);
+		/*Total Notification List*/
+		getTotalNotiList(totalNotificationList, "5");
+		
 		
 	});
-	/* function callbackUseList(jsonObj) {
+	
+	/* My Notification Callback */
+	function userNotificationList(jsonObj) {
 		
-		console.log(jsonObj);
+		consol.log(jsonObj);
 		
-		var str = "";
+		var str = userNotiListjsonObj(jsonObj);
+		
+		$('#userTable').append(str);
 
-		var userObj = jsonObj["notification"];
-		
-		for ( var i in userObj) {
-			str += "<tr>";
-			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["ipAddress"]+"');\">";
-			str += userObj[i]["ipAddress"];
-			str += "	</td>";
-			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["ipAddress"]+"');\">";
-			str += userObj[i]["ipAddress"];
-			str += "	</td>";
-			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["ipAddress"]+"');\">";
-			str += userObj[i]["ipAddress"];
-			str += "	</td>";
-			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["ipAddress"]+"');\">";
-			str += userObj[i]["ipAddress"];
-			str += "	</td>";
-			str += "	<td>";
- 			str += "<a type=\"button\" class=\"btn\" href=\"javascript:deleteUser('"+userObj[i]["ipAddress"]+"');\">삭제</a>";
- 			str += "	</td>";
-			str += "</tr>";
-		}
-
-		$("#userListTable").append(str);
-	} */
-	function getNodeIdDetailInfo(){
-		
-		$("#userIdFrm").find('[name=user-id]:input').val(user_id);
-		
-		var frm = document.getElementById("userIdFrm");
-		
-		frm.action = "/v1/admin/userMng/userModify.do";
-		frm.submit();
 	}
+	/*//My Notification Callback*/
 
+	/* total Notification Callback */
+	 function totalNotificationList(jsonObj) {
+
+		consol.log(jsonObj);
+		
+		var str = totalNotiListjsonObj(jsonObj);
+		
+		$('#totalTable').append(str);
+
+	} 
+	/*//total Notification Callback*/
+	
 </script>
 </head>
 
@@ -69,7 +60,9 @@
 		<jsp:include page="/include/menu.jsp" />
 		
 		<!-- Example row of columns -->
-		
+		<form id = "settingFrm" name = "settingFrm">
+			<input type = "hidden" id = "userId" name = "userId" value = "${userId}" >
+		</form>
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
@@ -93,15 +86,16 @@
 						  <div class="bar bar-danger" style="width: 20%;"></div>
 						</div>
 					</div>
+					<div class="span3"></div>
 					<div class="span2">
 						<a type="button" class="btn btn-primary" title="" href="/v1/admin/setting/addEvent.do">+ 공지 추가</a>
 					</div>
 				</div>
 			</div>
 			<div class="span12">
-				<table class="table table-striped" id="userListTable">
+				<table class="table table-striped" id="userTable">
 					<colgroup>
-						<col class="span1"/>
+						<col class="span2"/>
 						<col class="span2"/>
 						<col class="span2"/>
 						<col class="span2"/>
@@ -117,11 +111,11 @@
 						</tr>
 						<tr>
 							<td onclick="javascript:getNodeIdDetailInfo();">
-							<a type="button" class="btn" title="" href="/v1/admin/setting/detailNodeInfo.do">Id</a> TEST ID</td>
-							<td>test</td>
-							<td>00/00/00 00:00:00</td>
-							<td>192.168.0.63</td>
-							<td>test</td>
+							<a type="button" class="btn" title="" href="/v1/admin/setting/detailNodeInfo.do">Id</a></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
 						</tr>
 						
 					</thead>
@@ -137,9 +131,9 @@
 				</div>
 			</div>
 			<div class="span12">
-				<table class="table table-striped" id="userListTable">
+				<table class="table table-striped" id="totalTable">
 					<colgroup>
-						<col class="span1"/>
+						<col class="span2"/>
 						<col class="span2"/>
 						<col class="span2"/>
 						<col class="span2"/>

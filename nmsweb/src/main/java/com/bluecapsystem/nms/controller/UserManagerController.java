@@ -1,6 +1,5 @@
 package com.bluecapsystem.nms.controller;
 
-import java.io.IOException;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -113,36 +112,42 @@ public class UserManagerController {
 				}else{
 					try {
 						jsonStr = Util.getJsonStrToUrl(dataUrl); //GET JSON STRING TO USER INFO URL(UTIL) 
-						
 						System.out.println("-----------------jsonStr---------------"+jsonStr);
-						ObjectMapper om = new ObjectMapper();
-						JsonNode jNode = om.readTree(jsonStr);
 						
-						String Id = jNode.path("user-id").getTextValue();
-						
-						if(Id. equals(userId)){//USERID CHECK PROCESS
-							result = false;
+					
+							ObjectMapper om = new ObjectMapper();
+							JsonNode jNode = om.readTree(jsonStr);
 							
-							logger.error(userId+" is already in use.");
+							String Id = jNode.path("user-id").getTextValue();
 							
-							message = "<"+userId+"> is already in use. Please enter a different user id.";
+							System.out.println("---jNode.path---<"+Id+">-------userId------<"+userId+">");
+							if(Id. equals(userId)){//USERID CHECK PROCESS
+								result = false;
+								
+								logger.error(userId+" is already in use.");
+								
+								message = "<"+userId+"> is already in use. Please enter a different user id.";
+								
+								result = false;
+								
+								break  _CHECKID;
+								
+							}else{
 							
-							break  _CHECKID;
-							
-						}else{
+							result = true;
+							//------------------
+							//   아이디 체크 성콩시 데이터 값을 갖고 오지 못해서 
+							//   오류가 나지만 등록은 문제되지 않는다. 후에 조정 필요
+							//------------------
+							}
 						
-						result = true;
-						//------------------
-						//   아이디 체크 성콩시 데이터 값을 갖고 오지 못해서 
-						//   오류가 나지만 등록은 문제되지 않는다. 후에 조정 필요
-						//------------------
-						}
 						
-					} catch (IOException e) {
 						
+					} catch (Exception e) {
+						message ="<"+userId+"> 는 사용가능한 아이디 입니다.";
 						result = false;
 						logger.info("get Json date false");
-						//e.printStackTrace();
+						e.printStackTrace();
 					}
 					
 				}	
@@ -207,7 +212,7 @@ public class UserManagerController {
 			
 			
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			
 			result = false;
 			logger.info("get Json date false");
@@ -256,12 +261,17 @@ public class UserManagerController {
 			    if(userManagerService.regToDb (userTbl)==false){
 				    	
 						logger.error("USER INFO REGISTER TO DATABASE ERROR ");
+						
+					}else{
+						
 					}
+			    
 				}catch (Exception e) {
 					
 					logger.info("regToDb date false");
 					e.printStackTrace();
 				}
+			model.setViewName("jsonView");
 			
 			
 			return model;
@@ -297,6 +307,7 @@ public class UserManagerController {
 			e.printStackTrace();
 		}
 		model.setViewName("/admin/userMng/userMng");
+		//odel.setViewName("jsonView");
 		return model;
 	}
 	/**
@@ -310,12 +321,15 @@ public class UserManagerController {
 	 */
 	@RequestMapping(value = "/admin/userMng/deleteToDb", method = RequestMethod.POST)
 	public ModelAndView deleteToDb(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
+			@RequestParam(value = "user-id", required = false)String userId,
 			@ModelAttribute("UserTbl") UserTbl userTbl)
 	{
 		ModelAndView model = new ModelAndView();
 		try{
 			String Id =(String) session.getAttribute(Define.USER_ID_KEY);
 			
+			
+			userTbl.setUserId(userId);
 			userTbl.setModrId(Id);
 		    userTbl.setRegrId(Id);
 			userTbl.setUseYn("N");
@@ -323,11 +337,13 @@ public class UserManagerController {
 			if(userManagerService.deleteToDb(userTbl)==false){
 				logger.error("USER INFO DELETE TO DATABASE ERROR");
 			}
+			
 		}
 		catch (Exception e){
 			e.printStackTrace();
 		}
 		model.setViewName("/admin/userMng/userMng");
+		
 		
 		return model;
 	}

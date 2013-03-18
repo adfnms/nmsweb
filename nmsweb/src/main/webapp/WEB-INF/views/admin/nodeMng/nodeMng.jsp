@@ -44,7 +44,7 @@
 		<jsp:include page="/include/menu.jsp" />
 
 		<div class="row-fluid">
-			<div class="span9">
+			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">Home</a> <span class="divider">/</span></li>
 					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
@@ -55,7 +55,7 @@
 		</div>
 
 		<div class="row-fluid">
-			<div class="span9 well well-small">
+			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12">
 						<h4>
@@ -87,7 +87,7 @@
 		</div>
 		
 		<div class="row-fluid">
-			<div class="span9 well well-small">
+			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12">
 						<h4>
@@ -123,7 +123,7 @@
 		</div>
 		
 		<div class="row-fluid">
-			<div class="span9 well well-small">
+			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12">
 						<h4>
@@ -154,7 +154,7 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span12">
-				<div class="span8"></div>
+				<div class="span11"></div>
 				<div class="span1">
 					<button type="button" class="btn btn-primary" title="카테고리 추가">저장</button>
 				</div>

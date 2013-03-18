@@ -56,12 +56,11 @@ try{
 				<form id="memberInfoFrm" name = "memberInfoFrm" method="post">
 					<div class="row-fluid">
 						<div class="span12">
-							<div class="span1"></div>
 							<label class="span2 control-label">Notification Time</label>
 							<div class="span4 controls" >
 								<input  type="text"   id=""   name=""    placeholder=""> 
 							</div>
-							<label class="span1 control-label">Node</label>
+							<label class="span2 control-label">Node</label>
 							<div class="span4 controls" >
 								<input  type="text"   id=""   name=""    placeholder=""> 
 							</div>
@@ -69,12 +68,11 @@ try{
 					</div>
 					<div class="row-fluid">
 						<div class="span12">
-						<div class="span1"></div>
 							<label class="span2 control-label">Interface</label>
 							<div class="span4 controls" >
 								<input  type="text"   id=""   name=""    placeholder=""> 
 							</div>
-							<label class="span1 control-label">Service</label>
+							<label class="span2 control-label">Service</label>
 							<div class="span4 controls" >
 								<input  type="text"   id=""   name=""    placeholder=""> 
 							</div>
@@ -88,18 +86,16 @@ try{
 				<form id="memberInfoFrm" name = "memberInfoFrm" method="post">
 					<div class="row-fluid">
 						<div class="span12">
-							<div class="span1"></div>
 							<label class="span2 control-label">Numeric Message</label>
-							<div class="span9 controls" >
+							<div class="span10 controls" >
 								<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
 							</div>
 						</div>
 					</div>
 					<div class="row-fluid">
 						<div class="span12">
-						<div class="span1"></div>
 							<label class="span2 control-label">Text Message</label>
-							<div class="span9 controls" >
+							<div class="span10 controls" >
 								<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
 							</div>
 						</div>

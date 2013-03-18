@@ -33,40 +33,44 @@ try{
 		//Get userInfo 
 		var userId = $("#userInfoFrm input[name=user-id]").val();
 		
-		checkUserId(userId);
+		if(checkUserId(userId)==false){
+			
+			return;
+			
+		}else{
+			
+			var fullName = $("#userInfoFrm input[name=full-name]").val();
+			var userComments = $("#userInfoFrm input[name=user-comments]").val();
+			var password = $("#userInfoFrm input[name=password]").val();
+			
 		
-		var fullName = $("#userInfoFrm input[name=full-name]").val();
-		var userComments = $("#userInfoFrm input[name=user-comments]").val();
-		var password = $("#userInfoFrm input[name=password]").val();
+			//Post Json Info String url method
+			var str = getJSONStrToUser(userId, fullName, userComments, password);
 		
-	
-		//Post Json Info String url method
-		var str = getJSONStrToUser(userId, fullName, userComments, password);
-	
-		//alert(str);
+			//alert(str);
+			
+			$.ajax({
 		
-		$.ajax({
-	
-			type : 'post',
-			url : '<c:url value="/users"/>',
-			contentType : 'application/json',
-			data : str,
-			error : function() {
-				alert('유저 리스트 가져오기 서비스 실패');
-			},
-			success : function(data) {
-				alert("등록되었습니다.");
-			}
-		});
-		
-		regToDb(userId,fullName);
+				type : 'post',
+				url : '<c:url value="/users"/>',
+				contentType : 'application/json',
+				data : str,
+				error : function() {
+					alert('유저 리스트 가져오기 서비스 실패');
+				},
+				success : function(data) {
+					
+					regToDb(userId,fullName);
+				}
+			});
+			
+		}
 	}
 	
 	
 	function checkUserId(userId){
 		
 		
-		//alert("-------------checkUserId------------"+userId);
 		
 		$.ajax({
 			type:'post',
@@ -87,6 +91,7 @@ try{
 		   		}else{
 		   			
  			//------------성공 내용 추가-------------
+ 			 	
 		   		}
 			}		
 	});
@@ -108,14 +113,7 @@ try{
 	        },
 	        success: function(res){
 	        	
-	        	if(res.result == false){
-	        	
-	        		alert(res.message);
-	        		
-		   		}else{
-		   			
- 			//------------성공 내용 추가-------------
-		   		}
+	        	$(location).attr('href', "/v1/admin/userMng.do");
 			}		
 	});
 	}	
@@ -130,7 +128,6 @@ try{
 		<jsp:include page="/include/menu.jsp" />
 		
 		<!-- Example row of columns -->
-		
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
@@ -155,9 +152,11 @@ try{
 				<input type="hidden" name="modrId" value="<%= userId %>"  protect="true" />
 					<div class="row-fluid">
 						<div class="span12">
-							<label class="span2 control-label">IP 주소</label>
+							<div class="span2 controls">
+								
+							</div>
 							<div class="span4 controls">
-								<input type="text">
+								
 							</div>
 							<label class="span2 control-label">사용자 ID</label>
 							<div class="span4 controls">

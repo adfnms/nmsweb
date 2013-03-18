@@ -75,6 +75,7 @@ public class UserManagerServiceImpl  extends BaseService implements UserManagerS
 		{
 			userManagerDao.deleteToDb(userTbl);
 			
+			
 			ret = true;
 			
 		}catch(Exception ex)
@@ -102,7 +103,6 @@ public class UserManagerServiceImpl  extends BaseService implements UserManagerS
 			
 			userTbl.set(UserTbl);
 			
-			System.out.println("-------------2-selectToDb-SERVICE-IMPL---------------"+userTbl);
 			
 			ret = true;
 			

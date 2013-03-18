@@ -65,7 +65,10 @@ try{
 	public void deleteToDb(UserTbl userTbl) {
 try{
 			
+			
+
 			super.getSqlMapClientTemplate().update("com.bluecapsystem.nms.userManager.deleteToDb", userTbl);
+			
 			
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -76,7 +79,6 @@ try{
 	
 	@Override
 	public UserTbl selectToDb(Map<String, Object> params) {
-		System.out.println("------------3-UserManagerDaoImpl-selectToDb------------");
 		return (UserTbl) getSqlMapClientTemplate().queryForObject("com.bluecapsystem.nms.userManager.selectToDb", params);
 		
 	}

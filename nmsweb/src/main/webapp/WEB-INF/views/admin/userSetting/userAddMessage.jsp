@@ -57,68 +57,61 @@ try{
 				<div class="row-fluid">
 					<div class="span12">
 						<h3>
-							2단계<span class="label label-alert">공지 메시지 정의</span>
+							2단계&nbsp;&nbsp;<span class="label label-alert">공지 메시지 정의</span>
 						</h3>
 					</div>
 				</div>
 				<form id="memberInfoFrm" name = "memberInfoFrm" method="post">
 					<div class="row-fluid">
 						<div class="span12">
-							<div class="span1"></div>
 							<label class="span2 control-label">메시지 명</label>
-							<div class="span9 controls" >
-								<input  type="text"   id=""   name="" class="span10"   placeholder=""> 
+							<div class="span10 controls" >
+								<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
 							</div>
 						</div>
 					</div>
 					<div class="row-fluid">
 						<div class="span12">
-						<div class="span1"></div>
 							<label class="span2 control-label">설명</label>
-							<div class="span9 controls" >
-								<input  type="text"   id=""   name="" class="span10"   placeholder=""> 
+							<div class="span10 controls" >
+								<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
 							</div>
 						</div>
 					</div>
 					<div class="row-fluid">
 						<div class="span12">
-						<div class="span1"></div>
 							<label class="span2 control-label">메일 제목</label>
-							<div class="span9 controls" >
-								<input  type="text"   id=""   name="" class="span10"   placeholder=""> 
+							<div class="span10 controls" >
+								<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
 							</div>
 						</div>
 					</div>
 					<div class="row-fluid">
 						<div class="span12">
-							<div class="span1"></div>
 							<label class="span2 control-label">요약 메세지</label>
-							<div class="span9 controls" >
-								<textarea rows="3"    id=""   name="" class="span10"   placeholder=""></textarea>
+							<div class="span10 controls" >
+								<textarea rows="3"    id=""   name="" class="span11"   placeholder=""></textarea>
 							</div>
 						</div>
 					</div>
 					<div class="row-fluid">
 						<div class="span12">
-						<div class="span1"></div>
 							<label class="span2 control-label">메세지</label>
-							<div class="span9 controls" >
-								<textarea rows="3"    id=""   name="" class="span10"   placeholder=""></textarea>
+							<div class="span10 controls" >
+								<textarea rows="3"    id=""   name="" class="span11"   placeholder=""></textarea>
 							</div>
 						</div>
 					</div>
 					<div class="row-fluid">
 						<div class="span12">
-						<div class="span1"></div>
 							<label class="span2 control-label">목적지 선택</label>
-							<div class="span9 controls" >
-								<input  type="text"   id=""   name="" class="span10"   placeholder=""> 
+							<div class="span10 controls" >
+								<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
 							</div>
 						</div>
 					</div>
 					<div class="row-fluid">
 						<div class="span12">
-						<div class="span1"></div>
 							<label class="span2 control-label">이름</label>
 							<div class="span4 controls">
 								<select>
@@ -142,7 +135,7 @@ try{
 						<div class="span12">
 							<div class = "span2"></div>
 							<div class="span4 controls">
-								<a type="button" class="btn btn-primary" title="" href="javascript:regMember()">공지등록</a> 
+								<a type="button" class="btn btn-primary" title="" href="javascript:regMember()">+ 공지등록</a> 
 							</div>
 							<div class = "span2"></div>
 							<div class="span4">
