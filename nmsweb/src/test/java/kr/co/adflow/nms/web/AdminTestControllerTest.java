@@ -5,7 +5,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static org.hamcrest.Matchers.containsString;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.containsString;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
@@ -45,22 +48,24 @@ public class AdminTestControllerTest extends AbstractContextControllerTests {
 	@Test
 	public void adminUserPut() throws Exception {
 		String data = (String) properties.get("adminuseradd");
-		mockMvc.perform(put("/adminuser/" + data)).andExpect(
-				content().string("succed"));
+		mockMvc.perform(put("/adminuser/" + data)).andExpect(status().isOk())
+				.andExpect(content().string(containsString("success")));
 	}
 
 	// get
 	@Test
 	public void adminUser() throws Exception {
-		mockMvc.perform(get("/adminuser"));
+		mockMvc.perform(get("/adminuser")).andExpect(status().isOk())
+				.andExpect(content().string(containsString("adminUser0")));
 	}
 
 	// Del
 	@Test
 	public void adminUserDelete() throws Exception {
 		String data = (String) properties.get("adminuseradd");
-		mockMvc.perform(delete("/adminuser/del/" + data)).andExpect(
-				content().string("succed"));
+		mockMvc.perform(delete("/adminuser/del/" + data))
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("success")));
 	}
 
 	// dashboarduser
@@ -69,14 +74,15 @@ public class AdminTestControllerTest extends AbstractContextControllerTests {
 	@Test
 	public void dashUserPut() throws Exception {
 		String id = (String) properties.get("dashuseradd");
-		mockMvc.perform(put("/dashboarduser/" + id)).andExpect(
-				content().string("succed"));
+		mockMvc.perform(put("/dashboarduser/" + id)).andExpect(status().isOk())
+				.andExpect(content().string(containsString("success")));
 	}
 
 	// get
 	@Test
 	public void dashUser() throws Exception {
-		mockMvc.perform(get("/dashboarduser"));
+		mockMvc.perform(get("/dashboarduser")).andExpect(status().isOk())
+				.andExpect(content().string(containsString("dashUser0")));
 	}
 
 	// del
@@ -84,8 +90,7 @@ public class AdminTestControllerTest extends AbstractContextControllerTests {
 	@Test
 	public void dashUserDelete() throws Exception {
 		String id = (String) properties.get("dashuseradd");
-		mockMvc.perform(delete("/dashboarduser/del/" + id)).andExpect(
-				content().string("succed"));
+		mockMvc.perform(delete("/dashboarduser/del/" + id)).andExpect(status().isOk())
+		.andExpect(content().string(containsString("success")));
 	}
-
 }

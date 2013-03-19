@@ -4,6 +4,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.containsString;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -22,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 public class AlarmStatisticsControllerTest extends
 		AbstractContextControllerTests {
 	private MockMvc mockMvc;
-	
+
 	@Before
 	public void setup() {
 		mockMvc = webAppContextSetup(this.wac).build();
@@ -32,21 +35,19 @@ public class AlarmStatisticsControllerTest extends
 	// get /stats/alarms
 	@Test
 	public void getStatsAr() throws Exception {
-		mockMvc.perform(get("/stats/alarms").accept(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/stats/alarms"))
 				.andExpect(status().isOk())
 				.andExpect(
-						content().contentType("application/json;charset=UTF-8"));
+						content().string(containsString("unacknowledgedCount")));
 	}
 
 	// get /stats/alarms/by-severity
 	@Test
 	public void getStatsArBy() throws Exception {
-		mockMvc.perform(
-				get("/stats/alarms/by-severity").accept(
-						MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/stats/alarms/by-severity"))
 				.andExpect(status().isOk())
 				.andExpect(
-						content().contentType("application/json;charset=UTF-8"));
+						content().string(containsString("unacknowledgedCount")));
 	}
 
 }

@@ -27,7 +27,6 @@ public class RequisitionsMapper {
 	private static final Logger logger = LoggerFactory
 			.getLogger(RequisitionsMapper.class);
 
-
 	// <model-import foreign-source="chandjdjdj"/>
 	public Requisitionsinfo requisitionsInfo(String data)
 			throws MapperException {
@@ -136,7 +135,7 @@ public class RequisitionsMapper {
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
 			if (jNode.path("monitored-service").isArray()) {
-			
+
 				JsonNode temp = null;
 
 				Iterator<JsonNode> it = jNode.path("monitored-service")
@@ -201,7 +200,7 @@ public class RequisitionsMapper {
 			logger.debug("mappingdata::" + data);
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			if (jNode.path("asset").isArray()) {		
+			if (jNode.path("asset").isArray()) {
 				JsonNode temp = null;
 
 				Iterator<JsonNode> it = jNode.path("asset").iterator();
@@ -243,6 +242,7 @@ public class RequisitionsMapper {
 		}
 		return reqPutName;
 	}
+
 	// foreign-id="123455"
 	public ReqPutForID reqPutId(String data) throws MapperException {
 		ReqPutForID reqPutId = new ReqPutForID();
@@ -250,35 +250,55 @@ public class RequisitionsMapper {
 			logger.debug("mappingdata::" + data);
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			jNode.path("foreign-id");
-
-			reqPutId.setForeignid(jNode.path("foreign-id")
-					.getTextValue());
-
-			logger.debug("reqPutgetForeignid()):::"
-					+ reqPutId.getForeignid());
+			String charAt2 = String.valueOf(data.charAt(2));
+			logger.debug("charAt2:" + charAt2);
+			if (charAt2.equals("f")) {
+				jNode.path("foreign-id");
+				reqPutId.setForeignid(jNode.path("foreign-id").getTextValue());
+				logger.debug("reqPutgetForeignid()):::"
+						+ reqPutId.getForeignid());
+			} else if (charAt2.equals("n")) {
+				logger.debug("node-label");
+				jNode.path("node-label");
+				reqPutId.setNodelabel(jNode.path("node-label").getTextValue());
+				logger.debug("getNodelabel()):::" + reqPutId.getNodelabel());
+			} else if (charAt2.equals("b")) {
+				jNode.path("building");
+				reqPutId.setBuilding(jNode.path("building").getTextValue());
+				logger.debug("getBuilding()):::" + reqPutId.getBuilding());
+			}
 
 		} catch (Exception e) {
 			throw new MapperException(e);
 
 		}
+		logger.debug("return step...");
 		return reqPutId;
 	}
-	
-	//ip-addr=127.0.0.2
+
+	// {"snmp-primary":"S","ip-addr":"127.0.0.1","descr":"dfdfdf"}
 	public ReqPutIP reqPutIP(String data) throws MapperException {
 		ReqPutIP reqPutIP = new ReqPutIP();
 		try {
 			logger.debug("mappingdata::" + data);
+			String charAt2 = String.valueOf(data.charAt(2));
+			logger.debug("charAt2:" + charAt2);
 			ObjectMapper om = new ObjectMapper();
 			JsonNode jNode = om.readTree(data);
-			jNode.path("ip-addr");
-
-			reqPutIP.setIpaddr(jNode.path("ip-addr")
-					.getTextValue());
-
-			logger.debug("getIpaddr()):::"
-					+ reqPutIP.getIpaddr());
+			if (charAt2.equals("i")) {
+				jNode.path("ip-addr");
+				reqPutIP.setIpaddr(jNode.path("ip-addr").getTextValue());
+				logger.debug("getIpaddr()):::" + reqPutIP.getIpaddr());
+			} else if (charAt2.equals("s")) {
+				jNode.path("snmp-primary");
+				reqPutIP.setSnmpPrimary(jNode.path("snmp-primary")
+						.getTextValue());
+				logger.debug("getSnmpPrimary()):::" + reqPutIP.getSnmpPrimary());
+			} else if (charAt2.equals("d")) {
+				jNode.path("descr");
+				reqPutIP.setDescr(jNode.path("descr").getTextValue());
+				logger.debug("getDescr()):::" + reqPutIP.getDescr());
+			}
 
 		} catch (Exception e) {
 			throw new MapperException(e);

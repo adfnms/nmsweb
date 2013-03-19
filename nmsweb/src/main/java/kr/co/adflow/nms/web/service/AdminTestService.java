@@ -51,16 +51,20 @@ public class AdminTestService {
 			for (int i = 0; i < arr.size(); i++) {
 				if (arr.get(i).equals(adminKey)) {
 				String 	data = (String) hashData.get(adminKey);
-					if (data.equals("")) {
+					if (data.equals("")&&id!=data) {
 						result=id;
 						properties.setProperty(adminKey, id);
 						properties.store(new FileOutputStream(permissionUrl),
 								null);
-					} else {
+					} else if(id!=data&&!data.contains(id)) {
+						logger.debug("id!=data");
 						result=data+","+id;
 						properties.setProperty(adminKey, data + "," + id);
 						properties.store(new FileOutputStream(permissionUrl),
 								null);
+					}else if(data.contains(id)){
+						logger.debug("else if data...equals");
+						throw new HandleException("Id is already...");
 					}
 				}
 			}
@@ -77,7 +81,8 @@ public class AdminTestService {
 
 		}
 		logger.debug("setPropertiesData::"+result);
-		return "succed";
+		result = "{\"result\":\"success\"}";
+		return result;
 	}
 
 	public String dashboardPage(String id) throws HandleException {
@@ -101,16 +106,19 @@ public class AdminTestService {
 			for (int i = 0; i < arr.size(); i++) {
 				if (arr.get(i).equals(dashKey)) {
 					String data = (String) hashData.get(dashKey);
-					if (data.equals("")) {
+					if (data.equals("")&&id!=data) {
 						result=id;
 						properties.setProperty(dashKey, id);
 						properties.store(new FileOutputStream(permissionUrl),
 								null);
-					} else {
+					} else if(id!=data&&!data.contains(id)) {
 						result=data+","+id;
 						properties.setProperty(dashKey, data + "," + id);
 						properties.store(new FileOutputStream(permissionUrl),
 								null);
+					}else if(data.contains(id)){
+						logger.debug("else if data...equals");
+						throw new HandleException("Id is already...");
 					}
 				}
 			}
@@ -127,7 +135,8 @@ public class AdminTestService {
 
 		}
 		logger.debug("setPropertiesData::"+result);
-		return "succed";
+		result = "{\"result\":\"success\"}";
+		return result;
 	}
 
 	public String adminDel(String id) throws HandleException {
@@ -136,6 +145,7 @@ public class AdminTestService {
 		HashMap hashData = new HashMap();
 		ArrayList arrKey = new ArrayList();
 		InputStream is = null;
+		String result=null;
 		try {
 			is = new FileInputStream(permissionUrl);
 			properties.load(is);
@@ -196,7 +206,8 @@ public class AdminTestService {
 
 		}
 
-		return "succed";
+		result = "{\"result\":\"success\"}";
+		return result;
 	}
 
 	public String dashBoardDel(String id) throws HandleException {
@@ -205,6 +216,7 @@ public class AdminTestService {
 		HashMap hashData = new HashMap();
 		ArrayList arrKey = new ArrayList();
 		InputStream is = null;
+		String result=null;
 		try {
 			is = new FileInputStream(permissionUrl);
 			properties.load(is);
@@ -267,7 +279,8 @@ public class AdminTestService {
 
 		}
 
-		return "succed";
+		result = "{\"result\":\"success\"}";
+		return result;
 	}
 
 	public String adminUser() throws HandleException {

@@ -133,22 +133,23 @@ public class RequisitionsUtil {
 		}
 		return data;
 	}
+
 	// Post!!
-	// /requisitions/{name}/nodes/{foreignId}/assets 
+	// /requisitions/{name}/nodes/{foreignId}/assets
 	// <asset value="test" name="admin"/>
-	// {"asset":[{"value":"test","name":"admin"}]}	
-	
+	// {"asset":[{"value":"test","name":"admin"}]}
+
 	public String xmlParsingReqAssets(RequisitionsAssets assets)
 			throws UtilException {
 		String data = null;
 		try {
 			String assetsName = assets.getName();
-			String assetsValue=assets.getValue();
+			String assetsValue = assets.getValue();
 			// String upperName=categoryName.toUpperCase();
 
 			StringBuffer bf = new StringBuffer();
-			bf.append("<asset value=\""+assetsValue+"\" name=\""+assetsName+"\"/>");
-			
+			bf.append("<asset value=\"" + assetsValue + "\" name=\""
+					+ assetsName + "\"/>");
 
 			data = bf.toString();
 			logger.debug("xmldata::" + data);
@@ -157,18 +158,14 @@ public class RequisitionsUtil {
 		}
 		return data;
 	}
-	
-	public String ParsingReqNameData(ReqPutName putName)
-			throws UtilException {
+
+	public String ParsingReqNameData(ReqPutName putName) throws UtilException {
 		String data = null;
 		try {
 			String foreignSource = putName.getForeignsource();
-			
-			
 
 			StringBuffer bf = new StringBuffer();
-			bf.append("foreign-Source="+foreignSource);
-			
+			bf.append("foreign-Source=" + foreignSource);
 
 			data = bf.toString();
 			logger.debug("parSingdata::" + data);
@@ -177,53 +174,64 @@ public class RequisitionsUtil {
 		}
 		return data;
 	}
-	
+
 	// foreign-id="123455"
-	public String ParsingReqPutID(ReqPutForID putId)
-			throws UtilException {
+	public String ParsingReqPutID(ReqPutForID putId) throws UtilException {
 		String data = null;
 		try {
-			String foreignId = putId.getForeignid();
-			
-			
-
-			StringBuffer bf = new StringBuffer();
-			bf.append("foreign-id="+foreignId);
-			
-
-			data = bf.toString();
-			logger.debug("parSingdata::" + data);
+			if (putId.getForeignid() != null) {
+				String foreignId = putId.getForeignid();
+				StringBuffer bf = new StringBuffer();
+				bf.append("foreign-id=" + foreignId);
+				data = bf.toString();
+				logger.debug("parSingdata::" + data);
+			} else if (putId.getNodelabel() != null) {
+				String nodeLable = putId.getNodelabel();
+				StringBuffer bf = new StringBuffer();
+				bf.append("node-label=" + nodeLable);
+				data = bf.toString();
+				logger.debug("parSingdata::" + data);
+			} else if (putId.getBuilding() != null) {
+				String building = putId.getBuilding();
+				StringBuffer bf = new StringBuffer();
+				bf.append("building=" + building);
+				data = bf.toString();
+				logger.debug("parSingdata::" + data);
+			}
 		} catch (Exception e) {
 			throw new UtilException(e);
 		}
 		return data;
 	}
-	
-	//ip-addr=127.0.0.2
-	public String ParsingReqPutIP(ReqPutIP putIP)
-			throws UtilException {
+
+	// {"snmp-primary":"S","ip-addr":"127.0.0.1","descr":"dfdfdf"}
+	public String ParsingReqPutIP(ReqPutIP putIP) throws UtilException {
 		String data = null;
 		try {
-			String IPaddr = putIP.getIpaddr();
-			
-			
+			if (putIP.getIpaddr() != null) {
+				String IPaddr = putIP.getIpaddr();
+				StringBuffer bf = new StringBuffer();
+				bf.append("ip-addr=" + IPaddr);
+				data = bf.toString();
+				logger.debug("parSingdata::" + data);
+			} else if (putIP.getSnmpPrimary() != null) {
+				String snmpPrimary = putIP.getSnmpPrimary();
+				StringBuffer bf = new StringBuffer();
+				bf.append("snmp-primary=" + snmpPrimary);
+				data = bf.toString();
+				data=data.toUpperCase();
+				logger.debug("parSingdata::" + data);
+			} else if (putIP.getDescr() != null) {
+				String descr = putIP.getDescr();
+				StringBuffer bf = new StringBuffer();
+				bf.append("descr=" + descr);
+				data = bf.toString();
+				logger.debug("parSingdata::" + data);
+			}
 
-			StringBuffer bf = new StringBuffer();
-			bf.append("ip-addr="+IPaddr);
-			
-
-			data = bf.toString();
-			logger.debug("parSingdata::" + data);
 		} catch (Exception e) {
 			throw new UtilException(e);
 		}
 		return data;
 	}
 }
-
-
-
-
-
-
-

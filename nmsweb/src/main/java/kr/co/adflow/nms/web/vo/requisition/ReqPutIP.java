@@ -7,16 +7,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-//ip-addr=127.0.0.2
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "ipaddr"})
-@XmlRootElement(name = "ip-addr")
+//{"@snmp-primary":"S","@status":"1","@ip-addr":"127.0.0.1","@descr":"dfdfdf"}
 public class ReqPutIP {
 	
 	public ReqPutIP(){
 		
 	}
-	@XmlElement(name = "ip-addr")
+	protected String descr;
+	protected String snmpPrimary;
 	protected String ipaddr;
 	public String getIpaddr() {
 		return ipaddr;
@@ -24,6 +22,20 @@ public class ReqPutIP {
 	public void setIpaddr(String ipaddr) {
 		this.ipaddr = ipaddr;
 	}
+	public String getDescr() {
+		return descr;
+	}
+	public void setDescr(String descr) {
+		this.descr = descr;
+	}
+	public String getSnmpPrimary() {
+		return snmpPrimary;
+	}
+	public void setSnmpPrimary(String snmpPrimary) {
+		this.snmpPrimary = snmpPrimary;
+	}
+	
+	
 	
 }
 

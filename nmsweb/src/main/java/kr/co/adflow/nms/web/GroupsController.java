@@ -97,8 +97,8 @@ public class GroupsController {
 			@PathVariable String username, HttpServletRequest request)
 			throws HandleException {
 		logger.info(PATH + request.getRequestURL());
-		logger.debug("GroupNAME::"+groupname);
-		logger.debug("UserNAME::"+username);
+		logger.debug("GroupNAME::" + groupname);
+		logger.debug("UserNAME::" + username);
 		String result = null;
 
 		try {
@@ -108,7 +108,7 @@ public class GroupsController {
 			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
-		return "200ok";
+		return result;
 	}
 
 	// group Del groups /groups/{groupname}
@@ -127,7 +127,7 @@ public class GroupsController {
 			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
-		return "200ok";
+		return result;
 	}
 
 	// group Del group user //groups/{groupname}/users/{username}
@@ -147,7 +147,7 @@ public class GroupsController {
 			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
-		return "200ok";
+		return result;
 	}
 
 	// groups/{groupname}
@@ -168,25 +168,18 @@ public class GroupsController {
 		return result;
 	}
 
-/*
- * 404!!!!
- * 	// groups/{groupname}/users
-	@RequestMapping(value = "/groups/{groupName}/users", method = RequestMethod.GET)
-	public @ResponseBody
-	String groupsUsers(@PathVariable String groupName,
-			HttpServletRequest request) throws HandleException {
-		logger.info(PATH + request.getRequestURL());
-		String result = null;
-
-		try {
-			result = (String) service.groupsUsers(groupName);
-		} catch (HandleException e) {
-			logger.error("Failed in processing", e);
-			throw e;
-		}
-		logger.debug(RETURNRESULT + result);
-		return result;
-	}*/
+	/*
+	 * 404!!!! // groups/{groupname}/users
+	 * 
+	 * @RequestMapping(value = "/groups/{groupName}/users", method =
+	 * RequestMethod.GET) public @ResponseBody String groupsUsers(@PathVariable
+	 * String groupName, HttpServletRequest request) throws HandleException {
+	 * logger.info(PATH + request.getRequestURL()); String result = null;
+	 * 
+	 * try { result = (String) service.groupsUsers(groupName); } catch
+	 * (HandleException e) { logger.error("Failed in processing", e); throw e; }
+	 * logger.debug(RETURNRESULT + result); return result; }
+	 */
 
 	@ExceptionHandler(Exception.class)
 	@ResponseBody

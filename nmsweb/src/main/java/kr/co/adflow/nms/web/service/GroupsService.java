@@ -20,9 +20,12 @@ public class GroupsService {
 	private static final String URL = "url";
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";;
-	private @Value("#{config['NMSURL']}") String ipAddr;
-	private @Value("#{config['LOGINID']}") String loginId;
-	private @Value("#{config['LOGINPASS']}") String loginPass;
+	private @Value("#{config['NMSURL']}")
+	String ipAddr;
+	private @Value("#{config['LOGINID']}")
+	String loginId;
+	private @Value("#{config['LOGINPASS']}")
+	String loginPass;
 	private static final String Accept = "accept";
 	private static final String DATA = "data";
 	private static final String CONTENTTYPE = "contentType";
@@ -37,7 +40,7 @@ public class GroupsService {
 	public String groups() throws HandleException {
 		String result = null;
 		try {
-		
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
@@ -58,7 +61,7 @@ public class GroupsService {
 	public String groupsPost(String xmlData) throws HandleException {
 		String result = null;
 		try {
-		
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
@@ -80,7 +83,7 @@ public class GroupsService {
 	public String groups(String groupName) throws HandleException {
 		String result = null;
 		try {
-		
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
@@ -102,7 +105,7 @@ public class GroupsService {
 			throws HandleException {
 		String result = null;
 		try {
-		
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
@@ -112,7 +115,7 @@ public class GroupsService {
 			hash.put(METHOD, "PUT");
 
 			result = (String) handler.handle(hash);
-
+			result = "{\"result\":\"success\"}";
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
@@ -124,7 +127,7 @@ public class GroupsService {
 	public String groupsDelGroup(String groupName) throws HandleException {
 		String result = null;
 		try {
-			
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
@@ -133,11 +136,11 @@ public class GroupsService {
 			hash.put(METHOD, "DELETE");
 
 			result = (String) handler.handle(hash);
-
+			result = "{\"result\":\"success\"}";
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		return "200ok";
+		return result;
 	}
 
 	// group Del group user del //groups/{groupname}/users/{username}
@@ -145,7 +148,7 @@ public class GroupsService {
 			throws HandleException {
 		String result = null;
 		try {
-			
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
@@ -155,11 +158,11 @@ public class GroupsService {
 			hash.put(METHOD, "DELETE");
 
 			result = (String) handler.handle(hash);
-
+			result = "{\"result\":\"success\"}";
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		return "200ok";
+		return result;
 	}
 
 	// groups/{groupname}/users
@@ -167,7 +170,7 @@ public class GroupsService {
 	public String groupsUsers(String groupName) throws HandleException {
 		String result = null;
 		try {
-	
+
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);

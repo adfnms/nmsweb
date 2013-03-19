@@ -5,6 +5,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.containsString;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -45,13 +48,16 @@ public class ForeignSourceControllerTest extends AbstractContextControllerTests 
 	// /foreignSources GET
 	@Test
 	public void foreignSources() throws Exception {
-		mockMvc.perform(get("/foreignSources"));
+		mockMvc.perform(get("/foreignSources")).andExpect(status().isOk())
+				.andExpect(content().string(containsString("count")));
 	}
 
 	// foreignSources/default
 	@Test
 	public void foreignSourcesDefault() throws Exception {
-		mockMvc.perform(get("/foreignSources/defalut"));
+		mockMvc.perform(get("/foreignSources/defalut"))
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("date-stamp")));
 	}
 
 	// /foreignSources/deployed GET
@@ -63,7 +69,9 @@ public class ForeignSourceControllerTest extends AbstractContextControllerTests 
 	// /foreignSources/deployed/count GET
 	@Test
 	public void DeployedCount() throws Exception {
-		mockMvc.perform(get("/foreignSources/deployed/count"));
+		mockMvc.perform(get("/foreignSources/deployed/count"))
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("result")));
 	}
 
 	// POST
@@ -74,14 +82,18 @@ public class ForeignSourceControllerTest extends AbstractContextControllerTests 
 	@Test
 	public void foreignPost() throws Exception {
 		String foreignNameDATA = (String) properties.get("foreignNameDATA");
-		mockMvc.perform(post("/foreignSources").content(foreignNameDATA));
+		mockMvc.perform(post("/foreignSources").content(foreignNameDATA))
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("date-stamp")));
 	}
 
 	// foreignSources/{name} GET
 	@Test
 	public void foreignSourcesName() throws Exception {
 		String foreignName = (String) properties.get("foreignName");
-		mockMvc.perform(get("/foreignSources/" + foreignName));
+		mockMvc.perform(get("/foreignSources/" + foreignName))
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("date-stamp")));
 	}
 
 	// POST
@@ -95,8 +107,10 @@ public class ForeignSourceControllerTest extends AbstractContextControllerTests 
 	public void detectorsPost() throws Exception {
 		String foreignName = (String) properties.get("foreignName");
 		String detectorsDATA = (String) properties.get("detectorsDATA");
-		mockMvc.perform(post("/foreignSources/" + foreignName + "/detectors")
-				.content(detectorsDATA));
+		mockMvc.perform(
+				post("/foreignSources/" + foreignName + "/detectors").content(
+						detectorsDATA)).andExpect(status().isOk())
+				.andExpect(content().string(containsString("class")));
 	}
 
 	// foreignSources/{name}/detectors/ GET
@@ -104,7 +118,9 @@ public class ForeignSourceControllerTest extends AbstractContextControllerTests 
 	@Test
 	public void detectors() throws Exception {
 		String foreignName = (String) properties.get("foreignName");
-		mockMvc.perform(get("/foreignSources/" + foreignName + "/detectors"));
+		mockMvc.perform(get("/foreignSources/" + foreignName + "/detectors"))
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("class")));
 	}
 
 	// foreignSources/{name}/detectors/{detector} GET
@@ -112,8 +128,10 @@ public class ForeignSourceControllerTest extends AbstractContextControllerTests 
 	public void detectorsName() throws Exception {
 		String foreignName = (String) properties.get("foreignName");
 		String detectorName = (String) properties.get("detectorName");
-		mockMvc.perform(get("/foreignSources/" + foreignName + "/detectors/"
-				+ detectorName));
+		mockMvc.perform(
+				get("/foreignSources/" + foreignName + "/detectors/"
+						+ detectorName)).andExpect(status().isOk())
+				.andExpect(content().string(containsString("class")));
 	}
 
 	// POST
@@ -128,8 +146,10 @@ public class ForeignSourceControllerTest extends AbstractContextControllerTests 
 	public void policiesPost() throws Exception {
 		String foreignName = (String) properties.get("foreignName");
 		String policyDATA = (String) properties.get("policyDATA");
-		mockMvc.perform(post("/foreignSources/" + foreignName + "/policies")
-				.content(policyDATA));
+		mockMvc.perform(
+				post("/foreignSources/" + foreignName + "/policies").content(
+						policyDATA)).andExpect(status().isOk())
+				.andExpect(content().string(containsString("class")));
 	}
 
 	// foreignSources/{name}/policies GET
@@ -137,7 +157,9 @@ public class ForeignSourceControllerTest extends AbstractContextControllerTests 
 	@Test
 	public void polices() throws Exception {
 		String foreignName = (String) properties.get("foreignName");
-		mockMvc.perform(get("/foreignSources/" + foreignName + "/policies"));
+		mockMvc.perform(get("/foreignSources/" + foreignName + "/policies"))
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("class")));
 	}
 
 	// foreignSources/{name}/policies/{policy} GET
@@ -145,8 +167,10 @@ public class ForeignSourceControllerTest extends AbstractContextControllerTests 
 	public void policyName() throws Exception {
 		String foreignName = (String) properties.get("foreignName");
 		String policyName = (String) properties.get("policyName");
-		mockMvc.perform(get("/foreignSources/" + foreignName + "/policies/"
-				+ policyName));
+		mockMvc.perform(
+				get("/foreignSources/" + foreignName + "/policies/"
+						+ policyName)).andExpect(status().isOk())
+				.andExpect(content().string(containsString("class")));
 	}
 
 	// foreignSources/{name}
@@ -156,8 +180,10 @@ public class ForeignSourceControllerTest extends AbstractContextControllerTests 
 	public void foreignSourcePut() throws Exception {
 		String foreignName = (String) properties.get("foreignName");
 		String putforeignName = (String) properties.get("putforeignName");
-		mockMvc.perform(put("/foreignSources/" + foreignName).content(
-				putforeignName));
+		mockMvc.perform(
+				put("/foreignSources/" + foreignName).content(putforeignName))
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("date-stamp")));
 	}
 
 	// DEL
@@ -166,8 +192,10 @@ public class ForeignSourceControllerTest extends AbstractContextControllerTests 
 	public void forDelPolicy() throws Exception {
 		String foreignName = (String) properties.get("foreignName");
 		String policyName = (String) properties.get("policyName");
-		mockMvc.perform(delete("/foreignSources/" + foreignName + "/policies/"
-				+ policyName));
+		mockMvc.perform(
+				delete("/foreignSources/" + foreignName + "/policies/"
+						+ policyName)).andExpect(status().isOk())
+				.andExpect(content().string(containsString("class")));
 	}
 
 	// DEL
@@ -177,8 +205,10 @@ public class ForeignSourceControllerTest extends AbstractContextControllerTests 
 	public void forDelDecetors() throws Exception {
 		String foreignName = (String) properties.get("foreignName");
 		String detectorName = (String) properties.get("detectorName");
-		mockMvc.perform(delete("/foreignSources/" + foreignName + "/detectors/"
-				+ detectorName));
+		mockMvc.perform(
+				delete("/foreignSources/" + foreignName + "/detectors/"
+						+ detectorName)).andExpect(status().isOk())
+				.andExpect(content().string(containsString("class")));
 	}
 
 	// DELETE
@@ -187,15 +217,18 @@ public class ForeignSourceControllerTest extends AbstractContextControllerTests 
 	@Test
 	public void foreignSourceDel() throws Exception {
 		String foreignName = (String) properties.get("foreignName");
-		mockMvc.perform(delete("/foreignSources/" + foreignName));
+		mockMvc.perform(delete("/foreignSources/" + foreignName))
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("date-stamp")));
 	}
 
-	//testputForeignData copy Delete
-	
-	
+	// testputForeignData copy Delete
+
 	@Test
 	public void foreignSourceDelCopy() throws Exception {
 		String foreignNameCopy = (String) properties.get("foreignNameCopy");
-		mockMvc.perform(delete("/foreignSources/" + foreignNameCopy));
+		mockMvc.perform(delete("/foreignSources/" + foreignNameCopy))
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("date-stamp")));
 	}
 }

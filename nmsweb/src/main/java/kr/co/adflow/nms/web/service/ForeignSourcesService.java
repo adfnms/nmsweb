@@ -104,7 +104,7 @@ public class ForeignSourcesService {
 			hash.put(METHOD, "GET");
 
 			result = (String) handler.handle(hash);
-
+			result = "{\"result\":\""+result+"\"}";
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
