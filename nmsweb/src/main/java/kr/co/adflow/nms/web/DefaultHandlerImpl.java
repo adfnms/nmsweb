@@ -40,6 +40,7 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 			// 2013-02-22
 			// kicho@adflow.co.kr
 			// "Content-Type" 異붽�
+			//test
 			if (map.containsKey("contentType")) {
 				conn.setRequestProperty("Content-Type",
 						(String) map.get("contentType"));
