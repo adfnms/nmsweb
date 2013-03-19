@@ -27,6 +27,7 @@ import javax.sql.DataSource;
 
 import kr.co.adflow.nms.web.Handler;
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.exception.ValidationException;
 import kr.co.adflow.nms.web.push.Pusher;
 import kr.co.adflow.nms.web.push.WebSocketHandler;
 
@@ -47,6 +48,7 @@ public class NodeService {
 
 	private static final String METHOD = "method";
 	private static final String URL = "url";
+	private static final String DATA = "data";
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
@@ -351,26 +353,7 @@ public class NodeService {
 		return result;
 	}
 
-	public String nodesCategoriesPost(String id) throws HandleException {
-		// Handler handler = HandlerFactory.getHandler();
-		HashMap hash = new HashMap();
 
-		hash.put(USERNAME, loginId);
-		hash.put(PASSWORD, loginPass);
-		hash.put(Accept, "application/json");
-		hash.put(URL, ipAddr + "/nodes/" + id + "/categories");
-		hash.put(METHOD, "POST");
-
-		String result = null;
-
-		try {
-			result = (String) handler.handle(hash);
-		} catch (Exception e) {
-			throw new HandleException(e);
-		}
-
-		return result;
-	}
 
 	// /DELETE ////////////////
 	// nodes/{id}
@@ -655,21 +638,38 @@ public class NodeService {
 
 					logger.debug("sql:::" + sql);
 					rst = stmt.executeQuery(sql);
+					
+					if (rst.getRow()==0) {
+						
+						try {
+							throw new HandleException(
+									"iplike "+iplike+" Not Found");
+						} catch (HandleException e) {
+							throw e;
+						}
+						
+					} else {
+						
+						result.append("{\"nodes\":[");
+						while (rst.next()) {
 
-					result.append("{\"nodes\":[");
-					while (rst.next()) {
+							result.append("{\"nodeid\":\"" + rst.getInt(1) + "\",");
+							result.append("\"nodelabel\":\""
+									+ rst.getString(2) + "\"},");
 
-						result.append("{\"nodeid\":\"" + rst.getInt(1) + "\",");
-						result.append("\"nodelabel\":\""
-								+ rst.getString(2) + "\"},");
+						}
+
+						rst.close();
+
+						// last "&" delete.
+						result.deleteCharAt(result.length() - 1);
+						result.append("]}");
 
 					}
+					
+					
 
-					rst.close();
-
-					// last "&" delete.
-					result.deleteCharAt(result.length() - 1);
-					result.append("]}");
+					
 					logger.debug("ResultSet Json:::" + result.toString());
 				}
 			}
@@ -691,6 +691,245 @@ public class NodeService {
 		return result.toString();
 	}
 	
+
+
+	
+	public String nodesPost(String data)
+			throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
+		hash.put(Accept, "application/xml");
+		hash.put(URL, ipAddr + "/nodes");
+		hash.put(METHOD, "POST");
+		hash.put(DATA, data);
+
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	
+	public String nodesIpInterfacesPost(String id, String data) throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
+		hash.put(URL, ipAddr + "/nodes/" + id + "/ipinterfaces");
+		hash.put(Accept, "application/xml");
+		hash.put(METHOD, "POST");
+		hash.put(DATA, data);
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+
+
+
+	public String nodesIpInterfacesServicesPost(String id, String ipAddress, String data)
+			throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
+		hash.put(Accept, "application/xml");
+		hash.put(URL, ipAddr + "/nodes/" + id + "/ipinterfaces/" + ipAddress
+				+ "/services");
+		hash.put(METHOD, "POST");
+		hash.put(DATA, data);
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	// /nodes/{id}/snmpinterfaces
+	public String nodesSnmpinterfacesPost(String id, String data) throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
+		hash.put(Accept, "application/xml");
+		hash.put(URL, ipAddr + "/nodes/" + id + "/snmpinterfaces");
+		hash.put(METHOD, "POST");
+		hash.put(DATA, data);
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+
+
+	// /nodes/{id}/categories
+	public String nodesCategoriesPost(String id, String data) throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
+		hash.put(Accept, "application/xml");
+		hash.put(URL, ipAddr + "/nodes/" + id + "/categories");
+		hash.put(METHOD, "POST");
+		hash.put(DATA, data);
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+
+	
+	public String nodesPut(String id, String label) throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
+		hash.put(Accept, "application/xml");
+		hash.put(URL, ipAddr + "/nodes/" + id + "?label="+label);
+		hash.put(METHOD, "PUT");
+
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+			result = "";
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	
+	public String nodesIpInterfacesPut(String id, String ipAddress, String isManaged) throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
+		hash.put(URL, ipAddr + "/nodes/" + id + "/ipinterfaces/"+ ipAddress+"?isManaged="+isManaged);
+		hash.put(Accept, "application/xml");
+		hash.put(METHOD, "PUT");
+
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+
+
+
+	public String nodesIpInterfacesServicesPut(String id, String ipAddress, String servicesName, String status)
+			throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
+		hash.put(Accept, "application/xml");
+		hash.put(URL, ipAddr + "/nodes/" + id + "/ipinterfaces/" + ipAddress
+				+ "/services/"+servicesName+"?status="+status);
+		hash.put(METHOD, "PUT");
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+	
+	// /nodes/{id}/snmpinterfaces
+	public String nodesSnmpinterfacesPut(String id, String ifIndex, String collect) throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
+		hash.put(Accept, "application/xml");
+		hash.put(URL, ipAddr + "/nodes/" + id + "/snmpinterfaces/"+ifIndex+"?collect="+collect);
+		hash.put(METHOD, "PUT");
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
+
+
+	// /nodes/{id}/categories
+	public String nodesCategoriesPut(String id, String data) throws HandleException {
+		// Handler handler = HandlerFactory.getHandler();
+		HashMap hash = new HashMap();
+
+		hash.put(USERNAME, loginId);
+		hash.put(PASSWORD, loginPass);
+		hash.put(Accept, "application/xml");
+		hash.put(URL, ipAddr + "/nodes/" + id + "/categories");
+		hash.put(METHOD, "PUT");
+
+		String result = null;
+
+		try {
+			result = (String) handler.handle(hash);
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result;
+	}
 	
 
 

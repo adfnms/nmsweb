@@ -9,10 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
+import kr.co.adflow.nms.web.exception.ValidationException;
 import kr.co.adflow.nms.web.mapper.NodeMapper;
 import kr.co.adflow.nms.web.mapper.PathOutagesMapper;
 import kr.co.adflow.nms.web.service.MapsService;
 import kr.co.adflow.nms.web.service.NodeService;
+import kr.co.adflow.nms.web.vo.SchoedOutage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -291,7 +294,7 @@ public class NodeController {
 		logger.info(PATH + request.getRequestURI());
 
 		try {
-			result = (String) service.nodesCategories(id);
+			result = (String) service.nodesAssetRecord(id);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -381,6 +384,365 @@ public class NodeController {
 		return result;
 	}
 	
+	
+//	@RequestMapping(value = "/sched-outages", method = RequestMethod.POST)
+//	public @ResponseBody
+//	String schedOutagesPost(HttpServletRequest request, @RequestBody String data)
+//			throws HandleException, MapperException {
+//
+//		String result = null;
+//		logger.info(PATH + request.getRequestURI());
+//
+//		SchoedOutage schoedOutage = null;
+//		String xml = null;
+//
+//		// String data2 =
+//		// "<outage type=\"specific\" name=\"test4\"><time ends=\"20-Feb-2013 23:59:59\" begins=\"20-Feb-2013 21:00:00\"/><node id=\"16\"/></outage>";
+//		// String data3 =
+//		// "{\"@type\":\"specific\",\"@name\":\"test4\",\"time\":{\"@ends\":\"20-Feb-2013 23:59:59\",\"@begins\":\"20-Feb-2013 21:00:00\"},\"node\":{\"@id\":\"16\"}}";
+//
+//		logger.debug("fdfdfe:::" + data);
+//
+//		try {
+//
+//			schoedOutage = mapper.schoedOutageMapping(data);
+//
+//			xml = (String) mapper.schoedOutagePostMapping(schoedOutage);
+//
+//		} catch (MapperException e) {
+//			logger.error("Failed in processing", e);
+//			throw e;
+//		}
+//
+//		logger.debug("adf:::" + xml);
+//
+//		try {
+//			result = (String) service.schedOutagesPost(xml);
+//		} catch (HandleException e) {
+//			logger.error("Failed in processing", e);
+//			throw e;
+//		}
+//
+//		logger.debug(RETURNRESULT + result);
+//		return result;
+//	}
+
+	
+	// PUT
+	// /nodes/{id}/snmpinterfaces/{ifIndex}?collect=(UC|UD|Default)
+	@RequestMapping(value = "/nodes/{id}/snmpinterfaces/{ifIndex}", method = RequestMethod.PUT)
+	public @ResponseBody
+	String nodesSnmpinterfacesPut(HttpServletRequest request, @PathVariable String id,@PathVariable String ifIndex)
+			throws HandleException, ValidationException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		// 2013-02-23
+		// Parameter check Method 호추 분기
+		Enumeration eParam = request.getParameterNames();
+
+		if (eParam.hasMoreElements()) {
+			StringBuffer prams = new StringBuffer();
+
+			String pName = (String) eParam.nextElement();
+
+			if (pName.equals("collect")) {
+
+				String collect = request.getParameter(pName);
+
+				if (collect.equals("UC")||collect.equals("UN")||collect.equals("Default")) {
+					
+					try {
+						result = (String) service.nodesSnmpinterfacesPut(id, ifIndex, collect);
+					} catch (HandleException e) {
+						logger.error("Failed in processing", e);
+						throw e;
+					}
+
+					
+				} else {
+
+					logger.error("Must supply the 'collect' parameter, set to either 'Default' or 'UC' or 'UN'");
+					try {
+						throw new ValidationException(
+								"Must supply the 'collect' parameter, set to either 'Default' or 'UC' or 'UN'");
+					} catch (ValidationException e) {
+						throw e;
+					}
+
+				}
+
+
+			} else {
+
+				logger.error("Must supply the parameter name, set to either 'collect'");
+				try {
+
+					throw new ValidationException(
+							"Must supply the parameter name, set to either 'collect'");
+
+				} catch (ValidationException e) {
+					throw e;
+				}
+
+			}
+
+			logger.debug("Param:::" + prams.toString());
+
+
+		} else {
+
+			logger.error("Must supply the parameter name, set to either 'collect'");
+			try {
+
+				throw new ValidationException(
+						"Must supply the parameter name, set to either 'collect'");
+
+			} catch (ValidationException e) {
+				throw e;
+			}
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+
+	}
+
+	
+	// /nodes/{id}/ipinterfaces/{ipAddress}/services/{servicesName}?status=(R|S)
+	@RequestMapping(value = "/nodes/{id}/ipinterfaces/{ipAddress:.+}/services/{servicesName}", method = RequestMethod.PUT)
+	public @ResponseBody
+	String nodesIpInterfacesServicesPut(HttpServletRequest request, @PathVariable String id,@PathVariable String ipAddress,@PathVariable String servicesName)
+			throws HandleException, ValidationException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		// 2013-02-23
+		// Parameter check Method 호추 분기
+		Enumeration eParam = request.getParameterNames();
+
+		if (eParam.hasMoreElements()) {
+			StringBuffer prams = new StringBuffer();
+
+			String pName = (String) eParam.nextElement();
+
+			if (pName.equals("status")) {
+
+				String status = request.getParameter(pName);
+
+				if (status.equals("R")||status.equals("S")) {
+					
+					try {
+						result = (String) service.nodesIpInterfacesServicesPut(id, ipAddress, servicesName, status);
+					} catch (HandleException e) {
+						logger.error("Failed in processing", e);
+						throw e;
+					}
+
+					
+				} else {
+
+					logger.error("Must supply the 'collect' parameter, set to either 'R' or 'S'");
+					try {
+						throw new ValidationException(
+								"Must supply the 'collect' parameter, set to either 'R' or 'S'");
+					} catch (ValidationException e) {
+						throw e;
+					}
+
+				}
+
+
+			} else {
+
+				logger.error("Must supply the parameter name, set to either 'status'");
+				try {
+
+					throw new ValidationException(
+							"Must supply the parameter name, set to either 'status'");
+
+				} catch (ValidationException e) {
+					throw e;
+				}
+
+			}
+
+			logger.debug("Param:::" + prams.toString());
+
+
+		} else {
+
+			logger.error("Must supply the parameter name, set to either 'status'");
+			try {
+
+				throw new ValidationException(
+						"Must supply the parameter name, set to either 'status'");
+
+			} catch (ValidationException e) {
+				throw e;
+			}
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+
+	}
+
+	// /nodes/{id}/ipinterfaces/{ipAddress}?isManaged=(M|F)
+	@RequestMapping(value = "/nodes/{id}/ipinterfaces/{ipAddress:.+}", method = RequestMethod.PUT)
+	public @ResponseBody
+	String nodesIpInterfacesPut(HttpServletRequest request, @PathVariable String id,@PathVariable String ipAddress)
+			throws HandleException, ValidationException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		// 2013-02-23
+		// Parameter check Method 호추 분기
+		Enumeration eParam = request.getParameterNames();
+
+		if (eParam.hasMoreElements()) {
+			StringBuffer prams = new StringBuffer();
+
+			String pName = (String) eParam.nextElement();
+
+			if (pName.equals("isManaged")) {
+
+				String isManaged = request.getParameter(pName);
+
+				if (isManaged.equals("M")||isManaged.equals("F")) {
+					
+					try {
+						result = (String) service.nodesIpInterfacesPut(id, ipAddress, isManaged);
+					} catch (HandleException e) {
+						logger.error("Failed in processing", e);
+						throw e;
+					}
+
+					
+				} else {
+
+					logger.error("Must supply the 'isManaged' parameter, set to either 'M' or 'F'");
+					try {
+						throw new ValidationException(
+								"Must supply the 'isManaged' parameter, set to either 'M' or 'F'");
+					} catch (ValidationException e) {
+						throw e;
+					}
+
+				}
+
+
+			} else {
+
+				logger.error("Must supply the parameter name, set to either 'isManaged'");
+				try {
+
+					throw new ValidationException(
+							"Must supply the parameter name, set to either 'isManaged'");
+
+				} catch (ValidationException e) {
+					throw e;
+				}
+
+			}
+
+			logger.debug("Param:::" + prams.toString());
+
+
+		} else {
+
+			logger.error("Must supply the parameter name, set to either 'isManaged'");
+			try {
+
+				throw new ValidationException(
+						"Must supply the parameter name, set to either 'isManaged'");
+
+			} catch (ValidationException e) {
+				throw e;
+			}
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+
+	}	
+	
+	
+	// /nodes/{id}?label=(label Name)
+	@RequestMapping(value = "/nodes/{id}", method = RequestMethod.PUT)
+	public @ResponseBody
+	String nodesPut(HttpServletRequest request, @PathVariable String id)
+			throws HandleException, ValidationException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		// 2013-02-23
+		// Parameter check Method 호추 분기
+		Enumeration eParam = request.getParameterNames();
+
+		if (eParam.hasMoreElements()) {
+			StringBuffer prams = new StringBuffer();
+
+			String pName = (String) eParam.nextElement();
+
+			if (pName.equals("label")) {
+
+				String label = request.getParameter(pName);
+
+									
+				try {
+					result = (String) service.nodesPut(id, label);
+				} catch (HandleException e) {
+					logger.error("Failed in processing", e);
+					throw e;
+				}
+
+					
+				
+
+
+			} else {
+
+				logger.error("Must supply the parameter name, set to either 'label'");
+				try {
+
+					throw new ValidationException(
+							"Must supply the parameter name, set to either 'label'");
+
+				} catch (ValidationException e) {
+					throw e;
+				}
+
+			}
+
+			logger.debug("Param:::" + prams.toString());
+
+
+		} else {
+
+			logger.error("Must supply the parameter name, set to either 'label'");
+			try {
+
+				throw new ValidationException(
+						"Must supply the parameter name, set to either 'label'");
+
+			} catch (ValidationException e) {
+				throw e;
+			}
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+
+	}	
 
 	// /// DELETE /////
 	@RequestMapping(value = "/nodes/{id}", method = RequestMethod.DELETE)
