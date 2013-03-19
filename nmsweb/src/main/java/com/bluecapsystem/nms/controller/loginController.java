@@ -99,7 +99,7 @@ public class loginController {
 					String name = jNode.path("full-name").getTextValue();
 					
 					//비밀번호 인코딩
-					passWord = UsersUtil.getInstance().encryptString(passWord);
+					passWord = UsersUtil.encryptString(passWord);
 					
 					if(Id. equals(userId) && pwd.equals(passWord) ){//logIn Success and Session Process
 						
