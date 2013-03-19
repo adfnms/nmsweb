@@ -14,6 +14,7 @@ function getNodeTotalList(callback, data) {
 		url : '/' + version + '/nodes',
 		dataType : 'json',
 		data : data,
+		async : false,
 		contentType : 'application/json',
 		error : function(data) {
 			alert('모든 노드정보 가져오기 실패');
@@ -22,9 +23,31 @@ function getNodeTotalList(callback, data) {
 			// 콜백함수
 			if (typeof callback == "function") {
 				callback(data);
-			}else{
-				console.log(data);
-				return data;
+			}
+		}
+	});
+}
+
+
+/** get interface Info
+ * @param callback
+ * @param data
+ */
+function getInterfaceInfo(callback, nodeId, ipAddress) {
+
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/nodes/'+nodeId+'/ipinterfaces/'+ipAddress,
+		dataType : 'json',
+		async : false,
+		contentType : 'application/json',
+		error : function(data) {
+			alert('모든 노드정보 가져오기 실패');
+		},
+		success : function(data) {
+			// 콜백함수
+			if (typeof callback == "function") {
+				callback(data);
 			}
 		}
 	});
@@ -71,12 +94,15 @@ function getSpecificNode(callback, nodeId) {
 		alert("노드 아이디 정보가 없습니다.");
 		return;
 	}
+	
+	var _return = "";
 
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/nodes/' + nodeId,
 		dataType : 'json',
 		contentType : 'application/json',
+		async: false,
 		error : function(data) {
 			alert("[" + nodeId + '] 노드 정보 가져오기 서비스 실패');
 		},
@@ -84,9 +110,13 @@ function getSpecificNode(callback, nodeId) {
 			// 콜백함수
 			if (typeof callback == "function") {
 				callback(data);
+			}else{
+				_return = data;
 			}
 		}
 	});
+	
+	return _return;
 }
 
 /**
@@ -195,6 +225,209 @@ function getInterfacesFromNodeId(callback, nodeId) {
 
 }
 
+/**
+ *  add Node Popup
+ */
+function addNodePop(){
+	
+	var settings ="toolbar=no ,width=350 ,height=205 ,directories=no,status=no,scrollbars=no,menubar=no";
+	var winObject = window.open("/" + version + "/admin/addNode.pop", "addNodePop", settings);
+	winObject.focus();	
+
+}
+
+/**
+ *  add Node Popup
+ */
+function addNodePop(){
+	
+	var settings ="toolbar=no ,width=350 ,height=205 ,directories=no,status=no,scrollbars=no,menubar=no";
+	var winObject = window.open("/" + version + "/admin/addNode.pop", "addNodePop", settings);
+	winObject.focus();	
+
+}
+
+/**
+ *  add Node Popup
+ */
+function changeNodeLabelPop(nodeId){
+	
+	var settings ="toolbar=no ,width=350 ,height=255 ,directories=no,status=no,scrollbars=no,menubar=no";
+	var url = "/" + version + "/admin/changeNodeLabel.pop?nodeId="+nodeId;
+	var winObject = window.open(url, "changeNodeLabelPop", settings);
+	winObject.focus();	
+
+}
+
+/** get Bode Availability
+ * @param callback
+ * @param nodes
+ */
+function getNodeAvailability(callback, nodes){
+	
+	if (nodes == "") {
+		alert("노드 ID가 없습니다.");
+		return;
+	}
+	
+	var nodesData  = "nodeId=" + nodes;
+	
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/availability/node',
+		dataType : 'json',
+		contentType : 'application/json',
+		data : nodesData,
+		error : function(data) {
+			alert("[" + nodeId + '] 노드 가용성 가져오기 실패');
+		},
+		success : function(data) {
+
+			if (typeof callback == "function") {
+				callback(data);
+			}
+			
+		}
+	});
+	
+}
+
+
+function getInterfaceAvailability(nodeId, ipAddress){
+	
+	var ipaddrData  = "ipAddr=" + ipAddress;
+	var interfaceAvail  = "";
+	
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/availability/node/'+nodeId+'/interface',
+		dataType : 'json',
+		contentType : 'application/json',
+		async: false,
+		data : ipaddrData,
+		error : function(data) {
+			alert("[" + nodeId + '] 인터페이스 가용성 가져오기 실패');
+		},
+		success : function(data) {
+
+			interfaceAvail  = data["interfaceAvailability"][0]["avail"];
+ 			
+		}
+	});
+	
+	return interfaceAvail;
+	
+}
+
+/** delete Node
+ * @param nodeId
+ */
+function deleteNode(nodeId){
+	
+	if (nodeId == "") {
+		alert("노드 ID가 없습니다.");
+		return;
+	}
+	
+	if(!confirm("정말 삭제하시겠습니까?")){return;}
+	
+	$.ajax({
+		type : 'delete',
+		url : '/' + version + '/nodes/' + nodeId,
+		dataType : 'json',
+		contentType : 'application/json',
+		error : function(data) {
+			alert("[" + nodeId + '] 노드 삭제 실패');
+		},
+		success : function(data) {
+
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+}
+
+
+/**  scan and add Node 
+ * @param ipAddress
+ */
+function nodeScan(callback, ipAddress){
+	
+	$.ajax({
+		type : 'post',
+		url : '/' + version + '/nodes/scan/' + ipAddress,
+		dataType : 'json',
+		contentType : 'application/json',
+		error : function(data) {
+
+			if (typeof callback == "function") {
+				callback(data);
+			}
+			
+		},
+		success : function(data) {
+
+			if (typeof callback == "function") {
+				callback(data);
+			}
+
+		}
+	});
+	
+}
+
+/** change Node_Label
+ * @param nodeId
+ * @param label
+ */
+function changeNodeLabel(nodeId, label){
+	
+	var _return = false;
+	
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/nodes/'+nodeId,
+		dataType : 'json',
+		data:'label='+label,
+		contentType : 'application/json',
+		error : function(data) {
+			alert("[" + nodeId + '] 노드 라벨 변경 실패');
+			_return = false;
+		},
+		success : function(data) {
+	
+			if (typeof callback == "function") {
+				callback(data);
+			}
+			_return = true;
+			
+		}
+	});
+	return _return;
+}
+
+
+function availabilityNode(nodeId){
+	
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/availability/node' + ipAddress,
+		dataType : 'json',
+		data:'nodeId='+nodeId,
+		contentType : 'application/json',
+		error : function(data) {
+			alert("[" + nodeId + '] 노드 가용성 가져오기 실패');
+		},
+		success : function(data) {
+
+			return data;
+
+		}
+	});
+	
+}
+
 /** ************************ view String edit **************************** */
 
 /**
@@ -229,6 +462,198 @@ function getTabletagToCategoryJsonObj(jsonObj) {
 
 		str += "</div>";
 	}
+	
+	return str;
+}
+
+function getTabletagToSearchJsonObj(jsonObj, auth){
+	
+	var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
+	var str = "";
+
+	
+	if (jsonObj["@count"] > 0) {
+		
+		if (jsonObj["@count"] > 1) {
+	
+			for ( var i in nodeObj) {
+				str += "<tr>";
+				str += "<td>"
+						+ "[&nbsp;"+nodeObj[i]["@id"]+"&nbsp;]"
+						+ "</td>";
+				str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+ "'>"
+						+ nodeObj[i]["@label"]
+						+ "</a></td>";
+				str += "<td>"
+						+  new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss')
+						+ "</td>";
+				if(auth == "Y"){
+					str += '<td><button type="button" class="btn btn-primary" title="관리" onclick="javascript:changeNodeLabelPop(\''+nodeObj[i]["@id"]+'\');">관리</button></td>';
+					str += '<td><button type="button" class="btn btn-primary" title="삭제" onclick="javascript:deleteNode(\''+nodeObj[i]["@id"]+'\');">삭제</button></td>';
+				}
+				str += "</tr>";
+			}
+			
+		} else {
+	
+			str += "<tr>";
+			str += "<td>1</td>";
+			str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+ "'>"
+					+ nodeObj["@label"]+"&nbsp;[&nbsp;"+nodeObj["@id"]+"&nbsp;]"
+					+ "</a></td>";
+			str += "<td>"
+					+  new Date(nodeObj["createTime"]).format('yy-MM-dd hh:mm:ss')
+					+ "</td>";
+			if(auth == "Y"){
+				str += '<td><button type="button" class="btn btn-primary" title="관리" onclick="javascript:changeNodeLabelPop(\''+nodeObj["@id"]+'\');">관리</button></td>';
+				str += '<td><button type="button" class="btn btn-primary" title="삭제" onclick="javascript:deleteNode(\''+nodeObj["@id"]+'\');">삭제</button></td>';
+			}
+			str += "</tr>";
+		}
+
+	}
+	
+	return str;
+}
+
+/** 이벤트 정보를 table 테그 Str로 만들어준다. 
+ * @param jsonObj
+ */
+function getTabletagToAvailJsonObj(nodeId, ipAddress){
+	
+	var str = "";
+	var jsonObj = null;
+	var AvailJsonObj = null;
+	
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/nodes/'+nodeId+'/ipinterfaces/'+ipAddress+'/services',
+		dataType : 'json',
+		contentType : 'application/json',
+		async : false,
+		error : function(data) {
+			alert("[" + ipAddress + '] 서비스 정보 검색 실패');
+		},
+		success : function(data) {
+
+			jsonObj = data;
+			
+		}
+	});
+		
+	if (jsonObj["@count"] > 0) {
+		
+		var serviceObj = jsonObj["service"];
+		var data = "";
+		
+		if (jsonObj["@count"] > 1) {
+
+			for ( var i in serviceObj) {
+				
+				if(data == ""){
+					data += "serviceId="+serviceObj[i]["serviceType"]["@id"];
+				}else{
+					data += "&serviceId="+serviceObj[i]["serviceType"]["@id"];
+				}
+				
+			}
+
+		} else {
+			data += "serviceId="+serviceObj["serviceType"]["@id"];
+		}
+		
+		$.ajax({
+			type : 'get',
+			url : '/' + version + '/availability/node/'+nodeId+'/interface/'+ipAddress+'/service',
+			dataType : 'json',
+			contentType : 'application/json',
+			async : false,
+			data : data,
+			error : function(data) {
+				alert("[" + ipAddress + '] 서비스 정보 검색 실패');
+			},
+			success : function(data) {
+
+				AvailJsonObj = data;
+				
+			}
+		});
+		
+		var serviceObj = jsonObj["service"];
+		console.log(serviceObj);
+		str += '<table class="table table-striped">';
+
+		if (jsonObj["@count"] > 1) {
+
+			for ( var i in serviceObj) {
+				var serviceAvail = "";
+				
+				for(var j in AvailJsonObj["serviceAvailability"]){
+					if(AvailJsonObj["serviceAvailability"][j]["serviceId"] == serviceObj[i]["serviceType"]["@id"]){
+						serviceAvail = AvailJsonObj["serviceAvailability"][j]["avail"];
+						break;
+					}
+				}
+				
+				str += '<tr>';
+				str += '	<td><a href="/'+version+'/search/service/serviceDesc?nodeId='+nodeId+'&intf='+ipAddress+'&serviceNm='+serviceObj[i]["serviceType"]["name"]+'">';
+				str += serviceObj[i]["serviceType"]["name"];
+				str += '	</a></td>';
+				str += '	<td>';
+				str += availToStringFromStatoCode(serviceObj[i]["@status"],Number(serviceAvail).toFixed(3));
+				str += '	</td>';
+				str += '</tr>';
+			}
+
+		} else {
+
+			str += '<tr>';
+			str += '	<td><a href="/'+version+'/search/service/serviceDesc?nodeId='+nodeId+'&intf='+ipAddress+'&serviceNm='+serviceObj["serviceType"]["name"]+'">';
+			str += serviceObj["serviceType"]["name"];
+			str += '	</a></td>';
+			str += '	<td>';
+			str += availToStringFromStatoCode(serviceObj["@status"],Number(serviceAvail).toFixed(3));
+			str += '	</td>';
+			str += '</tr>';
+
+		}
+
+		str += '</table>';
+		
+	}
+
+	return str;
+}
+
+function getInterfaceInfoBox(jsonObj){
+	var nodeObj = getSpecificNode(null, jsonObj["nodeId"]);
+
+	var str = 	"<table class='table table-striped'>"+
+				"<tr>"+
+				"	<th>노드</th>"+
+				"	<td>"+
+				'		<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+jsonObj["nodeId"]+'">'
+						+nodeObj["@label"]+
+				'		</a>'+
+				"</td>"+
+				"</tr>"+
+				"<tr>"+
+				"	<th>폴링 상태</th>"+
+				"	<td>"+statsToStringFromStatoCode(jsonObj["@isManaged"])+"</td>"+
+				"</tr>"+
+				"<tr>"+
+				"	<th>폴링 페키지</th>"+
+				"	<td>??????????????????</td>"+
+				"</tr>"+
+				"<tr>"+
+				"	<th>Interface Index</th>"+
+				"	<td>??????????????????</td>"+
+				"</tr>"+
+				"<tr>"+
+				"	<th>Last Service Scan</th>"+
+				"	<td>"+new Date(jsonObj["lastCapsdPoll"]).format('yy-MM-dd hh:mm:ss')+"</td>"+
+				"</tr>"+
+				"</table>";	
 	
 	return str;
 }

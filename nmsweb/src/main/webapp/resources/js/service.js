@@ -21,103 +21,6 @@ function getServiceList(callback){
 	
 }
 
-/**
- * Get the IP interface for the given node 
- * 
- * @param callback
- * @param nodeId
- * @param ipAddress
- */
-function getServiceFromNodeId(callback, nodeId) {
-
-	if (nodeId == "") {
-		alert("노드 ID가 없습니다.");
-		return;
-	}
-
-	$.ajax({
-		type : 'get',
-		url : '/' + version + '/nodes/' + nodeId + '/ipinterfaces',
-		dataType : 'json',
-		contentType : 'application/json',
-		error : function(data) {
-			alert("[" + nodeId + '] 인터페이스 정보 검색 실패');
-		},
-		success : function(data) {
-
-			var jsonObj = data;
-
-			if (jsonObj["@count"] > 0) {
-				var ipInterfaceObj = jsonObj["ipInterface"];
-
-				if (jsonObj["@count"] > 1) {
-
-					for ( var i in ipInterfaceObj) {
-						getServiceFromNodeidIpaddress(callback, nodeId, ipInterfaceObj[i]["ipAddress"]);
-					}
-
-				} else {
-
-					getServiceFromNodeidIpaddress(callback, nodeId, ipInterfaceObj["ipAddress"]);
-
-				}
-
-			}
-
-		}
-	});
-
-}
-
-/**
- * Get the IP interface for the given node 
- * 
- * @param callback
- * @param nodeId
- * @param ipAddress
- */
-function getServiceFromNodeId(callback, nodeId) {
-
-	if (nodeId == "") {
-		alert("노드 ID가 없습니다.");
-		return;
-	}
-
-	$.ajax({
-		type : 'get',
-		url : '/' + version + '/nodes/' + nodeId + '/ipinterfaces',
-		dataType : 'json',
-		contentType : 'application/json',
-		error : function(data) {
-			alert("[" + nodeId + '] 인터페이스 정보 검색 실패');
-		},
-		success : function(data) {
-
-			var jsonObj = data;
-
-			if (jsonObj["@count"] > 0) {
-				var ipInterfaceObj = jsonObj["ipInterface"];
-
-				if (jsonObj["@count"] > 1) {
-
-					for ( var i in ipInterfaceObj) {
-						getServiceFromNodeidIpaddress(callback, nodeId, ipInterfaceObj[i]["ipAddress"]);
-					}
-
-				} else {
-
-					getServiceFromNodeidIpaddress(callback, nodeId, ipInterfaceObj["ipAddress"]);
-
-				}
-
-			}
-
-		}
-	});
-
-}
-
-
 /**Get the IP interface for the given node
  * @param callback
  * @param nodeId
@@ -140,7 +43,7 @@ function getServiceFromNodeidIpaddress(callback, nodeId, ipAddress){
 
 			// 콜백함수
 			if (typeof callback == "function") {
-				callback(data, ipAddress);
+				callback(data, nodeId, ipAddress);
 			}
 
 		}
@@ -189,50 +92,6 @@ function getServiceInfo(callback, nodeId, ipAddress, serviceNm) {
 
 /************************** view String edit *****************************/
 
-/** 이벤트 정보를 table 테그 Str로 만들어준다. 
- * @param jsonObj
- */
-function getTabletagToServiceJsonObj(jsonObj){
-	
-	var str = "";
-	
-	if (jsonObj["@count"] > 0) {
-	
-		var serviceObj = jsonObj["service"];
-		str += '<table class="table table-striped">';
-		
-		if (jsonObj["@count"] > 1) {
-
-			for ( var i in serviceObj) {
-				str += '<tr>';
-				str += '	<td><a href="#">';
-				str += serviceObj[i]["serviceType"]["name"];
-				str += '	</a></td>';
-				str += '	<td>';
-				str += '100.000%';
-				str += '	</td>';
-				str += '</tr>';
-			}
-
-		} else {
-
-			str += '<tr>';
-			str += '	<td><a href="#">';
-			str += serviceObj["serviceType"]["name"];
-			str += '	</a></td>';
-			str += '	<td>';
-			str += '100.000%';
-			str += '	</td>';
-			str += '</tr>';
-
-		}
-		str += '</table>';
-	}
-
-	return str;
-}
-
-
 /** 서비스 리스트를 <option> 테그 str로 바꿔줌
  * @param jsonObj
  * @returns {String}
@@ -263,6 +122,7 @@ function getOptiontagToServiceList(jsonObj) {
  */
 function getServiceInfoBox(jsonObj, nodeId, ipAddress, serviceNm){
 	
+	var nodeObj = getSpecificNode(null, nodeId);
 	var stats = statsToStringFromStatoCode(jsonObj["@status"]);
 		
 	var serviceInfoStr = 	'<div class="row-fluid">'+
@@ -272,8 +132,20 @@ function getServiceInfoBox(jsonObj, nodeId, ipAddress, serviceNm){
 							'	<div class="span12 well well-small">'+
 							'		<table class="table table-striped">'+
 							'			<tr>'+
+							'				<th>노드</th>'+
+							'				<td>'+
+							'					<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+nodeId+'">'
+													+nodeObj["@label"]+
+							'					</a>'+
+							'				</td>'+
+							'			</tr>'+
+							'			<tr>'+
 							'				<th>인터페이스</th>'+
-							'				<td>'+ipAddress+'</td>'+
+							'				<td>'+
+							'					<a href="/v1/search/node/interfaceDesc.do?nodeId='+nodeId+'&intf='+ipAddress+'">'
+													+ipAddress+
+							'					</a>'+
+							'				</td>'+
 							'			</tr>'+
 							'			<tr>'+
 							'				<th>폴링 상태</th>'+

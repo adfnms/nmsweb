@@ -31,7 +31,6 @@
 			/* 모든 데이터를 id로 정렬하여 가져온다 */
 			getNodeTotalList(addNodeLists, "orderBy=id&limit=0");	
 		}
-		
 
 		/* Service list */
 		getServiceList(addServiceList);
@@ -40,46 +39,13 @@
 
 	//callback 함수 jsonObj를 이용 파싱 후 append
 	function addNodeLists(jsonObj) {
-		
+		console.log(jsonObj);
 		$('#nodeListTable').empty();
 
-		var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
-		var str = "<tr>";
-
-		if (1 == jsonObj["@totalCount"]) {
-			str += "<td><a href='<c:url value="/search/node/nodeDesc.do" />?nodeId="
-					+ nodeObj["@id"] + "'>" + nodeObj["@id"] + "</a></td>";
-			str += "<td><a href='<c:url value="/search/node/nodeDesc.do" />?nodeId="
-					+ nodeObj["@id"] + "'>" + nodeObj["@label"] + "</a></td>";
-		} else {
-
-			for ( var i in nodeObj) {
-
-				str += "<td><a href='<c:url value="/search/node/nodeDesc.do" />?nodeId="
-						+ nodeObj[i]["@id"]
-						+ "'>"
-						+ nodeObj[i]["@id"]
-						+ "</a></td>";
-				str += "<td><a href='<c:url value="/search/node/nodeDesc.do" />?nodeId="
-						+ nodeObj[i]["@id"]
-						+ "'>"
-						+ nodeObj[i]["@label"]
-						+ "</a></td>";
-
-				if (i % 2 == 1) {
-					str += "</tr><tr>";
-				}
-
-			}
-
-		}
-
-		str += "</tr>";
-
+		var str = getTabletagToSearchJsonObj(jsonObj,"N");
+		
 		$('#nodeListTable').append(str);
 
-		//페이징 HTML 가져오기
-		//getPagingHtml($('#pagingDiv'), "goSearchPageing", jsonObj["@totalCount"], pageNum, "10", "10" );
 	}
 
 	
@@ -99,20 +65,7 @@
 
 	}
 	/*//Service list Callback*/
-
-	//페이징 처리 스크립트
-	/* function goSearchPageing(pageNm){
-		
-		pageNum = pageNm;
-		
-		$('#searchNodeFrm input[name=offset]').val(
-				(parseInt(pageNm)-1) * $('#searchNodeFrm input[name=limit]').val()
-		);
-		
-		getNodeList();
-		
-	} */
-
+	
 	/* nodeNm & nodeId button */
 	function schNodeFromNameId() {
 
@@ -147,6 +100,7 @@
 
 	}
 	/*//ipAddress search button */
+	
 </script>
 </head>
 
@@ -169,7 +123,7 @@
 				<div class="span12 well well-small">
 					<div class="row-fluid">
 						<div class="span12">
-							<h4>노드 검색</h4>
+							<h4>노드&nbsp;검색</h4>
 						</div>
 					</div>
 					<div class="row-fluid">
@@ -261,16 +215,13 @@
 			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12">
-						<h4>노드 목록</h4>
+						<h4>노드&nbsp;목록</h4>
 					</div>
 				</div>
 				<div class="row-fluid">
 					<div class="span12">
 						<table class="table table-striped" id="nodeListTable"></table>
 					</div>
-				</div>
-				<div class="row-fluid">
-					<div class="span12" id="pagingDiv"></div>
 				</div>
 			</div>
 		</div>

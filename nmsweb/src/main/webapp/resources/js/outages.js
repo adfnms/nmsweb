@@ -181,7 +181,11 @@ function getOutageInfoBox(jsonObj){
 						'			</tr>'+
 						'			<tr>'+
 						'				<th>서비스</th>'+
-						'				<td><a href="">'+nullCheckJsonObject(outageObj["serviceRegainedEvent"]["serviceType"], "name")+'</a></td>'+
+						'				<td>'+
+						'					<a href="/'+version+'/search/service/serviceDesc?nodeId='+outageObj["serviceLostEvent"]["nodeId"]+'&intf='+outageObj["ipAddress"]+'&serviceNm='+nullCheckJsonObject(outageObj["serviceRegainedEvent"]["serviceType"], "name")+'">'
+											+nullCheckJsonObject(outageObj["serviceRegainedEvent"]["serviceType"], "name")+
+						'					</a>'+
+						'				</td>'+
 						'				<td colspan="4"></td>'+
 						'			</tr>'+
 						'		</table>'+

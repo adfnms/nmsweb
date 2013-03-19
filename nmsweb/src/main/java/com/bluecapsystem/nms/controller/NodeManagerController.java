@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -20,11 +21,33 @@ public class NodeManagerController {
 	 
 
 	@RequestMapping(value = "/admin/node")
-	public ModelAndView userManage(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale) {
+	public ModelAndView nodeManage(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		
 		ModelAndView model =  new ModelAndView();
 		
 		model.setViewName("/admin/nodeMng/nodeMng");
+		
+		return model;
+	}
+	
+	@RequestMapping(value = "/admin/addNode")
+	public ModelAndView addNode(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		
+		ModelAndView model =  new ModelAndView();
+		
+		model.setViewName("/admin/nodeMng/addNode");
+		
+		return model;
+	}
+	
+	@RequestMapping(value = "/admin/changeNodeLabel")
+	public ModelAndView changeNodeLabel(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			@RequestParam(value = "nodeId", required = false)String nodeId) {
+		
+		ModelAndView model =  new ModelAndView();
+		
+		model.addObject("nodeId",nodeId);
+		model.setViewName("/admin/nodeMng/changeNodeLabel");
 		
 		return model;
 	}

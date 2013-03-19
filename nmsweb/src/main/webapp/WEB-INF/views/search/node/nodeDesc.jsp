@@ -27,9 +27,12 @@
 		/* Recent Events */
 		getEventsForNode(addEvents, "${nodeId}", "10");
 		
-		/* Availability */
-		getServiceFromNodeId(addAvailability, "${nodeId}");
-
+		/* Node Availability */
+		getNodeAvailability(addNodeAvailability, "${nodeId}");
+		
+		/* Interface Availability */
+		getInterfacesFromNodeId(addInterfaceAvailability, "${nodeId}");
+		
 	});
 
 	/* Node base info Callback */
@@ -71,18 +74,67 @@
 
 	
 	/* Availability Callback */
-	function addAvailability(jsonObj, ipAddress){
+	
+	function addNodeAvailability(jsonObj){
+
+		var nodeAvail = Number(jsonObj["nodeAvailability"][0]["avail"]).toFixed(3); 
 		
+		$('#availNode').append("가용성[&nbsp;"+nodeAvail+"%&nbsp;]");
 		
-		$("#leftDiv").empty();
-		/* 아이피 해더 만들기 */
+	}
+
+	function addInterfaceAvailability(jsonObj){
+		
+		var interfaceAvail = getInterfaceAvailability("${nodeId}", jsonObj["ipInterface"]["ipAddress"]);
+		var str ="";
+		
+		if(jsonObj["@count"] > 0){
+			if(jsonObj["@count"] > 1){
+				interfaceObj = jsonObj["ipInterface"];
+				for(var i in interfaceObj){
+					
+					var ipAddrs = interfaceAvail[i]["ipAddress"];
+					
+					//인터페이스 가용성
+					var interfaceAvail = Number(getInterfaceAvailability("${nodeId}", ipAddrs)).toFixed(3)+"%";
+					var headStr = '<h5>' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</h5></a>';
+					
+					//서비스 가용성
+					var serviceAvailSte = getTabletagToAvailJsonObj("${nodeId}", ipAddrs);
+					
+					str += headStr+serviceAvailSte;
+					
+				}
+			}else{
+				var ipAddrs =jsonObj["ipInterface"]["ipAddress"]
+				
+				//인터페이스 가용성
+ 				var interfaceAvail = Number(getInterfaceAvailability("${nodeId}", ipAddrs)).toFixed(3)+"%";
+				var headStr = '<h5>' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</h5></a>';
+				
+				//서비스 가용성
+				var serviceAvailSte = getTabletagToAvailJsonObj("${nodeId}", ipAddrs);
+				
+				str += headStr+serviceAvailSte;
+			}
+		}
+		
+		$("#leftDiv").append(str);
+	}
+
+	function addServiceAvailability(jsonObj, nodeId, ipAddress, interfaceAvail){
+		
 		var headStr = '<a href="<c:url value="/search/node/interfaceDesc.do?nodeId=${nodeId}&intf='
 			+ ipAddress + '" />"><h5>' + ipAddress + '</h5></a>';
 			
-		var str = getTabletagToServiceJsonObj(jsonObj);
-		$("#leftDiv").append(headStr+str);
+		$("#leftDiv").prepend(headStr);
+		
+		var str = getTabletagToAvailJsonObj(jsonObj, ipAddress);
+		
+		$("#leftDiv").append(str);
 		
 	}
+	
 	/*//Availability Callback*/
 	
 </script>
@@ -120,10 +172,10 @@
 		<div class="row-fluid">
 			<div class="span4">
 				<div class="row-fluid">
-					<h5>가용성</h5>
+					<h5 id="availNode"></h5>
 				</div>
 				<div class="row-fluid">
-					<div class="span12 well well-small" id="leftDiv">정보가 없습니다.</div>
+					<div class="span12 well well-small" id="leftDiv"></div>
 				</div>
 			</div>
 			<div class="span8" id="rightDiv"></div>

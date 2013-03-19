@@ -76,7 +76,7 @@
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<h4>Quick Search</h4>
+									<h4>Quick&nbsp;Search</h4>
 								</div>
 							</div>
 							<div class="row-fluid">
@@ -126,7 +126,7 @@
 						<div class="span6">
 							<div class="row-fluid">
 								<div class="span12">
-									<h4>24시간 이용내역</h4>
+									<h4>24시간&nbsp;이용내역</h4>
 								</div>
 							</div>
 							<div class="row-fluid">
@@ -189,7 +189,7 @@
 						<div class="span3">
 							<div class="row-fluid">
 								<div class="span12">
-									<h4>알림 정보</h4>
+									<h4>알림&nbsp;정보</h4>
 								</div>
 							</div>
 							<div class="well well-small">
@@ -202,7 +202,7 @@
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<h4>그래프 검색</h4>
+									<h4>그래프&nbsp;검색</h4>
 								</div>
 							</div>
 							<div class="well well-small">

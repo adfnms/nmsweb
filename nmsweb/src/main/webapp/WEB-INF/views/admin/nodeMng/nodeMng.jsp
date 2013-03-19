@@ -11,29 +11,48 @@
 	<jsp:param value="노드관리" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
-<script src="<c:url value="/resources/js/requisitions.js" />"></script>
+<script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script type="text/javascript">
+	
+	var pageNum = 1;
+	var limit = 10;
+	var offset = 0;
+	var orderBy = "id";
+  	
 	$(document).ready(function(){
-		getTotalRequisitionsList(requisitionsList);
+		
+		getNodeTotalList(addNodeLists, "orderBy="+orderBy+"&limit="+limit);
+		
 	});
 	
-	function requisitionsList(jsonObj){
+	//callback 함수 jsonObj를 이용 파싱 후 append
+	function addNodeLists(jsonObj) {
 		
-		var objList = jsonObj["model-import"];
+		//총 갯수를 입력해준다.
+		$('#nodeCount').empty();
+		$('#nodeCount').append("노드&nbsp;목록&nbsp;["+jsonObj["@totalCount"]+"]");
+		//총 갯수를 입력해준다.
 		
-		for ( var i in objList) {
+		$('#nodeListTable').empty();
 
-			$('#requisitionsList').append(
-					"<option value="+objList[i]["@foreign-source"]+">"+objList[i]["@foreign-source"]+"</option>"
-			);
-			
-		}
+		var str = getTabletagToSearchJsonObj(jsonObj,"Y");
 		
+		$('#nodeListTable').append(str);
+		
+		//페이징 HTML 가져오기
+		getPagingHtml($('#pagingDiv'), "goSearchPageing", jsonObj["@totalCount"], pageNum, "10", "10" );
+
 	}
 	
-	function addCategories(){
+	//페이징 처리 스크립트
+	function goSearchPageing(pageNm){
 		
-		$('#cateDiv').after($('#cateDiv').clone().removeAttr("id"));
+		pageNum = pageNm;
+		
+		offset = (parseInt(pageNm)-1) * limit;
+		
+		getNodeTotalList(addNodeLists, "orderBy="+orderBy+"&limit="+limit+"&offset="+offset);
+		
 	}
 </script>
 </head>
@@ -46,117 +65,32 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
-					<li><a href="#">Home</a> <span class="divider">/</span></li>
-					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
+					<li><a href="<c:url value="/index.do" />">Home</a> <span class="divider">/</span></li>
+					<li><a href="<c:url value="/admin/node.do" />">운영관리</a> <span class="divider">/</span></li>
 					<li class="active">노드 관리</li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
-
-		<div class="row-fluid">
-			<div class="span12 well well-small">
-				<div class="row-fluid">
-					<div class="span12">
-						<h4>
-							기본속성 <span class="label label-info">필수 입력 사항</span>
-						</h4>
-					</div>
-				</div>
-				<div class="row-fluid">
-					<div class="span12">
-						<label class="span2 control-label">필요 조건</label>
-						<div class="span4 controls">
-							<select id="requisitionsList"></select>
-						</div>
-					</div>
-				</div>
-				<div class="row-fluid">
-					<div class="span12">
-						<label class="span2 control-label">IP 주소</label>
-						<div class="span4 controls">
-							<input type="text">
-						</div>
-						<label class="span2 control-label">노드명</label>
-						<div class="span4 controls">
-							<input type="text">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 		
 		<div class="row-fluid">
 			<div class="span12 well well-small">
 				<div class="row-fluid">
-					<div class="span12">
-						<h4>
-							카테고리
-						</h4>
+					<div class="span10">
+						<h4 id="nodeCount">노드&nbsp;목록&nbsp;[0]</h4>
 					</div>
-				</div>
-				<div class="row-fluid" id="cateDiv">
-					<div class="span12">
-						<label class="span2 control-label">카테 고리</label>
-						<div class="span4 controls">
-							<select>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-							</select>
-						</div>
-						<label class="span2 control-label">카테 고리</label>
-						<div class="span4 controls">
-							<select>
-								<option>1</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				<div class="row-fluid">
-					<div class="span11"></div>
-					<div class="span1">
-						<button type="button" class="btn btn-primary" title="카테고리 추가" onclick="javascript:addCategories();">+</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<div class="row-fluid">
-			<div class="span12 well well-small">
-				<div class="row-fluid">
-					<div class="span12">
-						<h4>
-							SNMP 옵션
-						</h4>
+					<div class="span2">
+						<button type="button" class="btn btn-primary span12" title="노드 추가"
+							onclick="javascript:addNodePop();">+&nbsp;노드 추가</button>
 					</div>
 				</div>
 				<div class="row-fluid">
 					<div class="span12">
-						<label class="span2 control-label">카테 고리</label>
-						<div class="span4 controls">
-							<input type="text">
-						</div>
-						<label class="span2 control-label">카테 고리</label>
-						<div class="span4 controls">
-							<input type="text">
-						</div>
+						<table class="table table-striped" id="nodeListTable"></table>
 					</div>
 				</div>
 				<div class="row-fluid">
-					<div class="span12">
-						<label class="span2 control-label">사용 유무</label>
-						<input type="checkbox">
-						<span class="label label-important">Snmp를 사용하지 않는 노드의 경우 선택해주세요.</span>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row-fluid">
-			<div class="span12">
-				<div class="span11"></div>
-				<div class="span1">
-					<button type="button" class="btn btn-primary" title="카테고리 추가">저장</button>
+					<div class="span12" id="pagingDiv"></div>
 				</div>
 			</div>
 		</div>

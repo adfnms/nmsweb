@@ -18,7 +18,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 
-		//getSpecificNode(addNodeDesc, "${nodeId}");
+		getInterfaceInfo(addInterface, "${nodeId}", "${intf}");
 		
 		/* Recent Outages */
 		getOutagesForInterface(addOutages, "${nodeId}", "${intf}","5");
@@ -26,10 +26,19 @@
 		/* Recent Events */
 		getEventsForInterface(addEvents, "${nodeId}", "${intf}","5");
 		
-		/* Availability */
-		getServiceFromNodeidIpaddress(addAvailability, "${nodeId}", "${intf}");
+		/* Interface Availability */
+		addAvailability("${nodeId}","${intf}");
 		
 	});
+	
+	/* Interface Callback */
+	function addInterface(jsonObj) {
+		
+		var str = getInterfaceInfoBox(jsonObj);
+		$('#interfaceDiv').append(str);
+		
+	}
+	/*//Interface Callback */
 	
 	/* Recent Outages Callback*/
 	function addOutages(jsonObj) {
@@ -50,12 +59,18 @@
 	/*//Recent Events Callback */
 	
 	/* Availability Callback */
-	function addAvailability(jsonObj, ipAddress){
+	function addAvailability(nodeId,ipAddrs){
 		
-		$("#availDiv").empty();
-		var str = getTabletagToServiceJsonObj(jsonObj);
+		//인터페이스 가용성
+		var interfaceAvail = Number(getInterfaceAvailability(nodeId, ipAddrs)).toFixed(3)+"%";
+		var headStr = '<h5>' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</h5></a>';
 		
-		$("#availDiv").append(str);
+		//서비스 가용성
+		var serviceAvailSte = getTabletagToAvailJsonObj(nodeId, ipAddrs);
+		var str = headStr+serviceAvailSte;
+		
+		
+		$('#availDiv').append(str);
 		
 	}
 	/*//Availability Callback */
@@ -82,7 +97,7 @@
 			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span9">
-						<h4 id="nodeLabel">인터페이스 정보</h4>
+						<h4 id="nodeLabel">인터페이스&nbsp;정보</h4>
 					</div>
 					<div class="span3">
 						<jsp:include page="/include/statsBar.jsp" />
@@ -96,36 +111,15 @@
 					<h5>일반</h5>
 				</div>
 				<div class="row-fluid">
-					<div class="span12 well well-small">
-						<table class='table table-striped'>
-							<tr>
-								<th>노드</th>
-								<td>192.168.0.1</td>
-							</tr>
-							<tr>
-								<th>폴링 상태</th>
-								<td>192.168.0.1</td>
-							</tr>
-							<tr>
-								<th>폴링 페키지</th>
-								<td></td>
-							</tr>
-							<tr>
-								<th>Interface Index</th>
-								<td></td>
-							</tr>
-							<tr>
-								<th>Last Service Scan</th>
-								<td></td>
-							</tr>
-						</table>
-					</div>
+					<div class="span12 well well-small" id="interfaceDiv"></div>
 				</div>
 				<div class="row-fluid">
 					<h5>가용성</h5>
 				</div>
 				<div class="row-fluid">
-					<div class="span12 well well-small" id="availDiv">정보가 없습니다.</div>
+					<div class="span12 well well-small">
+						<table class="table table-striped" id="availDiv"></table>
+					</div>
 				</div>
 			</div>
 			<div class="span8" id="rightDiv">

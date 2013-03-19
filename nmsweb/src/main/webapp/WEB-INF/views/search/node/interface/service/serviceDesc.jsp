@@ -70,7 +70,8 @@
 					<li><a href="<c:url value="/index.do" />" />Home</a> <span class="divider">/</span></li>
 					<li><a href="<c:url value="/search/node.do" />" />노드검색</a> <span class="divider">/</span></li>
 					<li><a href="<c:url value="/search/node/nodeDesc.do?nodeId=${nodeId}" />" />노드</a> <span class="divider">/</span></li>
-					<li><a href="<c:url value="/v1/search/node/interfaceDesc.do?nodeId=${nodeId}&intf=${intf}" />" />인터페이스</a> <span class="divider">/</span></li>
+					<li><a href="<c:url value="/search/node/interfaceDesc.do?nodeId=${nodeId}&intf=${intf}" />" />인터페이스</a> <span class="divider">/</span></li>
+					<li class="active">서비스</li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
@@ -79,7 +80,7 @@
 			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span9">
-						<h4 id="nodeLabel">서비스 정보</h4>
+						<h4 id="nodeLabel">서비스&nbsp;정보</h4>
 					</div>
 					<div class="span3">
 						<jsp:include page="/include/statsBar.jsp" />
@@ -88,19 +89,8 @@
 			</div>
 		</div>
 		<div class="row-fluid">
-			<div class="span4" id="leftDiv">
-				<div class="row-fluid">
-					<h5>가용성</h5>
-				</div>
-				<div class="row-fluid">
-					<div class="span12 well well-small" id="availDiv">정보가 없습니다.</div>
-				</div>
-			</div>
-			<div class="span8" id="rightDiv">
-				<table>
-				
-				</table>
-			</div>
+			<div class="span4" id="leftDiv"></div>
+			<div class="span8" id="rightDiv"></div>
 		</div>
 
 	</div>

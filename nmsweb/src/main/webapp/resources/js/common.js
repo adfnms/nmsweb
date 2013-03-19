@@ -206,14 +206,27 @@ function statsToStringFromStatoCode(code){
 	var statsStr = "";
 
 	switch(code){
-		case 'N','n':{
+		case 'N','n':
 			statsStr ="모니터링 되지 않음";
 			break;
-		}
-		default:{
+		default:
 			statsStr ="모니터링 중";
 			break;
-		}
+	}
+	
+	return statsStr;
+}
+
+function availToStringFromStatoCode(code,avail){
+	var statsStr = "";
+	
+	switch(code){
+		case 'N':
+			statsStr ="모니터링 되지 않음";
+			break;
+		default:
+			statsStr = avail+"%";
+			break;
 	}
 	
 	return statsStr;

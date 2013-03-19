@@ -158,7 +158,11 @@ function getEventinfoBox(jsonObj){
 						'		</tr>'+
 						'		<tr>'+
 						'			<th>서비스</th>'+
-						'			<td><a href="">'+nullCheckJsonObject(jsonObj["event"]["serviceType"], ["name"])+'</a></td>'+
+						'			<td>'+
+						'				<a href="/'+version+'/search/service/serviceDesc?nodeId='+jsonObj["event"]["nodeId"]+'&intf='+jsonObj["event"]["ipAddress"]+'&serviceNm='+nullCheckJsonObject(jsonObj["event"]["serviceType"], ["name"])+'">'+
+											nullCheckJsonObject(jsonObj["event"]["serviceType"], ["name"])+
+						'				</a>'+
+						'			</td>'+
 						'			<td colspan="4"></td>'+
 						'		</tr> '+
 						'		<tr>'+
