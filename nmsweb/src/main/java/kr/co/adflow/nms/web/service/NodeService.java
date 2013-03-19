@@ -498,13 +498,21 @@ public class NodeService {
 		String sql = null;
 
 		try {
+			logger.debug("aaaaaa:::");
+			
 			Context ctx = new InitialContext();
+			
+			logger.debug("bbbbbbb:::");
+			
 			if (ctx == null)
 				throw new Exception("Boom - No Context");
 
 			// /jdbc/postgres is the name of the resource above
 			DataSource ds = (DataSource) ctx
 					.lookup("java:comp/env/jdbc/postgres");
+			
+			logger.debug("cccccc:::");
+			
 			if (ds != null) {
 				conn = ds.getConnection();
 
@@ -637,9 +645,29 @@ public class NodeService {
 					sql = "SELECT nodeid, nodelabel FROM node WHERE nodeid in (SELECT nodeid  FROM ipinterface WHERE iplike(ipaddr,'"+iplike+"') AND ismanaged = 'M')";
 
 					logger.debug("sql:::" + sql);
+					boolean selectCheck = true;
+					
+					
 					rst = stmt.executeQuery(sql);
 					
-					if (rst.getRow()==0) {
+					result.append("{\"nodes\":[");
+					while (rst.next()) {
+
+						result.append("{\"nodeid\":\"" + rst.getInt(1) + "\",");
+						result.append("\"nodelabel\":\""
+								+ rst.getString(2) + "\"},");
+						
+						selectCheck = false;
+
+					}
+					// last "&" delete.
+					result.deleteCharAt(result.length() - 1);
+					result.append("]}");
+					
+					
+					if (selectCheck) {
+						
+//						result = new StringBuffer();
 						
 						try {
 							throw new HandleException(
@@ -648,26 +676,9 @@ public class NodeService {
 							throw e;
 						}
 						
-					} else {
-						
-						result.append("{\"nodes\":[");
-						while (rst.next()) {
-
-							result.append("{\"nodeid\":\"" + rst.getInt(1) + "\",");
-							result.append("\"nodelabel\":\""
-									+ rst.getString(2) + "\"},");
-
-						}
-
-						rst.close();
-
-						// last "&" delete.
-						result.deleteCharAt(result.length() - 1);
-						result.append("]}");
-
 					}
 					
-					
+					rst.close();
 
 					
 					logger.debug("ResultSet Json:::" + result.toString());
