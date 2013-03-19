@@ -37,10 +37,6 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 				conn.setRequestProperty("Accept", (String) map.get("accept"));
 			}
 
-			// 2013-02-22
-			// kicho@adflow.co.kr
-			// "Content-Type" 異붽�
-			//test
 			if (map.containsKey("contentType")) {
 				conn.setRequestProperty("Content-Type",
 						(String) map.get("contentType"));
@@ -52,9 +48,6 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 					.getBytes());
 			conn.setRequestProperty("Authorization", "Basic " + encoding);
 
-			// 2013-02-21
-			// kicho@adflow.co.kr
-			// POST, PUT Data 異붽�
 			if (map.containsKey("data")) {
 
 				conn.setDoOutput(true);
