@@ -9,22 +9,14 @@ import kr.co.adflow.nms.web.vo.foreign.ForeignInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ForeignUtil {
 	
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(ForeignUtil.class);
-
-	public static ForeignUtil util = new ForeignUtil();
-
-	private ForeignUtil() {
-
-	}
-
-	public static ForeignUtil getInstance() {
-		return util;
-	}
 
 	//POST
 	///foreignSources 

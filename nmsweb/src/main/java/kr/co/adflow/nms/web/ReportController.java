@@ -33,8 +33,9 @@ public class ReportController {
 	private ReportService service;
 	@Autowired
 	private ReportUtil rutil;
+	@Autowired
+	UsersUtil ut;
 	private static final String INVALUE = "invalue:::";
-	private UsersUtil ut = UsersUtil.getInstance();
 
 	// resport nodeSnmp
 	@RequestMapping(value = "/report/{nodeid}/nodesnmp", method = RequestMethod.GET)
@@ -250,7 +251,7 @@ public class ReportController {
 	public @ResponseBody
 	String reportNodeYear(@PathVariable String nodeid,
 			@PathVariable String ipaddr, HttpServletRequest request)
-			throws HandleException,UtilException {
+			throws HandleException, UtilException {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 		String jsonResult = null;

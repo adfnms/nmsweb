@@ -38,6 +38,8 @@ public class ForeignSourcesController {
 	private ForeignSourcesService service;
 	@Autowired
 	ForeignMapper mapper;
+	@Autowired
+	ForeignUtil ut;
 	private static final String DATA = "data::";
 
 	// foreignSources
@@ -227,7 +229,6 @@ public class ForeignSourcesController {
 			throw e;
 		}
 		try {
-			ForeignUtil ut = ForeignUtil.getInstance();
 			xmlData = ut.xmlParsingForeign(forInfo);
 			result = (String) service.foreignPostPro(xmlData);
 		} catch (HandleException e) {
@@ -267,7 +268,6 @@ public class ForeignSourcesController {
 			throw e;
 		}
 		try {
-			ForeignUtil ut = ForeignUtil.getInstance();
 			xmlData = ut.xmlParsingDetector(detector);
 			result = (String) service.foreignDecPro(xmlData, name);
 		} catch (HandleException e) {
@@ -308,7 +308,6 @@ public class ForeignSourcesController {
 			throw e;
 		}
 		try {
-			ForeignUtil ut = ForeignUtil.getInstance();
 			xmlData = ut.xmlParsingPolices(polices);
 			result = (String) service.foreignPolicesPro(xmlData, name);
 		} catch (HandleException e) {
@@ -346,7 +345,6 @@ public class ForeignSourcesController {
 		String result = null;
 
 		try {
-			ForeignUtil ut = ForeignUtil.getInstance();
 			String convertdata = ut.ParsingPutName(putName);
 			result = (String) service.foreignPutNamePro(name, convertdata);
 		} catch (HandleException e) {

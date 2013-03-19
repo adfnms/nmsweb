@@ -37,7 +37,8 @@ public class GroupsController {
 	private GroupsService service;
 	@Autowired
 	UserAndGroupMapper tcMapper;
-	private UsersUtil ut = UsersUtil.getInstance();
+	@Autowired
+	UsersUtil ut;
 
 	// groups
 	@RequestMapping(value = "/groups", method = RequestMethod.GET)

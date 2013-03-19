@@ -2,6 +2,7 @@ package kr.co.adflow.nms.web.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.vo.requisition.ReqPutForID;
@@ -14,22 +15,13 @@ import kr.co.adflow.nms.web.vo.requisition.RequisitionsNodesInterface;
 import kr.co.adflow.nms.web.vo.requisition.RequisitionsService;
 import kr.co.adflow.nms.web.vo.requisition.Requisitionsinfo;
 
+@Service
 public class RequisitionsUtil {
 
 	// <model-import foreign-source="chandjdjdj"/>
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(RequisitionsUtil.class);
-
-	public static RequisitionsUtil util = new RequisitionsUtil();
-
-	private RequisitionsUtil() {
-
-	}
-
-	public static RequisitionsUtil getInstance() {
-		return util;
-	}
 
 	public String xmlParsingRequisitions(Requisitionsinfo requisition)
 			throws UtilException {

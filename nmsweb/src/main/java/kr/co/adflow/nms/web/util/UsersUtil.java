@@ -1,13 +1,14 @@
 package kr.co.adflow.nms.web.util;
 
-import kr.co.adflow.nms.web.DefaultHandlerImpl;
 import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.vo.group.Groupinfo;
 import kr.co.adflow.nms.web.vo.user.UserInit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UsersUtil {
 
 	private static final String JSONDATA = "jsonData:::";
@@ -18,15 +19,7 @@ public class UsersUtil {
 	private static final Logger logger = LoggerFactory
 			.getLogger(UsersUtil.class);
 
-	public static UsersUtil util = new UsersUtil();
-
-	private UsersUtil() {
-
-	}
-
-	public static UsersUtil getInstance() {
-		return util;
-	}
+	
 
 	public String XmlParsingUser(UserInit userinit) throws UtilException {
 		String data = null;

@@ -40,10 +40,11 @@ public class UsersController {
 	private UserService service;
 	@Autowired
 	UserAndGroupMapper tcmapper;
-
+	@Autowired
+	UsersUtil ut;
 	private static final String INVALUE = "invalue:::";
 	private static final String XMLDATA = "xmlData:::";
-	private UsersUtil ut = UsersUtil.getInstance();
+	
 
 	// users
 	@RequestMapping(value = "/users", method = RequestMethod.GET)

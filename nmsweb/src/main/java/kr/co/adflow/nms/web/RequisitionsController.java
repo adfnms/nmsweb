@@ -46,6 +46,8 @@ public class RequisitionsController {
 	private RequisitionsService service;
 	@Autowired
 	RequisitionsMapper mapper;
+	@Autowired
+	RequisitionsUtil ut;
 
 	// requisitions
 	@RequestMapping(value = "/requisitions", method = RequestMethod.GET)
@@ -358,7 +360,6 @@ public class RequisitionsController {
 		}
 
 		try {
-			RequisitionsUtil ut = RequisitionsUtil.getInstance();
 			xmlData = ut.xmlParsingRequisitions(requisitions);
 			result = (String) service.requisitionsPostPro(xmlData);
 		} catch (HandleException e) {
@@ -393,7 +394,7 @@ public class RequisitionsController {
 		}
 
 		try {
-			RequisitionsUtil ut = RequisitionsUtil.getInstance();
+		
 			xmlData = ut.xmlParsingRequisitionsNodes(renodes);
 			result = (String) service.requisitionsPostNodesPro(xmlData, name);
 		} catch (HandleException e) {
@@ -428,7 +429,7 @@ public class RequisitionsController {
 		}
 
 		try {
-			RequisitionsUtil ut = RequisitionsUtil.getInstance();
+			
 			xmlData = ut.xmlParsingRequisitionsNodesInterfaces(nodeInterface);
 			result = (String) service.requisitionsPostNodesInterfacesPro(
 					xmlData, name, foreignId);
@@ -468,7 +469,7 @@ public class RequisitionsController {
 		}
 
 		try {
-			RequisitionsUtil ut = RequisitionsUtil.getInstance();
+		
 			xmlData = ut.xmlParsingRequisitionsService(rservice);
 			result = (String) service.requisitionServicesPro(xmlData, name,
 					foreignId, ipAddress);
@@ -507,7 +508,7 @@ public class RequisitionsController {
 		}
 
 		try {
-			RequisitionsUtil ut = RequisitionsUtil.getInstance();
+		
 			xmlData = ut.xmlParsingReqCategory(category);
 			result = (String) service.requisitionCategorysPro(xmlData, name,
 					foreignId);
@@ -548,7 +549,7 @@ public class RequisitionsController {
 		}
 
 		try {
-			RequisitionsUtil ut = RequisitionsUtil.getInstance();
+		
 			xmlData = ut.xmlParsingReqAssets(assets);
 			result = (String) service.requisitionAssetsPro(xmlData, name,
 					foreignId);
@@ -630,7 +631,7 @@ public class RequisitionsController {
 			throw e;
 		}
 		try {
-			RequisitionsUtil ut = RequisitionsUtil.getInstance();
+		
 			String parSingData = ut.ParsingReqNameData(reqPutName);
 			result = (String) service.requisitioUpdate(name, parSingData);
 		} catch (HandleException e) {
@@ -668,7 +669,7 @@ public class RequisitionsController {
 		}
 
 		try {
-			RequisitionsUtil ut = RequisitionsUtil.getInstance();
+		
 			String parSingData = ut.ParsingReqPutID(putForId);
 
 			result = (String) service.requisitionNameUpdate(name, foreignId,
@@ -705,7 +706,7 @@ public class RequisitionsController {
 			throw e;
 		}
 		try {
-			RequisitionsUtil ut = RequisitionsUtil.getInstance();
+			
 			String parSingData = ut.ParsingReqPutIP(putIP);
 			result = (String) service.requisitionInterUpdate(name, foreignId,
 					ipAddress,parSingData);
