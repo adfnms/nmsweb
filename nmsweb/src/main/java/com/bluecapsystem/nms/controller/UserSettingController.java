@@ -7,30 +7,53 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bluecapsystem.nms.define.Define;
+import com.bluecapsystem.nms.dto.UserTbl;
+import com.bluecapsystem.nms.service.UserManagerService;
+import com.bluecapsystem.nms.util.OutParam;
 
 
 @Controller
 public class UserSettingController
 {
+	@Autowired
+	private UserManagerService userManagerService;
+	
 	private static final Logger logger = LoggerFactory.getLogger(loginController.class);
 	
 	@RequestMapping(value = "/admin/setting")
-	public ModelAndView setting(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+	public ModelAndView setting(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			@RequestParam(value = "user-id", required = false)String userId)
 	{
 		String Id =(String) session.getAttribute(Define.USER_ID_KEY);
 		ModelAndView model = new ModelAndView();
+		UserTbl userInfo = null;
+		
 		try{
+			OutParam<UserTbl> UserTbl = new OutParam<UserTbl>();
 			
 			System.out.println("----------------------------------------");
 			System.out.println("-------------session-Id--------------"+Id);
 			System.out.println("----------------------------------------");
 		
+			
+			if(userManagerService.selectToDb(userId,UserTbl )==false){
+				logger.error("User info select to database error");
+			}
+			
+			userInfo = UserTbl.get();
+	
+			model.addObject("userInfo",userInfo);
+			
+			
+			
 		}catch (Exception e) {
 			
 			logger.info("regToDb date false");

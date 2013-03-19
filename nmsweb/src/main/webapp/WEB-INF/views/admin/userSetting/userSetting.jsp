@@ -13,13 +13,12 @@
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/users.js" />"></script>
-<script src="<c:url value="/resources/js/setting.js" />"></script>
 <script src="<c:url value="/resources/js/notification.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		
 		/*My Notification List*/
-		getUserNotiList(userNotificationList, "${userId}", "5");
+		getUserNotiList(userNotificationList, "${userId}", "${userInfo.nowDate}", "2");
 		
 		/*Total Notification List*/
 		getTotalNotiList(totalNotificationList, "5");
@@ -68,7 +67,8 @@
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
 					<li><a href="/v1/admin/setting.do">사용자 설정</a> <span class="divider">/</span></li>
-					<li class="active">공지추가</li>
+					<li class="active">공지추가<span class="divider">/</span></li>
+					<li class="active">${userInfo.nowDate}</li>
 				</ul>
 			</div>
 			<%-- <jsp:include page="/include/sideBar.jsp" /> --%>
@@ -78,13 +78,6 @@
 				<div class="span12">
 					<div class="span4"><h4>나의공지정보</h4></div>
 					<div class="span3">
-						<div class="progress">
-						  <div class="bar bar-inverse" style="width: 20%;"></div>
-						  <div class="bar bar-info" style="width: 20%;"></div>
-						  <div class="bar bar-success" style="width: 20%;"></div>
-						  <div class="bar bar-warning" style="width: 20%;"></div>
-						  <div class="bar bar-danger" style="width: 20%;"></div>
-						</div>
 					</div>
 					<div class="span3"></div>
 					<div class="span2">

@@ -36,7 +36,7 @@
 			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
 			str += userObj[i]["full-name"];
 			str += "	</td>";
-			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
+			str += "	<td>";
 			str += userObj[i]["user-comments"];
 			str += "	</td>";
 			str += "	<td>";
@@ -47,6 +47,7 @@
 
 		$("#userListTable").append(str);
 	}
+
 
 	function getUserDetail(user_id){
 		
@@ -117,7 +118,7 @@ function deleteToDb(userId){
 			<form  id="userIdFrm" name="userIdFrm" method="post">
 				<input type="hidden" id ="user-id" name="user-id" value="" />
 			</form>
-				<table class="table table-striped" id="userListTable" >
+				<table class="table table-striped table-hover" id="userListTable" >
 					<colgroup>
 						<col class="span2"/>
 						<col class="span3"/>
@@ -135,13 +136,40 @@ function deleteToDb(userId){
 			</div>
 				<div class="row-fluid">
 					<div class="span12">
-						<div class="span10"></div>
-						<div class="span2">
+					<div class="span10"></div>
+						<div class="span2 ">
 							<a type="button" class="btn btn-primary" title="" href="/v1/admin/userMng/userReg.do">+ 사용자 추가</a>
+							
 						</div>
+						
 					</div>
+					
 				</div>
 			
+				<!-- ----------------------------------------------- --><!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->		
+					<div class="alert alert-error">
+						  <button type="button" class="close" data-dismiss="alert">&times;</button>
+						    <strong>경고</strong> Sample.
+					</div>
+					
+					<!-- Button to trigger modal -->
+					<a href="#myModal" role="button" class="btn" data-toggle="modal">팝업창 sample</a>
+					 
+					 <!-- Modal -->
+						<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h3 id="myModalLabel">Modal header</h3>
+							</div>
+							<div class="modal-body">
+								<p>One fine body…</p>
+							</div>
+							<div class="modal-footer">
+								<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+								<button class="btn btn-primary">Save changes</button>
+							</div>
+						</div>
+					<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	
 		</div>
 		<hr>
 	</div>

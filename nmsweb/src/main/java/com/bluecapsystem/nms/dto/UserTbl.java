@@ -16,7 +16,15 @@ public class UserTbl {
 	private String modrId;
 	private Timestamp modDt; 
 	private String useYn;
+	private String nowDate;
 	
+	
+	public String getNowDate() {
+		return nowDate;
+	}
+	public void setNowDate(String nowDate) {
+		this.nowDate = nowDate;
+	}
 	public String getUserId() {
 		return userId;
 	}

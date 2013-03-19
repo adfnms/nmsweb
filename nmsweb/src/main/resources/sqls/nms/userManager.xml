@@ -50,7 +50,7 @@
     </update>
     
     <select id="selectToDb" resultClass="com.bluecapsystem.nms.dto.UserTbl">
-		SELECT now() as regrId;
+		SELECT now() as nowDate;
 		
 			<!-- MODRID	as	modrId
 		

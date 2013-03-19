@@ -1,7 +1,7 @@
 
 //Get list of user's notification
 function getNotoficationList(callback, userId ,data){
-	alert("2");
+	
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/notifications/searchUser/'+userId,
@@ -23,7 +23,7 @@ function getNotoficationList(callback, userId ,data){
 
 //Get total list of notification
 function gettotalNotoficationList(callback ,data){
-	alert("2");
+	
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/notifications/allOutstand',
@@ -51,9 +51,7 @@ function gettotalNotoficationList(callback ,data){
  * @param userId
  * @param recentCount
  */
-function getUserNotiList(callback , userId, recentCount){
-	
-	alert("1");
+function getUserNotiList(callback , userId, nowDate, recentCount){
 	
 	if(userId == null){
 		
@@ -64,7 +62,8 @@ function getUserNotiList(callback , userId, recentCount){
 	}
 	
 	
-	var filter ="orderBy=notifyid&order=desc&limit="+recentCount;
+	var filter ="pagetime="+nowDate+"&limit="+recentCount;
+	//alert("--------filter---------"+filter);
 	getNotoficationList(callback, userId ,filter);
 		
 }
@@ -78,7 +77,7 @@ function getUserNotiList(callback , userId, recentCount){
  */
 function getTotalNotiList(callback, recentCount){
 	
-	alert("1");
+	
 	
 	var filter ="orderBy=notifyid&order=desc&limit="+recentCount;
 	gettotalNotoficationList(callback ,filter);
@@ -91,7 +90,7 @@ function getTotalNotiList(callback, recentCount){
  * @param jsonObj
  */
 function userNotiListjsonObj(jsonObj) {
-	alert("3");
+	
 	console.log(jsonObj);
 	
 	var str = "";
@@ -100,20 +99,20 @@ function userNotiListjsonObj(jsonObj) {
 	
 	for ( var i in userObj) {
 		str += "<tr>";
-		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["ipAddress"]+"');\">";		//Id
-		str += userObj[i]["ipAddress"];
+		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["notifyid"]+"');\">";		//Id
+		str += userObj[i]["notifyid"];
 		str += "	</td>";
 		str += "	<td>";																			//condition
-		str += userObj[i]["pagetime"];
+		str += userObj[i]["notifyid"];
 		str += "	</td>";
 		str += "	<td>";																			//notification Time
-		str += userObj[i]["nodeid"];
+		str += userObj[i]["notifyid"];
 		str += "	</td>";																			//interface
-		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["ipAddress"]+"');\">";
-		str += userObj[i]["interfaceid"];
+		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["notifyid"]+"');\">";
+		str += userObj[i]["notifyid"];
 		str += "	</td>";																			//log
-		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["ipAddress"]+"');\">";
-		str += userObj[i]["notifconfigname"];
+		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["notifyid"]+"');\">";
+		str += userObj[i]["notifyid"];
 		str += "	</td>";
 		str += "</tr>";
 	}

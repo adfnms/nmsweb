@@ -193,6 +193,15 @@
 			<artifactId>commons-net</artifactId>
 			<version>3.0</version>
 		</dependency>
+		
+		<!-- PostgreSQL 9.1-901 -->
+		
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901.jdbc4</version>
+		</dependency>
+		
 		<!-- Test -->
 		<dependency>
 			<groupId>org.springframework</groupId>
