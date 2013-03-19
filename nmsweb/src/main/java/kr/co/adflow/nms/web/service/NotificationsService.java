@@ -957,9 +957,9 @@ public class NotificationsService {
 					while (rst.next()) {
 
 						result.append("{\"notifyid\":\"" + rst.getInt(1) + "\",");
-						result.append("\"textmsg\":\""+ rst.getString(2) + "\",");
-						result.append("\"subject\":\""+ rst.getString(3) + "\",");
-						result.append("\"numericmsg\":\""+ rst.getString(4) + "\",");
+						result.append("\"textmsg\":\""+ rst.getString(2).replaceAll("\n", "<BR>") + "\",");
+						result.append("\"subject\":\""+ rst.getString(3).replaceAll("\n", "<BR>") + "\",");
+						result.append("\"numericmsg\":\""+ rst.getString(4).replaceAll("\n", "<BR>") + "\",");
 						result.append("\"pagetime\":\""+ rst.getString(5) + "\",");
 						result.append("\"respondtime\":\""+ rst.getString(6) + "\",");
 						result.append("\"answeredby\":\""+ rst.getString(7) + "\",");
