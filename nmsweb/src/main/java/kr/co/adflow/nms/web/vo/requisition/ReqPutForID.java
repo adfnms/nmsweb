@@ -1,6 +1,5 @@
 package kr.co.adflow.nms.web.vo.requisition;
 
-import javax.xml.bind.annotation.XmlElement;
 
 // foreign-id="123455"
 //building=test1djdjdj foreign-id=1363657923 node-label=324234234

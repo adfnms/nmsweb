@@ -3,12 +3,6 @@ package kr.co.adflow.nms.web.vo.foreign;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 
 
 // <policy
@@ -18,19 +12,17 @@ import javax.xml.bind.annotation.XmlType;
 // value="ALL_PARAMETERS" key="matchBehavior"/></policy>
 
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "isclass" ,"name","parameter"})
-@XmlRootElement(name = "policy")
+
 public class ForPoliceS {
 
 	public ForPoliceS() {
 
 	}
 
-	@XmlElement(name = "isclass")
+
 	protected String isclass;
 	
-	@XmlElement(name = "name")
+
 	protected String name;
 
 	

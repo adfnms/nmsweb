@@ -7,20 +7,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 //<group><name>adflow222</name><comments>The adflow222</comments><user>chan222</user></group>
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "name", "comments", "user" })
-@XmlRootElement(name = "group")
+
 public class Groupinfo {
 
 	public Groupinfo() {
 
 	}
 
-	@XmlElement(name = "name", required = true)
+	
 	protected String name;
-	@XmlElement(name = "comments")
+
 	protected String comments;
-	@XmlElement(name = "user")
+
 	protected String user;
 
 	public String getName() {

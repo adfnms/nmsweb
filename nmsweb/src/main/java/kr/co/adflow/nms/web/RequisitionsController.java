@@ -646,7 +646,7 @@ public class RequisitionsController {
 
 	// PUt
 	// /requisitions/{name}/nodes/{foreignId}
-	//building=test1djdjdj foreign-id=1363657923 building=324234234
+	//node-label=test1djdjdj foreign-id=1363657923 building=324234234
 	// foreign-id="123455"
 	@RequestMapping(value = "/requisitions/{name}/nodes/{foreignId}", method = RequestMethod.PUT)
 	public @ResponseBody

@@ -204,7 +204,10 @@ public class RequisitionsUtil {
 		return data;
 	}
 
-	// {"snmp-primary":"S","ip-addr":"127.0.0.1","descr":"dfdfdf"}
+	// {"snmp-primary":"S"}
+	//"ip-addr":"127.0.0.1",
+	//"descr":"dfdfdf"}
+	//
 	public String ParsingReqPutIP(ReqPutIP putIP) throws UtilException {
 		String data = null;
 		try {
