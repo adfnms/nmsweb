@@ -14,14 +14,47 @@
 </jsp:include>
 <script src="<c:url value="/resources/js/users.js" />"></script>
 <script src="<c:url value="/resources/js/notification.js" />"></script>
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		
+		/* function add_date(i) // 매서드가 될 함수 구현
+		{
+		 var currentDate; // 계산된 날
+		 
+		 currentDate = this.getDate()+ i*1;  // 현재 날짜에 더해(빼)줄 날짜를 계산
+		 
+		 alert("---------currentDate---------"+currentDate);
+		
+		 this.setDate(currentDate);  // 계산된 날짜로 다시 세팅
+		}
+		
+		Date.prototype.addDate = add_date; // Date 객체에 메서드 정의
+		
+		var odate =  new Date(); // 현재 날짜 객체 생성
+		alert("----------odate----------"+odate);
+		
+		var tomorrow = odate.addDate(1); // 내일 날짜
+		
+		alert("---------tomorrow---------"+tomorrow); */
+		
+		//odate.addDate(-3) // 1 + (-3) 전 날짜
+		
+		
+		
+		
+		/*시간함수*/
+		var time = new Date().format("yyyy-MM-dd hh:mm:ss");
+		//var reDate	=	time.addDate(1); 
+		var encodeTime = encodeURI(time);
+		
+		/*시간함수*/
+		
 		/*My Notification List*/
-		getUserNotiList(userNotificationList, "${userId}", "${userInfo.nowDate}", "2");
+		getUserNotiList(userNotificationList, "${userId}", encodeTime, "1");
 		
 		/*Total Notification List*/
-		getTotalNotiList(totalNotificationList, "5");
+		getTotalNotiList(totalNotificationList);
 		
 		
 	});
@@ -29,26 +62,31 @@
 	/* My Notification Callback */
 	function userNotificationList(jsonObj) {
 		
-		consol.log(jsonObj);
+		//console.log(jsonObj);
+		
 		
 		var str = userNotiListjsonObj(jsonObj);
+		
 		
 		$('#userTable').append(str);
 
 	}
 	/*//My Notification Callback*/
 
+	
+	
 	/* total Notification Callback */
-	 function totalNotificationList(jsonObj) {
+	  function totalNotificationList(jsonObj) {
 
-		consol.log(jsonObj);
-		
 		var str = totalNotiListjsonObj(jsonObj);
 		
 		$('#totalTable').append(str);
 
-	} 
+	}  
 	/*//total Notification Callback*/
+	
+	
+	
 	
 </script>
 </head>
@@ -66,9 +104,7 @@
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
-					<li><a href="/v1/admin/setting.do">사용자 설정</a> <span class="divider">/</span></li>
-					<li class="active">공지추가<span class="divider">/</span></li>
-					<li class="active">${userInfo.nowDate}</li>
+					<li><a href="/v1/admin/setting.do">사용자 설정</a></li>
 				</ul>
 			</div>
 			<%-- <jsp:include page="/include/sideBar.jsp" /> --%>
@@ -77,8 +113,7 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="span4"><h4>나의공지정보</h4></div>
-					<div class="span3">
-					</div>
+					<div class="span3"></div>
 					<div class="span3"></div>
 					<div class="span2">
 						<a type="button" class="btn btn-primary" title="" href="/v1/admin/setting/addEvent.do">+ 공지 추가</a>
@@ -102,14 +137,14 @@
 							<th>Interface</th>
 							<th>로그</th>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<td onclick="javascript:getNodeIdDetailInfo();">
 							<a type="button" class="btn" title="" href="/v1/admin/setting/detailNodeInfo.do">Id</a></td>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
-						</tr>
+						</tr> -->
 						
 					</thead>
 					

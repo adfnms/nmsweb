@@ -14,15 +14,23 @@
 </jsp:include>
 <script src="<c:url value="/resources/js/users.js" />"></script>
 <script src="<c:url value="/resources/js/requisitions.js" />"></script>
+<script src="<c:url value="/resources/js/notification.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		
 		//전체 리스트 
 		getUserListTotal(callbackUseList);
+		
+		
+
+
+		
 
 	});
+	
+	
 
-	function callbackUseList(jsonObj) {
+ 	function callbackUseList(jsonObj) {
 		console.log(jsonObj);
 		var str = "";
 
@@ -46,7 +54,7 @@
 		}
 
 		$("#userListTable").append(str);
-	}
+	} 
 
 
 	function getUserDetail(user_id){
@@ -147,16 +155,16 @@ function deleteToDb(userId){
 				</div>
 			
 				<!-- ----------------------------------------------- --><!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->		
-					<div class="alert alert-error">
+					<!-- <div class="alert alert-error">
 						  <button type="button" class="close" data-dismiss="alert">&times;</button>
 						    <strong>경고</strong> Sample.
-					</div>
+					</div> -->
 					
 					<!-- Button to trigger modal -->
-					<a href="#myModal" role="button" class="btn" data-toggle="modal">팝업창 sample</a>
+				<!-- <a href="#myModal" role="button" class="btn" data-toggle="modal">팝업창 sample</a> -->
 					 
 					 <!-- Modal -->
-						<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<!-- <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 								<h3 id="myModalLabel">Modal header</h3>
@@ -168,7 +176,7 @@ function deleteToDb(userId){
 								<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 								<button class="btn btn-primary">Save changes</button>
 							</div>
-						</div>
+						</div> -->
 					<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	
 		</div>
 		<hr>
