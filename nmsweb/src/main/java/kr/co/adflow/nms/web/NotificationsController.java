@@ -342,15 +342,70 @@ public class NotificationsController {
 	@RequestMapping(value = "/notifications/allOutstand", method = RequestMethod.GET)
 	public @ResponseBody
 	String notificationsAllOutstand(HttpServletRequest request)
-			throws HandleException {
+			throws HandleException, ValidationException {
 
 		String result = null;
 		
 		
 		logger.info(PATH + request.getRequestURI());
 
+		String pagetime = null;
+		Integer limit = null;
+
+		Enumeration eParam = request.getParameterNames();	
+
 		try {
-			result = (String) service.notificationsAllOutstand();
+			
+			if (eParam.hasMoreElements()) {
+				StringBuffer filter = new StringBuffer();
+
+				while (eParam.hasMoreElements()) {
+					String pName = (String) eParam.nextElement();
+
+					if(pName.equals("limit")){
+						limit = Integer.parseInt(request.getParameter(pName));
+						
+					}else if(pName.equals("pagetime")) {
+						pagetime = request.getParameter(pName);
+						logger.debug("pagetime ::;"+pagetime);
+					}
+
+				}
+			}
+			
+			if(pagetime.equals(null) || limit==null){
+				
+				logger.error("Must supply the 'pagetime' and 'limit' parameter");
+				try {
+					throw new ValidationException(
+							"Must supply the 'pagetime' and 'limit'  parameter");
+				} catch (ValidationException e) {
+					throw e;
+				}
+			}else {
+				result = (String) service.notificationsAllOutstand(pagetime, limit);
+			}
+			
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
+	@RequestMapping(value = "/notifications/allOutstand/count", method = RequestMethod.GET)
+	public @ResponseBody
+	String notificationsSearchUserCount(HttpServletRequest request)
+			throws HandleException, ValidationException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) service.notificationsAllOutstandCount();
+			
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -363,15 +418,50 @@ public class NotificationsController {
 	@RequestMapping(value = "/notifications/allAck", method = RequestMethod.GET)
 	public @ResponseBody
 	String notificationsAllAck(HttpServletRequest request)
-			throws HandleException {
+			throws HandleException, ValidationException {
 
 		String result = null;
 		
 		
 		logger.info(PATH + request.getRequestURI());
 
+		String pagetime = null;
+		Integer limit = null;
+
+		Enumeration eParam = request.getParameterNames();	
+
 		try {
-			result = (String) service.notificationsAllAck();
+			
+			if (eParam.hasMoreElements()) {
+				StringBuffer filter = new StringBuffer();
+
+				while (eParam.hasMoreElements()) {
+					String pName = (String) eParam.nextElement();
+
+					if(pName.equals("limit")){
+						limit = Integer.parseInt(request.getParameter(pName));
+						
+					}else if(pName.equals("pagetime")) {
+						pagetime = request.getParameter(pName);
+						logger.debug("pagetime ::;"+pagetime);
+					}
+
+				}
+			}
+			
+			if(pagetime.equals(null) || limit==null){
+				
+				logger.error("Must supply the 'pagetime' and 'limit' parameter");
+				try {
+					throw new ValidationException(
+							"Must supply the 'pagetime' and 'limit'  parameter");
+				} catch (ValidationException e) {
+					throw e;
+				}
+			}else {
+				result = (String) service.notificationsAllAck(pagetime, limit);
+			}
+			
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -380,6 +470,27 @@ public class NotificationsController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
+	
+	@RequestMapping(value = "/notifications/allAck/count", method = RequestMethod.GET)
+	public @ResponseBody
+	String notificationsAllOutstandCount(HttpServletRequest request)
+			throws HandleException, ValidationException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		try {
+			result = (String) service.notificationsAllAckCount();
+			
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
 	
 
 	// /// POST /////
