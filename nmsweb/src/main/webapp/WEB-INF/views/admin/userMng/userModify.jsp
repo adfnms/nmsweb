@@ -144,9 +144,9 @@ try{
 				<input type="hidden" name="modrId" value="<%= userId %>"  protect="true" />
 					<div class="row-fluid">
 						<div class="span12">
-							<label class="span2 control-label">IP 주소</label>
+							<label class="span2 control-label"></label>
 							<div class="span4 controls">
-								<input type="text">
+								
 							</div>
 							<label class="span2 control-label">사용자 ID</label>
 							<div class="span4 controls">
@@ -175,7 +175,7 @@ try{
 							<label class="span2 control-label">Telephone PIN</label>
 							<div class="span4 controls">
 								<!-- <input type="text"    id=""   name=""  placeholder="Telephone PIN" > -->
-								<input type="text"    id=""   name=""  placeholder="Telephone PIN"  value="${userInfo.nowDate}">
+								<input type="text"    id=""   name=""  placeholder="Telephone PIN"  value="">
 							</div>
 						</div>
 					</div>
