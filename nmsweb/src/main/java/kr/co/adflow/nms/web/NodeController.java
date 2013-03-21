@@ -451,7 +451,7 @@ public class NodeController {
 
 				String collect = request.getParameter(pName);
 
-				if (collect.equals("UC")||collect.equals("UN")||collect.equals("Default")) {
+				if (collect.equals("UC")||collect.equals("UN")||collect.equals("D")) {
 					
 					try {
 						result = (String) service.nodesSnmpinterfacesPut(id, ifIndex, collect);
@@ -463,10 +463,10 @@ public class NodeController {
 					
 				} else {
 
-					logger.error("Must supply the 'collect' parameter, set to either 'Default' or 'UC' or 'UN'");
+					logger.error("Must supply the 'collect' parameter, set to either 'D' or 'UC' or 'UN'");
 					try {
 						throw new ValidationException(
-								"Must supply the 'collect' parameter, set to either 'Default' or 'UC' or 'UN'");
+								"Must supply the 'collect' parameter, set to either 'D' or 'UC' or 'UN'");
 					} catch (ValidationException e) {
 						throw e;
 					}
