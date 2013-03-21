@@ -18,45 +18,22 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		
-		/* function add_date(i) // 매서드가 될 함수 구현
-		{
-		 var currentDate; // 계산된 날
-		 
-		 currentDate = this.getDate()+ i*1;  // 현재 날짜에 더해(빼)줄 날짜를 계산
-		 
-		 alert("---------currentDate---------"+currentDate);
-		
-		 this.setDate(currentDate);  // 계산된 날짜로 다시 세팅
-		}
-		
-		Date.prototype.addDate = add_date; // Date 객체에 메서드 정의
-		
-		var odate =  new Date(); // 현재 날짜 객체 생성
-		alert("----------odate----------"+odate);
-		
-		var tomorrow = odate.addDate(1); // 내일 날짜
-		
-		alert("---------tomorrow---------"+tomorrow); */
-		
-		//odate.addDate(-3) // 1 + (-3) 전 날짜
-		
-		
-		
-		
-		/*시간함수*/
+		/*--------------------시간함수----------------------*/
 		var time = new Date().format("yyyy-MM-dd hh:mm:ss");
+		
 		//var reDate	=	time.addDate(1); 
 		var encodeTime = encodeURI(time);
 		
-		/*시간함수*/
+		/*-------------------- //시간함수----------------------*/
 		
-		/*My Notification List*/
-		getUserNotiList(userNotificationList, "${userId}", encodeTime, "1");
+		/*Your outstanding notices*/
+		getUserNotiList(userNotificationList, "${userId}", encodeTime, "5");
 		
-		/*Total Notification List*/
-		getTotalNotiList(totalNotificationList);
+		/*All outstanding notices*/
+		getTotalNotiList(totalNotificationList, encodeTime, "5");
 		
-		
+		/* All acknowledged notices*/
+		//getAllAcknowledged(allAcknowledgedList, encodeTime, "5");
 	});
 	
 	/* My Notification Callback */
@@ -107,50 +84,37 @@
 					<li><a href="/v1/admin/setting.do">사용자 설정</a></li>
 				</ul>
 			</div>
-			<%-- <jsp:include page="/include/sideBar.jsp" /> --%>
+			
 		</div>
 		<div class="row-fluid">
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="span4"><h4>나의공지정보</h4></div>
 					<div class="span3"></div>
-					<div class="span3"></div>
+					<div class="span3"><jsp:include page="/include/statsBar.jsp" /></div>
 					<div class="span2">
 						<a type="button" class="btn btn-primary" title="" href="/v1/admin/setting/addEvent.do">+ 공지 추가</a>
 					</div>
 				</div>
 			</div>
-			<div class="span12">
-				<table class="table table-striped" id="userTable">
-					<colgroup>
-						<col class="span2"/>
-						<col class="span2"/>
-						<col class="span2"/>
-						<col class="span2"/>
-						<col class="span2"/>
-					</colgroup>
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>상태</th>
-							<th>공지시간</th>
-							<th>Interface</th>
-							<th>로그</th>
-						</tr>
-						<!-- <tr>
-							<td onclick="javascript:getNodeIdDetailInfo();">
-							<a type="button" class="btn" title="" href="/v1/admin/setting/detailNodeInfo.do">Id</a></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr> -->
-						
-					</thead>
-					
-				</table>
+			<div class="row-fluid">
+				<div class="span12 well well-small">
+					<div class="row-fluid">
+						<table class="table table-striped" id="userTable">
+							<tr>
+								<th class="span1">ID</th>
+								<th class="span1">EventId</th>
+								<th class="span1">Status</th>
+								<th class="span2">PageTime</th>
+								<th class="span1">Interface</th>
+								<th class="span6">Message</th>
+							</tr>
+						</table>
+					</div>
+				</div>
 			</div>
-			<hr>
+			
+			
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="span4"><h4>전체공지정보</h4></div>
@@ -158,31 +122,51 @@
 					<div class="span2"></div>
 				</div>
 			</div>
-			<div class="span12">
-				<table class="table table-striped" id="totalTable">
-					<colgroup>
-						<col class="span2"/>
-						<col class="span2"/>
-						<col class="span2"/>
-						<col class="span2"/>
-						<col class="span2"/>
-					</colgroup>
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>상태</th>
-							<th>공지시간</th>
-							<th>Interface</th>
-							<th>로그</th>
-						</tr>
-					</thead>
-				</table>
+			<div class="row-fluid">
+				<div class="span12 well well-small">
+					<div class="row-fluid">
+						<table class="table table-striped" id="totalTable">
+							<tr>
+								<th class="span1">ID</th>
+								<th class="span1">EventId</th>
+								<th class="span1">Status</th>
+								<th class="span2">PageTime</th>
+								<th class="span1">Interface</th>
+								<th class="span6">Message</th>
+							</tr>
+						</table>
+					</div>
+				</div>
 			</div>
+			<!--<hr>
+		 	<div class="row-fluid">
+				<div class="span12">
+					<div class="span4"><h4> All acknowledged notices</h4></div>
+					<div class="span3"></div>
+					<div class="span2"></div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="row-fluid">
+						<table class="table table-striped" id="ackTable">
+							<tr>
+								<th class="span1">ID</th>
+								<th class="span1">Status</th>
+								<th class="span2">PageTime</th>
+								<th class="span1">Interface</th>
+								<th class="span7">Message</th>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div> -->
 		</div>
 		<hr>
+		</div>
 		
 		
-	</div>
+	
 	<!-- /container -->
 </body>
 </html>

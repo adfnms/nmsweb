@@ -194,7 +194,12 @@ function nullCheckJsonObject(parentObj, childName) {
 	var strValue = "";
 
 	if (parentObj != null) {
-		strValue = parentObj[childName];
+		
+		
+		if(parentObj[childName] != "null"){
+			
+			strValue = parentObj[childName];
+		}
 	}
 
 	return strValue;

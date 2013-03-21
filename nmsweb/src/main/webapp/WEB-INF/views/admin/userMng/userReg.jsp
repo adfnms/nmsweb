@@ -150,17 +150,15 @@ try{
 				<form id="userInfoFrm" name = "userInfoFrm">
 				<input type="hidden" name="regrId" value="<%= userId %>"  protect="true" />
 				<input type="hidden" name="modrId" value="<%= userId %>"  protect="true" />
-					<div class="row-fluid">
+				<div class="row-fluid">
 						<div class="span12">
-							<div class="span2 controls">
-								
-							</div>
-							<div class="span4 controls">
-								
-							</div>
 							<label class="span2 control-label">사용자 ID</label>
 							<div class="span4 controls">
-								<input type="text"   id="user-id"   name="user-id"   placeholder="사용자 ID" value=""> 
+								<input type="text"   id="user-id"   name="user-id"   placeholder="사용자 ID" value="" readonly> 
+							</div>
+							<label class="span2 control-label">비밀번호</label>
+							<div class="span4 controls">
+								<input type="text"   id="password"   name="password"  placeholder="비밀번호"  value="*********"> 
 							</div>
 						</div>
 					</div>
@@ -170,21 +168,9 @@ try{
 							<div class="span4 controls">
 								<input type="text"    id="full-name"   name="full-name"  placeholder="이름" value=""> 
 							</div>
-							<label class="span2 control-label">비밀번호</label>
-							<div class="span4 controls">
-								<input type="text"   id="password"   name="password"  placeholder="비밀번호"  value=""> 
-							</div>
-						</div>
-					</div>
-					<div class="row-fluid">
-						<div class="span12">
 							<label class="span2 control-label">소개</label>
 							<div class="span4 controls">
 								<input type="text"   id="user-comments"   name="user-comments"  placeholder="소개"  value=""> 
-							</div>
-							<label class="span2 control-label">Telephone PIN</label>
-							<div class="span4 controls">
-								<input type="text"    id=""   name=""  placeholder="Telephone PIN"  value=""> 
 							</div>
 						</div>
 					</div>
@@ -268,9 +254,10 @@ try{
 							<div class="span4 controls">
 								<input type="text"   id="mobilePhone"   name="mobilePhone"  placeholder="Mobile Phone"> 
 							</div>
-							<label class="span2 control-label">노드명</label>
+							<label class="span2 control-label">Telephone PIN</label>
 							<div class="span4 controls">
-								<input type="text">
+								<!-- <input type="text"    id=""   name=""  placeholder="Telephone PIN" > -->
+								<input type="text"    id=""   name=""  placeholder="Telephone PIN"  value="">
 							</div>
 						</div>
 					</div>

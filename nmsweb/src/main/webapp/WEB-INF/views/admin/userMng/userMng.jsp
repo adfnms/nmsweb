@@ -48,7 +48,7 @@
 			str += userObj[i]["user-comments"];
 			str += "	</td>";
 			str += "	<td>";
- 			str += "<a type=\"button\" class=\"btn\" href=\"javascript:deleteUser('"+userObj[i]["user-id"]+"');\">삭제</a>";
+ 			str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteUser('"+userObj[i]["user-id"]+"');\">삭제</a>";
  			str += "	</td>";
 			str += "</tr>";
 		}
@@ -69,39 +69,51 @@
 		
 	}
 	
-function deleteUser(userId){
-	
-	$("#userIdFrm").find('[name=user-id]:input').val(userId);
+	function deleteUser(userId){
 		
-		$.ajax({
-			
-			type : 'delete',
-			url : 'http://localhost:8080/v1/users/'+userId,
-			contentType : 'application/json',
-			dataType:'json',
-			error : function(data) {
-				alert('삭제 서비스 실패');
-			},
-			success : function(data) {
-				alert("삭제성공");
+		$("#userIdFrm").find('[name=user-id]:input').val(userId);
+		
+		
+	
+		var option = confirm(" 삭제 하시겠습니까? ");
+		
+		if(option == true )
+		{
+		
+			$.ajax({
 				
-				deleteToDb(userId);
+				type : 'delete',
+				url : 'http://localhost:8080/v1/users/'+userId,
+				contentType : 'application/json',
+				dataType:'json',
+				error : function(data) {
+					alert('삭제 서비스 실패');
+				},
+				success : function(data) {
+					alert("삭제성공");
+					
+					deleteToDb(userId);
+				}
+			});
+			
+		}else if(option == false ){
+		 	
+			alert("취소 되었습니다.");
 			}
-		});
 		
 	}
 	
-function deleteToDb(userId){
-	
-	//var userId = $("#userInfoFrm input[name=user-id]").val();
-	
-	var frm = document.getElementById("userIdFrm");
-	
-	
-	//frm.action = '<c:url value="/admin/userMng/modifyToDb.do"/>';
-	frm.action = "/v1/admin/userMng/deleteToDb.do";
-    frm.submit();
-}
+	function deleteToDb(userId){
+		
+		//var userId = $("#userInfoFrm input[name=user-id]").val();
+		
+		var frm = document.getElementById("userIdFrm");
+		
+		
+		//frm.action = '<c:url value="/admin/userMng/modifyToDb.do"/>';
+		frm.action = "/v1/admin/userMng/deleteToDb.do";
+	    frm.submit();
+	}
 </script>
 </head>
 
@@ -122,7 +134,7 @@ function deleteToDb(userId){
 		</div>
 
 		<div class="row-fluid">
-			<div class="span12">
+			<div class="span12 well well-small">
 			<form  id="userIdFrm" name="userIdFrm" method="post">
 				<input type="hidden" id ="user-id" name="user-id" value="" />
 			</form>
@@ -139,7 +151,6 @@ function deleteToDb(userId){
 							<th>소개</th>
 						</tr>
 					</thead>
-					
 				</table>
 			</div>
 				<div class="row-fluid">
@@ -147,9 +158,7 @@ function deleteToDb(userId){
 					<div class="span10"></div>
 						<div class="span2 ">
 							<a type="button" class="btn btn-primary" title="" href="/v1/admin/userMng/userReg.do">+ 사용자 추가</a>
-							
 						</div>
-						
 					</div>
 					
 				</div>
