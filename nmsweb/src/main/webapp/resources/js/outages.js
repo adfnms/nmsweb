@@ -108,7 +108,7 @@ function getTabletagToOutageJsonObj(jsonObj, nodeId) {
 						+ nullCheckJsonObject(
 								outages[i]["serviceLostEvent"]["serviceType"],
 								"name") + "</a></td>";
-				str += "<td>"
+				str += "<td class=\"text-error\">"
 						+ new Date(nullCheckJsonObject(
 								outages[i]["serviceLostEvent"], "time"))
 								.format('yy-MM-dd hh:mm:ss') + "</td>";

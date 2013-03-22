@@ -84,7 +84,7 @@
 					<li><a href="/v1/admin/setting.do">사용자 설정</a></li>
 				</ul>
 			</div>
-			
+				<jsp:include page="/include/sideBar.jsp" />
 		</div>
 		<div class="row-fluid">
 			<div class="row-fluid">

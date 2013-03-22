@@ -19,36 +19,32 @@ try{
 <html lang="en">
 <head>
 <jsp:include page="/include/header.jsp">
-	<jsp:param value="사용자등록" name="title" />
+	<jsp:param value="중단 목록 리스트" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 
 <script src="<c:url value="/resources/js/users.js" />"></script>
 <script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script src="<c:url value="/resources/js/notification.js" />"></script>
+<script src="<c:url value="/resources/js/outages.js" />"></script>
 <script type="text/javascript">
 
 	$(document).ready(function() {
 		
-	/* Get the notification specified by the certain ID */
+		/* Recent Outages */
+		getOutagesForNode(addOutages, "${nodeId}", "10");
 		
-	getNotificaitionDetail(notificaitionInfo, "${notifyid}");
-		
-	getdestinationDetail(destinationInfo, "${notifyid}");
 	});
+	
+	/* Recent Outages Callback */
+	function addOutages(jsonObj) {
 
-	
-	function notificaitionInfo(jsonObj) {
-		
-		var notifiInfoStr = notifiInfo(jsonObj);
-		$('#notifiInfoDiv').append(notifiInfoStr);
+		var str = getTabletagToOutageJsonObj(jsonObj,"${nodeId}");
+		$('#outageDiv').append(str);
+
 	}
+	/*//Recent Outages */
 	
-	function destinationInfo(jsonObj) {
-		
-		var destiInfoStr = destiInfo(jsonObj);
-		$('#destiInfoDiv').append(destiInfoStr);
-	}
 
 </script>
 </head>
@@ -66,43 +62,21 @@ try{
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
 					<li><a href="/v1/admin/setting.do">사용자 설정</a> <span class="divider">/</span></li>
-					<li class="active">공지 상세 정보</li>
+					<li class="active">중단 목록 상세 정보</li>
 				</ul>
 			</div>
 			<%-- <jsp:include page="/include/sideBar.jsp" /> --%>
 		</div>
-		<div class="row-fluid">
-			<div class="alert alert-info">
+		 <div class="alert alert-error">
 			  <button type="button" class="close" data-dismiss="alert">&times;</button>
-			    notice # <strong><a href="#">${notifyid}</a> </strong> <span class="divider">/</span>
-				event # <strong><a href="/v1/search/event/eventDesc.do?eventId=${eventId}">${eventId}</a></strong>
-			</div> 
-		</div>
+			    See outages for  <strong>${nodeLabel}.</strong>  
+		</div> 
 		<!---------------------------------<div> 삽입--------------------------------------->
 		
-		<div class="row-fluid" id = "notifiInfoDiv"></div>
+		<div class="row-fluid" id = "outageDiv"></div>
 		
 		<!---------------------------------//<div> 삽입--------------------------------------->
-
-		<div class="row-fluid">
-			<div class="span12 well well-small">
-				<table class="table table-striped" id="destiInfoDiv">
-					<colgroup>
-						<col class="span2"/>
-						<col class="span3"/>
-						<col class="span4"/>
-					</colgroup>
-					<thead>
-						<tr>
-							<th>Sent to</th>
-							<th>Sent at</th>
-							<th>Media</th>
-						</tr>
-					</thead>
-					
-				</table>
-			</div>
-		</div>
+		
 	</div>
 	<!-- /container -->
 </body>

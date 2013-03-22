@@ -158,7 +158,7 @@ try{
 							</div>
 							<label class="span2 control-label">비밀번호</label>
 							<div class="span4 controls">
-								<input type="text"   id="password"   name="password"  placeholder="비밀번호"  value="*********"> 
+								<input type="text"   id="password"   name="password"  placeholder="비밀번호"  value=""> 
 							</div>
 						</div>
 					</div>
