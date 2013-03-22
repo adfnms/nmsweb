@@ -336,7 +336,7 @@ function notifiInfo(jsonObj){
 						'		</tr>'+
 						'		<tr>'+
 						'			<td>'+
-						'				<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+jsonObj["nodeId"]+'">See outages for '+
+						'				<a class="text-error" href="/'+version+'/admin/setting/notificationDetali/outages.do?nodeId='+jsonObj["nodeId"]+'&nodeLabel='+jsonObj["nodeLabel"]+'">See outages for '+
 											jsonObj["nodeLabel"]+
 						'				</a>'+
 						'			</td>'+

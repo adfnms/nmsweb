@@ -82,11 +82,6 @@ public class UserSettingController
 			@RequestParam(value = "eventId", required = false)String eventId)
 	{
 		
-		/*System.out.println("----------------------------------------");
-		System.out.println("-------------notifyid--------------"+notifyid);
-		System.out.println("-------------eventId--------------"+eventId);
-		System.out.println("----------------------------------------");*/
-		
 		ModelAndView model = new ModelAndView();
 		
 		model.addObject("notifyid",notifyid);
@@ -95,5 +90,16 @@ public class UserSettingController
 		return model;
 	}
 	
+	@RequestMapping(value = "/admin/setting/notificationDetali/outages")
+	public ModelAndView viewOutage(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "nodeId", required = false)String nodeId,
+			@RequestParam(value = "nodeLabel", required = false)String nodeLabel)
+	{
+		ModelAndView model = new ModelAndView();
+		model.addObject("nodeId",nodeId);
+		model.addObject("nodeLabel",nodeLabel);
+		model.setViewName("/admin/userSetting/outage");
+		return model;
+	}
 	
 }
