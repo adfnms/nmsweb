@@ -10,10 +10,10 @@
 			<div class="container">
 				<ul class="nav">
 					<li class="dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Home</a>
+						<a class="dropdown-toggle" href="#">Home</a>
 					</li>
 					<li class="dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="<c:url value="/dashboard.do" />">DashBoard</a>
+						<a class="dropdown-toggle" href="<c:url value="/dashboard.do" />">DashBoard</a>
 					</li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">모니터링

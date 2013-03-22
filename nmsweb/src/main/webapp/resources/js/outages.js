@@ -23,6 +23,18 @@ function getTotalOutagesList(callback, data) {
 
 }
 
+/** Current Outages Lisgt
+ * @param callback
+ */
+function getCurrentOutagesForNode(callback) {
+
+	//current outage query
+	var query = "query="+encodeURI("this_.svcregainedeventid is null");
+	
+	getTotalOutagesList(outageList,query);
+	
+}
+
 /**
  * Get a list of outages for nodeId [recent] 최근 recentCount개 의 outages 목록
  * 
@@ -102,9 +114,17 @@ function getTabletagToOutageJsonObj(jsonObj, nodeId) {
 						+ "/search/node/interfaceDesc.do?nodeId=" + nodeId
 						+ "&intf=" + outages[i]["ipAddress"] + "'>"
 						+ outages[i]["ipAddress"] + "</a></td>";
-				str += "<td><a href='/" + version + "/search/service/serviceDesc?nodeId=" + nodeId + "&intf=" + outages[i]["ipAddress"] + "&serviceNm="+nullCheckJsonObject(
-						outages[i]["serviceLostEvent"]["serviceType"],
-				"name")+"'>"
+				str += "<td><a href='/"
+						+ version
+						+ "/search/service/serviceDesc?nodeId="
+						+ nodeId
+						+ "&intf="
+						+ outages[i]["ipAddress"]
+						+ "&serviceNm="
+						+ nullCheckJsonObject(
+								outages[i]["serviceLostEvent"]["serviceType"],
+								"name")
+						+ "'>"
 						+ nullCheckJsonObject(
 								outages[i]["serviceLostEvent"]["serviceType"],
 								"name") + "</a></td>";
@@ -116,7 +136,10 @@ function getTabletagToOutageJsonObj(jsonObj, nodeId) {
 						+ new Date(nullCheckJsonObject(
 								outages[i]["serviceRegainedEvent"], "time"))
 								.format('yy-MM-dd hh:mm:ss') + "</td>";
-				str += "<td><a href='/"+version+"/search/outage/outageDesc?outageId="+outages[i]["@id"]+"'>" + outages[i]["@id"] + "</a></td>";
+				str += "<td><a href='/" + version
+						+ "/search/outage/outageDesc?outageId="
+						+ outages[i]["@id"] + "'>" + outages[i]["@id"]
+						+ "</a></td>";
 				str += "</tr>";
 			}
 
@@ -149,48 +172,83 @@ function getTabletagToOutageJsonObj(jsonObj, nodeId) {
  * 
  * @param jsonObj
  */
-function getOutageInfoBox(jsonObj){
-	
+function getOutageInfoBox(jsonObj) {
+
 	var outageObj = jsonObj["outage"];
-	
-	var outageInfoStr = '<div class="row-fluid">'+
-						'	<h5>중단['+outageObj["@id"]+']</h5>'+
-						'</div>'+
-						'<div class="row-fluid">'+
-						'	<div class="span12 well well-small">'+
-						'		<table class="table table-striped">'+
-						'			<tr>'+
-						'				<th>노드</th>'+
-						'				<td>'+
-						'					<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj["serviceLostEvent"]["nodeId"]+'">'+
-												outageObj["serviceLostEvent"]["nodeLabel"]+
-						'					</a>'+
-						'				</td>'+
-						'				<th>중단 시간</th>'+
-						'				<td>'+new Date(outageObj["serviceLostEvent"]["time"]).format('yy-MM-dd hh:mm:ss')+'</td>'+
-						'				<th>중단 이벤트</th>'+
-						'				<td><a href="/'+version+'/search/event/eventDesc.do?eventId='+outageObj["serviceLostEvent"]["@id"]+'">'+outageObj["serviceLostEvent"]["@id"]+'</a></td>'+
-						'			</tr>'+
-						'			<tr>'+
-						'				<th>인터페이스</th>'+
-						'				<td><a href="/'+version+'/search/node/interfaceDesc.do?nodeId='+outageObj["serviceLostEvent"]["nodeId"]+'&intf='+outageObj["ipAddress"]+'">'+outageObj["ipAddress"]+'</a></td>'+
-						'				<th>회복 시간</th>'+
-						'				<td>'+outageObj["serviceRegainedEvent"]["time"]+'</td>'+
-						'				<th>회복 이벤트</th>'+
-						'				<td><a href="/'+version+'/search/event/eventDesc.do?eventId='+outageObj["serviceRegainedEvent"]["@id"]+'">'+outageObj["serviceRegainedEvent"]["@id"]+'</a></td>'+
-						'			</tr>'+
-						'			<tr>'+
-						'				<th>서비스</th>'+
-						'				<td>'+
-						'					<a href="/'+version+'/search/service/serviceDesc?nodeId='+outageObj["serviceLostEvent"]["nodeId"]+'&intf='+outageObj["ipAddress"]+'&serviceNm='+nullCheckJsonObject(outageObj["serviceRegainedEvent"]["serviceType"], "name")+'">'
-											+nullCheckJsonObject(outageObj["serviceRegainedEvent"]["serviceType"], "name")+
-						'					</a>'+
-						'				</td>'+
-						'				<td colspan="4"></td>'+
-						'			</tr>'+
-						'		</table>'+
-						'	</div>'+
-						'</div>';
-	
+
+	var outageInfoStr = '<div class="row-fluid">' + '	<h5>중단['
+			+ outageObj["@id"]
+			+ ']</h5>'
+			+ '</div>'
+			+ '<div class="row-fluid">'
+			+ '	<div class="span12 well well-small">'
+			+ '		<table class="table table-striped">'
+			+ '			<tr>'
+			+ '				<th>노드</th>'
+			+ '				<td>'
+			+ '					<a href="/'
+			+ version
+			+ '/search/node/nodeDesc.do?nodeId='
+			+ outageObj["serviceLostEvent"]["nodeId"]
+			+ '">'
+			+ outageObj["serviceLostEvent"]["nodeLabel"]
+			+ '					</a>'
+			+ '				</td>'
+			+ '				<th>중단 시간</th>'
+			+ '				<td>'
+			+ new Date(outageObj["serviceLostEvent"]["time"])
+					.format('yy-MM-dd hh:mm:ss')
+			+ '</td>'
+			+ '				<th>중단 이벤트</th>'
+			+ '				<td><a href="/'
+			+ version
+			+ '/search/event/eventDesc.do?eventId='
+			+ outageObj["serviceLostEvent"]["@id"]
+			+ '">'
+			+ outageObj["serviceLostEvent"]["@id"]
+			+ '</a></td>'
+			+ '			</tr>'
+			+ '			<tr>'
+			+ '				<th>인터페이스</th>'
+			+ '				<td><a href="/'
+			+ version
+			+ '/search/node/interfaceDesc.do?nodeId='
+			+ outageObj["serviceLostEvent"]["nodeId"]
+			+ '&intf='
+			+ outageObj["ipAddress"]
+			+ '">'
+			+ outageObj["ipAddress"]
+			+ '</a></td>'
+			+ '				<th>회복 시간</th>'
+			+ '				<td>'
+			+ outageObj["serviceRegainedEvent"]["time"]
+			+ '</td>'
+			+ '				<th>회복 이벤트</th>'
+			+ '				<td><a href="/'
+			+ version
+			+ '/search/event/eventDesc.do?eventId='
+			+ outageObj["serviceRegainedEvent"]["@id"]
+			+ '">'
+			+ outageObj["serviceRegainedEvent"]["@id"]
+			+ '</a></td>'
+			+ '			</tr>'
+			+ '			<tr>'
+			+ '				<th>서비스</th>'
+			+ '				<td>'
+			+ '					<a href="/'
+			+ version
+			+ '/search/service/serviceDesc?nodeId='
+			+ outageObj["serviceLostEvent"]["nodeId"]
+			+ '&intf='
+			+ outageObj["ipAddress"]
+			+ '&serviceNm='
+			+ nullCheckJsonObject(
+					outageObj["serviceRegainedEvent"]["serviceType"], "name")
+			+ '">'
+			+ nullCheckJsonObject(
+					outageObj["serviceRegainedEvent"]["serviceType"], "name")
+			+ '					</a>' + '				</td>' + '				<td colspan="4"></td>'
+			+ '			</tr>' + '		</table>' + '	</div>' + '</div>';
+
 	return outageInfoStr;
 }

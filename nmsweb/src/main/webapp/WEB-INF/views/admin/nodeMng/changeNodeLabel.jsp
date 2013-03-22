@@ -33,11 +33,12 @@
 		if(result == true)
 		{
 			alert("변경되었습니다.");
-			self.close();
+			
+			window.opener.location.reload();
+			window.close();
 		}
 		
-		window.opener.location.reload();
-		window.close();
+		
 		
 	}
 	
@@ -48,7 +49,7 @@
 	<div>
 		<form id="addNodeFrm">
 			<div class="row-fluid">
-				<h5>노드&nbsp;라벨&nbsp;변경</h5>
+				<h5>노드명&nbsp;변경</h5>
 			</div>
 			<div class="row-fluid">
 				<div class=" well well-small">

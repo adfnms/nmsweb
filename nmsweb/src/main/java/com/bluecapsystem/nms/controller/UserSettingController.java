@@ -39,11 +39,6 @@ public class UserSettingController
 		try{
 			OutParam<UserTbl> UserTbl = new OutParam<UserTbl>();
 			
-			System.out.println("----------------------------------------");
-			System.out.println("-------------session-Id--------------"+Id);
-			System.out.println("----------------------------------------");
-		
-			
 			if(userManagerService.selectToDb(userId,UserTbl )==false){
 				logger.error("User info select to database error");
 			}
@@ -81,12 +76,24 @@ public class UserSettingController
 		return model;
 	}
 	
-	@RequestMapping(value = "/admin/setting/detailNodeInfo")
-	public ModelAndView getNodeIdDetailInfo(HttpServletRequest request, HttpServletResponse response)
+	@RequestMapping(value = "/admin/setting/notificationDetali")
+	public ModelAndView getNotificationInfo(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "notifyid", required = false)String notifyid,
+			@RequestParam(value = "eventId", required = false)String eventId)
 	{
+		
+		/*System.out.println("----------------------------------------");
+		System.out.println("-------------notifyid--------------"+notifyid);
+		System.out.println("-------------eventId--------------"+eventId);
+		System.out.println("----------------------------------------");*/
+		
 		ModelAndView model = new ModelAndView();
-		model.setViewName("/admin/userSetting/nodeInfo");
+		
+		model.addObject("notifyid",notifyid);
+		model.addObject("eventId",eventId);
+		model.setViewName("/admin/userSetting/NotificationInfo");
 		return model;
 	}
+	
 	
 }

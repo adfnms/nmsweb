@@ -53,6 +53,31 @@ function getInterfaceInfo(callback, nodeId, ipAddress) {
 	});
 }
 
+/** get interface Info
+ * @param callback
+ * @param data
+ */
+function getSnmpInterfaceInfo(callback, nodeId) {
+
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/nodes/'+nodeId+'/snmpinterfaces',
+		dataType : 'json',
+		async : false,
+		contentType : 'application/json',
+		error : function(data) {
+			alert('SnmpInterface 가져오기 실패');
+		},
+		success : function(data) {
+			// 콜백함수
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+}
+
+
 /**
  * Get the requested service associated with the given node, IP interface, and
  * service name
@@ -205,7 +230,7 @@ function getInterfacesFromNodeId(callback, nodeId) {
 		alert("노드 ID가 없습니다.");
 		return;
 	}
-
+	console.log('/' + version + '/nodes/' + nodeId + '/ipinterfaces');
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/nodes/' + nodeId + '/ipinterfaces',
@@ -258,6 +283,21 @@ function changeNodeLabelPop(nodeId){
 	winObject.focus();	
 
 }
+
+/**
+ * 
+ */
+function goNodeManagePage(nodeId){
+	location.href ="/"+version+"/admin/node/nodeMng.do?nodeId="+nodeId;
+}
+
+/**
+ * 
+ */
+function goInterfaceDescPage(nodeId,intf){
+	location.href ="/"+version+"/search/node/interfaceDesc.do?nodeId="+nodeId+"&intf="+intf;
+}
+
 
 /** get Bode Availability
  * @param callback
@@ -340,10 +380,7 @@ function deleteNode(nodeId){
 			alert("[" + nodeId + '] 노드 삭제 실패');
 		},
 		success : function(data) {
-
-			if (typeof callback == "function") {
-				callback(data);
-			}
+			location.reload();
 		}
 	});
 }
@@ -386,46 +423,98 @@ function changeNodeLabel(nodeId, label){
 	var _return = false;
 	
 	$.ajax({
-		type : 'get',
+		type : 'put',
 		url : '/' + version + '/nodes/'+nodeId,
-		dataType : 'json',
-		data:'label='+label,
-		contentType : 'application/json',
+		data: "label="+label,
+		async: false,
 		error : function(data) {
 			alert("[" + nodeId + '] 노드 라벨 변경 실패');
 			_return = false;
 		},
 		success : function(data) {
-	
-			if (typeof callback == "function") {
-				callback(data);
-			}
 			_return = true;
-			
 		}
 	});
+
+	return _return;
+}
+
+/** Manage Inteface
+ * @param nodeId
+ * @param label
+ */
+function manageInteface(nodeId, ipAddress, isManaged){
+	
+	var _return = false;
+	
+	$.ajax({
+		type : 'put',
+		url : '/' + version + '/nodes/'+nodeId+'/ipinterfaces/'+ipAddress,
+		data: 'isManaged='+isManaged,
+		async: false,
+		error : function(data) {
+			alert("[" + ipAddress + '] 인터페이스 관리 실패');
+			_return = false;
+		},
+		success : function(data) {
+			_return = true;
+		}
+	});
+
+	return _return;
+}
+
+/** Manage Inteface
+ * @param nodeId
+ * @param label
+ */
+function manageService(nodeId, ipAddress, serviceName, status){
+	
+	var _return = false;
+	
+	$.ajax({
+		type : 'put',
+		url : '/' + version + '/nodes/'+nodeId+'/ipinterfaces/'+ipAddress+'/services/'+serviceName,
+		data: 'status='+status,
+		async: false,
+		error : function(data) {
+			alert("[" + serviceName + '] 서비스 관리 실패');
+			_return = false;
+		},
+		success : function(data) {
+			_return = true;
+		}
+	});
+
 	return _return;
 }
 
 
-function availabilityNode(nodeId){
+/** 
+ * @param nodeId
+ * @param ifIndex
+ * @param collect
+ * @returns {Boolean}
+ */
+function manageSnmpService(nodeId, ifIndex, collect){
+	
+	var _return = false;
 	
 	$.ajax({
-		type : 'get',
-		url : '/' + version + '/availability/node' + ipAddress,
-		dataType : 'json',
-		data:'nodeId='+nodeId,
-		contentType : 'application/json',
+		type : 'put',
+		url : '/' + version + '/nodes/'+nodeId+'/snmpinterfaces/'+ifIndex,
+		data: 'collect='+collect,
+		async: false,
 		error : function(data) {
-			alert("[" + nodeId + '] 노드 가용성 가져오기 실패');
+			alert("[" + collect + '] SNMP 서비스 관리 실패');
+			_return = false;
 		},
 		success : function(data) {
-
-			return data;
-
+			_return = true;
 		}
 	});
-	
+
+	return _return;
 }
 
 /** ************************ view String edit **************************** */
@@ -471,10 +560,10 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 	var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
 	var str = "";
 
-	
-	if (jsonObj["@count"] > 0) {
+	console.log(nodeObj);
+	if (nodeObj.length > 0) {
 		
-		if (jsonObj["@count"] > 1) {
+		if (nodeObj.length > 1) {
 	
 			for ( var i in nodeObj) {
 				str += "<tr>";
@@ -488,7 +577,7 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 						+  new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss')
 						+ "</td>";
 				if(auth == "Y"){
-					str += '<td><button type="button" class="btn btn-primary" title="관리" onclick="javascript:changeNodeLabelPop(\''+nodeObj[i]["@id"]+'\');">관리</button></td>';
+					str += '<td><button type="button" class="btn btn-primary" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj[i]["@id"]+'\');">관리</button></td>';
 					str += '<td><button type="button" class="btn btn-primary" title="삭제" onclick="javascript:deleteNode(\''+nodeObj[i]["@id"]+'\');">삭제</button></td>';
 				}
 				str += "</tr>";
@@ -505,7 +594,7 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 					+  new Date(nodeObj["createTime"]).format('yy-MM-dd hh:mm:ss')
 					+ "</td>";
 			if(auth == "Y"){
-				str += '<td><button type="button" class="btn btn-primary" title="관리" onclick="javascript:changeNodeLabelPop(\''+nodeObj["@id"]+'\');">관리</button></td>';
+				str += '<td><button type="button" class="btn btn-primary" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj["@id"]+'\');">관리</button></td>';
 				str += '<td><button type="button" class="btn btn-primary" title="삭제" onclick="javascript:deleteNode(\''+nodeObj["@id"]+'\');">삭제</button></td>';
 			}
 			str += "</tr>";
@@ -537,10 +626,12 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 		success : function(data) {
 
 			jsonObj = data;
-			
+			console.log(jsonObj);
 		}
 	});
 		
+	if(jsonObj == null){return false;}
+	
 	if (jsonObj["@count"] > 0) {
 		
 		var serviceObj = jsonObj["service"];
@@ -578,7 +669,7 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 				
 			}
 		});
-		
+		if(AvailJsonObj == null){return false;}
 		var serviceObj = jsonObj["service"];
 		console.log(serviceObj);
 		str += '<table class="table table-striped">';

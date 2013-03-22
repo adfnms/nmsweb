@@ -72,26 +72,34 @@ try{
 	
 	function deleteUser(){
 		
-			
-		var userId = $("#userInfoFrm input[name=user-id]").val();
+		var	option = confirm(" 삭제 하시겠습니까? ");
 		
-			$.ajax({
-				
-				type : 'delete',
-				url : 'http://localhost:8080/v1/users/'+userId,
-				contentType : 'application/json',
-				dataType:'json',
-				error : function(data) {
-					alert('삭제 서비스 실패');
-				},
-				success : function(data) {
-					alert("삭제성공");
-					
-					deleteToDb(userId);
-				}
-			});
+		if(option == true )
+		{
+			var userId = $("#userInfoFrm input[name=user-id]").val();
 			
-		}
+				$.ajax({
+					
+					type : 'delete',
+					url : 'http://localhost:8080/v1/users/'+userId,
+					contentType : 'application/json',
+					dataType:'json',
+					error : function(data) {
+						alert('삭제 서비스 실패');
+					},
+					success : function(data) {
+						alert("삭제성공");
+						
+						deleteToDb(userId);
+					}
+				});
+		}else if(option == false ){
+		 	
+			alert("취소 되었습니다.");
+			}
+
+	}
+	
 	
 	function deleteToDb(userId){
 		
@@ -144,21 +152,9 @@ try{
 				<input type="hidden" name="modrId" value="<%= userId %>"  protect="true" />
 					<div class="row-fluid">
 						<div class="span12">
-							<label class="span2 control-label"></label>
-							<div class="span4 controls">
-								
-							</div>
 							<label class="span2 control-label">사용자 ID</label>
 							<div class="span4 controls">
 								<input type="text"   id="user-id"   name="user-id"   placeholder="사용자 ID" value="${Id}" readonly> 
-							</div>
-						</div>
-					</div>
-					<div class="row-fluid">
-						<div class="span12">
-							<label class="span2 control-label">이름</label>
-							<div class="span4 controls">
-								<input type="text"    id="full-name"   name="full-name"  placeholder="이름" value="${fullName}"> 
 							</div>
 							<label class="span2 control-label">비밀번호</label>
 							<div class="span4 controls">
@@ -168,14 +164,13 @@ try{
 					</div>
 					<div class="row-fluid">
 						<div class="span12">
+							<label class="span2 control-label">이름</label>
+							<div class="span4 controls">
+								<input type="text"    id="full-name"   name="full-name"  placeholder="이름" value="${fullName}"> 
+							</div>
 							<label class="span2 control-label">소개</label>
 							<div class="span4 controls">
 								<input type="text"   id="user-comments"   name="user-comments"  placeholder="소개"  value="${userComments}"> 
-							</div>
-							<label class="span2 control-label">Telephone PIN</label>
-							<div class="span4 controls">
-								<!-- <input type="text"    id=""   name=""  placeholder="Telephone PIN" > -->
-								<input type="text"    id=""   name=""  placeholder="Telephone PIN"  value="">
 							</div>
 						</div>
 					</div>
@@ -259,9 +254,10 @@ try{
 							<div class="span4 controls">
 								<input type="text"   id="mobilePhone"   name="mobilePhone"  placeholder="Mobile Phone"> 
 							</div>
-							<label class="span2 control-label">노드명</label>
+							<label class="span2 control-label">Telephone PIN</label>
 							<div class="span4 controls">
-								<input type="text">
+								<!-- <input type="text"    id=""   name=""  placeholder="Telephone PIN" > -->
+								<input type="text"    id=""   name=""  placeholder="Telephone PIN"  value="">
 							</div>
 						</div>
 					</div>
@@ -272,10 +268,10 @@ try{
 				<div class="span12">
 					<div class="span10"></div>
 					<div class="span1">
-						<a type="button" class="btn btn-primary" title="" href="javascript:modifyUser()">수정</a>
+						<a type="button" class="btn btn-warning " title="" href="javascript:modifyUser()">수정</a>
 					</div>
 					<div class="span1">
-						<a type="button" class="btn btn-primary" title="" href="javascript:deleteUser()">삭제</a>
+						<a type="button" class="btn btn-danger " title="" href="javascript:deleteUser()">삭제</a>
 					</div>
 				</div>
 			</div>
