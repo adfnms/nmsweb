@@ -176,7 +176,6 @@ function userNotiListjsonObj(jsonObj) {
 				contentType : "application/json;charset=UTF-8", 
 				error : function(data) {
 					//console.log(data);
-					console.log(data);
 					alert('심각도 가져오기 서비스 실패');
 				},
 				success : function(data) {
@@ -261,7 +260,7 @@ function totalNotiListjsonObj(jsonObj) {
 				},
 				success : function(data) {
 					stat = data["event"]["@severity"];
-					console.log(stat);
+					
 					
 				}
 
@@ -380,8 +379,6 @@ function destiInfo(jsonObj){
 	var str = "";
 
 	var destinationObj = jsonObj["destinations"]["destination"]; 
-	
-	console.log(destinationObj);
 	
 	 if(destinationObj.length > 1){
 	
