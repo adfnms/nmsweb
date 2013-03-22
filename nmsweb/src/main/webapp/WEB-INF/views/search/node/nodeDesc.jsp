@@ -85,7 +85,6 @@
 
 	function addInterfaceAvailability(jsonObj){
 		
-		var interfaceAvail = getInterfaceAvailability("${nodeId}", jsonObj["ipInterface"]["ipAddress"]);
 		var str ="";
 		
 		if(jsonObj["@count"] > 0){
@@ -97,7 +96,7 @@
 					
 					//인터페이스 가용성
 					var interfaceAvail = Number(getInterfaceAvailability("${nodeId}", ipAddrs)).toFixed(3)+"%";
-					var headStr = '<h5>' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</h5></a>';
+					var headStr = '<h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>';
 					
 					//서비스 가용성
 					var serviceAvailSte = getTabletagToAvailJsonObj("${nodeId}", ipAddrs);
@@ -106,11 +105,11 @@
 					
 				}
 			}else{
-				var ipAddrs =jsonObj["ipInterface"]["ipAddress"]
+				var ipAddrs =jsonObj["ipInterface"]["ipAddress"];
 				
 				//인터페이스 가용성
  				var interfaceAvail = Number(getInterfaceAvailability("${nodeId}", ipAddrs)).toFixed(3)+"%";
-				var headStr = '<h5>' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</h5></a>';
+ 				var headStr = '<h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>';
 				
 				//서비스 가용성
 				var serviceAvailSte = getTabletagToAvailJsonObj("${nodeId}", ipAddrs);
@@ -148,9 +147,9 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
-					<li><a href="<c:url value="/index.do" />" />Home</a> <span
+					<li><a href="<c:url value="/index.do" />" >Home</a> <span
 						class="divider">/</span></li>
-					<li><a href="<c:url value="/search/node.do" />" />노드검색</a>
+					<li><a href="<c:url value="/search/node.do" />" >노드검색</a>
 						<span class="divider">/</span></li>
 					<li class="active">노드</li>
 				</ul>

@@ -67,6 +67,10 @@
 		
 		//서비스 가용성
 		var serviceAvailSte = getTabletagToAvailJsonObj(nodeId, ipAddrs);
+		if(serviceAvailSte == false){
+			serviceAvailSte ="";
+		}
+		
 		var str = headStr+serviceAvailSte;
 		
 		

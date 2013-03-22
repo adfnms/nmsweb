@@ -16,20 +16,22 @@
 <script src="<c:url value="/resources/js/service.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		getTotalOutagesList(outageList,null);
+		getCurrentOutagesForNode(outageList);
 		
 		getServiceList(addServiceList);
 	});
 
 	function outageList(jsonObj) {
 
-		
-		console.log(jsonObj);
 		var outageObj = jsonObj["outage"];
 
 		for( var i in outageObj ){
 			
-			$('#outageInfo').append("<a href='#'>"+outageObj[i]["serviceLostEvent"]["host"]+"</a> (2 days)<br/>");
+			var lostTime = new Date(outageObj[i]["ifLostService"]);
+			var current = new Date();
+			var lastTime = dateDiff(lostTime, current);
+			
+			$('#outageInfo').append("<a href='#'>"+outageObj[i]["ipAddress"]+"</a> ("+lastTime+")<br/>");
 			
 		}
 		
@@ -126,7 +128,7 @@
 						<div class="span6">
 							<div class="row-fluid">
 								<div class="span12">
-									<h4>24시간&nbsp;이용내역</h4>
+									<h4>24시간&nbsp;가용률</h4>
 								</div>
 							</div>
 							<div class="row-fluid">

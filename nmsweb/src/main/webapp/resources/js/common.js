@@ -207,32 +207,77 @@ function nullCheckJsonObject(parentObj, childName) {
 }
 
 
+/** 상태에 대한 메세지알려준다.
+ * @param code
+ * @returns {String}
+ */
 function statsToStringFromStatoCode(code){
 	var statsStr = "";
 
 	switch(code){
-		case 'N','n':
+		case 'N':
 			statsStr ="모니터링 되지 않음";
+			break;
+		case 'R':
+			statsStr ="Rescan to Resume";
+			break;
+		case 'F':
+			statsStr ="Forced Unmanaged";
 			break;
 		default:
 			statsStr ="모니터링 중";
 			break;
 	}
-	
+
 	return statsStr;
 }
 
+/**상태에 대하여 메세지를 알려준다.
+ * @param code
+ * @param avail
+ * @returns {String}
+ */
 function availToStringFromStatoCode(code,avail){
 	var statsStr = "";
 	
-	switch(code){
-		case 'N':
-			statsStr ="모니터링 되지 않음";
-			break;
-		default:
-			statsStr = avail+"%";
-			break;
+	statsStr =statsToStringFromStatoCode(code);
+	statsStr = statsStr == "모니터링 중" ? avail+"%" : statsStr;
+
+	return statsStr;
+}
+
+function dateDiff(FromTime, ToTime){
+	var _return;
+	
+	var fromDate = FromTime;
+		       
+	var toDate = ToTime;
+	    
+	var day = 1000*60*60*24;
+	var hour = 1000*60*60;
+	var min = 1000*60;
+	var sec = 1000;
+		
+	var daysAfter = (toDate.getTime() - fromDate.getTime()) / day;
+	var hourAfter = (toDate.getTime() - fromDate.getTime()) / hour;
+	var minAfter = (toDate.getTime() - fromDate.getTime()) / min;
+	var secAfter = (toDate.getTime() - fromDate.getTime()) / sec;
+
+	daysAfter = Math.round(daysAfter);
+	hourAfter = Math.round(hourAfter);
+	minAfter = Math.floor(minAfter);
+	secAfter = Math.floor(secAfter);
+	
+	if(daysAfter > 1){
+		_return = Math.round(daysAfter) + "일"; // 지난 날짜 출력	
+	}else if(hourAfter < 24 && hourAfter != 0){
+		_return = hourAfter + "시간"; // 지난 시간 출력	
+	}else if(minAfter < 60){
+		_return = minAfter + "분"; // 지난 분 출력
+	}else{
+		_return = secAfter + "초"; // 지난 초 출력	
 	}
 	
-	return statsStr;
+	return _return;
+	
 }

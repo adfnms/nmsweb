@@ -21,10 +21,22 @@ public class NodeManagerController {
 	 
 
 	@RequestMapping(value = "/admin/node")
-	public ModelAndView nodeManage(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+	public ModelAndView nodeManageList(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		
 		ModelAndView model =  new ModelAndView();
 		
+		model.setViewName("/admin/nodeMng/nodeMngList");
+		
+		return model;
+	}
+	
+	@RequestMapping(value = "/admin/node/nodeMng")
+	public ModelAndView nodeManage(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			@RequestParam(value = "nodeId", required = false)String nodeId) {
+		
+		ModelAndView model =  new ModelAndView();
+		
+		model.addObject("nodeId",nodeId);
 		model.setViewName("/admin/nodeMng/nodeMng");
 		
 		return model;
