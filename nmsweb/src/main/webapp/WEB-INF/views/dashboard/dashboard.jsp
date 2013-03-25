@@ -11,15 +11,87 @@
 	<jsp:param value="노드 상세보기" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
-<script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/common/websocket.js" />"></script>
 <script src="<c:url value="/resources/js/outages.js" />"></script>
 <script src="<c:url value="/resources/js/events.js" />"></script>
-<script src="<c:url value="/resources/js/service.js" />"></script>
 <script type="text/javascript">
+	//var socket = connect("ws://localhost:8080/v1/ws",wsReceiveData);
+	
 	$(document).ready(function() {
 		
+		/* Recent Events */
+		var query = "query="+encodeURI("this_.eventSeverity > 5");
+		var filter = "&orderBy=eventTime&order=desc&limit=10";
+		getTotalEvenstList(addEvents, query+filter);
 		
+		getCurrentOutagesForNode(addOutage);
 	});
+
+	function addEvents(jsonObj){
+
+		var str = getTabletagToEventJsonObj(jsonObj);
+		$('#eventDiv').append(str);
+		
+		//Add Scroll From #outageScrollDiv 
+		$('#outageScrollDiv').css('overflow-y','scroll').css('height','300px');
+		
+	}
+	
+	function addOutage(jsonObj){
+		
+		var outageObj = jsonObj["outage"];
+
+		for( var i in outageObj ){
+			
+			var lostTime = new Date(outageObj[i]["ifLostService"]);
+			var current = new Date();
+			var lastTime = dateDiff(lostTime, current);
+		
+			var str= "";
+			
+			str += "<li id='outage_"+outageObj[i]["@id"]+"'>";
+			str += "	<table>";
+			str += "		<tr>";
+			str += "			<td style='text-align:center;'>";
+			str += "				<img src='https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRqXCxP5r2U7rdMIwXYdQ16xABGNm3TCFCMfKPmXZp3lMAhDCK0Fw' style='width:50px; height:50px;'/>";
+			str += "			</td>";
+			str += "		</tr>";
+			str += "		<tr class='"+outageObj[i]["serviceLostEvent"]["@severity"].toLowerCase()+"'>";
+			str += "			<td style='text-align:center;'>";
+			str +=					outageObj[i]["ipAddress"];
+			str += "			</td>";
+			str += "		<tr>";
+			str += "			<td style='text-align:center;'>";
+			str += "				<a href=\"javascript:includeOut('"+outageObj[i]["@id"]+"');\">";
+			str += "					["+lastTime+"]";
+			str += "				</a>";
+			str += "			</td>";
+			str += "		</tr>";
+			str += "	</table>";
+			str += "</li>";
+			
+			$('#outageDiv').append($(str)).hide().fadeIn('slow');
+			
+		}
+		
+	}
+	
+	function includeOut(id){
+		
+		$('#outage_'+id).animate({opacity:'0.4',}).hide("slow",function(){
+			$('#outage_'+id).remove();}
+		);
+		
+	}
+	
+	
+	
+	function wsReceiveData(data){
+		
+		alert(data);
+		
+	}
+	
 </script>
 </head>
 
@@ -38,7 +110,22 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span12 well well-small">
-				그래프
+				<div class="row-fluid">
+					<div class="span9">
+						<h4 id="nodeLabel">데쉬보드</h4>
+					</div>
+					<div class="span3">
+						<jsp:include page="/include/statsBar.jsp" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="row-fluid">
+				<h5>그래프</h5>
+			</div>
+			<div class="span12 well well-small">
+				<img src="http://www.greentransport.org/xe/files/attach/images/61/252/004/5%EC%9B%94%EC%A1%B0%EC%82%AC%EA%B7%B8%EB%9E%98%ED%94%84.jpg" style="height:200px;width:600px;"/>
 			</div>
 		</div>
 		<div class="row-fluid">
@@ -47,59 +134,12 @@
 			</div>
 			<div class="row-fluid">
 				<div class="span12 well well-small">
-					<ul class="inline">
-						<li>1</li>
-						<li>1</li>
-						<li>1</li>
-						<li>1</li>
-						<li>1</li>
-						<li>1</li>
-						<li>1</li>
+					<ul class="inline" id="outageDiv">
 					</ul>
 				</div>
 			</div>
 		</div>
-		<div class="row-fluid">
-			<div class="row-fluid">
-				<h5>실시간&nbsp;이벤트</h5>
-			</div>
-			<div class="row-fluid">
-				<div class="span12 well well-small">
-					<table class="table table-striped">
-						<tr>
-							<th class="span1">ID</th>
-							<th class="span2">시간</th>
-							<th class="span2">상태</th>
-							<th class="span7">로그</th>
-						</tr>
-						<tr>
-							<td>2345</td>
-							<td>13.02.01 15:00:00</td>
-							<th class="normal">NOMAL</th>
-							<td>The DNS outage on interface 192.168.0.1 has been cleared. Service is restored.</td>
-						</tr>
-						<tr>
-							<td>2345</td>
-							<td>13.02.01 15:00:00</td>
-							<th class="normal">NOMAL</th>
-							<td>The DNS outage on interface 192.168.0.1 has been cleared. Service is restored.</td>
-						</tr>
-						<tr>
-							<td>2345</td>
-							<td>13.02.01 15:00:00</td>
-							<th class="normal">NOMAL</th>
-							<td>The DNS outage on interface 192.168.0.1 has been cleared. Service is restored.</td>
-						</tr>
-						<tr>
-							<td>2345</td>
-							<td>13.02.01 15:00:00</td>
-							<th class="normal">NOMAL</th>
-							<td>The DNS outage on interface 192.168.0.1 has been cleared. Service is restored.</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-		</div>
+		<div class="row-fluid" id="eventDiv"></div>
 	</div>
 	<hr>
 	<!-- /container -->
