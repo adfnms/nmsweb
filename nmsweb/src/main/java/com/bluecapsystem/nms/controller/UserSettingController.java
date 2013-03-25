@@ -101,5 +101,29 @@ public class UserSettingController
 		model.setViewName("/admin/userSetting/outage");
 		return model;
 	}
+	@RequestMapping(value = "/admin/graphTest")
+	public ModelAndView graphTest(HttpServletRequest request, HttpServletResponse response)
+	{
+		ModelAndView model = new ModelAndView();
+		
+	String a = "50%";
+	String b = "60%";
+	String c = "70%";
+	String d = "80%";
+	String e = "90%";
+	String f = "100%";
+	String g = "critical";
+	
+		
+	model.addObject("50%",a);
+	model.addObject("60%",b);
+	model.addObject("70%",c);
+	model.addObject("80%",d);
+	model.addObject("90%",e);
+	model.addObject("100%",f);
+	model.addObject("critical",g);
+		model.setViewName("/admin/userSetting/graphTest");
+		return model;
+	}
 	
 }
