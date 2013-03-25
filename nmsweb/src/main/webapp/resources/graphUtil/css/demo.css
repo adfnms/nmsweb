@@ -2,7 +2,7 @@
 /* General Demo Style */
 body{
 	font-family: 'Open Sans Condensed','Arial Narrow', serif;
-	background: #ddd url(../graphUtil/bg.png) repeat top left;
+	background: #ddd url(../graphUtil/img/bg.png) repeat top left;
 	font-weight: 400;
 	font-size: 15px;
 	color: #333;

@@ -48,7 +48,7 @@
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">운영관리
 							<b class = "caret"></b>
 						</a>
-						<ul class="dropdown-menu" >
+						<ul class="dropdown-menu outline" >
 							<li><a href="<c:url value="/admin/node.do" />">노드관리</a></li>
 							<li><a href="#">그룹관리</a></li>
 							<li><a href="<c:url value="/admin/userMng.do" />">사용자 관리</a></li>

@@ -26,8 +26,10 @@ try{
 <script src="<c:url value="/resources/js/users.js" />"></script>
 <script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script type="text/javascript">
-	
-	
+function togling(){
+    var b = document.getElementById('ShowTwo').style.display;
+    document.getElementById('ShowTwo').style.display=(b=='none')?'block':'none';
+}
 </script>
 </head>
 
@@ -72,13 +74,11 @@ try{
 						</colgroup>
 						<thead>
 							<tr>
-								<th>-------------------------------------------------------------------이벤트 리스트----------------------------------------------------------</th>
+								<th>-------------------------------------------------------------------------------------------------이벤트 리스트----------------------------------------------------------------------------------------</th>
 							</tr>
 						</thead>
 					</table>
 				</div>
-					
-					
 				<!-- 끝 -->	
 				</form>
 			<hr>
@@ -87,13 +87,144 @@ try{
 				<div class="span12">
 					<div class="span8"></div>
 					<div class="span1">
-						<a type="button" class="btn btn-primary" title="" href="/v1/admin/setting/addMessage.do">선택</a>
+					<!-- <a type="button" class="btn btn-primary" title="" href="/v1/admin/setting/addMessage.do">선택</a> -->
+					<a type="button" class="btn btn-primary" href="#togle" onclick="togling()" class="toggle">선택</a>
 					</div>
 				</div>
 			</div>
+			
+			<div class="togglelayer"></div>
+			<div id="ShowTwo" style="display:none;">
+				<div class="span12 well well-small">
+				<div class="row-fluid">
+					<div class="span12">
+						<h3>
+							2단계&nbsp;&nbsp;<span class="label label-alert">공지 메시지 정의</span>
+						</h3>
+					</div>
+				</div>
+				<form id="memberInfoFrm" name = "memberInfoFrm" method="post">
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">메시지 명</label>
+							<div class="span10 controls" >
+								<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">설명</label>
+							<div class="span10 controls" >
+								<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">메일 제목</label>
+							<div class="span10 controls" >
+								<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">요약 메세지</label>
+							<div class="span10 controls" >
+								<textarea rows="3"    id=""   name="" class="span11"   placeholder=""></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">메세지</label>
+							<div class="span10 controls" >
+								<textarea rows="3"    id=""   name="" class="span11"   placeholder=""></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">목적지 선택</label>
+							<div class="span10 controls" >
+								<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<label class="span2 control-label">이름</label>
+							<div class="span4 controls">
+								<select>
+								  <option>1</option>
+								  <option>2</option>
+								  <option>3</option>
+								  <option>4</option>
+								  <option>5</option>
+								</select>
+							</div>
+							<div class= "span2"></div>
+							<div class="span4 controls">
+								<a type="button" class="btn" title="" href="#popDestinationPaths" data-toggle="modal">목적지관리</a>
+							</div>
+						</div>
+					</div>
+				</form>
+		</div>
+		<div class="row-fluid">
+					<div class="span12">
+						<div class = "span2"></div>
+						<div class="span4 controls">
+							<a type="button" class="btn" title="" href="#popDestinationPaths" data-toggle="modal">입력방법</a> 
+						</div>
+						<div class = "span2"></div>
+						<div class="span4">
+							<a type="button" class="btn btn-primary" title="" href="javascript:regMember()">+ 공지등록</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 			<hr>
 		</div>
 	</div>
 	<!-- /container -->
+	<!-- ----------------------------------------------- --><!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	
+					
+					 <!-- Modal -->
+						 <div id="popDestinationPaths" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h3 id="myModalLabel">Modal header</h3>
+							</div>
+							<div class="modal-body">
+								<p>목적지 관리 1단계</p>
+							</div>
+							<div class="modal-footer">
+								<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+								<button class="btn btn-primary">다음단계</button>
+							</div>
+						</div> 
+	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	
+	
+	<!-- ----------------------------------------------- --><!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	
+					
+					 <!-- Modal -->
+						 <div id="popDestinationPathsTwo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h3 id="myModalLabel">Modal header</h3>
+							</div>
+							<div class="modal-body">
+								<p>목적지 관리 2단계</p>
+							</div>
+							<div class="modal-footer">
+								<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+								<button class="btn btn-primary">Save changes</button>
+							</div>
+						</div> 
+	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->
+	
 </body>
 </html>

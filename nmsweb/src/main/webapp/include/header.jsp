@@ -19,7 +19,8 @@
 	<script src="<c:url value="/resources/js/common/jquery-1.8.2.js" />"></script>
 	<script src="<c:url value="/resources/js/common.js" />"></script>
 	
-    <script src="<c:url value="/resources/bootstrap/js/bootstrap-transition.js" />"></script>
+	<script src="<c:url value="/resources/bootstrap/js/bootstrap.js" />"></script>
+    <%-- <script src="<c:url value="/resources/bootstrap/js/bootstrap-transition.js" />"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-alert.js" />"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-modal.js" />"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-dropdown.js" />"></script>
@@ -30,7 +31,7 @@
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-button.js" />"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-collapse.js" />"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap-carousel.js" />"></script>
-    <script src="<c:url value="/resources/bootstrap/js/bootstrap-typeahead.js" />"></script>
+    <script src="<c:url value="/resources/bootstrap/js/bootstrap-typeahead.js" />"></script> --%>
 
 	<% if(styleFlag.equals("Y")){ %> 
 	<style type="text/css">

@@ -129,21 +129,19 @@ try{
 						</div>
 					</div>
 				</form>
-			
-		</div>
-		<div class="row-fluid">
-						<div class="span12">
-							<div class = "span2"></div>
-							<div class="span4 controls">
-								<a type="button" class="btn btn-primary" title="" href="javascript:regMember()">+ 공지등록</a> 
-							</div>
-							<div class = "span2"></div>
-							<div class="span4">
-								<a type="button" class="btn btn-primary" title="" href="javascript:regMember()">입력방법</a>
-							</div>
+			</div>
+				<div class="row-fluid">
+					<div class="span12">
+						<div class = "span2"></div>
+						<div class="span4 controls">
+							<a type="button" class="btn btn-primary" title="" href="javascript:regMember()">+ 공지등록</a> 
+						</div>
+						<div class = "span2"></div>
+						<div class="span4">
+							<a type="button" class="btn btn-primary" title="" href="javascript:regMember()">입력방법</a>
 						</div>
 					</div>
-			
+				</div>
 		</div>
 	</div>
 	<!-- /container -->

@@ -20,14 +20,13 @@
         <meta name="keywords" content="css3, bar chart, animation, 3d" />
         <meta name="author" content="Sergey Lukin for Codrops" />
         <link rel="shortcut icon" href="../favicon.ico"> 
-        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/graphUtil/demo.css" />" />
-        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/graphUtil/graph.css" />" />
+        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/graphUtil/css/demo.css" />" />
+        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/graphUtil/css/graph.css" />" />
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700,300,300italic' rel='stylesheet' type='text/css'>
-		<%-- <script src="<c:url value="/resources/graphUtil/graph.js" />"></script> --%>
-		<script src="<c:url value="/resources/graphUtil/modernizr.custom.04022.js" />"></script>
+		<script src="<c:url value="/resources/graphUtil/js/modernizr.custom.04022.js" />"></script>
 		<script src="<c:url value="/resources/js/users.js" />"></script>
 		<script src="<c:url value="/resources/js/notification.js" />"></script>
-		<style>
+		<!-- <style>
 			input#f-none:checked ~ .graph-container > li:nth-child(1) .bar-inner { height: 0; bottom: -2.5em; }
 			input#f-none:checked ~ .graph-container > li:nth-child(2) .bar-inner { height: 0; bottom: -2.5em; }
 			input#f-none:checked ~ .graph-container > li:nth-child(3) .bar-inner { height: 0; bottom: -2.5em; }
@@ -60,12 +59,7 @@
 			input#f-product3:checked ~ .graph-container > li:nth-child(6) .bar-inner { height: 0%; bottom: 0; }
 			input#f-product3:checked ~ .graph-container > li:nth-child(7) .bar-inner { height: 0%; bottom: 0; }
 			
-			input{ border:expression("(this.type=='checkbox'||this.type=='radio'||this.type=='image')?":'1px solid #C4C1BA');
-					heighe:expression("(this.type=='checkbox'||this.type=='radio'||this.type=='image')?":'1px solid #C4C1BA')17px;
-					font-size:12px;
-					}
-			
-		</style>
+		</style> -->
 <script type="text/javascript">
 	$(document).ready(function() {
 	});
@@ -97,54 +91,54 @@
                 
 
 				<span class="button-label">Product:</span>
-                <input type="radio" name="fill-graph" id="f-none" /><label for="f-none">None</label>
-                <input type="radio" name="fill-graph" id="f-product1" checked="checked" /><label for="f-product1">Product 1</label>
+                <input type="radio" name="fill-graph" id="f-none" checked="checked" /><label for="f-none">None</label>
+                <input type="radio" name="fill-graph" id="f-product1"  /><label for="f-product1">Product 1</label>
                 <input type="radio" name="fill-graph" id="f-product2" /><label for="f-product2">Product 2</label>
                 <input type="radio" name="fill-graph" id="f-product3" /><label for="f-product3">Product 3</label>
 
                 <ul class="graph-container" Style = "width: 888px;">
                     <li class="critical-graph">
-                        <span>2008</span>
+                        <span>Network Interfaces</span>
                         <div class="bar-wrapper" Style = "width: 120px;">
                             <div class="bar-container">
                                 <div class="bar-background"></div>
-                                <div class="bar-inner">25</div>
+                                <div class="bar-inner"></div>
                                 <div class="bar-foreground"></div>
                             </div>
                         </div>
                     </li>
                     <li class="major-graph">
-                        <span>2009</span>
+                        <span>Web Servers</span>
                         <div class="bar-wrapper" Style = "width: 120px;">
                             <div class="bar-container">
                                 <div class="bar-background"></div>
-                                <div class="bar-inner">50</div>
+                                <div class="bar-inner"></div>
                                 <div class="bar-foreground"></div>
                             </div>
                         </div>
                     </li>
                     <li  class="minor-graph">
-                        <span>2010</span>
+                        <span>Email Servers</span>
                         <div class="bar-wrapper" Style = "width: 120px;">
                             <div class="bar-container">
                                 <div class="bar-background"></div>
-                                <div class="bar-inner">75</div>
+                                <div class="bar-inner"></div>
                                 <div class="bar-foreground"></div>
                             </div>
                         </div>
                     </li>
                     <li class="warning-graph">
-                        <span>2011</span>
+                        <span>DNS and DHCP Servers</span>
                         <div class="bar-wrapper" Style = "width: 120px;">
                             <div class="bar-container">
                                 <div class="bar-background"></div>
-                                <div class="bar-inner">100</div>
+                                <div class="bar-inner"></div>
                                 <div class="bar-foreground"></div>
                             </div>
                         </div>
                     </li>
                     <li class="normal-graph">
-                        <span>2012</span>
+                        <span>Database Servers</span>
                         <div class="bar-wrapper" Style = "width: 120px;">
                             <div class="bar-container">
                                 <div class="bar-background"></div>
@@ -154,7 +148,7 @@
                         </div>
                     </li>
                     <li class="cleared-graph">
-                        <span>2012</span>
+                        <span>JMX Servers </span>
                         <div class="bar-wrapper" Style = "width: 120px;">
                             <div class="bar-container">
                                 <div class="bar-background"></div>
@@ -164,7 +158,7 @@
                         </div>
                     </li>
                     <li class="indeterminate-graph">
-                        <span>2012</span>
+                        <span>Other Servers</span>
                         <div class="bar-wrapper" Style = "width: 120px;">
                             <div class="bar-container">
                                 <div class="bar-background"></div>
@@ -176,9 +170,9 @@
                     <li>
                         <ul class="graph-marker-container">
                             <li style="bottom:25%;"><span>25%</span></li>
-                            <li style="bottom:50%;"><span>50%</span></li>
+                            <li style="bottom:50%;" class="text-info"><span>50%</span></li>
                             <li style="bottom:75%;"><span>75%</span></li>
-                            <li style="bottom:100%;"><span>100%</span></li>
+                            <li style="bottom:100%;" class="text-error"><span>100%</span></li>
                         </ul>
                     </li>
                     
