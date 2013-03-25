@@ -31,7 +31,7 @@ function getCurrentOutagesForNode(callback) {
 	//current outage query
 	var query = "query="+encodeURI("this_.svcregainedeventid is null");
 	
-	getTotalOutagesList(outageList,query);
+	getTotalOutagesList(callback,query);
 	
 }
 

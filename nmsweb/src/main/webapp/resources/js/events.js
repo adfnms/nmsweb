@@ -77,7 +77,7 @@ function getTabletagToEventJsonObj(jsonObj){
 	var events = jsonObj["event"];
 	var str = "";
 	if (jsonObj["@count"] > 0) {
-
+			
 		str = "	<div class='row-fluid'>"
 				+ "		<h5>이벤트&nbsp;목록&nbsp;["
 				+ jsonObj["@count"]
@@ -85,8 +85,12 @@ function getTabletagToEventJsonObj(jsonObj){
 				+ "	</div>"
 				+ "	<div class='row-fluid'>"
 				+ "		<div class='span12 well well-small'>"
-				+ "<table class='table'>"
-				+ "<tr><th>이벤트ID</th><th>시간</th><th>상태</th><th class='span4'>메세지</th></tr>";
+				+ "		<table class='table'>"
+				+ "			<colgroup><col width='15%'/><col  width='25%'/><col  width='15%'/><col  width='45%'/></colgroup>"		
+				+ "			<thead><tr><th>이벤트ID</th><th>시간</th><th>상태</th><th class='span4'>메세지</th></tr></thead>"
+				+ "		</table><div id='outageScrollDiv'><table class='table'>	"
+				+ "			<colgroup><col width='15%'/><col  width='25%'/><col  width='15%'/><col  width='45%'/></colgroup>"
+				+ "			<tbody>";
 		if (jsonObj["@count"] > 1) {
 
 			for ( var i in events) {
@@ -113,7 +117,7 @@ function getTabletagToEventJsonObj(jsonObj){
 		}
 
 		
-		str += "</table></div>";
+		str += "</tbody></table></div></div>";
 	}
 
 	return str;
