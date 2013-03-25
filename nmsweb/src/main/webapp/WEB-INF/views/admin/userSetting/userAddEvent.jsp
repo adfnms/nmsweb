@@ -176,7 +176,7 @@ function togling(){
 					<div class="span12">
 						<div class = "span2"></div>
 						<div class="span4 controls">
-							<a type="button" class="btn" title="" href="#popDestinationPaths" data-toggle="modal">입력방법</a> 
+							<a type="button" class="btn" title="" href="#popupRegMethod" data-toggle="modal">입력방법</a> 
 						</div>
 						<div class = "span2"></div>
 						<div class="span4">
@@ -190,7 +190,7 @@ function togling(){
 		</div>
 	</div>
 	<!-- /container -->
-	<!-- ----------------------------------------------- --><!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	
+	<!-- ----------------------------------------------- --><!-- --------------------------popDestinationPaths--------------------- -->	<!-- ----------------------------------------------- -->	
 					
 					 <!-- Modal -->
 						 <div id="popDestinationPaths" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -203,12 +203,11 @@ function togling(){
 							</div>
 							<div class="modal-footer">
 								<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-								<button class="btn btn-primary">다음단계</button>
+								<button class="btn btn-primary" href="#popDestinationPathsTwo">다음단계</button>
 							</div>
 						</div> 
-	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	
 	
-	<!-- ----------------------------------------------- --><!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	
+	<!-- ----------------------------------------------- --><!-- --------------------------popDestinationPathsTwo--------------------- -->	<!-- ----------------------------------------------- -->	
 					
 					 <!-- Modal -->
 						 <div id="popDestinationPathsTwo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -225,6 +224,20 @@ function togling(){
 							</div>
 						</div> 
 	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->
+				 <!-- Modal -->
+						 <div id="popupRegMethod" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h3 id="myModalLabel">Modal header</h3>
+							</div>
+							<div class="modal-body">
+								<p>입력방법</p>
+							</div>
+							<div class="modal-footer">
+								<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+								<button class="btn btn-primary">Save changes</button>
+							</div>
+						</div> 
 	
 </body>
 </html>
