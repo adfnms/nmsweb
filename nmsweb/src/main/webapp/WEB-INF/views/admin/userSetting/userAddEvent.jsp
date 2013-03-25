@@ -19,17 +19,36 @@ try{
 <html lang="en">
 <head>
 <jsp:include page="/include/header.jsp">
-	<jsp:param value="사용자등록" name="title" />
+	<jsp:param value="이벤트 선택" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 
 <script src="<c:url value="/resources/js/users.js" />"></script>
 <script src="<c:url value="/resources/js/requisitions.js" />"></script>
+<script src="<c:url value="/resources/js/notification.js" />"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+	
+	/* GETConfirm kind of registered all event */
+	getAllEvent(getEvent);
+	
+});
+
+/* GETConfirm kind of registered all event Callback */
+function getEvent(jsonObj) {
+
+		var str = getEventJsonObj(jsonObj);
+		$('#eventListTable').append(str);
+
+	}
+/* // GETConfirm kind of registered all event Callback */
+
 function togling(){
     var b = document.getElementById('ShowTwo').style.display;
     document.getElementById('ShowTwo').style.display=(b=='none')?'block':'none';
 }
+
+
 </script>
 </head>
 
@@ -62,12 +81,12 @@ function togling(){
 						</h3>
 					</div>
 				</div>
-				<form id="memberInfoFrm" name = "memberInfoFrm" method="post">
+				<form id="eventInfoFrm" name = "memberInfoFrm" method="post">
 					<!--리스트 시작  -->	
 				
 				
 				<div class="span12">
-					<table class="table table-striped" id="userListTable">
+					<table class="table table-striped" id="eventListTable">
 						<colgroup>
 							<col class="span10"/>
 							
@@ -235,7 +254,7 @@ function togling(){
 			<p>목적지 관리 3단계</p>
 		</div>
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">3단계로</button>
+			<button class="btn" data-dismiss="modal" aria-hidden="true">2단계로</button>
 			<button class="btn btn-primary">목적지 저장</button>
 		</div>
 	</div> 

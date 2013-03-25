@@ -54,7 +54,12 @@ function getTotalNotoficationList(callback , data){
 	});
 	
 }
-
+/**
+ * Get the notification specified by the certain ID
+ * @param callback
+ * @param notifyid
+ * only notofication
+ */
 function getNotofication(callback , notifyid){
 	console.log('http://192.168.0.5:8081/' + version + '/notifications/?'+notifyid);
 	$.ajax({
@@ -75,7 +80,12 @@ function getNotofication(callback , notifyid){
 	});
 	
 }
-
+/**
+ * Get the notification specified by the certain ID
+ * @param callback
+ * @param notifyid
+ * only destination.
+ */
 function gedestination(callback , notifyid){
 	console.log('http://192.168.0.5:8081/' + version + '/notifications/?'+notifyid);
 	$.ajax({
@@ -96,6 +106,33 @@ function gedestination(callback , notifyid){
 	});
 	
 }
+/**
+ *  GETConfirm kind of registered all event 
+ * @param callback
+ */
+function getEventUei(callback){
+	console.log('http://192.168.0.5:8081/' + version + '/notifications/events');
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/notifications/events',
+		dataType : 'json',
+		contentType : "application/json",
+		accept : "application/json",
+		error : function(data) {
+			console.log(data);
+			alert('이벤트 리스트 가져오기 서비스 실패');
+		},
+		success : function(data) {
+			// 콜백함수
+			console.log(data);
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+	
+}
+
 
 /**
  *Return notification list related with given userName
@@ -129,7 +166,11 @@ function getTotalNotiList(callback, nowDate, recentCount){
 	getTotalNotoficationList(callback,filter);
 		
 }
-
+/***************************************************************
+ *  Get the notification specified by the certain ID 
+ * @param callback
+ * @param notifyid
+ */
 function getNotificaitionDetail(callback , notifyid){
 	
 		getNotofication(callback, notifyid );
@@ -138,6 +179,16 @@ function getNotificaitionDetail(callback , notifyid){
 function getdestinationDetail(callback , notifyid){
 	
 	gedestination(callback, notifyid );
+	
+}
+/*********Get the notification specified by the certain ID*****/
+
+
+
+/* GETConfirm kind of registered all event Callback */
+function getAllEvent(callback){
+	
+	getEventUei(callback);
 	
 }
 
@@ -412,4 +463,42 @@ function destiInfo(jsonObj){
 			
 		}
 	 $("#destiInfoDiv").append(str);
+}
+
+function getEventJsonObj(jsonObj){
+	console.log(jsonObj);
+	
+	var str = "";
+
+	var eventObj = jsonObj["event"]; 
+	
+	 if(eventObj.length > 1){
+	
+		for ( var i in  eventObj){
+			
+			alert(eventObj[i]["uei"]);
+			
+			str += "<tr>";
+			str += "	<td class=\"span1\">";										
+			str += eventObj[i]["uei"];												//uei
+			str += "	</td>";
+			str += "	<td class=\"span1\">";										
+			str += eventObj[i]["event-label"];												//event-label
+			str += "	</td>";													
+			str += "</tr>";
+			
+			} 
+		}else{
+			str += "<tr>";
+			str += "	<td class=\"span1\">";										
+			str += eventObj[0]["userId"];												//uei
+			str += "	</td>";
+			str += "	<td class=\"span1\">";										
+			str += eventObj[0]["media"];												//event-label
+			str += "	</td>";													
+			str += "</tr>";
+			
+		}
+	
+	 $("#eventListTable").append(str);
 }

@@ -476,7 +476,7 @@ public class NotificationsService {
 
 			for (int i = 0; i < fileSize; i++) {
 
-				String fileName = "d:\\OpenNMS\\etc\\"
+				String fileName = xmlPath
 						+ events.getEventFile().get(i).toString();
 
 				logger.debug("Event sub file::" + fileName);

@@ -26,7 +26,7 @@
 		<script src="<c:url value="/resources/graphUtil/js/modernizr.custom.04022.js" />"></script>
 		<script src="<c:url value="/resources/js/users.js" />"></script>
 		<script src="<c:url value="/resources/js/notification.js" />"></script>
-		<!-- <style>
+		 <style>
 			input#f-none:checked ~ .graph-container > li:nth-child(1) .bar-inner { height: 0; bottom: -2.5em; }
 			input#f-none:checked ~ .graph-container > li:nth-child(2) .bar-inner { height: 0; bottom: -2.5em; }
 			input#f-none:checked ~ .graph-container > li:nth-child(3) .bar-inner { height: 0; bottom: -2.5em; }
@@ -59,7 +59,7 @@
 			input#f-product3:checked ~ .graph-container > li:nth-child(6) .bar-inner { height: 0%; bottom: 0; }
 			input#f-product3:checked ~ .graph-container > li:nth-child(7) .bar-inner { height: 0%; bottom: 0; }
 			
-		</style> -->
+		</style>
 <script type="text/javascript">
 	$(document).ready(function() {
 	});

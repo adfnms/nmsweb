@@ -36,14 +36,20 @@ try{
 		
 	getdestinationDetail(destinationInfo, "${notifyid}");
 	});
-
+	/*//********Get the notification specified by the certain ID  */
 	
+	
+	
+	/* Get the notification specified by the certain ID */
+	//notification
 	function notificaitionInfo(jsonObj) {
 		
 		var notifiInfoStr = notifiInfo(jsonObj);
 		$('#notifiInfoDiv').append(notifiInfoStr);
 	}
 	
+	/* Get the notification specified by the certain ID */
+	//destination
 	function destinationInfo(jsonObj) {
 		
 		var destiInfoStr = destiInfo(jsonObj);
