@@ -192,50 +192,65 @@ function togling(){
 	<!-- /container -->
 	<!-- ----------------------------------------------- --><!-- --------------------------popDestinationPaths--------------------- -->	<!-- ----------------------------------------------- -->	
 					
-					 <!-- Modal -->
-						 <div id="popDestinationPaths" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-								<h3 id="myModalLabel">Modal header</h3>
-							</div>
-							<div class="modal-body">
-								<p>목적지 관리 1단계</p>
-							</div>
-							<div class="modal-footer">
-								<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-								<button class="btn btn-primary" href="#popDestinationPathsTwo">다음단계</button>
-							</div>
-						</div> 
+	 <!-- Modal -->
+		 <div id="popDestinationPaths" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">DestinationPath</h3>
+			</div>
+			<div class="modal-body">
+				<p>목적지 관리 1단계</p>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				<a type="button" class="btn" title="" href="#popDestinationPathsTwo" data-toggle="modal">2단계로</a> 
+			</div>
+		</div> 
 	
 	<!-- ----------------------------------------------- --><!-- --------------------------popDestinationPathsTwo--------------------- -->	<!-- ----------------------------------------------- -->	
 					
-					 <!-- Modal -->
-						 <div id="popDestinationPathsTwo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-								<h3 id="myModalLabel">Modal header</h3>
-							</div>
-							<div class="modal-body">
-								<p>목적지 관리 2단계</p>
-							</div>
-							<div class="modal-footer">
-								<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-								<button class="btn btn-primary">Save changes</button>
-							</div>
-						</div> 
+	 <!-- Modal -->
+		 <div id="popDestinationPathsTwo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Modal header</h3>
+			</div>
+			<div class="modal-body">
+				<p>목적지 관리 2단계</p>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">1단계로</button>
+				<a type="button" class="btn" title="" href="#popDestinationPathsThree" data-toggle="modal">3단계로</a> 
+			</div>
+		</div> 
+	<!-- ----------------------------------------------- --><!-- --------------------------popDestinationPathsThree--------------------- -->	<!-- ----------------------------------------------- -->	
+
+ <!-- Modal -->
+	 <div id="popDestinationPathsThree" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Modal header</h3>
+		</div>
+		<div class="modal-body">
+			<p>목적지 관리 3단계</p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">3단계로</button>
+			<button class="btn btn-primary">목적지 저장</button>
+		</div>
+	</div> 
 	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->	<!-- ----------------------------------------------- -->
 				 <!-- Modal -->
 						 <div id="popupRegMethod" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-								<h3 id="myModalLabel">Modal header</h3>
+								<h3 id="myModalLabel">입력방법</h3>
 							</div>
 							<div class="modal-body">
-								<p>입력방법</p>
+								<p>입력방법 설명 Popup창</p>
 							</div>
 							<div class="modal-footer">
 								<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-								<button class="btn btn-primary">Save changes</button>
 							</div>
 						</div> 
 	
