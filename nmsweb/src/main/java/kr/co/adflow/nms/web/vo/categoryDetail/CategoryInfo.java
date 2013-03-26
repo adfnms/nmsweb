@@ -15,6 +15,18 @@ public class CategoryInfo {
 	protected int nodeId;
 
 	protected int serviceId;
+	
+	protected String nodeLabel;
+	
+	
+
+	public String getNodeLabel() {
+		return nodeLabel;
+	}
+
+	public void setNodeLabel(String nodeLabel) {
+		this.nodeLabel = nodeLabel;
+	}
 
 	public boolean getOutage() {
 		return outage;

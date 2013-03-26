@@ -44,8 +44,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-
-
 @Controller
 public class DashBoardController {
 	private static final Logger logger = LoggerFactory
@@ -71,7 +69,8 @@ public class DashBoardController {
 	@RequestMapping(value = "/dashboardtest", method = RequestMethod.GET)
 	public @ResponseBody
 	String dashboardGroup(@RequestBody String data, HttpServletRequest request)
-			throws HandleException, MapperException, UtilException, JsonGenerationException, JsonMappingException, IOException {
+			throws HandleException, MapperException, UtilException,
+			JsonGenerationException, JsonMappingException, IOException {
 		logger.info(PATH + request.getRequestURL());
 		logger.debug(INVALUE + data);
 		String categoryString = null;
@@ -150,112 +149,15 @@ public class DashBoardController {
 			String dataBaseServerID = null;
 			dataBaseServerID = cateUtil.categoriesId(dataBaseServer, serviceVo);
 			logger.debug("dataBaseServerID::" + dataBaseServerID);
-			CategoryInfoList nodeInfoList=new CategoryInfoList();
-			nodeInfoList=service.getCategoryNodeIdServiceID(dataBaseServerID);
-			ArrayList<Integer> arrNodeId=new ArrayList<Integer>();
-			for (int i = 0; i < nodeInfoList.getnodeInfo().size(); i++) {
-				arrNodeId.add(nodeInfoList.getnodeInfo().get(i).getNodeId());
-				Set<Integer> dup=new HashSet<Integer>(arrNodeId);
-				for (int key:dup){
-					logger.debug(key+":"+Collections.frequency(arrNodeId, key));
-					nodeInfoList.getnodeInfo().get(i).setServiceCount(Collections.frequency(arrNodeId, key));
-				}
-			
-			}
-			service.nodeAvailability(arrNodeId,nodeInfoList);
-			
-			
-			
-			ObjectMapper mapper=new ObjectMapper();
-			StringWriter writer=new StringWriter();
-			mapper.writeValue(writer, nodeInfoList);
-			String jsonTYpe=writer.toString();
-			logger.debug("jsonType:"+jsonTYpe);
-			
-			
-			
-			
-//			ArrayListMultimap arrmulitMap = new ArrayListMultimap();
-//
-//			int serviceIDsize = 0;
-//			int count = 1;
-//			List nodeidList = null;
-//			for (int i = 0; i < nodeInfoList.getnodeInfo().size(); i++) {
-//				arrNodeid.add(nodeInfoList.getnodeInfo().get(i).getNodeId());
-//				nodeInfoList.getnodeInfo().get(i).setServiceCount(1);
-//				arrmulitMap.put(nodeInfoList.getnodeInfo().get(i).getNodeId(),
-//						nodeInfoList.getnodeInfo().get(i).getServiceId());
-//				nodeidList = arrmulitMap.get(nodeInfoList.getnodeInfo().get(i)
-//						.getNodeId());
-//				if (nodeidList.size() > 1) {
-//
-//					int nodeId = nodeInfoList.getnodeInfo().get(i).getNodeId();
-//
-//					count++;
-//					nodeInfoList.getnodeInfo().get(i).setServiceCount(count);
-//
-//				}
-//			}
-//
-//			for (int i = 0; i < nodeInfoList.getnodeInfo().size(); i++) {
-//				logger.debug("nodeid:"
-//						+ String.valueOf(nodeInfoList.getnodeInfo().get(i)
-//								.getNodeId()));
-//				logger.debug("serviceCount:"
-//						+ String.valueOf(nodeInfoList.getnodeInfo().get(i)
-//								.getServiceCount()));
-//
-//			}
-//			
-	
+			ArrayList arrNodeId=new ArrayList();
+			arrNodeId= service.getCategoryNodeIdServiceID(dataBaseServerID);
+					   
 
-			// String nodeAvailability= service.nodeAvailability(tokenId);
-
-			// logger.debug("nodealakdjflkj::"+nodeAvailability);
-
-			// ///////////////////////////////////////////////////////////////////
-
-			// StringTokenizer st = new StringTokenizer(IdLabelIpData, "^");
-			// ArrayList<String> tokenIdLabelIpArr = new ArrayList<String>();
-			// while (st.hasMoreElements()) {
-			// tokenIdLabelIpArr.add((String) st.nextElement());
-			//
-			// }
-			//
-			// for (int i = 0; i < tokenIdLabelIpArr.size(); i++) {
-			//
-			// logger.debug("databaseID:" + tokenIdLabelIpArr.get(i));
-			//
-			//
-			// }
-			//
-			// String [] id=dataBaseServerID.split(",");
-			//
-			// ArrayList ar=new ArrayList();
-			//
-			//
-			// int i=41;
-			// String test222="192.168.0.76";
-			// ar.add(1);
-			// ar.add(2);
-			// ar.add(3);
-			// ar.add(4);
-			// ar.add(5);
-			// ar.add(6);
-			// ar.add(7);
-			// ar.add(8);
-			// ar.add(10);
-			// ar.add(11);
-			// ar.add(12);
-			// ar.add(1);
-			//
-			//
-			//
-			//
-			//
-			//
-			// String lastTEmp=service.serviceAvailability(i,test222,ar);
-			// logger.debug("lastTemp:"+lastTEmp);
+//			ObjectMapper mapper = new ObjectMapper();
+//			StringWriter writer = new StringWriter();
+//			mapper.writeValue(writer, nodeInfoList);
+//			String jsonTYpe = writer.toString();
+//			logger.debug("jsonType:" + jsonTYpe);
 
 			// netWorkInterfacesID
 			String netWorkInterfacesID = null;

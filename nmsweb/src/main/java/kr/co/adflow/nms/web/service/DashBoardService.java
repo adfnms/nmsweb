@@ -230,7 +230,7 @@ public class DashBoardService {
 
 	}
 
-	public CategoryInfoList getCategoryNodeIdServiceID(String categorygroup)
+	public ArrayList getCategoryNodeIdServiceID(String categorygroup)
 			throws HandleException {
 
 		StringBuffer result = new StringBuffer();
@@ -264,10 +264,10 @@ public class DashBoardService {
 					rst = stmt.executeQuery(sql);
 
 					while (rst.next()) {
-						CategoryInfo info=new CategoryInfo();
+					
 						result.append(rst.getInt(1));
-						info.setNodeId(rst.getInt(1));
-						nodeInfoList.getnodeInfo().add(info);
+						arrNodeID.add(rst.getInt(1));
+					
 					}
 					
 				}
@@ -294,7 +294,7 @@ public class DashBoardService {
 				}
 		}
 
-		return nodeInfoList;
+		return arrNodeID;
 
 	}
 
@@ -421,16 +421,16 @@ public class DashBoardService {
 
 	}
 
-	public String nodeAvailability(ArrayList nodeIds,CategoryInfoList nodeinfoList) throws HandleException {
+	public String nodeAvailability(ArrayList nodeIds) throws HandleException {
 		Calendar cal = new GregorianCalendar();
 		Date now = cal.getTime();
 		cal.add(Calendar.DATE, -1);
 		Date yesterday = cal.getTime();
 
-		return nodeAvailability(nodeIds, yesterday, now,nodeinfoList);
+		return nodeAvailability(nodeIds, yesterday, now);
 	}
 
-	public String nodeAvailability(ArrayList nodeIds, Date start, Date end,CategoryInfoList nodeinfoList)
+	public String nodeAvailability(ArrayList nodeIds, Date start, Date end)
 			throws HandleException {
 		if (nodeIds == null || nodeIds.size() == 0) {
 			throw new IllegalArgumentException(
@@ -500,8 +500,8 @@ public class DashBoardService {
 						result.append("{\"nodeid\":\"" + rst.getInt(1) + "\",");
 						result.append("\"avail\":\"" + rst.getDouble(2)
 								+ "\"},");
-						info.setAvailabili(rst.getDouble(2));
-						nodeinfoList.getnodeInfo().add(info);
+				
+						
 					}
 
 					rst.close();
