@@ -212,37 +212,27 @@ public class NotificationsService {
 
 			dPath = (DestinationPaths) ob;
 			int size = dPath.getPath().size();
+			
+			ObjectMapper om = new ObjectMapper();
 
-			boolean dupCheak = true;
+			boolean check = true;
 
 			for (int i = 0; i < size; i++) {
 
 				if (pathName.equals(dPath.getPath().get(i).getName())) {
 
 					path = dPath.getPath().get(i);
+					
+					result = om.defaultPrettyPrintingWriter().writeValueAsString(
+							path);
+					check = false;
+					break;
 				}
 
 			}
 
-			if (dupCheak) {
+			if (check) {
 
-				ObjectMapper om = new ObjectMapper();
-
-				try {
-
-					result = om.defaultPrettyPrintingWriter()
-							.writeValueAsString(path);
-					logger.debug("result ::" + result);
-
-				} catch (JsonGenerationException e) {
-					throw new HandleException(e);
-				} catch (JsonMappingException e) {
-					throw new HandleException(e);
-				} catch (IOException e) {
-					throw new HandleException(e);
-				}
-
-			} else {
 				logger.error("Nofi :: Path name(" + pathName + ") Not Found");
 				throw new HandleException("Nofi :: Path name(" + pathName
 						+ ") Not Found");
@@ -280,6 +270,7 @@ public class NotificationsService {
 				if (path.getName().equals(dPath.getPath().get(i).getName())) {
 
 					dupCheak = false;
+					break;
 				}
 
 			}
@@ -336,7 +327,7 @@ public class NotificationsService {
 					logger.debug("put:::" + dPath.getPath().get(i).getName());
 
 					dupCheak = true;
-					continue;
+					break;
 				}
 
 			}
@@ -388,7 +379,7 @@ public class NotificationsService {
 
 					dPath.getPath().remove(i);
 					dupCheak = true;
-					continue;
+					break;
 				}
 
 			}
@@ -501,7 +492,7 @@ public class NotificationsService {
 				result.append("{\"uei\":\"" + events.getEvent().get(i).getUei()
 						+ "\",");
 				result.append("\"event-label\":\""
-						+ events.getEvent().get(i).getUei() + "\"},");
+						+ events.getEvent().get(i).getEventLabel() + "\"},");
 
 			}
 
@@ -576,11 +567,13 @@ public class NotificationsService {
 			Notifications eNoti = new Notifications();
 
 			Object ob = xUtil.xmlRead(filePath, classname, eNoti);
+			
+			ObjectMapper om = new ObjectMapper();
 
 			eNoti = (Notifications) ob;
 			int size = eNoti.getNotification().size();
 
-			boolean dupCheak = true;
+			boolean check = true;
 
 			for (int i = 0; i < size; i++) {
 
@@ -588,29 +581,18 @@ public class NotificationsService {
 						.getName())) {
 
 					noti = eNoti.getNotification().get(i);
+					
+					result = om.defaultPrettyPrintingWriter().writeValueAsString(
+							noti);
+					
+					check = false;
+					break;
 				}
 
 			}
 
-			if (dupCheak) {
+			if (check) {
 
-				ObjectMapper om = new ObjectMapper();
-
-				try {
-
-					result = om.defaultPrettyPrintingWriter()
-							.writeValueAsString(noti);
-					logger.debug("result ::" + result);
-
-				} catch (JsonGenerationException e) {
-					throw new HandleException(e);
-				} catch (JsonMappingException e) {
-					throw new HandleException(e);
-				} catch (IOException e) {
-					throw new HandleException(e);
-				}
-
-			} else {
 				logger.error("Nofi :: Event Notifications name("
 						+ notificationName + ") Not Found");
 				throw new HandleException("Nofi :: Event Notifications name("
@@ -708,7 +690,7 @@ public class NotificationsService {
 							+ eNotis.getNotification().get(i).getName());
 
 					dupCheak = true;
-					continue;
+					break;
 				}
 
 			}
@@ -762,7 +744,7 @@ public class NotificationsService {
 
 					eNotis.getNotification().remove(i);
 					dupCheak = true;
-					continue;
+					break;
 				}
 
 			}
@@ -815,7 +797,7 @@ public class NotificationsService {
 							+ eNotis.getNotification().get(i).getStatus());
 
 					dupCheak = true;
-					continue;
+					break;
 				}
 
 			}
