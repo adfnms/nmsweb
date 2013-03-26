@@ -1,21 +1,17 @@
 package kr.co.adflow.nms.web.vo.categoryDetail;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Hashtable;
 
-import org.springframework.stereotype.Service;
 
-@Service
 public class CategoryInfoList {
 	
-	protected List<CategoryInfo> nodeinfo;
+	protected Hashtable<String, CategoryInfo> cateGoryInfo;
 	
-	public List<CategoryInfo> getnodeInfo() {
-		if (nodeinfo == null) {
-			nodeinfo = new ArrayList<CategoryInfo>();
+	public Hashtable<String, CategoryInfo> getCateGoryInfo() {
+		if (cateGoryInfo == null) {
+			cateGoryInfo = new Hashtable<String, CategoryInfo>();
 		}
-		return this.nodeinfo;
+		return this.cateGoryInfo;
 	}
-	
 
 }

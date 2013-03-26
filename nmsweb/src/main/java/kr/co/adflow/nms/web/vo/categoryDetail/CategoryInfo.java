@@ -1,9 +1,5 @@
 package kr.co.adflow.nms.web.vo.categoryDetail;
 
-import org.springframework.stereotype.Service;
-
-
-@Service
 public class CategoryInfo {
 
 	protected boolean outage;
@@ -11,14 +7,21 @@ public class CategoryInfo {
 	protected int serviceCount;
 
 	protected double availabili;
-	
+
 	protected int nodeId;
 
 	protected int serviceId;
-	
+
 	protected String nodeLabel;
-	
-	
+	protected String ipAddress;
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
 
 	public String getNodeLabel() {
 		return nodeLabel;
@@ -67,8 +70,5 @@ public class CategoryInfo {
 	public void setServiceCount(int serviceCount) {
 		this.serviceCount = serviceCount;
 	}
-	
-	
-	
 
 }
