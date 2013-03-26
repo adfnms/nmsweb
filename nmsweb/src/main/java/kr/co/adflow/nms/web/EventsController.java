@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.exception.ValidationException;
 import kr.co.adflow.nms.web.service.AlarmsService;
 import kr.co.adflow.nms.web.service.EventsService;
 
@@ -45,7 +46,7 @@ public class EventsController {
 
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
-		
+
 		// 2013-02-23
 		// Parameter check �� ȣ�� �б�
 		Enumeration eParam = request.getParameterNames();
@@ -56,9 +57,9 @@ public class EventsController {
 			while (eParam.hasMoreElements()) {
 				String pName = (String) eParam.nextElement();
 				String pValue = null;
-				if(pName.equals("query")){
+				if (pName.equals("query")) {
 					pValue = URLEncoder.encode(request.getParameter(pName));
-				}else {
+				} else {
 					pValue = request.getParameter(pName);
 				}
 
@@ -71,12 +72,11 @@ public class EventsController {
 			logger.debug("Param:::" + filter.toString());
 
 			try {
-				
-				
+
 				result = (String) service.eventsFilter(filter.toString());
-//				result = (String) service.eventsFilter("query=this_.nodeId%20%3D%20'28'");
-				
-				
+				// result = (String)
+				// service.eventsFilter("query=this_.nodeId%20%3D%20'28'");
+
 			} catch (HandleException e) {
 				logger.error("Failed in processing", e);
 				throw e;
@@ -133,6 +133,85 @@ public class EventsController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
+
+	@RequestMapping(value = "/eventquery", method = RequestMethod.GET)
+	public @ResponseBody
+	String eventquery(HttpServletRequest request) throws HandleException,
+			ValidationException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+
+		String eventseverity = request.getParameter("eventseverity");
+		String limit = request.getParameter("limit");
+		
+
+		if (eventseverity == null|| limit == null) {
+
+			logger.error("Must supply the parameter name, set to either 'eventseverity' and 'limit'");
+			try {
+
+				throw new ValidationException(
+						"Must supply the parameter name, set to either 'eventseverity' and 'limit'");
+
+			} catch (ValidationException e) {
+				throw e;
+			}
+
+		}
+		
+		try {
+			result = (String) service.eventquery(eventseverity,limit);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		
+		
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
+	@RequestMapping(value = "/eventqueryCount", method = RequestMethod.GET)
+	public @ResponseBody
+	String eventqueryCount(HttpServletRequest request) throws HandleException,
+			ValidationException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+		
+		String eventseverity = request.getParameter("eventseverity");
+
+		if (eventseverity == null) {
+
+			logger.error("Must supply the parameter name, set to either 'eventseverity'");
+			try {
+
+				throw new ValidationException(
+						"Must supply the parameter name, set to either 'eventseverity'");
+
+			} catch (ValidationException e) {
+				throw e;
+			}
+
+		}
+
+
+		try {
+			result = (String) service.eventqueryCount(eventseverity);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+
+		
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
 
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
