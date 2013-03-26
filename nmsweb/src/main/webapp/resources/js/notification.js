@@ -112,6 +112,7 @@ function gedestination(callback , notifyid){
  */
 function getEventUei(callback){
 	console.log('http://192.168.0.5:8081/' + version + '/notifications/events');
+	console.log('http://localhost:8080/' + version + '/notifications/events');
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/notifications/events',
@@ -475,8 +476,6 @@ function getEventJsonObj(jsonObj){
 	 if(eventObj.length > 1){
 	
 		for ( var i in  eventObj){
-			
-			alert(eventObj[i]["uei"]);
 			
 			str += "<tr>";
 			str += "	<td class=\"span1\">";										
