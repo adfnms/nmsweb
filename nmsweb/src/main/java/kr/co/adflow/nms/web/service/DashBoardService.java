@@ -38,23 +38,28 @@ public class DashBoardService {
 	private CategoryInfoList infoList;
 
 	private CategoryInfo info;
-	
+
 	private @Value("#{config['XMLPATH']}")
 	String xmlPath;
-	
-	
+
 	private CategoryMain categoryMain;
-	
+
 	public CategoryMain getCategoryMain() {
 		return categoryMain;
 	}
 
-	private Outage outage;
+	public void setCategoryMain(CategoryMain categoryMain) {
+		this.categoryMain = categoryMain;
+	}
 
 	private Hashtable<String, Outage> outageList = null;
 
 	public Hashtable<String, Outage> getOutageList() {
 		return outageList;
+	}
+
+	public void setOutageList(Hashtable<String, Outage> outageList) {
+		this.outageList = outageList;
 	}
 
 	public String categoryJsonXml() throws HandleException {
@@ -233,9 +238,9 @@ public class DashBoardService {
 						int temp = 0;
 						int count = 0;
 						int totalServiceCount = 0;
-					
+
 						int totalOutageCount = 0;
-					
+
 						double totalAvl = 0;
 						int av = 1;
 						while (rst.next()) {
@@ -254,7 +259,8 @@ public class DashBoardService {
 										+ ":" + rst.getString(2) + ":"
 										+ rst.getInt(4));
 								if (getOutageList().containsKey(outageKey)) {
-									int tempOutageCount = tempInfo.getOutageCount();
+									int tempOutageCount = tempInfo
+											.getOutageCount();
 									tempOutageCount++;
 									tempInfo.setOutageCount(tempOutageCount);
 									totalOutageCount++;
@@ -269,7 +275,7 @@ public class DashBoardService {
 								totalServiceCount++;
 								info.setAvailabili(nodeAvailability(info
 										.getNodeId()));
-								totalAvl=info.getAvailabili();
+								totalAvl = info.getAvailabili();
 								String outageKey = String.valueOf(rst.getInt(1)
 										+ ":" + rst.getString(2) + ":"
 										+ rst.getInt(4));
@@ -286,7 +292,6 @@ public class DashBoardService {
 								infoList.getCateGoryInfo().put(nodeid, info);
 
 							}
-							
 
 						}
 						totalAvl = totalAvl / av;
@@ -302,6 +307,7 @@ public class DashBoardService {
 								+ infoList.getOutageTotalCount());
 						categoryMain.getCateGoryTable().put(categorygroupName,
 								infoList);
+						this.setCategoryMain(categoryMain);
 					}
 
 					rst.close();
@@ -453,7 +459,7 @@ public class DashBoardService {
 
 						outageList.put(key, outages);
 					}
-
+					this.setOutageList(outageList);
 					rst.close();
 
 				}
@@ -474,7 +480,5 @@ public class DashBoardService {
 		}
 
 	}
-	
-	
 
 }
