@@ -24,6 +24,8 @@ import kr.co.adflow.nms.web.vo.categories.Catinfo;
 
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfo;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfoList;
+import kr.co.adflow.nms.web.vo.categoryDetail.CategoryMain;
+import kr.co.adflow.nms.web.vo.resultcategory.CategoryJsonGroup;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +40,26 @@ public class DashBoardService {
 	private CategoryInfoList infoList;
 
 	private CategoryInfo info;
+	
+	private CategoryMain categoryMain;
+	
+
+	public CategoryMain getCategoryMain() {
+		return categoryMain;
+	}
 
 	private Hashtable<String, Outage> outageList = null;
+	
+	
+
+	public Hashtable<String, Outage> getOutageList() {
+		return outageList;
+	}
+	
+	
+	public void init(){
+		categoryMain=new CategoryMain();
+	}
 
 	public String categoryJsonXml() throws HandleException {
 		String result = null;
@@ -138,7 +158,7 @@ public class DashBoardService {
 
 					result.append("{\"services\":[");
 					while (rst.next()) {
-
+						CategoryJsonGroup group=new CategoryJsonGroup();
 						result.append("{\"serviceid\":\"" + rst.getInt(1)
 								+ "\",");
 						result.append("\"servicename\":\"" + rst.getString(2)
@@ -172,7 +192,7 @@ public class DashBoardService {
 		return result.toString();
 	}
 
-	public CategoryInfoList getCategoryNodeIdServiceID(String categorygroup)
+	public CategoryInfoList getCategoryNodeIdServiceID(String categorygroupId,String categorygroupName)
 			throws HandleException {
 
 		StringBuffer result = new StringBuffer();
@@ -180,7 +200,7 @@ public class DashBoardService {
 		ResultSet rst = null;
 		Connection conn = null;
 		String sql = null;
-
+		this.outTage();
 		try {
 			Context ctx = new InitialContext();
 			if (ctx == null)
@@ -196,10 +216,10 @@ public class DashBoardService {
 					stmt = conn.createStatement();
 					sql = "SELECT node.nodeid, ipAddr,node.nodelabel,serviceid FROM node, "
 							+ "ifservices WHERE node.nodeid = ifservices.nodeid and serviceid in ("
-							+ categorygroup
+							+ categorygroupId
 							+ ") and node.nodeid in "
 							+ "(SELECT nodeid FROM ifservices WHERE status != 'D' AND serviceid in ("
-							+ categorygroup + "))";
+							+ categorygroupId + "))";
 
 					logger.debug("sql:::" + sql);
 					rst = stmt.executeQuery(sql);
@@ -221,7 +241,7 @@ public class DashBoardService {
 							String outageKey = String.valueOf(rst.getInt(1) + ":"
 									+ rst.getString(2) + ":"
 									+ rst.getInt(4));
-							if(outageList.containsKey(outageKey)){
+							if(getOutageList().containsKey(outageKey)){
 								int tempOutageCount = tempInfo.getOutage();
 								tempOutageCount++;
 								tempInfo.setOutage(tempOutageCount);
@@ -229,6 +249,7 @@ public class DashBoardService {
 							
 						}else{
 							info = new CategoryInfo();
+							info.setNodeId(rst.getInt(1));
 							info.setIpAddress(rst.getString(2));
 							info.setNodeLabel(rst.getString(3));
 							info.setServiceId(rst.getInt(4));
@@ -239,7 +260,7 @@ public class DashBoardService {
 									+ rst.getInt(4));
 							
 							
-							if(outageList.containsKey(outageKey)){
+							if(getOutageList().containsKey(outageKey)){
 								
 								info.setOutage(1);
 							}else{
@@ -251,10 +272,11 @@ public class DashBoardService {
 							
 						}
 
-											
+									
 
 					}
-
+					
+					categoryMain.getCateGoryTable().put(categorygroupName, infoList);	
 				}
 
 				rst.close();
@@ -370,7 +392,7 @@ public class DashBoardService {
 
 	}
 
-	public String outTage() throws HandleException {
+	public void outTage() throws HandleException {
 
 		Statement stmt = null;
 		ResultSet rst = null;
@@ -393,15 +415,21 @@ public class DashBoardService {
 
 				if (conn != null) {
 					stmt = conn.createStatement();
-					sql = "SELECT nodeid, ipaddr,serviceid FROM outages where ifregainedservice is null order by nodeid, ipaddr, serviceid asc";
-
+					sql = "SELECT nodeid, ipaddr, serviceid, outageid, iflostservice FROM outages where ifregainedservice is null order by iflostservice desc";
+					
 					rst = stmt.executeQuery(sql);
-
+					outageList=new Hashtable<String, Outage>();
 					while (rst.next()) {
-						rst.getInt(1);
-						rst.getString(2);
-						rst.getInt(3);
-
+						Outage outages=new Outage();
+						outages.setNodeid(rst.getInt(1));
+						outages.setIpaddr(rst.getString(2));
+						outages.setServiceid(rst.getInt(3));
+						outages.setOutageid(rst.getInt(4));
+						outages.setIflostservice(rst.getString(5));
+						String key=String.valueOf(rst.getInt(1)+":"+rst.getString(2)+":"+rst.getInt(3));
+						logger.debug("outtageKey:"+key);
+						
+						outageList.put(key, outages);
 					}
 
 					rst.close();
@@ -423,7 +451,7 @@ public class DashBoardService {
 				}
 		}
 
-		return null;
+	
 	}
 
 }

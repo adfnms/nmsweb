@@ -21,7 +21,7 @@ import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.exception.MapperException;
 import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.mapper.ServiceIdNameMapper;
-import kr.co.adflow.nms.web.mapper.categoryGroupMapper;
+import kr.co.adflow.nms.web.mapper.CategoryGroupMapper;
 import kr.co.adflow.nms.web.service.DashBoardService;
 import kr.co.adflow.nms.web.util.CategoryUtil;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfo;
@@ -58,7 +58,7 @@ public class DashBoardController {
 	@Autowired
 	ServiceVo serviceVo;
 	@Autowired
-	categoryGroupMapper cateMapper;
+	CategoryGroupMapper cateMapper;
 	@Autowired
 	CategoryJsonGroup group;
 	@Autowired
@@ -77,6 +77,7 @@ public class DashBoardController {
 		String categoryString = null;
 		String serviceString = null;
 		try {
+			service.init();
 			categoryString = (String) service.categoryJsonXml();
 			serviceString = (String) service.serviceIDandNameJson();
 			serviceVo = serviceMapper.serviceInfo2(serviceString);
@@ -91,6 +92,11 @@ public class DashBoardController {
 				buf.append(group.netWorkService().get(i).getNetWorkServers());
 			}
 			String netWorkInterfaces = buf.toString();
+			logger.debug("netWorkInterfaces::"+netWorkInterfaces);
+			logger.debug("netWorkInterfaces::"+netWorkInterfaces);
+			logger.debug("netWorkInterfaces::"+netWorkInterfaces);
+			logger.debug("netWorkInterfaces::"+netWorkInterfaces);
+			logger.debug("netWorkInterfaces::"+netWorkInterfaces);
 
 			// database
 			int dataBaseServerSize = group.dataBaseServer().size();
@@ -148,11 +154,13 @@ public class DashBoardController {
 
 			// dataBaseId
 			String dataBaseServerID = null;
+			String dataBaseServergroup="DatabaseServer";
 			dataBaseServerID = cateUtil.categoriesId(dataBaseServer, serviceVo);
 			logger.debug("dataBaseServerID::" + dataBaseServerID);
 
 			CategoryInfoList infoList = new CategoryInfoList();
-			infoList = service.getCategoryNodeIdServiceID(dataBaseServerID);
+			
+			infoList = service.getCategoryNodeIdServiceID(dataBaseServerID,dataBaseServergroup);
 			
 			//json String
 			 ObjectMapper mapper = new ObjectMapper();

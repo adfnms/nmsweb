@@ -18,6 +18,7 @@ public class CategoryUtil {
 			throws UtilException {
 
 		String resultId = null;
+		String groupName=null;
 		try {
 
 			int serviceVosize = serviceVo.getServiceList().size();
@@ -25,7 +26,6 @@ public class CategoryUtil {
 			for (int i = 0; i < serviceVosize; i++) {
 				if (data.contains(serviceVo.getServiceList().get(i)
 						.getServiceName())) {
-
 					serviceidBuf.append(serviceVo.getServiceList().get(i)
 							.getServiceId()
 							+ ",");
