@@ -135,7 +135,7 @@ function setDestination(uei){
 			    <div class="accordion-heading">
 				    <h3>
 				      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepOne">
-				        1단계&nbsp;&nbsp;<span class="label label-alert">이벤트 선택</span>
+				        1단계&nbsp;&nbsp;<span class="label label-important">이벤트 선택</span>
 				      </a>
 			      	</h3>
 			    </div>
@@ -144,8 +144,8 @@ function setDestination(uei){
 			        <div class="span12 well well-small">
 						<form id="eventInfoFrm" name = "memberInfoFrm" method="post">
 							<!--리스트 시작  -->	
-						<div class="span12" >
-							<table class="table table-striped scrollspy" style="height:460px; overflow-x:auto; overflow-y:hidden; " id="eventListTable">
+						<div class="span12" style="height:460px;  overflow-y:auto;">
+							<table class="table table-striped scrollspy"  id="eventListTable">
 								<colgroup>
 									<col class="span12"/>
 								</colgroup>
@@ -169,7 +169,7 @@ function setDestination(uei){
 			    <div class="accordion-heading">
 				    <h3>
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepTwo">
-				        	2단계&nbsp;&nbsp;<span class="label label-alert">공지 메시지 정의</span>
+				        	2단계&nbsp;&nbsp;<span class="label label-important">공지 메시지 정의</span>
 						</a>
 					</h3>
 			    </div>
@@ -282,36 +282,31 @@ function setDestination(uei){
 			    <div class="accordion-heading">
 			    	<h4>
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseOne">
-			        1단계&nbsp;[목적지&nbsp;선택]&nbsp;
+			        1단계&nbsp;[목적지&nbsp;선택]&nbsp;&nbsp;<span class="label label-info">공지 메시지 정의</span>
 			      </a></h4>
 			    </div>
-			    <div id="collapseOne" class="accordion-body collapse in">
+			    <div id="collapseOne" class="accordion-body collapse in" style="height:349px;  overflow-y:auto;">
 			      <div class="accordion-inner">
 			      <div class="span5" style="margin-left: 5px;" data-toggle="collapse">
-						<div class="row-fluid">
-							<div class="span8">
-								<h3>
-									1단계&nbsp;[목적지&nbsp;선택]&nbsp;<span class="label label-info">공지 메시지 정의</span>
-								</h3>
-							</div>
-						</div>
 						<form id="memberInfoFrm" name = "memberInfoFrm" method="post">
 							<table class="table table-striped" id="PathsTable">
 								<colgroup>
-									<col class="span7"/>
+									<col class="span5"/>
+									<col class="span2"/>
 									<col class="span2"/>
 								</colgroup>
 								<thead>
 									<tr>
 										<th>Existing Paths</th>
-										<th>삭제</th>
+										<th>&nbsp;</th>
+										<th>&nbsp;</th>
 									</tr>
 								</thead>
 							</table>
 						</form>
 						<h4>
-							<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
-								 [NewPath]
+							<a class="accordion-toggle text-success" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
+								 [Add&nbsp;New&nbsp;Path]
 						  </a></h4>
 					</div>
 			      </div>
@@ -321,20 +316,13 @@ function setDestination(uei){
 			    <div class="accordion-heading">
 				    <h4>
 					     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
-					        2단계&nbsp;[목적지&nbsp;명]&nbsp;
+					        2단계&nbsp;[목적지&nbsp;명]&nbsp;&nbsp;<span class="label label-info">목적지 관리</span>
 					     </a>
 				     </h4>
 			    </div>
 			    <div id="collapseTwo" class="accordion-body collapse">
 			      <div class="accordion-inner">
 			    <div class="span5" style="margin-left: 5px;">
-					<div class="row-fluid">
-						<div class="span9" >
-							<h3>
-								2단계&nbsp;[목적지&nbsp;명]&nbsp;<span class="label label-info">목적지 관리</span>
-							</h3>
-						</div>
-					</div>
 						<form id="memberInfoFrm" name = "memberInfoFrm" method="post">
 							<div class="row-fluid">
 								<div class="span12">
@@ -394,24 +382,17 @@ function setDestination(uei){
 			    <div class="accordion-heading">
 			    <h4>
 			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
-			        3단계&nbsp;[목적지&nbsp;대상&nbsp;관리]&nbsp;
+			        3단계&nbsp;[목적지&nbsp;대상&nbsp;관리]&nbsp;&nbsp;<span class="label label-info">목적지 관리</span>
 			      </a></h4>
 			    </div>
 			    <div id="collapseThree" class="accordion-body collapse">
 			      <div class="accordion-inner">
 				    <div class="span5" style="margin-left: 5px;">
-						<div class="row-fluid">
-							<div class="span9" >
-								<h3>
-									3단계&nbsp;[목적지&nbsp;대상&nbsp;관리]&nbsp;<span class="label label-info">목적지 관리</span>
-								</h3>
-							</div>
-						</div>
 						<div>
 							<table>
 								<tr>
 									<td>
-										<div class="span3" style="margin-left: 0px; width: 233px;" >
+										<div class="span3" style="margin-left: 0px; width: 233px; height:250px;overflow-y:auto;" >
 											<table class="table table-striped " id="userTable">
 												<colgroup>
 													<col class="span3"/>
@@ -424,7 +405,7 @@ function setDestination(uei){
 										</div>
 									</td>
 									<td>
-										<div class="span3" style="margin-left: 0px; width: 242px;" >
+										<div class="span3" style="margin-left: 0px; width: 242px; height:250px;overflow-y:auto;">
 											<table class="table table-striped " id="groupTable">
 												<colgroup>
 													<col class="span3"/>
@@ -442,7 +423,7 @@ function setDestination(uei){
 							<table>
 								<tr>
 									<td>
-										<div class="span3" style="margin-left: 0px; width: 233px;" >
+										<div class="span3" style="height:250px; margin-left: 0px; width: 233px; overflow-y:auto;"  >
 											<table class="table table-striped " id="roleTable">
 												<colgroup>
 													<col class="span3"/>
@@ -455,7 +436,7 @@ function setDestination(uei){
 										</div>
 									</td>
 									<td>
-										<div class="span3" style="margin-left: 0px; width: 242px;" >
+										<div class="span3" style="margin-left: 0px; width: 242px; height:250px;overflow-y:auto;" >
 											<table class="table table-striped " id="emailTable">
 												<colgroup>
 													<col class="span2"/>

@@ -59,9 +59,13 @@
 					})
 					();
 	var k={elements:c.elements||"abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video",shivCSS:c.shivCSS!==!1,shivMethods:c.shivMethods!==!1,type:"default",shivDocument:j};
-	a.html5=k,j(b)}(this,b),e._version=d,g.className=g.className.replace(/(^|\s)no-js(\s|$)/,"$1$2")+(f?" js "+p.join(" "):""),e
+	a.html5=k,j(b)}(this,b),e._version=d,g.className=g.className.replace(/(^|\s)no-js(\s|$)/,"$1$2")+(f?" js "+p.join(" "):""),
+	/*e(this,this.document),*/
 	
-(this,this.document),function(a,b,c){function d(a){return o.call(a)=="[object Function]"}
+	
+	function(a,b,c){
+		function d(a){
+			return o.call(a)=="[object Function]"}
 function e(a){return typeof a=="string"}
 function f(){}
 function g(a){return!a||a=="loaded"||a=="complete"||a=="uninitialized"}

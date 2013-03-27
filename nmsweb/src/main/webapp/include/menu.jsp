@@ -50,7 +50,7 @@
 						</a>
 						<ul class="dropdown-menu outline" >
 							<li><a href="<c:url value="/admin/node.do" />">노드관리</a></li>
-							<li><a href="#">그룹관리</a></li>
+							<li><a href="<c:url value="/admin/groupMng.do" />">그룹관리</a></li>
 							<li><a href="<c:url value="/admin/userMng.do" />">사용자 관리</a></li>
 							<li><a href="<c:url value="/admin/setting.do" />">사용자 설정</a></li>
 						</ul>

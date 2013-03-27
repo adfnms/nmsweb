@@ -533,6 +533,12 @@ function pathsNameStr(jsonObj){
 			str += "	<td>";
 			str += pathsObj[i]["name"];
 			str += "	</td>";
+			str += "	<td>";
+			str += "<a type=\"button\" class=\"btn btn-success\" href=\"javascript:deleteUser('"+pathsObj[i]["name"]+"');\">선택</a>";
+			str += "	</td>";
+			str += "	<td>";
+			str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deletePath('"+pathsObj[i]["name"]+"');\">삭제</a>";
+			str += "	</td>";
 			str += "</tr>";
 			}
 	}else{

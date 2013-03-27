@@ -109,8 +109,8 @@ function userListStr(jsonObj){
 		str += userObj[i]["user-comments"];
 		str += "	</td>";
 		str += "	<td>";
-			str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteUser('"+userObj[i]["user-id"]+"');\">삭제</a>";
-			str += "	</td>";
+		str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteUser('"+userObj[i]["user-id"]+"');\">삭제</a>";
+		str += "	</td>";
 		str += "</tr>";
 	}
 
@@ -138,3 +138,25 @@ function userNameStr(jsonObj){
 	
 	
 }
+
+//userInfo <select> str
+function userNameSelectStr(jsonObj){
+	
+	var str = "";
+		
+		var userObj = jsonObj["user"];
+		
+		for ( var i in userObj) {
+			str += "<option value=\""+userObj[i]["user-id"]+"\">"+userObj[i]["full-name"]+"</option>";
+		}
+		$("#userListSelect").append(str);
+	}
+
+	
+	
+	
+
+
+
+
+
