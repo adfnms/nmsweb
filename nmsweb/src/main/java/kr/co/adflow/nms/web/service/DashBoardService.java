@@ -26,6 +26,7 @@ import kr.co.adflow.nms.web.vo.resultcategory.CategoryJsonGroup;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,7 +38,11 @@ public class DashBoardService {
 	private CategoryInfoList infoList;
 
 	private CategoryInfo info;
-
+	
+	private @Value("#{config['XMLPATH']}")
+	String xmlPath;
+	
+	
 	private CategoryMain categoryMain;
 	
 	public CategoryMain getCategoryMain() {
@@ -58,7 +63,7 @@ public class DashBoardService {
 
 			JAXBContext jc = JAXBContext.newInstance(Catinfo.class);
 			Unmarshaller u = jc.createUnmarshaller();
-			File f = new File("c:\\temp\\categories.xml");
+			File f = new File(xmlPath);
 			// JAXBElement element = (JAXBElement) u.unmarshal (f);
 			// File f = new File("d:\\OpenNMS\\etc\\destinationPaths.xml");
 
@@ -232,7 +237,7 @@ public class DashBoardService {
 						int totalOutageCount = 0;
 					
 						double totalAvl = 0;
-						int av = 0;
+						int av = 1;
 						while (rst.next()) {
 
 							String nodeid = String.valueOf(rst.getInt(1));
@@ -264,7 +269,7 @@ public class DashBoardService {
 								totalServiceCount++;
 								info.setAvailabili(nodeAvailability(info
 										.getNodeId()));
-								av = av + 1;
+								totalAvl=info.getAvailabili();
 								String outageKey = String.valueOf(rst.getInt(1)
 										+ ":" + rst.getString(2) + ":"
 										+ rst.getInt(4));
@@ -281,7 +286,7 @@ public class DashBoardService {
 								infoList.getCateGoryInfo().put(nodeid, info);
 
 							}
-							totalAvl = totalAvl + info.getAvailabili();
+							
 
 						}
 						totalAvl = totalAvl / av;

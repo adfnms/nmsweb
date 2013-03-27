@@ -79,6 +79,8 @@ public class DashBoardController {
 		logger.debug(INVALUE + data);
 		String categoryString = null;
 		String serviceString = null;
+		String result=null;
+		StringBuffer resultBuffer=new StringBuffer();
 		try {
 		
 			categoryString = (String) service.categoryJsonXml();
@@ -165,6 +167,7 @@ public class DashBoardController {
 
 			
 			
+			resultBuffer.append("{\"result\":[");
 			// netWorkInterfacesID
 			String netWorkInterfacesID = null;
 			String netWorkInterfacesGroup = "NetWorkInterfaces";
@@ -174,11 +177,12 @@ public class DashBoardController {
 			CategoryMain mainNetWorkInterfaces = new CategoryMain();
 			mainNetWorkInterfaces = service.getCategoryNodeIdServiceID(
 					netWorkInterfacesID, netWorkInterfacesGroup);
+		
 			String netWorkInterfacesJson = cateUtil
 					.cateGoryJackSon(mainNetWorkInterfaces);
 			logger.debug("netWorkInterfacesJson::" + netWorkInterfacesJson);
-
-			
+		
+			resultBuffer.append(netWorkInterfacesJson+",");
 			
 			// dnsDhcpServersID
 			String dnsDhcpServersID = null;
@@ -191,6 +195,12 @@ public class DashBoardController {
 			String DhcpServersJson = cateUtil
 					.cateGoryJackSon(mainDnsDhcpServers);
 			logger.debug("DhcpServersJson::" + DhcpServersJson);
+			
+			
+			resultBuffer.append(DhcpServersJson+",");
+			
+			
+			
 
 			// emailServersID
 			String emailServersID = null;
@@ -204,6 +214,10 @@ public class DashBoardController {
 			String emailServersJson = cateUtil
 					.cateGoryJackSon(mainEmailServersID);
 			logger.debug("emailServersJson::" + emailServersJson);
+			
+			
+			
+			resultBuffer.append(emailServersJson+",");
 
 			// otherServersID
 			String otherServersID = null;
@@ -217,6 +231,12 @@ public class DashBoardController {
 			String otherServersJson = cateUtil
 					.cateGoryJackSon(mainOtherServersID);
 			logger.debug("otherServersJson::" + otherServersJson);
+			
+			
+			
+			resultBuffer.append(otherServersJson+",");
+			
+			
 
 			// jmxServersID
 			String jmxServersID = null;
@@ -230,6 +250,10 @@ public class DashBoardController {
 			String jmxServersJson = cateUtil
 					.cateGoryJackSon(mainJmxServers);
 			logger.debug("jmxServersJson::" + jmxServersJson);
+			
+			
+			resultBuffer.append(jmxServersJson+",");
+			
 
 			// webServersID
 			String webServersID = null;
@@ -243,7 +267,10 @@ public class DashBoardController {
 			String webServersJson = cateUtil
 					.cateGoryJackSon(mainWebServers);
 			logger.debug("webServersJson::" + webServersJson);
-
+			
+			
+			resultBuffer.append(webServersJson);
+			resultBuffer.append("]}");
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -255,7 +282,9 @@ public class DashBoardController {
 			throw e;
 		}
 		logger.debug(RETURNRESULT + categoryString);
-		return categoryString;
+		
+		
+		return resultBuffer.toString();
 	}
 
 	@ExceptionHandler(Exception.class)
