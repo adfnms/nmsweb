@@ -577,8 +577,8 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 						+  new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss')
 						+ "</td>";
 				if(auth == "Y"){
-					str += '<td><button type="button" class="btn btn-primary" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj[i]["@id"]+'\');">관리</button></td>';
-					str += '<td><button type="button" class="btn btn-primary" title="삭제" onclick="javascript:deleteNode(\''+nodeObj[i]["@id"]+'\');">삭제</button></td>';
+					str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj[i]["@id"]+'\');">관리</button></td>';
+					str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj[i]["@id"]+'\');">삭제</button></td>';
 				}
 				str += "</tr>";
 			}
@@ -594,8 +594,8 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 					+  new Date(nodeObj["createTime"]).format('yy-MM-dd hh:mm:ss')
 					+ "</td>";
 			if(auth == "Y"){
-				str += '<td><button type="button" class="btn btn-primary" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj["@id"]+'\');">관리</button></td>';
-				str += '<td><button type="button" class="btn btn-primary" title="삭제" onclick="javascript:deleteNode(\''+nodeObj["@id"]+'\');">삭제</button></td>';
+				str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj["@id"]+'\');">관리</button></td>';
+				str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj["@id"]+'\');">삭제</button></td>';
 			}
 			str += "</tr>";
 		}
