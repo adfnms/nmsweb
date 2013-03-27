@@ -17,14 +17,13 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import kr.co.adflow.nms.web.exception.HandleException;
-import kr.co.adflow.nms.web.vo.OutageCount;
+import kr.co.adflow.nms.web.vo.Outage;
 import kr.co.adflow.nms.web.vo.categories.Catinfo;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfo;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfoList;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryMain;
 import kr.co.adflow.nms.web.vo.resultcategory.CategoryJsonGroup;
 
-import org.codehaus.groovy.runtime.metaclass.TemporaryMethodKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -40,12 +39,16 @@ public class DashBoardService {
 	private CategoryInfo info;
 
 	private CategoryMain categoryMain;
+	
+	public CategoryMain getCategoryMain() {
+		return categoryMain;
+	}
 
-	private OutageCount outageCount;
+	private Outage outage;
 
-	private Hashtable<String, OutageCount> outageList = null;
+	private Hashtable<String, Outage> outageList = null;
 
-	public Hashtable<String, OutageCount> getOutageList() {
+	public Hashtable<String, Outage> getOutageList() {
 		return outageList;
 	}
 
@@ -225,9 +228,9 @@ public class DashBoardService {
 						int temp = 0;
 						int count = 0;
 						int totalServiceCount = 0;
-						int totalServiceCount2 = 0;
+					
 						int totalOutageCount = 0;
-						int totalOutageCount2 = 0;
+					
 						double totalAvl = 0;
 						int av = 0;
 						while (rst.next()) {
@@ -246,9 +249,9 @@ public class DashBoardService {
 										+ ":" + rst.getString(2) + ":"
 										+ rst.getInt(4));
 								if (getOutageList().containsKey(outageKey)) {
-									int tempOutageCount = tempInfo.getOutage();
+									int tempOutageCount = tempInfo.getOutageCount();
 									tempOutageCount++;
-									tempInfo.setOutage(tempOutageCount);
+									tempInfo.setOutageCount(tempOutageCount);
 									totalOutageCount++;
 								}
 
@@ -268,10 +271,10 @@ public class DashBoardService {
 
 								if (getOutageList().containsKey(outageKey)) {
 
-									info.setOutage(1);
+									info.setOutageCount(1);
 									totalOutageCount++;
 								} else {
-									info.setOutage(0);
+									info.setOutageCount(0);
 
 								}
 
@@ -432,9 +435,9 @@ public class DashBoardService {
 					sql = "SELECT nodeid, ipaddr, serviceid, outageid, iflostservice FROM outages where ifregainedservice is null order by iflostservice desc";
 
 					rst = stmt.executeQuery(sql);
-					outageList = new Hashtable<String, OutageCount>();
+					outageList = new Hashtable<String, Outage>();
 					while (rst.next()) {
-						OutageCount outages = new OutageCount();
+						Outage outages = new Outage();
 						outages.setNodeid(rst.getInt(1));
 						outages.setIpaddr(rst.getString(2));
 						outages.setServiceid(rst.getInt(3));
