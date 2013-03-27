@@ -13,5 +13,5 @@ public class CategoryInfoList {
 		}
 		return this.cateGoryInfo;
 	}
-
+ 
 }

@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -19,7 +19,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.vo.Outage;
 import kr.co.adflow.nms.web.vo.categories.Catinfo;
+
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfo;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfoList;
 
@@ -32,6 +34,12 @@ public class DashBoardService {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(DashBoardService.class);
+
+	private CategoryInfoList infoList;
+
+	private CategoryInfo info;
+
+	private Hashtable<String, Outage> outageList = null;
 
 	public String categoryJsonXml() throws HandleException {
 		String result = null;
@@ -164,11 +172,10 @@ public class DashBoardService {
 		return result.toString();
 	}
 
-	public String getCategoryIdLabelIp(String categorygroup)
+	public CategoryInfoList getCategoryNodeIdServiceID(String categorygroup)
 			throws HandleException {
 
 		StringBuffer result = new StringBuffer();
-
 		Statement stmt = null;
 		ResultSet rst = null;
 		Connection conn = null;
@@ -187,7 +194,7 @@ public class DashBoardService {
 
 				if (conn != null) {
 					stmt = conn.createStatement();
-					sql = "SELECT node.nodeid, node.nodelabel, ipAddr,serviceid FROM node, "
+					sql = "SELECT node.nodeid, ipAddr,node.nodelabel,serviceid FROM node, "
 							+ "ifservices WHERE node.nodeid = ifservices.nodeid and serviceid in ("
 							+ categorygroup
 							+ ") and node.nodeid in "
@@ -196,85 +203,61 @@ public class DashBoardService {
 
 					logger.debug("sql:::" + sql);
 					rst = stmt.executeQuery(sql);
+					infoList = new CategoryInfoList();
+					int temp = 0;
+					int count = 0;
 					while (rst.next()) {
+							
+						
+						String nodeid = String.valueOf(rst.getInt(1));
+						
+						if(infoList.getCateGoryInfo().containsKey(nodeid)){
+							
+							CategoryInfo tempInfo = infoList.getCateGoryInfo().get(nodeid);
+							int tempCount = tempInfo.getServiceCount();
+							tempCount ++;
+							tempInfo.setServiceCount(tempCount);
+							
+							String outageKey = String.valueOf(rst.getInt(1) + ":"
+									+ rst.getString(2) + ":"
+									+ rst.getInt(4));
+							if(outageList.containsKey(outageKey)){
+								int tempOutageCount = tempInfo.getOutage();
+								tempOutageCount++;
+								tempInfo.setOutage(tempOutageCount);
+							}
+							
+						}else{
+							info = new CategoryInfo();
+							info.setIpAddress(rst.getString(2));
+							info.setNodeLabel(rst.getString(3));
+							info.setServiceId(rst.getInt(4));
+							info.setServiceCount(1);
+							info.setAvailabili(nodeAvailability(info.getNodeId()));
+							String outageKey = String.valueOf(rst.getInt(1) + ":"
+									+ rst.getString(2) + ":"
+									+ rst.getInt(4));
+							
+							
+							if(outageList.containsKey(outageKey)){
+								
+								info.setOutage(1);
+							}else{
+								info.setOutage(0);
+							}
+							
+							infoList.getCateGoryInfo().put(
+									nodeid, info);
+							
+						}
 
-						result.append(rst.getInt(1) + ",");
-						result.append(rst.getString(2) + ",");
-						result.append(rst.getString(3) + ",");
-						result.append(rst.getInt(4) + "^");
+											
+
 					}
 
-					rst.close();
-
-					result.deleteCharAt(result.length() - 1);
-
-					logger.debug("ResultSet Json:::" + result.toString());
-				}
-			}
-		} catch (Exception e) {
-			throw new HandleException(e);
-		} finally {
-			if (stmt != null)
-				try {
-					stmt.close();
-				} catch (Exception e) {
-				}
-			if (conn != null)
-				try {
-					conn.close();
-				} catch (Exception e) {
-				}
-		}
-
-		return result.toString();
-
-	}
-
-	public ArrayList getCategoryNodeIdServiceID(String categorygroup)
-			throws HandleException {
-
-		StringBuffer result = new StringBuffer();
-		CategoryInfoList nodeInfoList = new CategoryInfoList();
-		Statement stmt = null;
-		ResultSet rst = null;
-		Connection conn = null;
-		String sql = null;
-		ArrayList arrNodeID = new ArrayList();
-		try {
-			Context ctx = new InitialContext();
-			if (ctx == null)
-				throw new Exception("Boom - No Context");
-
-			// /jdbc/postgres is the name of the resource above
-			DataSource ds = (DataSource) ctx
-					.lookup("java:comp/env/jdbc/postgres");
-			if (ds != null) {
-				conn = ds.getConnection();
-
-				if (conn != null) {
-					stmt = conn.createStatement();
-					sql = "SELECT node.nodeid FROM node, "
-							+ "ifservices WHERE node.nodeid = ifservices.nodeid and serviceid in ("
-							+ categorygroup
-							+ ") and node.nodeid in "
-							+ "(SELECT nodeid FROM ifservices WHERE status != 'D' AND serviceid in ("
-							+ categorygroup + "))";
-
-					logger.debug("sql:::" + sql);
-					rst = stmt.executeQuery(sql);
-
-					while (rst.next()) {
-					
-						result.append(rst.getInt(1));
-						arrNodeID.add(rst.getInt(1));
-					
-					}
-					
 				}
 
 				rst.close();
-
-				result.deleteCharAt(result.length() - 1);
 
 				logger.debug("ResultSet Json:::" + result.toString());
 			}
@@ -294,134 +277,11 @@ public class DashBoardService {
 				}
 		}
 
-		return arrNodeID;
+		return infoList;
 
 	}
 
-	public String serviceAvailability(int nodeId, String ipAddr,
-			ArrayList<Integer> serviceIds) throws HandleException {
-		if (ipAddr == null) {
-			throw new IllegalArgumentException("Cannot take null parameters.");
-		}
-
-		Calendar cal = new GregorianCalendar();
-		Date now = cal.getTime();
-		cal.add(Calendar.DATE, -1);
-		Date yesterday = cal.getTime();
-
-		return serviceAvailability(nodeId, ipAddr, serviceIds, yesterday, now);
-	}
-
-	public String serviceAvailability(int nodeId, String ipAddr,
-			ArrayList<Integer> serviceIds, Date start, Date end)
-			throws HandleException {
-		if (serviceIds == null || serviceIds.size() == 0) {
-			throw new HandleException(
-					"Cannot take nodeIds null or with length 0.");
-		}
-		if (start == null || end == null) {
-			throw new HandleException("Cannot take null parameters.");
-		}
-
-		if (end.before(start)) {
-			throw new HandleException(
-					"Cannot have an end time before the start time.");
-		}
-
-		if (end.equals(start)) {
-			throw new HandleException(
-					"Cannot have an end time equal to the start time.");
-		}
-
-		StringBuffer result = new StringBuffer();
-
-		Statement stmt = null;
-		ResultSet rst = null;
-		Connection conn = null;
-		StringBuffer sql = new StringBuffer();
-
-		try {
-			Context ctx = new InitialContext();
-			if (ctx == null)
-				throw new Exception("Boom - No Context");
-
-			// /jdbc/postgres is the name of the resource above
-			DataSource ds = (DataSource) ctx
-					.lookup("java:comp/env/jdbc/postgres");
-			if (ds != null) {
-				conn = ds.getConnection();
-
-				if (conn != null) {
-					stmt = conn.createStatement();
-
-					Timestamp startTime = new Timestamp(start.getTime());
-					Timestamp endTime = new Timestamp(end.getTime());
-
-					sql.append("select serviceid, getPercentAvailabilityInWindow("
-							+ nodeId
-							+ ", '"
-							+ ipAddr
-							+ "', serviceId,'"
-							+ endTime
-							+ "','"
-							+ startTime
-							+ "')  as avail from ifservices, ipinterface where ifservices.ipaddr = ipinterface.ipaddr and ifservices.nodeid = ipinterface.nodeid and ipinterface.ismanaged='M' and ifservices.nodeid="
-							+ nodeId
-							+ " and ifservices.ipaddr='"
-							+ ipAddr
-							+ "' and serviceid in (");
-					// ifservices.nodeid and serviceid in (21,18)
-
-					Iterator<Integer> it = serviceIds.iterator();
-					while (it.hasNext()) {
-						sql.append(it.next());
-						if (it.hasNext()) {
-							sql.append(", ");
-						}
-					}
-					sql.append(")");
-
-					logger.debug("sql:::" + sql.toString());
-					rst = stmt.executeQuery(sql.toString());
-
-					result.append("{\"serviceAvailability\":[");
-					while (rst.next()) {
-
-						result.append("{\"serviceId\":\"" + rst.getInt(1)
-								+ "\",");
-						result.append("\"avail\":\"" + rst.getDouble(2)
-								+ "\"},");
-
-					}
-
-					rst.close();
-
-					// last "&" delete.
-					result.deleteCharAt(result.length() - 1);
-					result.append("]}");
-					logger.debug("ResultSet Json:::" + result.toString());
-				}
-			}
-		} catch (Exception e) {
-			throw new HandleException(e);
-		} finally {
-			if (stmt != null)
-				try {
-					stmt.close();
-				} catch (Exception e) {
-				}
-			if (conn != null)
-				try {
-					conn.close();
-				} catch (Exception e) {
-				}
-		}
-
-		return result.toString();
-
-	}
-
-	public String nodeAvailability(ArrayList nodeIds) throws HandleException {
+	public double nodeAvailability(int nodeIds) throws HandleException {
 		Calendar cal = new GregorianCalendar();
 		Date now = cal.getTime();
 		cal.add(Calendar.DATE, -1);
@@ -430,12 +290,9 @@ public class DashBoardService {
 		return nodeAvailability(nodeIds, yesterday, now);
 	}
 
-	public String nodeAvailability(ArrayList nodeIds, Date start, Date end)
+	public double nodeAvailability(int nodeIds, Date start, Date end)
 			throws HandleException {
-		if (nodeIds == null || nodeIds.size() == 0) {
-			throw new IllegalArgumentException(
-					"Cannot take nodeIds null or with length 0.");
-		}
+
 		if (start == null || end == null) {
 			throw new IllegalArgumentException("Cannot take null parameters.");
 		}
@@ -477,39 +334,21 @@ public class DashBoardService {
 					Timestamp startTime = new Timestamp(start.getTime());
 					Timestamp endTime = new Timestamp(end.getTime());
 
-					sql.append("select nodeid, getManagePercentAvailNodeWindow(nodeid, '"
-							+ endTime
-							+ "','"
-							+ startTime
-							+ "')  from node where nodeid in (");
-					Iterator<Integer> it = nodeIds.iterator();
-					while (it.hasNext()) {
-						sql.append(it.next());
-						if (it.hasNext()) {
-							sql.append(", ");
-						}
-					}
-					sql.append(")");
+					sql.append("select getManagePercentAvailNodeWindow("
+							+ nodeIds + ", '" + endTime + "','" + startTime
+							+ "')  from node ");
 
 					logger.debug("sql:::" + sql.toString());
 					rst = stmt.executeQuery(sql.toString());
 
-					result.append("{\"nodeAvailability\":[");
 					while (rst.next()) {
-						 CategoryInfo info=new CategoryInfo();
-						result.append("{\"nodeid\":\"" + rst.getInt(1) + "\",");
-						result.append("\"avail\":\"" + rst.getDouble(2)
-								+ "\"},");
-				
-						
+
+						avail = rst.getDouble(1);
 					}
 
 					rst.close();
 
-					// last "&" delete.
-					result.deleteCharAt(result.length() - 1);
-					result.append("]}");
-					logger.debug("ResultSet Json:::" + result.toString());
+					logger.debug("ResultSet Json:::" + avail);
 				}
 			}
 		} catch (Exception e) {
@@ -527,8 +366,64 @@ public class DashBoardService {
 				}
 		}
 
-		return result.toString();
+		return avail;
 
+	}
+
+	public String outTage() throws HandleException {
+
+		Statement stmt = null;
+		ResultSet rst = null;
+		Connection conn = null;
+		String sql = null;
+
+		try {
+			logger.debug("aaaaaa:::");
+			Context ctx = new InitialContext();
+
+			if (ctx == null)
+				throw new Exception("Boom - No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+
+			if (ds != null) {
+				conn = ds.getConnection();
+
+				if (conn != null) {
+					stmt = conn.createStatement();
+					sql = "SELECT nodeid, ipaddr,serviceid FROM outages where ifregainedservice is null order by nodeid, ipaddr, serviceid asc";
+
+					rst = stmt.executeQuery(sql);
+
+					while (rst.next()) {
+						rst.getInt(1);
+						rst.getString(2);
+						rst.getInt(3);
+
+					}
+
+					rst.close();
+
+				}
+			}
+		} catch (Exception e) {
+			throw new HandleException(e);
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
+
+		return null;
 	}
 
 }

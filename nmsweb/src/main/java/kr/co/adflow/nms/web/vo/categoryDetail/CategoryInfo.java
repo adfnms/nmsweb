@@ -2,7 +2,7 @@ package kr.co.adflow.nms.web.vo.categoryDetail;
 
 public class CategoryInfo {
 
-	protected boolean outage;
+	protected int outage;
 
 	protected int serviceCount;
 
@@ -31,11 +31,11 @@ public class CategoryInfo {
 		this.nodeLabel = nodeLabel;
 	}
 
-	public boolean getOutage() {
+	public int getOutage() {
 		return outage;
 	}
 
-	public void setOutage(boolean outage) {
+	public void setOutage(int outage) {
 		this.outage = outage;
 	}
 

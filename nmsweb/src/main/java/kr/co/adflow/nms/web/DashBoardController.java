@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -149,16 +150,19 @@ public class DashBoardController {
 			String dataBaseServerID = null;
 			dataBaseServerID = cateUtil.categoriesId(dataBaseServer, serviceVo);
 			logger.debug("dataBaseServerID::" + dataBaseServerID);
-			ArrayList arrNodeId=new ArrayList();
-			arrNodeId= service.getCategoryNodeIdServiceID(dataBaseServerID);
-					   
 
-//			ObjectMapper mapper = new ObjectMapper();
-//			StringWriter writer = new StringWriter();
-//			mapper.writeValue(writer, nodeInfoList);
-//			String jsonTYpe = writer.toString();
-//			logger.debug("jsonType:" + jsonTYpe);
+			CategoryInfoList infoList = new CategoryInfoList();
+			infoList = service.getCategoryNodeIdServiceID(dataBaseServerID);
+			
+			//json String
+			 ObjectMapper mapper = new ObjectMapper();
+			 StringWriter writer = new StringWriter();
+			 mapper.writeValue(writer, infoList);
+			 String jsonTYpe = writer.toString();
+			 logger.debug("jsonType:" + jsonTYpe);
 
+			 
+			 
 			// netWorkInterfacesID
 			String netWorkInterfacesID = null;
 			netWorkInterfacesID = cateUtil.categoriesId(netWorkInterfaces,

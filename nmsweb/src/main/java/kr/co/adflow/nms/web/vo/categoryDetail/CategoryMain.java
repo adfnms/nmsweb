@@ -10,9 +10,9 @@ public class CategoryMain {
 	public Hashtable<String, CategoryInfoList> getCateGoryTable() {
 		if (cateGoryTable == null) {
 			cateGoryTable = new Hashtable<String, CategoryInfoList>();
+			
 		}
 		return this.cateGoryTable;
 	}
-	
 	
 }
