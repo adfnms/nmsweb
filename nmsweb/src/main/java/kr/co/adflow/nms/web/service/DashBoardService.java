@@ -225,11 +225,11 @@ public class DashBoardService {
 						int temp = 0;
 						int count = 0;
 						int totalServiceCount = 0;
-						int totalServiceCount2=0;
+						int totalServiceCount2 = 0;
 						int totalOutageCount = 0;
 						int totalOutageCount2 = 0;
-						double totalAvl=0;
-						int av=0;
+						double totalAvl = 0;
+						int av = 0;
 						while (rst.next()) {
 
 							String nodeid = String.valueOf(rst.getInt(1));
@@ -241,6 +241,7 @@ public class DashBoardService {
 								int tempCount = tempInfo.getServiceCount();
 								tempCount++;
 								tempInfo.setServiceCount(tempCount);
+								totalServiceCount++;
 								String outageKey = String.valueOf(rst.getInt(1)
 										+ ":" + rst.getString(2) + ":"
 										+ rst.getInt(4));
@@ -248,17 +249,19 @@ public class DashBoardService {
 									int tempOutageCount = tempInfo.getOutage();
 									tempOutageCount++;
 									tempInfo.setOutage(tempOutageCount);
+									totalOutageCount++;
 								}
-								totalOutageCount = totalOutageCount + tempInfo.getOutage();
+
 							} else {
 								info = new CategoryInfo();
 								info.setNodeId(rst.getInt(1));
 								info.setIpAddress(rst.getString(2));
 								info.setNodeLabel(rst.getString(3));
 								info.setServiceCount(1);
+								totalServiceCount++;
 								info.setAvailabili(nodeAvailability(info
 										.getNodeId()));
-								av=av+1;
+								av = av + 1;
 								String outageKey = String.valueOf(rst.getInt(1)
 										+ ":" + rst.getString(2) + ":"
 										+ rst.getInt(4));
@@ -266,30 +269,29 @@ public class DashBoardService {
 								if (getOutageList().containsKey(outageKey)) {
 
 									info.setOutage(1);
+									totalOutageCount++;
 								} else {
 									info.setOutage(0);
+
 								}
 
 								infoList.getCateGoryInfo().put(nodeid, info);
-								totalOutageCount = totalOutageCount + info.getOutage();
+
 							}
-							totalAvl=totalAvl+info.getAvailabili();
-							
-					
-							totalServiceCount = totalServiceCount + info.getServiceCount();
-						
+							totalAvl = totalAvl + info.getAvailabili();
 
 						}
-						totalAvl=totalAvl/av;
+						totalAvl = totalAvl / av;
 						infoList.setServiceids(categorygroupId);
 						infoList.setOutageTotalCount(totalOutageCount);
 						infoList.setServiceTotalCount(totalServiceCount);
 						infoList.setAvailabiliAv(totalAvl);
-						logger.debug("totalAv:"+infoList.getAvailabili());
-						logger.debug("Serviceids:"+infoList.getServiceids());
+						logger.debug("totalAv:" + infoList.getAvailabili());
+						logger.debug("Serviceids:" + infoList.getServiceids());
 						logger.debug("totalServiceCount:"
 								+ infoList.getServiceTotalCount());
-						logger.debug("totalOutageCount:"+infoList.getOutageTotalCount());
+						logger.debug("totalOutageCount:"
+								+ infoList.getOutageTotalCount());
 						categoryMain.getCateGoryTable().put(categorygroupName,
 								infoList);
 					}
@@ -464,5 +466,7 @@ public class DashBoardService {
 		}
 
 	}
+	
+	
 
 }
