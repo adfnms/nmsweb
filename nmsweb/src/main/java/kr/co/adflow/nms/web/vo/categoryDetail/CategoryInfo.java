@@ -2,7 +2,7 @@ package kr.co.adflow.nms.web.vo.categoryDetail;
 
 public class CategoryInfo {
 
-	protected boolean outage;
+	protected int outageCount;
 
 	protected int serviceCount;
 
@@ -10,7 +10,7 @@ public class CategoryInfo {
 
 	protected int nodeId;
 
-	protected int serviceId;
+
 
 	protected String nodeLabel;
 	protected String ipAddress;
@@ -31,25 +31,19 @@ public class CategoryInfo {
 		this.nodeLabel = nodeLabel;
 	}
 
-	public boolean getOutage() {
-		return outage;
+	public int getOutageCount() {
+		return outageCount;
 	}
 
-	public void setOutage(boolean outage) {
-		this.outage = outage;
+	public void setOutageCount(int outageCount) {
+		this.outageCount = outageCount;
 	}
 
 	public double getAvailabili() {
 		return availabili;
 	}
 
-	public int getServiceId() {
-		return serviceId;
-	}
 
-	public void setServiceId(int serviceId) {
-		this.serviceId = serviceId;
-	}
 
 	public void setAvailabili(double availabili) {
 		this.availabili = availabili;
