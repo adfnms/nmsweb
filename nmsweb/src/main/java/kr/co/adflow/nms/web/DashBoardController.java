@@ -41,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -71,6 +72,7 @@ public class DashBoardController {
 	// dashBoard
 	
 	@RequestMapping(value = "/dashboardtest", method = RequestMethod.GET)
+//	@PostConstruct
 	public @ResponseBody
 	String dashboardGroup(@RequestBody String data, HttpServletRequest request)
 			throws HandleException, MapperException, UtilException,
@@ -285,6 +287,33 @@ public class DashBoardController {
 		
 		
 		return resultBuffer.toString();
+	}
+	
+	@RequestMapping(value = "/dashboard/Category", method = RequestMethod.GET)
+	public @ResponseBody
+	String allCategory(HttpServletRequest request) throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+		
+//		CategoryMain main = service.getCategoryMain();
+//		Hashtable<String, CategoryInfoList> CateGoryTable =  main.getCateGoryTable();
+//		Set<String> aaa = CateGoryTable.keySet();
+//		CategoryInfoList infoList = CateGoryTable.get("NetWorkInterfaces");
+//		Set<String> bbbb = infoList.getCateGoryInfo().keySet();
+		
+
+		try {
+			result = service.allCategory();
+
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
 	}
 
 	@ExceptionHandler(Exception.class)

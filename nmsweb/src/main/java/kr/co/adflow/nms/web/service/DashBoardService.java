@@ -5,11 +5,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
+import java.util.Iterator;
 
+import javax.annotation.PostConstruct;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -17,15 +20,20 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import kr.co.adflow.nms.web.exception.HandleException;
+import kr.co.adflow.nms.web.mapper.CategoryGroupMapper;
+import kr.co.adflow.nms.web.mapper.ServiceIdNameMapper;
+import kr.co.adflow.nms.web.util.CategoryUtil;
 import kr.co.adflow.nms.web.vo.Outage;
 import kr.co.adflow.nms.web.vo.categories.Catinfo;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfo;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfoList;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryMain;
 import kr.co.adflow.nms.web.vo.resultcategory.CategoryJsonGroup;
+import kr.co.adflow.nms.web.vo.servicesid.ServiceVo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +46,22 @@ public class DashBoardService {
 	private CategoryInfoList infoList;
 
 	private CategoryInfo info;
+	
+	@Autowired
+	ServiceIdNameMapper serviceMapper;
+	@Autowired
+	CategoryGroupMapper cateMapper;
+	@Autowired
+	CategoryJsonGroup group;
+	@Autowired
+	CategoryUtil cateUtil;
+	@Autowired
+	ServiceVo serviceVo;
 
 	private @Value("#{config['XMLPATH']}")
 	String xmlPath;
 
-	private CategoryMain categoryMain;
+	private CategoryMain categoryMain = new CategoryMain();
 
 	public CategoryMain getCategoryMain() {
 		return categoryMain;
@@ -60,6 +79,204 @@ public class DashBoardService {
 
 	public void setOutageList(Hashtable<String, Outage> outageList) {
 		this.outageList = outageList;
+	}
+	
+	
+	@PostConstruct
+	public void initCategory() {
+		String categoryString = null;
+		String serviceString = null;
+		String result=null;
+		StringBuffer resultBuffer=new StringBuffer();
+		try {
+		
+			categoryString = (String) this.categoryJsonXml();
+			serviceString = (String) this.serviceIDandNameJson();
+			serviceVo = serviceMapper.serviceInfo2(serviceString);
+
+			group = cateMapper.cateJson(categoryString);
+
+			// netWork
+			int netWorkSize = group.netWorkService().size();
+			StringBuffer buf = new StringBuffer();
+			for (int i = 0; i < netWorkSize; i++) {
+
+				buf.append(group.netWorkService().get(i).getNetWorkServers());
+			}
+			String netWorkInterfaces = buf.toString();
+	
+
+			// database
+			int dataBaseServerSize = group.dataBaseServer().size();
+			StringBuffer buf1 = new StringBuffer();
+			for (int i = 0; i < dataBaseServerSize; i++) {
+
+				buf1.append(group.dataBaseServer().get(i).getDataBaseServer());
+			}
+			String dataBaseServer = buf1.toString();
+
+			// dnsserver
+			int dnsSize = group.dnsDhcpServers().size();
+			StringBuffer buf2 = new StringBuffer();
+			for (int i = 0; i < dnsSize; i++) {
+
+				buf2.append(group.dnsDhcpServers().get(i).getDnsDhcpServer());
+			}
+			String dnsDhcpServers = buf2.toString();
+
+			// eamilserver
+			int emailSize = group.emailServers().size();
+			StringBuffer buf3 = new StringBuffer();
+			for (int i = 0; i < emailSize; i++) {
+
+				buf3.append(group.emailServers().get(i).getEmailServer());
+			}
+			String emailServers = buf3.toString();
+
+			// jmxserver
+			int jmxSize = group.jmxServers().size();
+			StringBuffer buf4 = new StringBuffer();
+			for (int i = 0; i < jmxSize; i++) {
+
+				buf4.append(group.jmxServers().get(i).getJmxServers());
+			}
+			String jmxServers = buf4.toString();
+
+			// otherServer
+			int otherSize = group.otherServers().size();
+			StringBuffer buf5 = new StringBuffer();
+			for (int i = 0; i < otherSize; i++) {
+
+				buf5.append(group.otherServers().get(i).getOtherServers());
+			}
+			String otherServers = buf5.toString();
+
+			// webServer
+			int websize = group.webServers().size();
+			StringBuffer buf6 = new StringBuffer();
+			for (int i = 0; i < websize; i++) {
+
+				buf6.append(group.webServers().get(i).getWebServers());
+			}
+			String webServers = buf6.toString();
+
+			// dataBaseId
+			String dataBaseServerID = null;
+			String dataBaseServergroup = "DatabaseServer";
+			dataBaseServerID = cateUtil.categoriesId(dataBaseServer, serviceVo);
+			logger.debug("dataBaseServerID::" + dataBaseServerID);
+			CategoryMain mainDatabase = new CategoryMain();		
+			mainDatabase = this.getCategoryNodeIdServiceID(
+					dataBaseServerID, dataBaseServergroup);
+			String dataBaseServerJson = cateUtil
+					.cateGoryJackSon(mainDatabase);
+			logger.debug("dataBaseServerJson::" + dataBaseServerJson);
+
+			
+			
+			resultBuffer.append("{\"result\":[");
+			// netWorkInterfacesID
+			String netWorkInterfacesID = null;
+			String netWorkInterfacesGroup = "NetWorkInterfaces";
+			netWorkInterfacesID = cateUtil.categoriesId(netWorkInterfaces,
+					serviceVo);
+			logger.debug("netWorkInterfacesID::" + netWorkInterfacesID);
+			CategoryMain mainNetWorkInterfaces = new CategoryMain();
+			mainNetWorkInterfaces = this.getCategoryNodeIdServiceID(
+					netWorkInterfacesID, netWorkInterfacesGroup);
+		
+			String netWorkInterfacesJson = cateUtil
+					.cateGoryJackSon(mainNetWorkInterfaces);
+			logger.debug("netWorkInterfacesJson::" + netWorkInterfacesJson);
+		
+			resultBuffer.append(netWorkInterfacesJson+",");
+			
+			// dnsDhcpServersID
+			String dnsDhcpServersID = null;
+			String dnsDhcpServersGroup = "DnsDhcpServers";
+			dnsDhcpServersID = cateUtil.categoriesId(dnsDhcpServers, serviceVo);
+			logger.debug("dnsDhcpServersID::" + dnsDhcpServersID);
+			CategoryMain mainDnsDhcpServers = new CategoryMain();
+			mainDnsDhcpServers = this.getCategoryNodeIdServiceID(
+					dnsDhcpServersID, dnsDhcpServersGroup);
+			String DhcpServersJson = cateUtil
+					.cateGoryJackSon(mainDnsDhcpServers);
+			logger.debug("DhcpServersJson::" + DhcpServersJson);
+			
+			
+			resultBuffer.append(DhcpServersJson+",");
+			
+			
+			
+
+			// emailServersID
+			String emailServersID = null;
+			String emailServersGroup = "EmailServers";
+			emailServersID = cateUtil.categoriesId(emailServers, serviceVo);
+			logger.debug("emailServersID::" + emailServersID);
+
+			CategoryMain mainEmailServersID = new CategoryMain();
+			mainEmailServersID = this.getCategoryNodeIdServiceID(
+					emailServersID, emailServersGroup);
+			String emailServersJson = cateUtil
+					.cateGoryJackSon(mainEmailServersID);
+			logger.debug("emailServersJson::" + emailServersJson);
+			
+			
+			
+			resultBuffer.append(emailServersJson+",");
+
+			// otherServersID
+			String otherServersID = null;
+			String otherServersGroup = "OtherServers";
+			otherServersID = cateUtil.categoriesId(otherServers, serviceVo);
+			logger.debug("otherServersID::" + otherServersID);
+
+			CategoryMain mainOtherServersID = new CategoryMain();
+			mainOtherServersID = this.getCategoryNodeIdServiceID(
+					otherServersID, otherServersGroup);
+			String otherServersJson = cateUtil
+					.cateGoryJackSon(mainOtherServersID);
+			logger.debug("otherServersJson::" + otherServersJson);
+			
+			
+			
+			resultBuffer.append(otherServersJson+",");
+			
+			
+
+			// jmxServersID
+			String jmxServersID = null;
+			String jmxServersGroup = "JmxServers";
+			jmxServersID = cateUtil.categoriesId(jmxServers, serviceVo);
+			logger.debug("jmxServersID::" + jmxServersID);
+
+			CategoryMain mainJmxServers = new CategoryMain();
+			mainJmxServers = this.getCategoryNodeIdServiceID(
+					jmxServersID, jmxServersGroup);
+			String jmxServersJson = cateUtil
+					.cateGoryJackSon(mainJmxServers);
+			logger.debug("jmxServersJson::" + jmxServersJson);
+			
+			
+			resultBuffer.append(jmxServersJson+",");
+			
+
+			// webServersID
+			String webServersID = null;
+			String webServersGroup = "WebServers";
+			webServersID = cateUtil.categoriesId(webServers, serviceVo);
+			logger.debug("webServersID::" + webServersID);
+
+			CategoryMain mainWebServers = new CategoryMain();
+			mainWebServers = this.getCategoryNodeIdServiceID(
+					webServersID, webServersGroup);
+			String webServersJson = cateUtil
+					.cateGoryJackSon(mainWebServers);
+			logger.debug("webServersJson::" + webServersJson);
+		} catch (Exception e) {
+			logger.error("Failed in processing", e);
+		}
 	}
 
 	public String categoryJsonXml() throws HandleException {
@@ -195,7 +412,7 @@ public class DashBoardService {
 
 	public CategoryMain getCategoryNodeIdServiceID(String categorygroupId,
 			String categorygroupName) throws HandleException {
-		CategoryMain categoryMain = new CategoryMain();
+		CategoryMain categoryMain = this.getCategoryMain();
 		logger.debug("cateGoryGroupname:" + categorygroupName);
 		if (categorygroupId.length() < 1) {
 
@@ -242,7 +459,8 @@ public class DashBoardService {
 						int totalOutageCount = 0;
 
 						double totalAvl = 0;
-						int av = 1;
+						double totalserviceAvl = 0;
+						int av = 0;
 						while (rst.next()) {
 
 							String nodeid = String.valueOf(rst.getInt(1));
@@ -255,6 +473,18 @@ public class DashBoardService {
 								tempCount++;
 								tempInfo.setServiceCount(tempCount);
 								totalServiceCount++;
+								
+								double availabili = info.getAvailabili();
+								
+								double availabili2 = serviceAvailability(info
+										.getNodeId(),info.getIpAddress(), rst.getInt(4));
+								
+								totalserviceAvl = totalserviceAvl+ availabili2;
+								
+								totalAvl = totalAvl+ availabili2;
+								
+								info.setAvailabili((availabili + availabili2) / totalServiceCount);
+								
 								String outageKey = String.valueOf(rst.getInt(1)
 										+ ":" + rst.getString(2) + ":"
 										+ rst.getInt(4));
@@ -273,9 +503,14 @@ public class DashBoardService {
 								info.setNodeLabel(rst.getString(3));
 								info.setServiceCount(1);
 								totalServiceCount++;
-								info.setAvailabili(nodeAvailability(info
-										.getNodeId()));
-								totalAvl = info.getAvailabili();
+								info.setAvailabili(serviceAvailability(info
+										.getNodeId(),info.getIpAddress(), rst.getInt(4)));
+								totalserviceAvl = info.getAvailabili();
+//								totalAvl = totalAvl+ info.getAvailabili();
+								av++;
+								logger.debug("totalAvl11:" + String.valueOf(totalAvl)+", "+info.getAvailabili());
+								logger.debug("av11:" + av+ ", nodeid =="+info.getNodeId());
+								
 								String outageKey = String.valueOf(rst.getInt(1)
 										+ ":" + rst.getString(2) + ":"
 										+ rst.getInt(4));
@@ -292,8 +527,37 @@ public class DashBoardService {
 								infoList.getCateGoryInfo().put(nodeid, info);
 
 							}
+							
+							
+							
+//							totalAvl = totalAvl / av;
+//							infoList.setServiceids(categorygroupId);
+//							infoList.setOutageTotalCount(totalOutageCount);
+//							infoList.setServiceTotalCount(totalServiceCount);
+//							infoList.setAvailabiliAv(totalAvl);
+//							
+//							categoryMain.getCateGoryTable().put(categorygroupName,
+//									infoList);
+							
 
 						}
+						
+						Hashtable<String, CategoryInfo> cateGoryInfo = infoList.getCateGoryInfo();
+						Iterator<String> it = cateGoryInfo.keySet().iterator();
+						
+						while (it.hasNext()) {
+							String categoryInfoKey = (String) it.next();
+							
+							CategoryInfo categoryInfo = cateGoryInfo.get(categoryInfoKey);
+							
+							
+							totalAvl = totalAvl + categoryInfo.getAvailabili();
+							
+						}
+						
+						
+						logger.debug("totalAvl:" + String.valueOf(totalAvl));
+						logger.debug("av:" + av);
 						totalAvl = totalAvl / av;
 						infoList.setServiceids(categorygroupId);
 						infoList.setOutageTotalCount(totalOutageCount);
@@ -305,6 +569,8 @@ public class DashBoardService {
 								+ infoList.getServiceTotalCount());
 						logger.debug("totalOutageCount:"
 								+ infoList.getOutageTotalCount());
+						logger.debug("categorygroupName:"
+								+ categorygroupName);
 						categoryMain.getCateGoryTable().put(categorygroupName,
 								infoList);
 						this.setCategoryMain(categoryMain);
@@ -341,6 +607,47 @@ public class DashBoardService {
 
 		return nodeAvailability(nodeIds, yesterday, now);
 	}
+	
+	
+	
+	public String allCategory() throws HandleException {
+		StringBuffer result = new StringBuffer();
+		
+		try {
+			
+			
+			Hashtable<String, CategoryInfoList> cateGoryTable = this.getCategoryMain().getCateGoryTable();
+			
+			Iterator<String> it = cateGoryTable.keySet().iterator();
+			
+			result.append("{\"CategoryInfo\":[");
+			
+			while (it.hasNext()) {
+				String categoryInfoKey = (String) it.next();
+				
+				CategoryInfoList categoryInfoList = cateGoryTable.get(categoryInfoKey);
+				
+				
+				result.append("{\"name\":\""+categoryInfoKey+"\",\"outageTotalCount\":\""+categoryInfoList.getOutageTotalCount()+
+						",\"serviceTotalCount\":\""+categoryInfoList.getServiceTotalCount()+",\"availabili\":\""+categoryInfoList.getAvailabili()
+						+"\"},");
+				
+			}
+			
+			// last "," delete
+
+			result.deleteCharAt(result.length() - 1);
+			result.append("]}");
+			
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+		
+		return result.toString();
+		
+		
+	}
+	
 
 	public double nodeAvailability(int nodeIds, Date start, Date end)
 			throws HandleException {
@@ -420,6 +727,96 @@ public class DashBoardService {
 
 	}
 
+	
+    public double serviceAvailability(int nodeId, String ipAddr, int serviceIds) throws HandleException {
+        if (ipAddr == null) {
+            throw new IllegalArgumentException("Cannot take null parameters.");
+        }
+
+        Calendar cal = new GregorianCalendar();
+        Date now = cal.getTime();
+        cal.add(Calendar.DATE, -1);
+        Date yesterday = cal.getTime();
+
+        return serviceAvailability(nodeId, ipAddr, serviceIds, yesterday, now);
+    }
+    
+    public double serviceAvailability(int nodeId, String ipAddr, int serviceIds, Date start, Date end) throws HandleException {
+        if (start == null || end == null) {
+            throw new HandleException("Cannot take null parameters.");
+        }
+
+        if (end.before(start)) {
+            throw new HandleException("Cannot have an end time before the start time.");
+        }
+
+        if (end.equals(start)) {
+            throw new HandleException("Cannot have an end time equal to the start time.");
+        }
+
+        
+        double result = 0;
+        
+		Statement stmt = null;
+		ResultSet rst = null;
+		Connection conn = null;
+		StringBuffer sql = new StringBuffer();
+
+		try {
+			Context ctx = new InitialContext();
+			if (ctx == null)
+				throw new Exception("Boom - No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+			if (ds != null) {
+				conn = ds.getConnection();
+
+				if (conn != null) {
+					stmt = conn.createStatement();
+					
+					Timestamp startTime = new Timestamp(start.getTime());
+					Timestamp endTime = new Timestamp(end.getTime());
+					
+					sql.append("select getPercentAvailabilityInWindow("+nodeId+", '"+ipAddr+"', '"+serviceIds+"','"+endTime+"','"+ startTime +"')  as avail from ifservices, ipinterface where ifservices.ipaddr = ipinterface.ipaddr and ifservices.nodeid = ipinterface.nodeid and ipinterface.ismanaged='M' and ifservices.nodeid="+nodeId+" and ifservices.ipaddr='"+ipAddr+"'  and serviceid = "+serviceIds);
+
+
+					logger.debug("sql:::" + sql.toString());
+					rst = stmt.executeQuery(sql.toString());
+
+					
+					while (rst.next()) {
+
+						result =  rst.getInt(1);
+						
+
+					}
+
+					rst.close();
+
+
+				}
+			}
+		} catch (Exception e) {
+			throw new HandleException(e);
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
+        
+		return result;
+
+    }   
+    
 	public void outTage() throws HandleException {
 
 		Statement stmt = null;
