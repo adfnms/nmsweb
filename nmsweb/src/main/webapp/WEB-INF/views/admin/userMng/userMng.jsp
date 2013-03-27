@@ -18,45 +18,31 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		
-		//전체 리스트 
+		/* 사용자 전체 리스트 */
+		/* GETGet a list of users */
 		getUserListTotal(callbackUseList);
 		
 		
-
-
 		
-
 	});
 	
 	
-
+/**
+ * GETGet a list of users
+ * 사용자 리스트 전체가져오기
+ */
  	function callbackUseList(jsonObj) {
 		console.log(jsonObj);
-		var str = "";
-
-		var userObj = jsonObj["user"];
 		
-		for ( var i in userObj) {
-			str += "<tr>";
-			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
-			str += userObj[i]["user-id"];
-			str += "	</td>";
-			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
-			str += userObj[i]["full-name"];
-			str += "	</td>";
-			str += "	<td>";
-			str += userObj[i]["user-comments"];
-			str += "	</td>";
-			str += "	<td>";
- 			str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteUser('"+userObj[i]["user-id"]+"');\">삭제</a>";
- 			str += "	</td>";
-			str += "</tr>";
-		}
-
+		var str = userListStr(jsonObj);
+		
 		$("#userListTable").append(str);
+
 	} 
 
-
+/**
+ * 사용자 상세정보 갖고 오기
+ */
 	function getUserDetail(user_id){
 		
 		$("#userIdFrm").find('[name=user-id]:input').val(user_id);
@@ -69,6 +55,9 @@
 		
 	}
 	
+	/**
+	 * 사용자 상세정보 삭제하기
+	 */
 	function deleteUser(userId){
 		
 		$("#userIdFrm").find('[name=user-id]:input').val(userId);

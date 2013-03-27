@@ -37,7 +37,7 @@ function JSONStrToUserFordelete(userId){
 
 
 
-/** ����� �⺻���� ����ϱ�
+/** 
  * @param userId
  * @param fullName
  * @param comments
@@ -57,7 +57,7 @@ function setUserBaseInfo(userId,fullName,comments,password){
 		},
         success: function(data){
         	_return = true;
-        	alert("???");
+        	alert("성공하였습니다");
         }
 	});
 	alert(_return);
@@ -66,8 +66,9 @@ function setUserBaseInfo(userId,fullName,comments,password){
 }
 
 
-/**����� ��ü ����Ʈ ��������
- * @param callback �ݹ��Լ�
+/**
+ * 
+ * @param callback
  */
 function getUserListTotal(callback){
 	
@@ -77,13 +78,63 @@ function getUserListTotal(callback){
 		dataType:'json',
 		contentType: 'application/json',
 		error:function(data){
-            alert('����� ��ü ����Ʈ �������� ���� ����');
+            alert('사용자 리스트 실패');
         },
         success: function(data){
-        	//�ݹ��Լ�
+        	
         	if( typeof callback == "function" ) {
 		        callback(data);
 		    }
         }
 	});
+}
+
+
+//--------------------------------------<div>---------------------------------------------
+function userListStr(jsonObj){
+	
+	var str = "";
+
+	var userObj = jsonObj["user"];
+	
+	for ( var i in userObj) {
+		str += "<tr>";
+		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
+		str += userObj[i]["user-id"];
+		str += "	</td>";
+		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
+		str += userObj[i]["full-name"];
+		str += "	</td>";
+		str += "	<td>";
+		str += userObj[i]["user-comments"];
+		str += "	</td>";
+		str += "	<td>";
+			str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteUser('"+userObj[i]["user-id"]+"');\">삭제</a>";
+			str += "	</td>";
+		str += "</tr>";
+	}
+
+	$("#userListTable").append(str);
+	
+	
+}
+
+function userNameStr(jsonObj){
+	
+	var str = "";
+
+	var userObj = jsonObj["user"];
+	
+	for ( var i in userObj) {
+		str += "<tr>";
+		
+		str += "	<td onclick=\"javascript:destinationPathInfo('"+userObj[i]["user-id"]+"');\">";
+		str += "&nbsp;"+userObj[i]["full-name"];
+		str += "	</td>";
+		str += "</tr>";
+	}
+
+	$("#userTable").append(str);
+	
+	
 }

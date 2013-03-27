@@ -125,6 +125,29 @@ function getEventUei(callback){
 		},
 		success : function(data) {
 			// 콜백함수
+			//console.log(data);
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+	
+}
+function getPathList(callback){
+	console.log('http://192.168.0.5:8081/' + version + '/notifications/destinationPaths');
+	console.log('http://localhost:8080/' + version + '/notifications/destinationPaths');
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/notifications/destinationPaths',
+		dataType : 'json',
+		contentType : "application/json",
+		accept : "application/json",
+		error : function(data) {
+			console.log(data);
+			alert('destinationPaths 리스트 가져오기 서비스 실패');
+		},
+		success : function(data) {
+			// 콜백함수
 			console.log(data);
 			if (typeof callback == "function") {
 				callback(data);
@@ -133,7 +156,6 @@ function getEventUei(callback){
 	});
 	
 }
-
 
 /**
  *Return notification list related with given userName
@@ -478,22 +500,15 @@ function getEventJsonObj(jsonObj){
 		for ( var i in  eventObj){
 			
 			str += "<tr>";
-			str += "	<td class=\"span1\">";										
-			str += eventObj[i]["uei"];												//uei
-			str += "	</td>";
-			str += "	<td class=\"span1\">";										
-			str += eventObj[i]["event-label"];												//event-label
+			str += "	<td class=\"span1\" onclick=\"javascript:setDestination('"+eventObj[i]["uei"]+"');\">";										
+			str += "&nbsp;"+eventObj[i]["event-label"];												//event-label
 			str += "	</td>";													
 			str += "</tr>";
-			
 			} 
 		}else{
 			str += "<tr>";
 			str += "	<td class=\"span1\">";										
-			str += eventObj[0]["userId"];												//uei
-			str += "	</td>";
-			str += "	<td class=\"span1\">";										
-			str += eventObj[0]["media"];												//event-label
+			str += eventObj[0]["event-label"];												//event-label
 			str += "	</td>";													
 			str += "</tr>";
 			
@@ -501,3 +516,37 @@ function getEventJsonObj(jsonObj){
 	
 	 $("#eventListTable").append(str);
 }
+
+function pathsNameStr(jsonObj){
+	console.log(jsonObj);
+	var str = "";
+
+	var pathsObj = jsonObj["path"];
+	
+	if(pathsObj.length > 1){
+	
+		for ( var i in pathsObj) {
+			
+			
+			
+			str += "<tr>";
+			str += "	<td>";
+			str += pathsObj[i]["name"];
+			str += "	</td>";
+			str += "</tr>";
+			}
+	}else{
+		str += "<tr>";
+		str += "	<td>";										
+		str += pathsObj[0]["name"];												
+		str += "	</td>";													
+		str += "</tr>";
+	}
+
+	$("#PathsTable").append(str);
+	
+	
+}
+
+
+

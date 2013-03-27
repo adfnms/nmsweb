@@ -34,7 +34,16 @@
 		
 		/* All acknowledged notices*/
 		//getAllAcknowledged(allAcknowledgedList, encodeTime, "5");
+		
+		
+		
+		
 	});
+	
+	
+	
+	
+	
 	
 	/* My Notification Callback */
 	function userNotificationList(jsonObj) {
@@ -61,10 +70,6 @@
 
 	}  
 	/*//total Notification Callback*/
-	
-	
-	
-	
 </script>
 </head>
 
