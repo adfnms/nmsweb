@@ -158,63 +158,84 @@ public class DashBoardController {
 			dataBaseServerID = cateUtil.categoriesId(dataBaseServer, serviceVo);
 			logger.debug("dataBaseServerID::" + dataBaseServerID);
 			CategoryInfoList infoListDatabase = new CategoryInfoList();
-			infoListDatabase = service.getCategoryNodeIdServiceID(dataBaseServerID,
-					dataBaseServergroup);
-			ObjectMapper mapper = new ObjectMapper();
-			StringWriter writer = new StringWriter();
-			mapper.writeValue(writer, infoListDatabase);
-			String jsoninfoListDatabase = writer.toString();
-			logger.debug("jsoninfoListDatabase:" + jsoninfoListDatabase);
+			infoListDatabase = service.getCategoryNodeIdServiceID(
+					dataBaseServerID, dataBaseServergroup);
+			String dataBaseServerJson = cateUtil
+					.cateGoryJackSon(infoListDatabase);
+			logger.debug("dataBaseServerJson::" + dataBaseServerJson);
 
-			
-		
 			// netWorkInterfacesID
 			String netWorkInterfacesID = null;
-			String netWorkInterfacesGroup="netWorkInterfaces";
+			String netWorkInterfacesGroup = "NetWorkInterfaces";
 			netWorkInterfacesID = cateUtil.categoriesId(netWorkInterfaces,
 					serviceVo);
 			logger.debug("netWorkInterfacesID::" + netWorkInterfacesID);
-			CategoryInfoList infoListnetWorkInterfaces=new CategoryInfoList();
-			infoListnetWorkInterfaces=service.getCategoryNodeIdServiceID(netWorkInterfacesID, netWorkInterfacesGroup);
-			ObjectMapper mapper2 = new ObjectMapper();
-			StringWriter writer2 = new StringWriter();
-			mapper2.writeValue(writer2, infoListDatabase);
-			String jsoninfoListneWork = writer2.toString();
-			logger.debug("jsoninfoListneWork:" + jsoninfoListneWork);
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+			CategoryInfoList infoListNetWorkInterfaces = new CategoryInfoList();
+			infoListNetWorkInterfaces = service.getCategoryNodeIdServiceID(
+					netWorkInterfacesID, netWorkInterfacesGroup);
+			String netWorkInterfacesJson = cateUtil
+					.cateGoryJackSon(infoListNetWorkInterfaces);
+			logger.debug("netWorkInterfacesJson::" + netWorkInterfacesJson);
+
 			// dnsDhcpServersID
 			String dnsDhcpServersID = null;
+			String dnsDhcpServersGroup = "DnsDhcpServers";
 			dnsDhcpServersID = cateUtil.categoriesId(dnsDhcpServers, serviceVo);
 			logger.debug("dnsDhcpServersID::" + dnsDhcpServersID);
+			CategoryInfoList infoListDnsDhcpServers = new CategoryInfoList();
+			infoListDnsDhcpServers = service.getCategoryNodeIdServiceID(
+					dnsDhcpServersID, dnsDhcpServersGroup);
+			String DhcpServersJson = cateUtil
+					.cateGoryJackSon(infoListDnsDhcpServers);
+			logger.debug("DhcpServersJson::" + DhcpServersJson);
 
 			// emailServersID
 			String emailServersID = null;
+			String emailServersGroup = "EmailServers";
 			emailServersID = cateUtil.categoriesId(emailServers, serviceVo);
 			logger.debug("emailServersID::" + emailServersID);
 
+			CategoryInfoList infoListEmailServersID = new CategoryInfoList();
+			infoListEmailServersID = service.getCategoryNodeIdServiceID(
+					emailServersID, emailServersGroup);
+			String emailServersJson = cateUtil
+					.cateGoryJackSon(infoListEmailServersID);
+			logger.debug("emailServersJson::" + emailServersJson);
+
 			// otherServersID
 			String otherServersID = null;
+			String otherServersGroup = "OtherServers";
 			otherServersID = cateUtil.categoriesId(otherServers, serviceVo);
 			logger.debug("otherServersID::" + otherServersID);
 
+			CategoryInfoList infoListotherServersID = new CategoryInfoList();
+			infoListotherServersID = service.getCategoryNodeIdServiceID(
+					otherServersID, otherServersGroup);
+			String otherServersJson = cateUtil
+					.cateGoryJackSon(infoListotherServersID);
+			logger.debug("otherServersJson::" + otherServersJson);
+
 			// jmxServersID
 			String jmxServersID = null;
+			String jmxServersGroup = "JmxServer";
 			jmxServersID = cateUtil.categoriesId(jmxServers, serviceVo);
 			logger.debug("jmxServersID::" + jmxServersID);
+
+			CategoryInfoList infoListjmxServersID = new CategoryInfoList();
+			infoListotherServersID = service.getCategoryNodeIdServiceID(
+					jmxServersID, jmxServersGroup);
+			String jmxServersJson = cateUtil
+					.cateGoryJackSon(infoListjmxServersID);
+			logger.debug("jmxServersJson::" + jmxServersJson);
 
 			// webServersID
 			String webServersID = null;
 			webServersID = cateUtil.categoriesId(webServers, serviceVo);
 			logger.debug("webServersID::" + webServersID);
+			
+			
+			
+			
 
 			// /////
 		} catch (HandleException e) {

@@ -1,10 +1,17 @@
 package kr.co.adflow.nms.web.util;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
 import kr.co.adflow.nms.web.exception.UtilException;
+import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfo;
+import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfoList;
 import kr.co.adflow.nms.web.vo.servicesid.ServiceVo;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -68,5 +75,22 @@ public class CategoryUtil {
 		}
 		return arr;
 	}
+	
+	
+	public String cateGoryJackSon(CategoryInfoList cateinfo) throws UtilException{
+		String result=null;
+		try{
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter writer = new StringWriter();
+		mapper.writeValue(writer, cateinfo);
+		result = writer.toString();
+		logger.debug("CateInfoJsonresult:" + result);
+		}catch(Exception e){
+			throw new UtilException(e);
+		}
+		return result;
+	}
+	
+	
 
 }

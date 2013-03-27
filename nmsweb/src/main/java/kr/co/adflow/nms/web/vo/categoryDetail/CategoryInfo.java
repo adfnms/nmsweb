@@ -10,7 +10,7 @@ public class CategoryInfo {
 
 	protected int nodeId;
 
-	protected int serviceId;
+
 
 	protected String nodeLabel;
 	protected String ipAddress;
@@ -43,13 +43,7 @@ public class CategoryInfo {
 		return availabili;
 	}
 
-	public int getServiceId() {
-		return serviceId;
-	}
 
-	public void setServiceId(int serviceId) {
-		this.serviceId = serviceId;
-	}
 
 	public void setAvailabili(double availabili) {
 		this.availabili = availabili;
