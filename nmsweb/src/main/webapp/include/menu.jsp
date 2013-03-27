@@ -16,12 +16,12 @@
 						<a class="dropdown-toggle" href="<c:url value="/dashboard.do" />">DashBoard</a>
 					</li>
 					<li class="dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">모니터링
+						<a class="dropdown-toggle" data-toggle="dropdown" href="<c:url value="/monitoring/nodelist.do" />">모니터링
 							<b class = "caret"></b>
 						</a>
 						<ul class="dropdown-menu" >
 							<li><a href="#">지도보기</a></li>
-							<li><a href="#">노드목록</a></li>
+							<li><a href="<c:url value="/monitoring/nodelist.do" />">노드목록</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
@@ -30,7 +30,7 @@
 						</a>
 						<ul class="dropdown-menu" >
 							<li><a href="<c:url value="/search/node.do" />">노드검색</a></li>
-							<li><a href="#">장애검색</a></li>
+							<li><a href="<c:url value="/search/outage.do" />">중단 검색</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
@@ -45,7 +45,7 @@
 						</ul>
 					</li>
 					<li class="dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">운영관리
+						<a class="dropdown-toggle" data-toggle="dropdown" href="<c:url value="/admin/node.do" />">운영관리
 							<b class = "caret"></b>
 						</a>
 						<ul class="dropdown-menu outline" >

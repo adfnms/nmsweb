@@ -20,29 +20,90 @@
 	$(document).ready(function() {
 		
 		/* Recent Events */
-		var query = "query="+encodeURI("this_.eventSeverity > 5");
-		var filter = "&orderBy=eventTime&order=desc&limit=10";
-		getTotalEvenstList(addEvents, query+filter);
+		eventListAct();
 		
 		getCurrentOutagesForNode(addOutage);
+		
+		setTimeout(chkstats, 2000);
 	});
 
-	function addEvents(jsonObj){
-
-		var str = getTabletagToEventJsonObj(jsonObj);
-		$('#eventDiv').append(str);
+	var index = 0;
+	function chkstats(){
 		
-		//Add Scroll From #outageScrollDiv 
-		$('#outageScrollDiv').css('overflow-y','scroll').css('height','300px');
+		if( index == 7){
+			eventListAct();
+			index = 0;
+		}else{
+			grapHide(index+1);
+			index++;
+		}
+		
+		
+		setTimeout(chkstats, 3000);
+	}
+	
+	function eventListAct(){
+		
+		var data = "==6";
+ 		getTotalEvenstListForDashboard(addEvents,data,"10");
 		
 	}
 	
-	function addOutage(jsonObj){
+	/* Evnet Callback */
+	function addEvents(jsonObj){
+		console.log(jsonObj);
+		var str = "";
+		var events = jsonObj["event"];
+		console.log(events);
+		str = "	<div class='row-fluid'>"
+			+ "		<h5>이벤트&nbsp;목록&nbsp;["
+			+ events.length
+			+ "]</h5>"
+			+ "	</div>"
+			+ "	<div class='row-fluid'>"
+			+ "		<div class='span12 well well-small'>"
+			+ "		<table class='table'>"
+			+ "			<colgroup><col width='15%'/><col  width='25%'/><col  width='15%'/><col  width='45%'/></colgroup>"		
+			+ "			<thead><tr><th>이벤트ID</th><th>시간</th><th>상태</th><th class='span4'>메세지</th></tr></thead>"
+			+ "		</table><div id='outageScrollDiv'><table class='table'>	"
+			+ "			<colgroup><col width='15%'/><col  width='25%'/><col  width='15%'/><col  width='45%'/></colgroup>"
+			+ "			<tbody>";
+		if (events.length > 0) {
+	
+			for ( var i in events) {
+				str += "<tr>";
+				str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events[i]["eventid"]+"' target='_blank'>" + events[i]["eventid"]
+						+ "</a></td>";
+				str += "<td>"
+						+ new Date(events[i]["eventtime"])
+								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				str += "<th class='"+getEventseverityToNum(events[i]["eventseverity"]).toLowerCase()+"'>" + getEventseverityToNum(events[i]["eventseverity"]) + "</th>";
+				str += "<td>" + events[i]["eventlogmsg"] + "</td>";
+				str += "</tr>";
+				str += "<tr>";
+				str += "	<td colspan='4'>";
+				str += events[i]["eventdescr"];
+				str += "	</td>";
+				str += "</tr>";
+			}
+		}
+
+	
+		str += "</tbody></table></div></div>";
+		$('#eventDiv').empty();
+		$('#eventDiv').append(str);
 		
+		//Add Scroll From #outageScrollDiv 
+		$('#outageScrollDiv').css('overflow-y','auto').css('height','300px');
+		
+	}
+	/*//Evnet Callback */
+	
+	/* Outage Callback */
+	function addOutage(jsonObj){
 		var outageObj = jsonObj["outage"];
 
 		for( var i in outageObj ){
-			
 			var lostTime = new Date(outageObj[i]["ifLostService"]);
 			var current = new Date();
 			var lastTime = dateDiff(lostTime, current);
@@ -53,7 +114,7 @@
 			str += "	<table>";
 			str += "		<tr>";
 			str += "			<td style='text-align:center;'>";
-			str += "				<img src='https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRqXCxP5r2U7rdMIwXYdQ16xABGNm3TCFCMfKPmXZp3lMAhDCK0Fw' style='width:50px; height:50px;'/>";
+			str += "				<img src='<c:url value="/resources/images/" />"+outageObj[i]["serviceLostEvent"]["@severity"].toLowerCase()+".png' style='width:110px; height:40px;'/>";
 			str += "			</td>";
 			str += "		</tr>";
 			str += "		<tr class='"+outageObj[i]["serviceLostEvent"]["@severity"].toLowerCase()+"'>";
@@ -75,7 +136,9 @@
 		}
 		
 	}
+	/*//Outage Callback */
 	
+	/*//includeOut outage */
 	function includeOut(id){
 		
 		$('#outage_'+id).animate({opacity:'0.4',}).hide("slow",function(){
@@ -84,12 +147,23 @@
 		
 	}
 	
-	
-	
 	function wsReceiveData(data){
 		
 		alert(data);
 		
+	}
+	
+	function grapHide(idx){
+		
+		$('.graph-container>li:nth-child('+idx+') .bar-inner').css("height","");
+		setTimeout(grapShow, 800, idx);
+		
+	}
+	
+	function grapShow(idx){
+		$('.graph-container>li:nth-child('+idx+') span div').html(" [50%]");
+		$('.graph-container>li:nth-child('+idx+')').attr("class","critical-graph");
+		$('.graph-container>li:nth-child('+idx+') .bar-inner').css("height","100%").css("bottom", "0");
 	}
 	
 </script>
@@ -104,7 +178,7 @@
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value='/index.do'/>">Home</a> <span class="divider">/</span></li>
-					<li class="active">데쉬보드</li>
+					<li class="active"><a href="javascript:test();">데쉬보드</a></li>
 				</ul>
 			</div>
 		</div>
@@ -124,8 +198,10 @@
 			<div class="row-fluid">
 				<h5>그래프</h5>
 			</div>
-			<div class="span12 well well-small">
-				<img src="http://www.greentransport.org/xe/files/attach/images/61/252/004/5%EC%9B%94%EC%A1%B0%EC%82%AC%EA%B7%B8%EB%9E%98%ED%94%84.jpg" style="height:200px;width:600px;"/>
+			<div class="row-fluid">
+				<div class="span12 well well-small">
+					<jsp:include page="/include/graph.jsp" />
+				</div>
 			</div>
 		</div>
 		<div class="row-fluid">

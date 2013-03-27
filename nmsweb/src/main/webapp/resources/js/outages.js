@@ -29,7 +29,7 @@ function getTotalOutagesList(callback, data) {
 function getCurrentOutagesForNode(callback) {
 
 	//current outage query
-	var query = "query="+encodeURI("this_.svcregainedeventid is null");
+	var query = "query="+encodeURI("this_.svcregainedeventid is null&limit=0");
 	
 	getTotalOutagesList(callback,query);
 	
@@ -81,6 +81,52 @@ function getOutagesForInterface(callback, nodeId, ipAddress, recentCount) {
 	getTotalOutagesList(callback, query + filter);
 }
 
+
+/**Get information related with certaain outage_ID
+ * @param callback
+ * @param outageId
+ */
+function seachOutageToOutageId(callback, outageId){
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/outages/'+outageId,
+		dataType : 'json',
+		contentType : 'application/json',
+		error : function(data) {
+			alert('중단목록 가져오기 실패');
+		},
+		success : function(data) {
+			// 콜백함수
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+	
+}
+
+/** Get outages's information related with certain nodeID
+ * @param callback
+ * @param outageId
+ */
+function seachOutageToNodeId(callback, nodeId){
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/outages/forNode/'+nodeId,
+		dataType : 'json',
+		contentType : 'application/json',
+		error : function(data) {
+			alert('중단목록 가져오기 실패');
+		},
+		success : function(data) {
+			// 콜백함수
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+	
+}
 /** ************************ view String edit **************************** */
 
 /**
@@ -88,7 +134,7 @@ function getOutagesForInterface(callback, nodeId, ipAddress, recentCount) {
  * 
  * @param jsonObj
  */
-function getTabletagToOutageJsonObj(jsonObj, nodeId) {
+function getTabletagToOutageJsonObj(jsonObj) {
 
 	var outages = jsonObj["outage"];
 
@@ -111,13 +157,13 @@ function getTabletagToOutageJsonObj(jsonObj, nodeId) {
 
 				str += "<tr>";
 				str += "<td><a href='/" + version
-						+ "/search/node/interfaceDesc.do?nodeId=" + nodeId
+						+ "/search/node/interfaceDesc.do?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"]
 						+ "&intf=" + outages[i]["ipAddress"] + "'>"
 						+ outages[i]["ipAddress"] + "</a></td>";
 				str += "<td><a href='/"
 						+ version
 						+ "/search/service/serviceDesc?nodeId="
-						+ nodeId
+						+ outages[i]["serviceLostEvent"]["nodeId"]
 						+ "&intf="
 						+ outages[i]["ipAddress"]
 						+ "&serviceNm="
@@ -251,4 +297,93 @@ function getOutageInfoBox(jsonObj) {
 			+ '			</tr>' + '		</table>' + '	</div>' + '</div>';
 
 	return outageInfoStr;
+}
+
+/**
+ * Outage search 정보를 table 테그 Str로 만들어준다.
+ * 
+ * @param jsonObj
+ */
+function getTabletagToOutageSearchJsonObj(jsonObj) {
+	var outages = jsonObj["outage"];
+	
+	var str = "";
+	if (jsonObj["@count"] != "undefined" && jsonObj["@count"] != 0) {
+
+		if (jsonObj["@count"] > 1) {
+
+			for ( var i in outages) {
+
+				str += "<tr>";
+				str += "<td><a href='/" + version
+						+ "/search/node/interfaceDesc.do?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"]
+						+ "&intf=" + outages[i]["ipAddress"] + "'>"
+						+ outages[i]["ipAddress"] + "</a></td>";
+				str += "<td><a href='/"
+						+ version
+						+ "/search/service/serviceDesc?nodeId="
+						+ outages[i]["serviceLostEvent"]["nodeId"]
+						+ "&intf="
+						+ outages[i]["ipAddress"]
+						+ "&serviceNm="
+						+ nullCheckJsonObject(
+								outages[i]["serviceLostEvent"]["serviceType"],
+								"name")
+						+ "'>"
+						+ nullCheckJsonObject(
+								outages[i]["serviceLostEvent"]["serviceType"],
+								"name") + "</a></td>";
+				str += "<td class=\"text-error\">"
+						+ new Date(nullCheckJsonObject(
+								outages[i]["serviceLostEvent"], "time"))
+								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				str += "<td>"
+						+ new Date(nullCheckJsonObject(
+								outages[i]["serviceRegainedEvent"], "time"))
+								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				str += "<td><a href='/" + version
+						+ "/search/outage/outageDesc?outageId="
+						+ outages[i]["@id"] + "'>" + outages[i]["@id"]
+						+ "</a></td>";
+				str += "</tr>";
+			}
+
+		} else {
+			outages = outages == null ? jsonObj : jsonObj["outage"];
+			str += "<tr>";
+			str += "<td><a href='/" + version
+					+ "/search/node/interfaceDesc.do?nodeId=" + outages["serviceLostEvent"]["nodeId"]
+					+ "&intf=" + outages["ipAddress"] + "'>"
+					+ outages["ipAddress"] + "</a></td>";
+			str += "<td><a href='/"
+					+ version
+					+ "/search/service/serviceDesc?nodeId="
+					+ outages["serviceLostEvent"]["nodeId"]
+					+ "&intf="
+					+ outages["ipAddress"]
+					+ "&serviceNm="
+					+ nullCheckJsonObject(
+							outages["serviceLostEvent"]["serviceType"],
+							"name")
+					+ "'>"
+					+ nullCheckJsonObject(
+							outages["serviceLostEvent"]["serviceType"],
+							"name") + "</a></td>";
+			str += "<td class=\"text-error\">"
+					+ new Date(nullCheckJsonObject(
+							outages["serviceLostEvent"], "time"))
+							.format('yy-MM-dd hh:mm:ss') + "</td>";
+			str += "<td>"
+					+ new Date(nullCheckJsonObject(
+							outages["serviceRegainedEvent"], "time"))
+							.format('yy-MM-dd hh:mm:ss') + "</td>";
+			str += "<td><a href='/" + version
+					+ "/search/outage/outageDesc?outageId="
+					+ outages["@id"] + "'>" + outages["@id"]
+					+ "</a></td>";
+			str += "</tr>";
+		}
+
+	}
+	return str;
 }
