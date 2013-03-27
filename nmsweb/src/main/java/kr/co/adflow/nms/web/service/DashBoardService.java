@@ -19,7 +19,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import kr.co.adflow.nms.web.exception.HandleException;
-import kr.co.adflow.nms.web.vo.Outage;
+import kr.co.adflow.nms.web.vo.OutageCount;
 import kr.co.adflow.nms.web.vo.categories.Catinfo;
 
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfo;
@@ -48,11 +48,11 @@ public class DashBoardService {
 		return categoryMain;
 	}
 
-	private Hashtable<String, Outage> outageList = null;
+	private Hashtable<String, OutageCount> outageList = null;
 	
 	
 
-	public Hashtable<String, Outage> getOutageList() {
+	public Hashtable<String, OutageCount> getOutageList() {
 		return outageList;
 	}
 	
@@ -418,9 +418,9 @@ public class DashBoardService {
 					sql = "SELECT nodeid, ipaddr, serviceid, outageid, iflostservice FROM outages where ifregainedservice is null order by iflostservice desc";
 					
 					rst = stmt.executeQuery(sql);
-					outageList=new Hashtable<String, Outage>();
+					outageList=new Hashtable<String, OutageCount>();
 					while (rst.next()) {
-						Outage outages=new Outage();
+						OutageCount outages=new OutageCount();
 						outages.setNodeid(rst.getInt(1));
 						outages.setIpaddr(rst.getString(2));
 						outages.setServiceid(rst.getInt(3));

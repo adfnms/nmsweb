@@ -92,11 +92,11 @@ public class DashBoardController {
 				buf.append(group.netWorkService().get(i).getNetWorkServers());
 			}
 			String netWorkInterfaces = buf.toString();
-			logger.debug("netWorkInterfaces::"+netWorkInterfaces);
-			logger.debug("netWorkInterfaces::"+netWorkInterfaces);
-			logger.debug("netWorkInterfaces::"+netWorkInterfaces);
-			logger.debug("netWorkInterfaces::"+netWorkInterfaces);
-			logger.debug("netWorkInterfaces::"+netWorkInterfaces);
+			logger.debug("netWorkInterfaces::" + netWorkInterfaces);
+			logger.debug("netWorkInterfaces::" + netWorkInterfaces);
+			logger.debug("netWorkInterfaces::" + netWorkInterfaces);
+			logger.debug("netWorkInterfaces::" + netWorkInterfaces);
+			logger.debug("netWorkInterfaces::" + netWorkInterfaces);
 
 			// database
 			int dataBaseServerSize = group.dataBaseServer().size();
@@ -154,29 +154,43 @@ public class DashBoardController {
 
 			// dataBaseId
 			String dataBaseServerID = null;
-			String dataBaseServergroup="DatabaseServer";
+			String dataBaseServergroup = "DatabaseServer";
 			dataBaseServerID = cateUtil.categoriesId(dataBaseServer, serviceVo);
 			logger.debug("dataBaseServerID::" + dataBaseServerID);
+			CategoryInfoList infoListDatabase = new CategoryInfoList();
+			infoListDatabase = service.getCategoryNodeIdServiceID(dataBaseServerID,
+					dataBaseServergroup);
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			mapper.writeValue(writer, infoListDatabase);
+			String jsoninfoListDatabase = writer.toString();
+			logger.debug("jsoninfoListDatabase:" + jsoninfoListDatabase);
 
-			CategoryInfoList infoList = new CategoryInfoList();
 			
-			infoList = service.getCategoryNodeIdServiceID(dataBaseServerID,dataBaseServergroup);
-			
-			//json String
-			 ObjectMapper mapper = new ObjectMapper();
-			 StringWriter writer = new StringWriter();
-			 mapper.writeValue(writer, infoList);
-			 String jsonTYpe = writer.toString();
-			 logger.debug("jsonType:" + jsonTYpe);
-
-			 
-			 
+		
 			// netWorkInterfacesID
 			String netWorkInterfacesID = null;
+			String netWorkInterfacesGroup="netWorkInterfaces";
 			netWorkInterfacesID = cateUtil.categoriesId(netWorkInterfaces,
 					serviceVo);
 			logger.debug("netWorkInterfacesID::" + netWorkInterfacesID);
-
+			CategoryInfoList infoListnetWorkInterfaces=new CategoryInfoList();
+			infoListnetWorkInterfaces=service.getCategoryNodeIdServiceID(netWorkInterfacesID, netWorkInterfacesGroup);
+			ObjectMapper mapper2 = new ObjectMapper();
+			StringWriter writer2 = new StringWriter();
+			mapper2.writeValue(writer2, infoListDatabase);
+			String jsoninfoListneWork = writer2.toString();
+			logger.debug("jsoninfoListneWork:" + jsoninfoListneWork);
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			// dnsDhcpServersID
 			String dnsDhcpServersID = null;
 			dnsDhcpServersID = cateUtil.categoriesId(dnsDhcpServers, serviceVo);
