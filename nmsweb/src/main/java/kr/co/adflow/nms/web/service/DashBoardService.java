@@ -285,7 +285,7 @@ public class DashBoardService {
 
 			JAXBContext jc = JAXBContext.newInstance(Catinfo.class);
 			Unmarshaller u = jc.createUnmarshaller();
-			File f = new File(xmlPath);
+			File f = new File(xmlPath+"categories.xml");
 			// JAXBElement element = (JAXBElement) u.unmarshal (f);
 			// File f = new File("d:\\OpenNMS\\etc\\destinationPaths.xml");
 
