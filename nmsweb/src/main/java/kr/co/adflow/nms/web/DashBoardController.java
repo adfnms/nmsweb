@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.ListModel;
@@ -26,6 +27,7 @@ import kr.co.adflow.nms.web.service.DashBoardService;
 import kr.co.adflow.nms.web.util.CategoryUtil;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfo;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfoList;
+import kr.co.adflow.nms.web.vo.categoryDetail.CategoryMain;
 import kr.co.adflow.nms.web.vo.resultcategory.CategoryJsonGroup;
 import kr.co.adflow.nms.web.vo.servicesid.ServiceVo;
 
@@ -67,6 +69,7 @@ public class DashBoardController {
 	private DashBoardService service;
 
 	// dashBoard
+	
 	@RequestMapping(value = "/dashboardtest", method = RequestMethod.GET)
 	public @ResponseBody
 	String dashboardGroup(@RequestBody String data, HttpServletRequest request)
@@ -77,7 +80,7 @@ public class DashBoardController {
 		String categoryString = null;
 		String serviceString = null;
 		try {
-			service.init();
+		
 			categoryString = (String) service.categoryJsonXml();
 			serviceString = (String) service.serviceIDandNameJson();
 			serviceVo = serviceMapper.serviceInfo2(serviceString);
@@ -92,11 +95,7 @@ public class DashBoardController {
 				buf.append(group.netWorkService().get(i).getNetWorkServers());
 			}
 			String netWorkInterfaces = buf.toString();
-			logger.debug("netWorkInterfaces::" + netWorkInterfaces);
-			logger.debug("netWorkInterfaces::" + netWorkInterfaces);
-			logger.debug("netWorkInterfaces::" + netWorkInterfaces);
-			logger.debug("netWorkInterfaces::" + netWorkInterfaces);
-			logger.debug("netWorkInterfaces::" + netWorkInterfaces);
+	
 
 			// database
 			int dataBaseServerSize = group.dataBaseServer().size();
@@ -157,36 +156,40 @@ public class DashBoardController {
 			String dataBaseServergroup = "DatabaseServer";
 			dataBaseServerID = cateUtil.categoriesId(dataBaseServer, serviceVo);
 			logger.debug("dataBaseServerID::" + dataBaseServerID);
-			CategoryInfoList infoListDatabase = new CategoryInfoList();
-			infoListDatabase = service.getCategoryNodeIdServiceID(
+			CategoryMain mainDatabase = new CategoryMain();		
+			mainDatabase = service.getCategoryNodeIdServiceID(
 					dataBaseServerID, dataBaseServergroup);
 			String dataBaseServerJson = cateUtil
-					.cateGoryJackSon(infoListDatabase);
+					.cateGoryJackSon(mainDatabase);
 			logger.debug("dataBaseServerJson::" + dataBaseServerJson);
 
+			
+			
 			// netWorkInterfacesID
 			String netWorkInterfacesID = null;
 			String netWorkInterfacesGroup = "NetWorkInterfaces";
 			netWorkInterfacesID = cateUtil.categoriesId(netWorkInterfaces,
 					serviceVo);
 			logger.debug("netWorkInterfacesID::" + netWorkInterfacesID);
-			CategoryInfoList infoListNetWorkInterfaces = new CategoryInfoList();
-			infoListNetWorkInterfaces = service.getCategoryNodeIdServiceID(
+			CategoryMain mainNetWorkInterfaces = new CategoryMain();
+			mainNetWorkInterfaces = service.getCategoryNodeIdServiceID(
 					netWorkInterfacesID, netWorkInterfacesGroup);
 			String netWorkInterfacesJson = cateUtil
-					.cateGoryJackSon(infoListNetWorkInterfaces);
+					.cateGoryJackSon(mainNetWorkInterfaces);
 			logger.debug("netWorkInterfacesJson::" + netWorkInterfacesJson);
 
+			
+			
 			// dnsDhcpServersID
 			String dnsDhcpServersID = null;
 			String dnsDhcpServersGroup = "DnsDhcpServers";
 			dnsDhcpServersID = cateUtil.categoriesId(dnsDhcpServers, serviceVo);
 			logger.debug("dnsDhcpServersID::" + dnsDhcpServersID);
-			CategoryInfoList infoListDnsDhcpServers = new CategoryInfoList();
-			infoListDnsDhcpServers = service.getCategoryNodeIdServiceID(
+			CategoryMain mainDnsDhcpServers = new CategoryMain();
+			mainDnsDhcpServers = service.getCategoryNodeIdServiceID(
 					dnsDhcpServersID, dnsDhcpServersGroup);
 			String DhcpServersJson = cateUtil
-					.cateGoryJackSon(infoListDnsDhcpServers);
+					.cateGoryJackSon(mainDnsDhcpServers);
 			logger.debug("DhcpServersJson::" + DhcpServersJson);
 
 			// emailServersID
@@ -195,11 +198,11 @@ public class DashBoardController {
 			emailServersID = cateUtil.categoriesId(emailServers, serviceVo);
 			logger.debug("emailServersID::" + emailServersID);
 
-			CategoryInfoList infoListEmailServersID = new CategoryInfoList();
-			infoListEmailServersID = service.getCategoryNodeIdServiceID(
+			CategoryMain mainEmailServersID = new CategoryMain();
+			mainEmailServersID = service.getCategoryNodeIdServiceID(
 					emailServersID, emailServersGroup);
 			String emailServersJson = cateUtil
-					.cateGoryJackSon(infoListEmailServersID);
+					.cateGoryJackSon(mainEmailServersID);
 			logger.debug("emailServersJson::" + emailServersJson);
 
 			// otherServersID
@@ -208,36 +211,39 @@ public class DashBoardController {
 			otherServersID = cateUtil.categoriesId(otherServers, serviceVo);
 			logger.debug("otherServersID::" + otherServersID);
 
-			CategoryInfoList infoListotherServersID = new CategoryInfoList();
-			infoListotherServersID = service.getCategoryNodeIdServiceID(
+			CategoryMain mainOtherServersID = new CategoryMain();
+			mainOtherServersID = service.getCategoryNodeIdServiceID(
 					otherServersID, otherServersGroup);
 			String otherServersJson = cateUtil
-					.cateGoryJackSon(infoListotherServersID);
+					.cateGoryJackSon(mainOtherServersID);
 			logger.debug("otherServersJson::" + otherServersJson);
 
 			// jmxServersID
 			String jmxServersID = null;
-			String jmxServersGroup = "JmxServer";
+			String jmxServersGroup = "JmxServers";
 			jmxServersID = cateUtil.categoriesId(jmxServers, serviceVo);
 			logger.debug("jmxServersID::" + jmxServersID);
 
-			CategoryInfoList infoListjmxServersID = new CategoryInfoList();
-			infoListotherServersID = service.getCategoryNodeIdServiceID(
+			CategoryMain mainJmxServers = new CategoryMain();
+			mainJmxServers = service.getCategoryNodeIdServiceID(
 					jmxServersID, jmxServersGroup);
 			String jmxServersJson = cateUtil
-					.cateGoryJackSon(infoListjmxServersID);
+					.cateGoryJackSon(mainJmxServers);
 			logger.debug("jmxServersJson::" + jmxServersJson);
 
 			// webServersID
 			String webServersID = null;
+			String webServersGroup = "WebServers";
 			webServersID = cateUtil.categoriesId(webServers, serviceVo);
 			logger.debug("webServersID::" + webServersID);
-			
-			
-			
-			
 
-			// /////
+			CategoryMain mainWebServers = new CategoryMain();
+			mainWebServers = service.getCategoryNodeIdServiceID(
+					webServersID, webServersGroup);
+			String webServersJson = cateUtil
+					.cateGoryJackSon(mainWebServers);
+			logger.debug("webServersJson::" + webServersJson);
+
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;

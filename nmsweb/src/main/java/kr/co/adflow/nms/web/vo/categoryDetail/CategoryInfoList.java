@@ -9,8 +9,16 @@ public class CategoryInfoList {
 
 	protected int outageTotalCount;
 	protected int serviceTotalCount;
-	protected double availabiliAv;
-	protected List<String> serviceids;
+	protected double availabili;
+	protected String serviceids;
+
+	public String getServiceids() {
+		return serviceids;
+	}
+
+	public void setServiceids(String serviceids) {
+		this.serviceids = serviceids;
+	}
 
 	public Hashtable<String, CategoryInfo> getCateGoryInfo() {
 		if (cateGoryInfo == null) {
@@ -35,20 +43,14 @@ public class CategoryInfoList {
 		this.serviceTotalCount = serviceTotalCount;
 	}
 
-	public double getAvailabiliAv() {
-		return availabiliAv;
+	public double getAvailabili() {
+		return availabili;
 	}
 
-	public void setAvailabiliAv(double availabiliAv) {
-		this.availabiliAv = availabiliAv;
+	public void setAvailabiliAv(double availabili) {
+		this.availabili = availabili;
 	}
 
-	public List<String> getServiceids() {
-		return serviceids;
-	}
-
-	public void setServiceids(List<String> serviceids) {
-		this.serviceids = serviceids;
-	}
+	
 
 }

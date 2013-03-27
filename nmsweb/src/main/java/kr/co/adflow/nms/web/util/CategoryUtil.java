@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import kr.co.adflow.nms.web.exception.UtilException;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfo;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfoList;
+import kr.co.adflow.nms.web.vo.categoryDetail.CategoryMain;
 import kr.co.adflow.nms.web.vo.servicesid.ServiceVo;
 
 import org.codehaus.jackson.JsonGenerationException;
@@ -77,12 +78,12 @@ public class CategoryUtil {
 	}
 	
 	
-	public String cateGoryJackSon(CategoryInfoList cateinfo) throws UtilException{
+	public String cateGoryJackSon(CategoryMain cateMain) throws UtilException{
 		String result=null;
 		try{
 		ObjectMapper mapper = new ObjectMapper();
 		StringWriter writer = new StringWriter();
-		mapper.writeValue(writer, cateinfo);
+		mapper.writeValue(writer, cateMain);
 		result = writer.toString();
 		logger.debug("CateInfoJsonresult:" + result);
 		}catch(Exception e){

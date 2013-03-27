@@ -5,12 +5,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
-import java.util.Iterator;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -21,12 +19,12 @@ import javax.xml.bind.Unmarshaller;
 import kr.co.adflow.nms.web.exception.HandleException;
 import kr.co.adflow.nms.web.vo.OutageCount;
 import kr.co.adflow.nms.web.vo.categories.Catinfo;
-
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfo;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfoList;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryMain;
 import kr.co.adflow.nms.web.vo.resultcategory.CategoryJsonGroup;
 
+import org.codehaus.groovy.runtime.metaclass.TemporaryMethodKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -43,18 +41,12 @@ public class DashBoardService {
 
 	private CategoryMain categoryMain;
 
-	public CategoryMain getCategoryMain() {
-		return categoryMain;
-	}
+	private OutageCount outageCount;
 
 	private Hashtable<String, OutageCount> outageList = null;
 
 	public Hashtable<String, OutageCount> getOutageList() {
 		return outageList;
-	}
-
-	public void init() {
-		categoryMain = new CategoryMain();
 	}
 
 	public String categoryJsonXml() throws HandleException {
@@ -133,7 +125,7 @@ public class DashBoardService {
 		String sql = null;
 
 		try {
-			logger.debug("aaaaaa:::");
+
 			Context ctx = new InitialContext();
 
 			if (ctx == null)
@@ -188,113 +180,141 @@ public class DashBoardService {
 		return result.toString();
 	}
 
-	public CategoryInfoList getCategoryNodeIdServiceID(String categorygroupId,
+	public CategoryMain getCategoryNodeIdServiceID(String categorygroupId,
 			String categorygroupName) throws HandleException {
+		CategoryMain categoryMain = new CategoryMain();
+		logger.debug("cateGoryGroupname:" + categorygroupName);
+		if (categorygroupId.length() < 1) {
 
-		StringBuffer result = new StringBuffer();
-		Statement stmt = null;
-		ResultSet rst = null;
-		Connection conn = null;
-		String sql = null;
-		this.outTage();
-		try {
-			Context ctx = new InitialContext();
-			if (ctx == null)
-				throw new Exception("Boom - No Context");
+			CategoryMain mainCate = new CategoryMain();
+			CategoryInfoList infoList = new CategoryInfoList();
+			mainCate.getCateGoryTable().put(categorygroupName, infoList);
+			mainCate.getCateGoryTable().get(categorygroupName);
 
-			// /jdbc/postgres is the name of the resource above
-			DataSource ds = (DataSource) ctx
-					.lookup("java:comp/env/jdbc/postgres");
-			if (ds != null) {
-				conn = ds.getConnection();
+			return mainCate;
+		} else {
 
-				if (conn != null) {
-					stmt = conn.createStatement();
-					sql = "SELECT node.nodeid, ipAddr,node.nodelabel,serviceid FROM node, "
-							+ "ifservices WHERE node.nodeid = ifservices.nodeid and serviceid in ("
-							+ categorygroupId
-							+ ") and node.nodeid in "
-							+ "(SELECT nodeid FROM ifservices WHERE status != 'D' AND serviceid in ("
-							+ categorygroupId + "))";
+			StringBuffer result = new StringBuffer();
+			Statement stmt = null;
+			ResultSet rst = null;
+			Connection conn = null;
+			String sql = null;
+			this.outTage();
+			try {
+				Context ctx = new InitialContext();
+				if (ctx == null)
+					throw new Exception("Boom - No Context");
 
-					logger.debug("sql:::" + sql);
-					rst = stmt.executeQuery(sql);
-					infoList = new CategoryInfoList();
-					int temp = 0;
-					int count = 0;
-					int serviceTotalCount=0;
-					while (rst.next()) {
+				// /jdbc/postgres is the name of the resource above
+				DataSource ds = (DataSource) ctx
+						.lookup("java:comp/env/jdbc/postgres");
+				if (ds != null) {
+					conn = ds.getConnection();
 
-						String nodeid = String.valueOf(rst.getInt(1));
+					if (conn != null) {
+						stmt = conn.createStatement();
+						sql = "SELECT node.nodeid, ipAddr,node.nodelabel,serviceid FROM node, "
+								+ "ifservices WHERE node.nodeid = ifservices.nodeid and serviceid in ("
+								+ categorygroupId
+								+ ") and node.nodeid in "
+								+ "(SELECT nodeid FROM ifservices WHERE status != 'D' AND serviceid in ("
+								+ categorygroupId + "))";
 
-						if (infoList.getCateGoryInfo().containsKey(nodeid)) {
+						rst = stmt.executeQuery(sql);
+						infoList = new CategoryInfoList();
+						int temp = 0;
+						int count = 0;
+						int totalServiceCount = 0;
+						int totalServiceCount2=0;
+						int totalOutageCount = 0;
+						int totalOutageCount2 = 0;
+						double totalAvl=0;
+						int av=0;
+						while (rst.next()) {
 
-							CategoryInfo tempInfo = infoList.getCateGoryInfo()
-									.get(nodeid);
-							int tempCount = tempInfo.getServiceCount();
-							tempCount++;
-							tempInfo.setServiceCount(tempCount);
-							serviceTotalCount=tempCount;
-							String outageKey = String.valueOf(rst.getInt(1)
-									+ ":" + rst.getString(2) + ":"
-									+ rst.getInt(4));
-							if (getOutageList().containsKey(outageKey)) {
-								int tempOutageCount = tempInfo.getOutage();
-								tempOutageCount++;
-								tempInfo.setOutage(tempOutageCount);
-							}
+							String nodeid = String.valueOf(rst.getInt(1));
+							CategoryInfo tempInfo = new CategoryInfo();
+							if (infoList.getCateGoryInfo().containsKey(nodeid)) {
 
-						} else {
-							info = new CategoryInfo();
-							info.setNodeId(rst.getInt(1));
-							info.setIpAddress(rst.getString(2));
-							info.setNodeLabel(rst.getString(3));
-							info.setServiceCount(1);
-							info.setAvailabili(nodeAvailability(info
-									.getNodeId()));
-							String outageKey = String.valueOf(rst.getInt(1)
-									+ ":" + rst.getString(2) + ":"
-									+ rst.getInt(4));
-
-							if (getOutageList().containsKey(outageKey)) {
-
-								info.setOutage(1);
+								tempInfo = infoList.getCateGoryInfo().get(
+										nodeid);
+								int tempCount = tempInfo.getServiceCount();
+								tempCount++;
+								tempInfo.setServiceCount(tempCount);
+								String outageKey = String.valueOf(rst.getInt(1)
+										+ ":" + rst.getString(2) + ":"
+										+ rst.getInt(4));
+								if (getOutageList().containsKey(outageKey)) {
+									int tempOutageCount = tempInfo.getOutage();
+									tempOutageCount++;
+									tempInfo.setOutage(tempOutageCount);
+								}
+								totalOutageCount = totalOutageCount + tempInfo.getOutage();
 							} else {
-								info.setOutage(0);
-							}
+								info = new CategoryInfo();
+								info.setNodeId(rst.getInt(1));
+								info.setIpAddress(rst.getString(2));
+								info.setNodeLabel(rst.getString(3));
+								info.setServiceCount(1);
+								info.setAvailabili(nodeAvailability(info
+										.getNodeId()));
+								av=av+1;
+								String outageKey = String.valueOf(rst.getInt(1)
+										+ ":" + rst.getString(2) + ":"
+										+ rst.getInt(4));
 
-							infoList.getCateGoryInfo().put(nodeid, info);
+								if (getOutageList().containsKey(outageKey)) {
+
+									info.setOutage(1);
+								} else {
+									info.setOutage(0);
+								}
+
+								infoList.getCateGoryInfo().put(nodeid, info);
+								totalOutageCount = totalOutageCount + info.getOutage();
+							}
+							totalAvl=totalAvl+info.getAvailabili();
+							
+					
+							totalServiceCount = totalServiceCount + info.getServiceCount();
+						
 
 						}
-
+						totalAvl=totalAvl/av;
+						infoList.setServiceids(categorygroupId);
+						infoList.setOutageTotalCount(totalOutageCount);
+						infoList.setServiceTotalCount(totalServiceCount);
+						infoList.setAvailabiliAv(totalAvl);
+						logger.debug("totalAv:"+infoList.getAvailabili());
+						logger.debug("Serviceids:"+infoList.getServiceids());
+						logger.debug("totalServiceCount:"
+								+ infoList.getServiceTotalCount());
+						logger.debug("totalOutageCount:"+infoList.getOutageTotalCount());
+						categoryMain.getCateGoryTable().put(categorygroupName,
+								infoList);
 					}
 
-					categoryMain.getCateGoryTable().put(categorygroupName,
-							infoList);
+					rst.close();
+
 				}
 
-				rst.close();
-
-				logger.debug("ResultSet Json:::" + result.toString());
+			} catch (Exception e) {
+				throw new HandleException(e);
+			} finally {
+				if (stmt != null)
+					try {
+						stmt.close();
+					} catch (Exception e) {
+					}
+				if (conn != null)
+					try {
+						conn.close();
+					} catch (Exception e) {
+					}
 			}
 
-		} catch (Exception e) {
-			throw new HandleException(e);
-		} finally {
-			if (stmt != null)
-				try {
-					stmt.close();
-				} catch (Exception e) {
-				}
-			if (conn != null)
-				try {
-					conn.close();
-				} catch (Exception e) {
-				}
+			return categoryMain;
 		}
-
-		return infoList;
-
 	}
 
 	public double nodeAvailability(int nodeIds) throws HandleException {
@@ -354,7 +374,6 @@ public class DashBoardService {
 							+ nodeIds + ", '" + endTime + "','" + startTime
 							+ "')  from node ");
 
-					logger.debug("sql:::" + sql.toString());
 					rst = stmt.executeQuery(sql.toString());
 
 					while (rst.next()) {
@@ -364,7 +383,6 @@ public class DashBoardService {
 
 					rst.close();
 
-					logger.debug("ResultSet Json:::" + avail);
 				}
 			}
 		} catch (Exception e) {
@@ -394,7 +412,7 @@ public class DashBoardService {
 		String sql = null;
 
 		try {
-			logger.debug("aaaaaa:::");
+
 			Context ctx = new InitialContext();
 
 			if (ctx == null)
@@ -422,7 +440,6 @@ public class DashBoardService {
 						outages.setIflostservice(rst.getString(5));
 						String key = String.valueOf(rst.getInt(1) + ":"
 								+ rst.getString(2) + ":" + rst.getInt(3));
-						logger.debug("outtageKey:" + key);
 
 						outageList.put(key, outages);
 					}
