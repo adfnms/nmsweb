@@ -1,7 +1,14 @@
 package kr.co.adflow.nms.web.service;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Locale;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 
 import kr.co.adflow.nms.web.DefaultHandlerImpl;
 import kr.co.adflow.nms.web.Handler;
@@ -123,6 +130,149 @@ public class EventsService {
 		}
 
 		return result;
+	}
+	
+	public String eventquery(String eventseverity, String limit) throws HandleException {
+
+		String result = null;
+		StringBuffer resultTemp = new StringBuffer();
+		StringBuffer resultTemp2 = new StringBuffer();
+
+		Statement stmt = null;
+		ResultSet rst = null;
+		Connection conn = null;
+		String sql = null;
+
+		try {
+			Context ctx = new InitialContext();
+			if (ctx == null)
+				throw new Exception("Boom - No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+			if (ds != null) {
+				conn = ds.getConnection();
+
+				if (conn != null) {
+					stmt = conn.createStatement();
+					sql = "SELECT eventid, eventuei, nodeid, eventtime, eventdescr, eventlogmsg, eventseverity"+
+						  " FROM events where eventseverity "+ eventseverity +" order by eventtime desc limit "+limit;
+
+					logger.debug("sql:::" + sql);
+					rst = stmt.executeQuery(sql);
+
+					while (rst.next()) {
+
+						resultTemp.append("{\"eventid\":\"" + rst.getInt(1) + "\"," +
+								"\"eventuei\":\"" + rst.getString(2) + "\","+
+								"\"nodeid\":\"" + rst.getInt(3) + "\","+
+								"\"eventtime\":\"" + rst.getString(4) + "\","+
+								"\"eventdescr\":\"" + rst.getString(5) + "\","+
+								"\"eventlogmsg\":\"" + rst.getString(6) + "\","+
+								"\"eventseverity\":\"" + rst.getInt(7) + "\""+
+								"},");
+
+					}
+					rst.close();
+					
+					if (resultTemp.equals(null)) {
+						
+					}else {
+						
+						// last "," delete.
+						resultTemp.deleteCharAt(resultTemp.length() - 1);
+						
+						resultTemp2.append("{\"event\":[");
+						resultTemp2.append(resultTemp);
+						resultTemp2.append("]}");
+						
+						
+//						result = resultTemp2.toString();
+						result = resultTemp2.toString().replaceAll("\n", "\\n")
+								.replaceAll("\'", "\\'")
+								.replaceAll("\"", "\\\"")
+								.replaceAll("\r", "\\r")
+								.replaceAll("\t", "\\t")
+								.replaceAll("\b", "\\b")
+								.replaceAll("\f", "\\f");
+						
+					}
+					
+					logger.debug("ResultSet2 Json:::" + result);
+				}
+			}
+		} catch (Exception e) {
+			throw new HandleException(e);
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
+
+		return result;
+	}
+	
+	public String eventqueryCount(String eventseverity) throws HandleException {
+
+		StringBuffer result = new StringBuffer();
+
+		Statement stmt = null;
+		ResultSet rst = null;
+		Connection conn = null;
+		String sql = null;
+
+		try {
+			Context ctx = new InitialContext();
+			if (ctx == null)
+				throw new Exception("Boom - No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+			if (ds != null) {
+				conn = ds.getConnection();
+
+				if (conn != null) {
+					stmt = conn.createStatement();
+					sql = "SELECT count(eventid) "+
+						  " FROM events where eventseverity "+ eventseverity;
+
+					logger.debug("sql:::" + sql);
+					rst = stmt.executeQuery(sql);
+
+					while (rst.next()) {
+
+						result.append("{\"count\":\"" + rst.getInt(1) + "\"}");
+
+					}
+					rst.close();
+					logger.debug("ResultSet Json:::" + result.toString());
+				}
+			}
+		} catch (Exception e) {
+			throw new HandleException(e);
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
+
+		return result.toString();
 	}
 
 
