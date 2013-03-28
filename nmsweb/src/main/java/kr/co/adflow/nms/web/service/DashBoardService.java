@@ -46,7 +46,7 @@ public class DashBoardService {
 	private CategoryInfoList infoList;
 
 	private CategoryInfo info;
-	
+
 	@Autowired
 	ServiceIdNameMapper serviceMapper;
 	@Autowired
@@ -80,16 +80,15 @@ public class DashBoardService {
 	public void setOutageList(Hashtable<String, Outage> outageList) {
 		this.outageList = outageList;
 	}
-	
-	
+
 	@PostConstruct
 	public void initCategory() {
 		String categoryString = null;
 		String serviceString = null;
-		String result=null;
-		StringBuffer resultBuffer=new StringBuffer();
+		String result = null;
+		StringBuffer resultBuffer = new StringBuffer();
 		try {
-		
+
 			categoryString = (String) this.categoryJsonXml();
 			serviceString = (String) this.serviceIDandNameJson();
 			serviceVo = serviceMapper.serviceInfo2(serviceString);
@@ -104,7 +103,6 @@ public class DashBoardService {
 				buf.append(group.netWorkService().get(i).getNetWorkServers());
 			}
 			String netWorkInterfaces = buf.toString();
-	
 
 			// database
 			int dataBaseServerSize = group.dataBaseServer().size();
@@ -165,15 +163,12 @@ public class DashBoardService {
 			String dataBaseServergroup = "DatabaseServer";
 			dataBaseServerID = cateUtil.categoriesId(dataBaseServer, serviceVo);
 			logger.debug("dataBaseServerID::" + dataBaseServerID);
-			CategoryMain mainDatabase = new CategoryMain();		
-			mainDatabase = this.getCategoryNodeIdServiceID(
-					dataBaseServerID, dataBaseServergroup);
-			String dataBaseServerJson = cateUtil
-					.cateGoryJackSon(mainDatabase);
+			CategoryMain mainDatabase = new CategoryMain();
+			mainDatabase = this.getCategoryNodeIdServiceID(dataBaseServerID,
+					dataBaseServergroup);
+			String dataBaseServerJson = cateUtil.cateGoryJackSon(mainDatabase);
 			logger.debug("dataBaseServerJson::" + dataBaseServerJson);
 
-			
-			
 			resultBuffer.append("{\"result\":[");
 			// netWorkInterfacesID
 			String netWorkInterfacesID = null;
@@ -184,13 +179,13 @@ public class DashBoardService {
 			CategoryMain mainNetWorkInterfaces = new CategoryMain();
 			mainNetWorkInterfaces = this.getCategoryNodeIdServiceID(
 					netWorkInterfacesID, netWorkInterfacesGroup);
-		
+
 			String netWorkInterfacesJson = cateUtil
 					.cateGoryJackSon(mainNetWorkInterfaces);
 			logger.debug("netWorkInterfacesJson::" + netWorkInterfacesJson);
-		
-			resultBuffer.append(netWorkInterfacesJson+",");
-			
+
+			resultBuffer.append(netWorkInterfacesJson + ",");
+
 			// dnsDhcpServersID
 			String dnsDhcpServersID = null;
 			String dnsDhcpServersGroup = "DnsDhcpServers";
@@ -202,12 +197,8 @@ public class DashBoardService {
 			String DhcpServersJson = cateUtil
 					.cateGoryJackSon(mainDnsDhcpServers);
 			logger.debug("DhcpServersJson::" + DhcpServersJson);
-			
-			
-			resultBuffer.append(DhcpServersJson+",");
-			
-			
-			
+
+			resultBuffer.append(DhcpServersJson + ",");
 
 			// emailServersID
 			String emailServersID = null;
@@ -221,10 +212,8 @@ public class DashBoardService {
 			String emailServersJson = cateUtil
 					.cateGoryJackSon(mainEmailServersID);
 			logger.debug("emailServersJson::" + emailServersJson);
-			
-			
-			
-			resultBuffer.append(emailServersJson+",");
+
+			resultBuffer.append(emailServersJson + ",");
 
 			// otherServersID
 			String otherServersID = null;
@@ -238,12 +227,8 @@ public class DashBoardService {
 			String otherServersJson = cateUtil
 					.cateGoryJackSon(mainOtherServersID);
 			logger.debug("otherServersJson::" + otherServersJson);
-			
-			
-			
-			resultBuffer.append(otherServersJson+",");
-			
-			
+
+			resultBuffer.append(otherServersJson + ",");
 
 			// jmxServersID
 			String jmxServersID = null;
@@ -252,15 +237,12 @@ public class DashBoardService {
 			logger.debug("jmxServersID::" + jmxServersID);
 
 			CategoryMain mainJmxServers = new CategoryMain();
-			mainJmxServers = this.getCategoryNodeIdServiceID(
-					jmxServersID, jmxServersGroup);
-			String jmxServersJson = cateUtil
-					.cateGoryJackSon(mainJmxServers);
+			mainJmxServers = this.getCategoryNodeIdServiceID(jmxServersID,
+					jmxServersGroup);
+			String jmxServersJson = cateUtil.cateGoryJackSon(mainJmxServers);
 			logger.debug("jmxServersJson::" + jmxServersJson);
-			
-			
-			resultBuffer.append(jmxServersJson+",");
-			
+
+			resultBuffer.append(jmxServersJson + ",");
 
 			// webServersID
 			String webServersID = null;
@@ -269,10 +251,9 @@ public class DashBoardService {
 			logger.debug("webServersID::" + webServersID);
 
 			CategoryMain mainWebServers = new CategoryMain();
-			mainWebServers = this.getCategoryNodeIdServiceID(
-					webServersID, webServersGroup);
-			String webServersJson = cateUtil
-					.cateGoryJackSon(mainWebServers);
+			mainWebServers = this.getCategoryNodeIdServiceID(webServersID,
+					webServersGroup);
+			String webServersJson = cateUtil.cateGoryJackSon(mainWebServers);
 			logger.debug("webServersJson::" + webServersJson);
 		} catch (Exception e) {
 			logger.error("Failed in processing", e);
@@ -285,9 +266,7 @@ public class DashBoardService {
 
 			JAXBContext jc = JAXBContext.newInstance(Catinfo.class);
 			Unmarshaller u = jc.createUnmarshaller();
-			File f = new File(xmlPath+"categories.xml");
-			// JAXBElement element = (JAXBElement) u.unmarshal (f);
-			// File f = new File("d:\\OpenNMS\\etc\\destinationPaths.xml");
+			File f = new File(xmlPath + "categories.xml");
 
 			Object ob = u.unmarshal(f);
 			result = ob.toString();
@@ -415,13 +394,10 @@ public class DashBoardService {
 		CategoryMain categoryMain = this.getCategoryMain();
 		logger.debug("cateGoryGroupname:" + categorygroupName);
 		if (categorygroupId.length() < 1) {
-
-			CategoryMain mainCate = new CategoryMain();
-			CategoryInfoList infoList = new CategoryInfoList();
-			mainCate.getCateGoryTable().put(categorygroupName, infoList);
-			mainCate.getCateGoryTable().get(categorygroupName);
-
-			return mainCate;
+			CategoryInfoList cateinfoList = new CategoryInfoList();
+			categoryMain.getCateGoryTable()
+					.put(categorygroupName, cateinfoList);
+			return categoryMain;
 		} else {
 
 			StringBuffer result = new StringBuffer();
@@ -473,18 +449,20 @@ public class DashBoardService {
 								tempCount++;
 								tempInfo.setServiceCount(tempCount);
 								totalServiceCount++;
-								
+
 								double availabili = info.getAvailabili();
-								
-								double availabili2 = serviceAvailability(info
-										.getNodeId(),info.getIpAddress(), rst.getInt(4));
-								
-								totalserviceAvl = totalserviceAvl+ availabili2;
-								
-								totalAvl = totalAvl+ availabili2;
-								
-								info.setAvailabili((availabili + availabili2) / totalServiceCount);
-								
+
+								double availabili2 = serviceAvailability(
+										info.getNodeId(), info.getIpAddress(),
+										rst.getInt(4));
+
+								totalserviceAvl = totalserviceAvl + availabili2;
+
+								totalAvl = totalAvl + availabili2;
+
+								info.setAvailabili((availabili + availabili2)
+										/ totalServiceCount);
+
 								String outageKey = String.valueOf(rst.getInt(1)
 										+ ":" + rst.getString(2) + ":"
 										+ rst.getInt(4));
@@ -503,14 +481,18 @@ public class DashBoardService {
 								info.setNodeLabel(rst.getString(3));
 								info.setServiceCount(1);
 								totalServiceCount++;
-								info.setAvailabili(serviceAvailability(info
-										.getNodeId(),info.getIpAddress(), rst.getInt(4)));
+								info.setAvailabili(serviceAvailability(
+										info.getNodeId(), info.getIpAddress(),
+										rst.getInt(4)));
 								totalserviceAvl = info.getAvailabili();
-//								totalAvl = totalAvl+ info.getAvailabili();
+								// totalAvl = totalAvl+ info.getAvailabili();
 								av++;
-								logger.debug("totalAvl11:" + String.valueOf(totalAvl)+", "+info.getAvailabili());
-								logger.debug("av11:" + av+ ", nodeid =="+info.getNodeId());
-								
+								logger.debug("totalAvl11:"
+										+ String.valueOf(totalAvl) + ", "
+										+ info.getAvailabili());
+								logger.debug("av11:" + av + ", nodeid =="
+										+ info.getNodeId());
+
 								String outageKey = String.valueOf(rst.getInt(1)
 										+ ":" + rst.getString(2) + ":"
 										+ rst.getInt(4));
@@ -527,35 +509,32 @@ public class DashBoardService {
 								infoList.getCateGoryInfo().put(nodeid, info);
 
 							}
-							
-							
-							
-//							totalAvl = totalAvl / av;
-//							infoList.setServiceids(categorygroupId);
-//							infoList.setOutageTotalCount(totalOutageCount);
-//							infoList.setServiceTotalCount(totalServiceCount);
-//							infoList.setAvailabiliAv(totalAvl);
-//							
-//							categoryMain.getCateGoryTable().put(categorygroupName,
-//									infoList);
-							
+
+							// totalAvl = totalAvl / av;
+							// infoList.setServiceids(categorygroupId);
+							// infoList.setOutageTotalCount(totalOutageCount);
+							// infoList.setServiceTotalCount(totalServiceCount);
+							// infoList.setAvailabiliAv(totalAvl);
+							//
+							// categoryMain.getCateGoryTable().put(categorygroupName,
+							// infoList);
 
 						}
-						
-						Hashtable<String, CategoryInfo> cateGoryInfo = infoList.getCateGoryInfo();
+
+						Hashtable<String, CategoryInfo> cateGoryInfo = infoList
+								.getCateGoryInfo();
 						Iterator<String> it = cateGoryInfo.keySet().iterator();
-						
+
 						while (it.hasNext()) {
 							String categoryInfoKey = (String) it.next();
-							
-							CategoryInfo categoryInfo = cateGoryInfo.get(categoryInfoKey);
-							
-							
+
+							CategoryInfo categoryInfo = cateGoryInfo
+									.get(categoryInfoKey);
+
 							totalAvl = totalAvl + categoryInfo.getAvailabili();
-							
+
 						}
-						
-						
+
 						logger.debug("totalAvl:" + String.valueOf(totalAvl));
 						logger.debug("av:" + av);
 						totalAvl = totalAvl / av;
@@ -569,8 +548,7 @@ public class DashBoardService {
 								+ infoList.getServiceTotalCount());
 						logger.debug("totalOutageCount:"
 								+ infoList.getOutageTotalCount());
-						logger.debug("categorygroupName:"
-								+ categorygroupName);
+						logger.debug("categorygroupName:" + categorygroupName);
 						categoryMain.getCateGoryTable().put(categorygroupName,
 								infoList);
 						this.setCategoryMain(categoryMain);
@@ -607,47 +585,121 @@ public class DashBoardService {
 
 		return nodeAvailability(nodeIds, yesterday, now);
 	}
-	
-	
-	
+
 	public String allCategory() throws HandleException {
 		StringBuffer result = new StringBuffer();
-		
+
 		try {
-			
-			
-			Hashtable<String, CategoryInfoList> cateGoryTable = this.getCategoryMain().getCateGoryTable();
-			
+
+			Hashtable<String, CategoryInfoList> cateGoryTable = this
+					.getCategoryMain().getCateGoryTable();
+
 			Iterator<String> it = cateGoryTable.keySet().iterator();
-			
+
 			result.append("{\"CategoryInfo\":[");
-			
+
 			while (it.hasNext()) {
 				String categoryInfoKey = (String) it.next();
-				
-				CategoryInfoList categoryInfoList = cateGoryTable.get(categoryInfoKey);
-				
-				
-				result.append("{\"name\":\""+categoryInfoKey+"\",\"outageTotalCount\":\""+categoryInfoList.getOutageTotalCount()+
-						",\"serviceTotalCount\":\""+categoryInfoList.getServiceTotalCount()+",\"availabili\":\""+categoryInfoList.getAvailabili()
-						+"\"},");
-				
+
+				CategoryInfoList categoryInfoList = cateGoryTable
+						.get(categoryInfoKey);
+
+				result.append("{\"name\":\"" + categoryInfoKey
+						+ "\",\"outageTotalCount\":\""
+						+ categoryInfoList.getOutageTotalCount()
+						+ "\",\"serviceTotalCount\":\""
+						+ categoryInfoList.getServiceTotalCount()
+						+ "\",\"availabili\":\""
+						+ categoryInfoList.getAvailabili() + "\"},");
+
 			}
-			
+
+			// last "," delete
+
+			result.deleteCharAt(result.length() - 1);
+			result.append("],");
+
+			Hashtable<String, Outage> outageList = this.getOutageList();
+
+			Iterator<String> outageIt = outageList.keySet().iterator();
+
+			result.append("\"Outages\":[");
+
+			while (outageIt.hasNext()) {
+				String outageKey = (String) outageIt.next();
+
+				Outage outage = outageList.get(outageKey);
+
+				result.append("{\"outageid\":\"" + outage.getOutageid()
+						+ "\",\"iflostservice\":\"" + outage.getIflostservice()
+						+ "\",\"nodeid\":\"" + outage.getNodeid()
+						+ "\",\"serviceid\":\"" + outage.getServiceid()
+						+ "\",\"ipaddr\":\"" + outage.getIpaddr() + "\"},");
+
+			}
+
 			// last "," delete
 
 			result.deleteCharAt(result.length() - 1);
 			result.append("]}");
-			
+
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
-		
+
 		return result.toString();
-		
-		
+
 	}
-	
+
+	public String allCategory(String categoryName) throws HandleException {
+		StringBuffer result = new StringBuffer();
+
+		try {
+
+			CategoryInfoList categoryInfoList = this.getCategoryMain()
+					.getCateGoryTable().get(categoryName);
+
+			result.append("{\"CategoryInfo\":");
+
+			result.append("{\"name\":\"" + categoryName
+					+ "\",\"outageTotalCount\":\""
+					+ categoryInfoList.getOutageTotalCount()
+					+ "\",\"serviceTotalCount\":\""
+					+ categoryInfoList.getServiceTotalCount()
+					+ "\",\"availabili\":\"" + categoryInfoList.getAvailabili()
+					+ "\"},");
+
+			Hashtable<String, Outage> outageList = this.getOutageList();
+
+			Iterator<String> outageIt = outageList.keySet().iterator();
+
+			result.append("\"Outages\":[");
+
+			while (outageIt.hasNext()) {
+				String outageKey = (String) outageIt.next();
+
+				Outage outage = outageList.get(outageKey);
+
+				result.append("{\"outageid\":\"" + outage.getOutageid()
+						+ "\",\"iflostservice\":\"" + outage.getIflostservice()
+						+ "\",\"nodeid\":\"" + outage.getNodeid()
+						+ "\",\"serviceid\":\"" + outage.getServiceid()
+						+ "\",\"ipaddr\":\"" + outage.getIpaddr() + "\"},");
+
+			}
+
+			// last "," delete
+
+			result.deleteCharAt(result.length() - 1);
+			result.append("]}");
+
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result.toString();
+
+	}
 
 	public double nodeAvailability(int nodeIds, Date start, Date end)
 			throws HandleException {
@@ -727,36 +779,38 @@ public class DashBoardService {
 
 	}
 
-	
-    public double serviceAvailability(int nodeId, String ipAddr, int serviceIds) throws HandleException {
-        if (ipAddr == null) {
-            throw new IllegalArgumentException("Cannot take null parameters.");
-        }
+	public double serviceAvailability(int nodeId, String ipAddr, int serviceIds)
+			throws HandleException {
+		if (ipAddr == null) {
+			throw new IllegalArgumentException("Cannot take null parameters.");
+		}
 
-        Calendar cal = new GregorianCalendar();
-        Date now = cal.getTime();
-        cal.add(Calendar.DATE, -1);
-        Date yesterday = cal.getTime();
+		Calendar cal = new GregorianCalendar();
+		Date now = cal.getTime();
+		cal.add(Calendar.DATE, -1);
+		Date yesterday = cal.getTime();
 
-        return serviceAvailability(nodeId, ipAddr, serviceIds, yesterday, now);
-    }
-    
-    public double serviceAvailability(int nodeId, String ipAddr, int serviceIds, Date start, Date end) throws HandleException {
-        if (start == null || end == null) {
-            throw new HandleException("Cannot take null parameters.");
-        }
+		return serviceAvailability(nodeId, ipAddr, serviceIds, yesterday, now);
+	}
 
-        if (end.before(start)) {
-            throw new HandleException("Cannot have an end time before the start time.");
-        }
+	public double serviceAvailability(int nodeId, String ipAddr,
+			int serviceIds, Date start, Date end) throws HandleException {
+		if (start == null || end == null) {
+			throw new HandleException("Cannot take null parameters.");
+		}
 
-        if (end.equals(start)) {
-            throw new HandleException("Cannot have an end time equal to the start time.");
-        }
+		if (end.before(start)) {
+			throw new HandleException(
+					"Cannot have an end time before the start time.");
+		}
 
-        
-        double result = 0;
-        
+		if (end.equals(start)) {
+			throw new HandleException(
+					"Cannot have an end time equal to the start time.");
+		}
+
+		double result = 0;
+
 		Statement stmt = null;
 		ResultSet rst = null;
 		Connection conn = null;
@@ -775,26 +829,34 @@ public class DashBoardService {
 
 				if (conn != null) {
 					stmt = conn.createStatement();
-					
+
 					Timestamp startTime = new Timestamp(start.getTime());
 					Timestamp endTime = new Timestamp(end.getTime());
-					
-					sql.append("select getPercentAvailabilityInWindow("+nodeId+", '"+ipAddr+"', '"+serviceIds+"','"+endTime+"','"+ startTime +"')  as avail from ifservices, ipinterface where ifservices.ipaddr = ipinterface.ipaddr and ifservices.nodeid = ipinterface.nodeid and ipinterface.ismanaged='M' and ifservices.nodeid="+nodeId+" and ifservices.ipaddr='"+ipAddr+"'  and serviceid = "+serviceIds);
 
+					sql.append("select getPercentAvailabilityInWindow("
+							+ nodeId
+							+ ", '"
+							+ ipAddr
+							+ "', '"
+							+ serviceIds
+							+ "','"
+							+ endTime
+							+ "','"
+							+ startTime
+							+ "')  as avail from ifservices, ipinterface where ifservices.ipaddr = ipinterface.ipaddr and ifservices.nodeid = ipinterface.nodeid and ipinterface.ismanaged='M' and ifservices.nodeid="
+							+ nodeId + " and ifservices.ipaddr='" + ipAddr
+							+ "'  and serviceid = " + serviceIds);
 
 					logger.debug("sql:::" + sql.toString());
 					rst = stmt.executeQuery(sql.toString());
 
-					
 					while (rst.next()) {
 
-						result =  rst.getInt(1);
-						
+						result = rst.getInt(1);
 
 					}
 
 					rst.close();
-
 
 				}
 			}
@@ -812,11 +874,12 @@ public class DashBoardService {
 				} catch (Exception e) {
 				}
 		}
-        
+
 		return result;
 
-    }   
-    
+	}
+
+	@PostConstruct
 	public void outTage() throws HandleException {
 
 		Statement stmt = null;

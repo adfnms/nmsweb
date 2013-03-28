@@ -315,6 +315,33 @@ public class DashBoardController {
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}
+	
+	@RequestMapping(value = "/dashboard/Category/{categoryName}", method = RequestMethod.GET)
+	public @ResponseBody
+	String allCategoryName(HttpServletRequest request, @PathVariable String categoryName) throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+		
+//		CategoryMain main = service.getCategoryMain();
+//		Hashtable<String, CategoryInfoList> CateGoryTable =  main.getCateGoryTable();
+//		Set<String> aaa = CateGoryTable.keySet();
+//		CategoryInfoList infoList = CateGoryTable.get("NetWorkInterfaces");
+//		Set<String> bbbb = infoList.getCateGoryInfo().keySet();
+		
+
+		try {
+			result = service.allCategory(categoryName);
+
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
 
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
