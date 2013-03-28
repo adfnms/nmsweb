@@ -77,24 +77,26 @@ public class GraphController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 		String jsonData = null;
+		String parsingData = null;
 		try {
 			result = (String) service.graphListNodeId(nodeid);
-			String parsingData = gutil.graphDetail(result);
+			parsingData = gutil.graphDetail(result);
 			logger.debug("parsingData::" + parsingData);
-			jsonData = gutil.graphNodeJson(parsingData);
-			logger.debug("jsonData::" + jsonData);
+			// jsonData = gutil.graphNodeJson(parsingData);
+			// logger.debug("parsingData::" + parsingData);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
 		} catch (UtilException e) {
 			logger.error("Failed in Util", e);
 			throw e;
-		} catch (MapperException e) {
-			logger.error("Failed in mapper", e);
-			throw e;
 		}
-		logger.debug(RETURNRESULT + jsonData);
-		return jsonData;
+		// catch (MapperException e) {
+		// logger.error("Failed in mapper", e);
+		// throw e;
+		// }
+		logger.debug(RETURNRESULT + parsingData);
+		return parsingData;
 	}
 
 	// http://192.168.0.5:8980/opennms/graph/results.htm?reports=all&resourceId=
