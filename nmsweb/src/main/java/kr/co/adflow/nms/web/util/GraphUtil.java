@@ -65,8 +65,11 @@ public class GraphUtil {
 		} catch (Exception e) {
 			throw new UtilException(e);
 		}
-		logger.debug("graphnodeUtilresult::" + result);
-		return result;
+		StringBuffer buf= new StringBuffer();
+		buf.append(result);
+		buf.deleteCharAt(buf.length()-1);
+		logger.debug("buf.toString();::" + buf.toString());
+		return buf.toString();
 	}
 
 	public String graphNodeJson(String parsingData) throws MapperException,
@@ -75,7 +78,7 @@ public class GraphUtil {
 		try {
 			GraphNodeList gr = mapper.graphInfo(parsingData);
 			java.util.List<GraphNodeVO> listdata = gr.getGraphs();
-
+			
 			StringBuffer strBuf = new StringBuffer();
 			strBuf.append("{");
 			for (int i = 0; i < listdata.size(); i++) {

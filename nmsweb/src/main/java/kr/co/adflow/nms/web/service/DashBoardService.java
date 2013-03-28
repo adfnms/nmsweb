@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.naming.Context;
@@ -28,7 +29,8 @@ import kr.co.adflow.nms.web.vo.categories.Catinfo;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfo;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryInfoList;
 import kr.co.adflow.nms.web.vo.categoryDetail.CategoryMain;
-import kr.co.adflow.nms.web.vo.resultcategory.CategoryJsonGroup;
+
+import kr.co.adflow.nms.web.vo.resultcategory.CategoryXmlResultGroup;
 import kr.co.adflow.nms.web.vo.servicesid.ServiceVo;
 
 import org.slf4j.Logger;
@@ -52,7 +54,7 @@ public class DashBoardService {
 	@Autowired
 	CategoryGroupMapper cateMapper;
 	@Autowired
-	CategoryJsonGroup group;
+	CategoryXmlResultGroup group;
 	@Autowired
 	CategoryUtil cateUtil;
 	@Autowired
@@ -104,6 +106,9 @@ public class DashBoardService {
 			}
 			String netWorkInterfaces = buf.toString();
 
+			
+			
+			
 			// database
 			int dataBaseServerSize = group.dataBaseServer().size();
 			StringBuffer buf1 = new StringBuffer();
@@ -163,42 +168,25 @@ public class DashBoardService {
 			String dataBaseServergroup = "DatabaseServer";
 			dataBaseServerID = cateUtil.categoriesId(dataBaseServer, serviceVo);
 			logger.debug("dataBaseServerID::" + dataBaseServerID);
-			CategoryMain mainDatabase = new CategoryMain();
-			mainDatabase = this.getCategoryNodeIdServiceID(dataBaseServerID,
+			this.getCategoryNodeIdServiceID(dataBaseServerID,
 					dataBaseServergroup);
-			String dataBaseServerJson = cateUtil.cateGoryJackSon(mainDatabase);
-			logger.debug("dataBaseServerJson::" + dataBaseServerJson);
 
-			resultBuffer.append("{\"result\":[");
 			// netWorkInterfacesID
 			String netWorkInterfacesID = null;
 			String netWorkInterfacesGroup = "NetWorkInterfaces";
 			netWorkInterfacesID = cateUtil.categoriesId(netWorkInterfaces,
 					serviceVo);
 			logger.debug("netWorkInterfacesID::" + netWorkInterfacesID);
-			CategoryMain mainNetWorkInterfaces = new CategoryMain();
-			mainNetWorkInterfaces = this.getCategoryNodeIdServiceID(
-					netWorkInterfacesID, netWorkInterfacesGroup);
-
-			String netWorkInterfacesJson = cateUtil
-					.cateGoryJackSon(mainNetWorkInterfaces);
-			logger.debug("netWorkInterfacesJson::" + netWorkInterfacesJson);
-
-			resultBuffer.append(netWorkInterfacesJson + ",");
+			this.getCategoryNodeIdServiceID(netWorkInterfacesID,
+					netWorkInterfacesGroup);
 
 			// dnsDhcpServersID
 			String dnsDhcpServersID = null;
 			String dnsDhcpServersGroup = "DnsDhcpServers";
 			dnsDhcpServersID = cateUtil.categoriesId(dnsDhcpServers, serviceVo);
 			logger.debug("dnsDhcpServersID::" + dnsDhcpServersID);
-			CategoryMain mainDnsDhcpServers = new CategoryMain();
-			mainDnsDhcpServers = this.getCategoryNodeIdServiceID(
-					dnsDhcpServersID, dnsDhcpServersGroup);
-			String DhcpServersJson = cateUtil
-					.cateGoryJackSon(mainDnsDhcpServers);
-			logger.debug("DhcpServersJson::" + DhcpServersJson);
-
-			resultBuffer.append(DhcpServersJson + ",");
+			this.getCategoryNodeIdServiceID(dnsDhcpServersID,
+					dnsDhcpServersGroup);
 
 			// emailServersID
 			String emailServersID = null;
@@ -206,14 +194,7 @@ public class DashBoardService {
 			emailServersID = cateUtil.categoriesId(emailServers, serviceVo);
 			logger.debug("emailServersID::" + emailServersID);
 
-			CategoryMain mainEmailServersID = new CategoryMain();
-			mainEmailServersID = this.getCategoryNodeIdServiceID(
-					emailServersID, emailServersGroup);
-			String emailServersJson = cateUtil
-					.cateGoryJackSon(mainEmailServersID);
-			logger.debug("emailServersJson::" + emailServersJson);
-
-			resultBuffer.append(emailServersJson + ",");
+			this.getCategoryNodeIdServiceID(emailServersID, emailServersGroup);
 
 			// otherServersID
 			String otherServersID = null;
@@ -221,14 +202,7 @@ public class DashBoardService {
 			otherServersID = cateUtil.categoriesId(otherServers, serviceVo);
 			logger.debug("otherServersID::" + otherServersID);
 
-			CategoryMain mainOtherServersID = new CategoryMain();
-			mainOtherServersID = this.getCategoryNodeIdServiceID(
-					otherServersID, otherServersGroup);
-			String otherServersJson = cateUtil
-					.cateGoryJackSon(mainOtherServersID);
-			logger.debug("otherServersJson::" + otherServersJson);
-
-			resultBuffer.append(otherServersJson + ",");
+			this.getCategoryNodeIdServiceID(otherServersID, otherServersGroup);
 
 			// jmxServersID
 			String jmxServersID = null;
@@ -236,13 +210,7 @@ public class DashBoardService {
 			jmxServersID = cateUtil.categoriesId(jmxServers, serviceVo);
 			logger.debug("jmxServersID::" + jmxServersID);
 
-			CategoryMain mainJmxServers = new CategoryMain();
-			mainJmxServers = this.getCategoryNodeIdServiceID(jmxServersID,
-					jmxServersGroup);
-			String jmxServersJson = cateUtil.cateGoryJackSon(mainJmxServers);
-			logger.debug("jmxServersJson::" + jmxServersJson);
-
-			resultBuffer.append(jmxServersJson + ",");
+			this.getCategoryNodeIdServiceID(jmxServersID, jmxServersGroup);
 
 			// webServersID
 			String webServersID = null;
@@ -250,11 +218,8 @@ public class DashBoardService {
 			webServersID = cateUtil.categoriesId(webServers, serviceVo);
 			logger.debug("webServersID::" + webServersID);
 
-			CategoryMain mainWebServers = new CategoryMain();
-			mainWebServers = this.getCategoryNodeIdServiceID(webServersID,
-					webServersGroup);
-			String webServersJson = cateUtil.cateGoryJackSon(mainWebServers);
-			logger.debug("webServersJson::" + webServersJson);
+			this.getCategoryNodeIdServiceID(webServersID, webServersGroup);
+
 		} catch (Exception e) {
 			logger.error("Failed in processing", e);
 		}
@@ -262,6 +227,7 @@ public class DashBoardService {
 
 	public String categoryJsonXml() throws HandleException {
 		String result = null;
+
 		try {
 
 			JAXBContext jc = JAXBContext.newInstance(Catinfo.class);
@@ -299,6 +265,7 @@ public class DashBoardService {
 								.getService().get(k);
 
 						bufLable.append("\"" + serviceName + "\",");
+
 					}
 					bufLable.delete(bufLable.length() - 1, bufLable.length());
 					bufLable.append("]},");
@@ -355,7 +322,7 @@ public class DashBoardService {
 
 					result.append("{\"services\":[");
 					while (rst.next()) {
-						CategoryJsonGroup group = new CategoryJsonGroup();
+						CategoryXmlResultGroup group = new CategoryXmlResultGroup();
 						result.append("{\"serviceid\":\"" + rst.getInt(1)
 								+ "\",");
 						result.append("\"servicename\":\"" + rst.getString(2)
@@ -439,7 +406,7 @@ public class DashBoardService {
 						int av = 0;
 						while (rst.next()) {
 
-							String nodeid = String.valueOf(rst.getInt(1));
+							int nodeid = rst.getInt(1);
 							CategoryInfo tempInfo = new CategoryInfo();
 							if (infoList.getCateGoryInfo().containsKey(nodeid)) {
 
@@ -521,12 +488,12 @@ public class DashBoardService {
 
 						}
 
-						Hashtable<String, CategoryInfo> cateGoryInfo = infoList
+						Hashtable<Integer, CategoryInfo> cateGoryInfo = infoList
 								.getCateGoryInfo();
-						Iterator<String> it = cateGoryInfo.keySet().iterator();
+						Iterator<Integer> it = cateGoryInfo.keySet().iterator();
 
 						while (it.hasNext()) {
-							String categoryInfoKey = (String) it.next();
+							int categoryInfoKey =  it.next();
 
 							CategoryInfo categoryInfo = cateGoryInfo
 									.get(categoryInfoKey);
@@ -700,9 +667,7 @@ public class DashBoardService {
 		return result.toString();
 
 	}
-	
-	
-	
+
 	public String cateGoryDetail(String categoryName) throws HandleException {
 		StringBuffer result = new StringBuffer();
 
@@ -713,24 +678,47 @@ public class DashBoardService {
 
 			result.append("{\"CategoryInfo\":");
 
-			result.append("{\"name\":\"" + categoryName
-					+ "\"},");
-			
-			 Iterator<String> nodeCate=  categoryInfoList.getCateGoryInfo().keySet().iterator();
-			
-	
+			result.append("{\"name\":\"" + categoryName + "\"},");
+
+			Iterator<Integer> nodeCate = categoryInfoList.getCateGoryInfo()
+					.keySet().iterator();
 
 			result.append("\"Detail\":[");
 
 			while (nodeCate.hasNext()) {
-				String infoKey = (String) nodeCate.next();
+				int infoKey =  nodeCate.next();
 
-				CategoryInfo cateInfo =  categoryInfoList.getCateGoryInfo().get(infoKey);
+				CategoryInfo cateInfo = categoryInfoList.getCateGoryInfo().get(
+						infoKey);
 
 				result.append("{\"nodeLabel\":\"" + cateInfo.getNodeLabel()
 						+ "\",\"outageCount\":\"" + cateInfo.getOutageCount()
 						+ "\",\"serviceCount\":\"" + cateInfo.getServiceCount()
-						+ "\",\"availavili\":\"" + cateInfo.getAvailabili() + "\"},");
+						+ "\",\"availavili\":\"" + cateInfo.getAvailabili()
+						+ "\"},");
+
+			}
+
+			// last "," delete
+			result.deleteCharAt(result.length() - 1);
+			result.append("],");
+
+			Hashtable<String, Outage> outageList = this.getOutageList();
+
+			Iterator<String> outageIt = outageList.keySet().iterator();
+
+			result.append("\"Outages\":[");
+
+			while (outageIt.hasNext()) {
+				String outageKey = (String) outageIt.next();
+
+				Outage outage = outageList.get(outageKey);
+
+				result.append("{\"outageid\":\"" + outage.getOutageid()
+						+ "\",\"iflostservice\":\"" + outage.getIflostservice()
+						+ "\",\"nodeid\":\"" + outage.getNodeid()
+						+ "\",\"serviceid\":\"" + outage.getServiceid()
+						+ "\",\"ipaddr\":\"" + outage.getIpaddr() + "\"},");
 
 			}
 
@@ -746,8 +734,6 @@ public class DashBoardService {
 		return result.toString();
 
 	}
-	
-	
 
 	public double nodeAvailability(int nodeIds, Date start, Date end)
 			throws HandleException {

@@ -43,11 +43,11 @@ public class GraphController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 		String dataJsonResult = null;
-
+		String parsingData=null;
 		try {
 			result = (String) service.graphList();
 
-			String parsingData = gutil.graphNode(result);
+			 parsingData = gutil.graphNode(result);
 			logger.debug("parsingDATA::" + parsingData);
 			dataJsonResult = gutil.graphNodeJson(parsingData);
 
@@ -62,7 +62,7 @@ public class GraphController {
 			throw e;
 		}
 		logger.debug(RETURNRESULT + dataJsonResult);
-		return dataJsonResult;
+		return parsingData;
 	}
 
 	// http://192.168.0.5:8980/opennms/graph/chooseresource.htm?reports=all&parentResourceId=node[53]

@@ -173,7 +173,7 @@ public class OutagesCheck extends TimerTask{
 									
 									String key = tempOldOutage.getNodeid()+":"+tempOldOutage.getIpaddr()+":"+tempOldOutage.getServiceid();
 									
-									//Outage 정보 수정
+									//Outage �뺣낫 �섏젙
 									Set categorySet = CateGoryTable.keySet();
 									
 									Iterator categoryIt = categorySet.iterator();
@@ -184,7 +184,7 @@ public class OutagesCheck extends TimerTask{
 										CategoryInfoList tempOldCategoryInfoList = CateGoryTable.get(categoryKey);
 										
 
-										//category에 해당 service가 있는지 확인 후 있으면 outage수를 -1함.
+										//category���대떦 service媛��덈뒗吏��뺤씤 ���덉쑝硫�outage�섎� -1��
 										String serviceIds = tempOldCategoryInfoList.getServiceids();
 										
 										if (serviceIds != null) {
@@ -193,7 +193,7 @@ public class OutagesCheck extends TimerTask{
 												
 												logger.debug("outagedelete :::; "+ categoryKey);
 												
-												Hashtable<String, CategoryInfo> tempCateGoryInfo = tempOldCategoryInfoList.getCateGoryInfo();
+												Hashtable<Integer, CategoryInfo> tempCateGoryInfo = tempOldCategoryInfoList.getCateGoryInfo();
 												
 												logger.debug("getNodeid :::; "+ tempOldOutage.getNodeid());
 												
@@ -245,7 +245,7 @@ public class OutagesCheck extends TimerTask{
 									
 									Outage tempNewOutage = newOutageList.get(newKey);
 									
-									//Outage 정보 수정
+									//Outage �뺣낫 �섏젙
 									Set categorySet = CateGoryTable.keySet();
 									
 									Iterator categoryIt = categorySet.iterator();
@@ -256,7 +256,7 @@ public class OutagesCheck extends TimerTask{
 										CategoryInfoList tempNewCategoryInfoList = CateGoryTable.get(categoryKey);
 										
 
-										//category에 해당 service가 있는지 확인 후 있으면 outage수를 +1함.
+										//category���대떦 service媛��덈뒗吏��뺤씤 ���덉쑝硫�outage�섎� +1��
 										
 										String serviceIds = tempNewCategoryInfoList.getServiceids();
 										
@@ -268,7 +268,7 @@ public class OutagesCheck extends TimerTask{
 												
 												logger.debug("outage ADD :::; "+ categoryKey);
 												
-												Hashtable<String, CategoryInfo> tempCateGoryInfo = tempNewCategoryInfoList.getCateGoryInfo();
+												Hashtable<Integer, CategoryInfo> tempCateGoryInfo = tempNewCategoryInfoList.getCateGoryInfo();
 												
 												logger.debug("getNodeid :::; "+ tempNewOutage.getNodeid());
 												

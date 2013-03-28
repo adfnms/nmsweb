@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 @Service
-public class CategoryJsonGroup {
+public class CategoryXmlResultGroup {
 	
 	protected List<NetWorkInterfaces> netWorkInterfaces;
 	protected List<WebServers> webServers;
