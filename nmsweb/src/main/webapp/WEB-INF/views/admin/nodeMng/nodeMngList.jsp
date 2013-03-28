@@ -40,7 +40,7 @@
 		$('#nodeListTable').append(str);
 		
 		//페이징 HTML 가져오기
-		getPagingHtml($('#pagingDiv'), "goSearchPageing", jsonObj["@totalCount"], pageNum, "10", "10" );
+		getPagingHtml($('#pagingDiv'), "goSearchPageing", jsonObj["@totalCount"], pageNum, "20", "5" );
 
 	}
 	

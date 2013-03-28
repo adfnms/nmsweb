@@ -8,7 +8,7 @@
     display: inline-block; /* display: table may also work.. */
     padding: 0; /* let the bars position themselves */
     list-style: none; /* we don't want to see any default <ul> markers */
-	margin: 40px 0 0 40px;
+	margin: 7px 0 0 90px;
 	font-size: 0.8em;
     /* Graph Holder's Background */
     background-image: -webkit-linear-gradient(left , rgba(255, 255, 255, .3) 100%, transparent 100%);
@@ -75,7 +75,8 @@
 .graph-container > li > span {
     position: absolute;
     left: 0;
-    bottom: -2em;
+    z-index: 10;
+    /* bottom: -2em; */
     width: 80%; /* play with this one if you change perspective depth */
     text-align: center;
 	font-weight: bold;
@@ -432,10 +433,10 @@ input[name^="paint-"] + label {
 .minor-graph .bar-inner:before { background-color: rgba(252, 237, 28, .6); }
 .minor-graph .bar-inner:after { background-color: rgba(252, 237, 28, .4); }
 
-.warning-graph .bar-inner,
-.warning-graph .bar-inner:before { background-color:  rgba(5, 62, 123, .6); }
-.warning-graph .bar-inner:after { background-color: rgba(5, 62, 123, .4); }
 
+.warning-graph .bar-inner,
+.warning-graph .bar-inner:before { background-color: rgba(5, 213, 255, .6); }
+.warning-graph .bar-inner:after { background-color: rgba(5, 213, 255, .4); }
 
 .normal-graph .bar-inner,
 .normal-graph .bar-inner:before { background-color: rgba(13, 117, 13, .6); }
@@ -446,8 +447,9 @@ input[name^="paint-"] + label {
 .cleared-graph .bar-inner:after { background-color: rgba(133, 133, 133, .4); }
 
 .indeterminate-graph .bar-inner,
-.indeterminate-graph .bar-inner:before { background-color: rgba(5, 213, 255, .6); }
-.indeterminate-graph .bar-inner:after { background-color: rgba(5, 213, 255, .4); }
+.indeterminate-graph .bar-inner:before { background-color:  rgba(112, 209, 244, .6); }
+.indeterminate-graph .bar-inner:after { background-color: rgba(112, 209, 244, .4); }
+
 /****************
  * SIZE BUTTONS  *
  ****************/

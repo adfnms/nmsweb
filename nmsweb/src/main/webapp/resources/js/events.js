@@ -23,6 +23,32 @@ function getTotalEvenstList(callback,data) {
 
 }
 
+/** Get a list of events For dashboard
+ * @param callback
+ * @param data
+ */
+function getTotalEvenstListForDashboard(callback,data, limit) {
+
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/eventquery',
+		dataType : 'json',
+		contentType : 'application/json',
+		data : "eventseverity"+data+"&limit="+limit,
+		error : function(data) {
+			alert('이벤트 리스트 가져오기 서비스 실패');
+		},
+		success : function(data) {
+			// 콜백함수
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+
+}
+
+
 /** Get a list of outages for nodeId [recent]
  * 최근 recentCount개 의 Events 목록
  * @param callback
@@ -107,12 +133,12 @@ function getTabletagToEventJsonObj(jsonObj){
 
 		} else {
 			str += "<tr>";
-			str += "<td><a href='#'>" + events["@id"] + "</a></td>";
+			str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"'>" + events["@id"] + "</a></td>";
 			str += "<td>"
 					+ new Date(events["createTime"])
 							.format('yy-MM-dd hh:mm:ss') + "</td>";
-			str += "<td>" + events["@severity"] + "</td>";
-			str += "<td>" + events["logMessage"] + "</td>";
+			str += "<th class='"+events["@severity"].toLowerCase()+"'>" + events["@severity"] + "</th>";
+			str += "<td>" + events["logMessage"].replace(/<p>|<\/p>/gi,'') + "</td>";
 			str += "</tr>";
 		}
 

@@ -268,8 +268,16 @@ function dateDiff(FromTime, ToTime){
 	minAfter = Math.floor(minAfter);
 	secAfter = Math.floor(secAfter);
 	
+	console.log("===============");
+	console.log(daysAfter);
+	console.log(hourAfter);
+	console.log(minAfter);
+	console.log(secAfter);
+	
 	if(daysAfter > 1){
 		_return = Math.round(daysAfter) + "일"; // 지난 날짜 출력	
+	}else if(daysAfter == 1){
+		_return = hourAfter + "시간"; // 지난 시간 출력	
 	}else if(hourAfter < 24 && hourAfter != 0){
 		_return = hourAfter + "시간"; // 지난 시간 출력	
 	}else if(minAfter < 60){
@@ -277,7 +285,38 @@ function dateDiff(FromTime, ToTime){
 	}else{
 		_return = secAfter + "초"; // 지난 초 출력	
 	}
+	console.log("===============");
+	console.log("===============");
 	
 	return _return;
 	
+}
+
+function getEventseverityToNum(level){
+	var statsStr = "";
+	switch(level){
+	case '1':
+		statsStr ="Indeterminate";
+		break;
+	case '2':
+		statsStr ="Cleared";
+		break;
+	case '3':
+		statsStr ="Normal";
+		break;
+	case '4':
+		statsStr ="Warning";
+		break;
+	case '5':
+		statsStr ="Minor";
+		break;
+	case '6':
+		statsStr ="Major";
+		break;
+	case '7':
+		statsStr ="Critical";
+		break;
+	}	
+	
+	return statsStr;
 }
