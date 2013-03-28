@@ -25,7 +25,7 @@
 		getOutagesForNode(addOutages, "${nodeId}", "10");
 
 		/* Recent Events */
-		getEventsForNode(addEvents, "${nodeId}", "10");
+		getEventsForNode(addEvents, "${nodeId}", "5");
 		
 		/* Node Availability */
 		getNodeAvailability(addNodeAvailability, "${nodeId}");

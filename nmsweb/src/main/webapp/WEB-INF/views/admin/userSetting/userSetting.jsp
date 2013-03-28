@@ -99,7 +99,7 @@
 					<div class="span3"><jsp:include page="/include/statsBar.jsp" /></div>
 					<div class="span2">
 						<a type="button" class="btn btn-primary" title="" href="/v1/admin/setting/addEvent.do">+ 공지 추가</a>
-						<a type="button" class="btn btn-primary" title="" href="/v1/admin/graphTest.do">+ graphTest</a>
+						<!-- <a type="button" class="btn btn-primary" title="" href="/v1/admin/graphTest.do">+ graphTest</a> -->
 					</div>
 				</div>
 			</div>

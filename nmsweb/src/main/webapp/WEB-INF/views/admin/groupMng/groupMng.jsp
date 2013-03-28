@@ -43,8 +43,6 @@
 	
 	function getGroupInfo(obj){
 		
-		alert(obj);
-		
 		$("#groupFrm").find('[name=name]:input').val(obj);
 		
 		var frm = document.getElementById("groupFrm");

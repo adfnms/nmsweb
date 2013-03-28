@@ -9,7 +9,7 @@
           <div class="breadcrumb well well-small span10">
             <ul class="nav nav-pills ">
               <li class="dropdown span2">
-              	<a class="dropdown-toggle muted" style="font-size:18px;" href="#">Home</a>
+              	<a class="dropdown-toggle muted" style="font-size:18px;" href="<c:url value="/index.do" />">Home</a>
               </li>
               <li class="dropdown span2">
 				<a class="dropdown-toggle muted" style="font-size:16px;" href="<c:url value="/dashboard.do" />">DashBoard</a>

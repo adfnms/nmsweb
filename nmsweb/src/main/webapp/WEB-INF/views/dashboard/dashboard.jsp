@@ -14,6 +14,7 @@
 <script src="<c:url value="/resources/js/common/websocket.js" />"></script>
 <script src="<c:url value="/resources/js/outages.js" />"></script>
 <script src="<c:url value="/resources/js/events.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <script type="text/javascript">
 	//var socket = connect("ws://localhost:8080/v1/ws",wsReceiveData);
 	
@@ -22,23 +23,42 @@
 		/* Recent Events */
 		eventListAct();
 		
-		getCurrentOutagesForNode(addOutage);
+		getTotalIndexInfo(initDashboard, null);
+		//getCurrentOutagesForNode(addOutage);
 		
-		setTimeout(chkstats, 2000);
 	});
 
+	function initDashboard(jsonObj){
+
+		var categoryObj = jsonObj["CategoryInfo"];
+		
+		for ( var i in categoryObj) {
+			
+			var cateIdx = getCategorieIdx(categoryObj[i]["name"]);
+			
+			var status = Number(categoryObj[i]["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical";
+ 			
+			$('.graph-container>li:nth-child('+cateIdx+') span div').html(" ["+Number(categoryObj[i]["availabili"]).toFixed(2)+"%]");
+			$('.graph-container>li:nth-child('+cateIdx+')').attr("class",status+"-graph");
+			$('.graph-container>li:nth-child('+cateIdx+') .bar-inner').css("height",Number(categoryObj[i]["availabili"]).toFixed(2)+"%").css("bottom", "0");
+		}
+		addOutage(jsonObj);
+		
+		setTimeout(chkstats, 2000);
+	}
+	
+	
 	var index = 0;
 	function chkstats(){
+		
+		grapHide(index+1);
+		index++;
 		
 		if( index == 7){
 			eventListAct();
 			index = 0;
-		}else{
-			grapHide(index+1);
-			index++;
 		}
-		
-		
+	
 		setTimeout(chkstats, 3000);
 	}
 	
@@ -99,46 +119,7 @@
 	}
 	/*//Evnet Callback */
 	
-	/* Outage Callback */
-	function addOutage(jsonObj){
-		var outageObj = jsonObj["outage"];
-
-		for( var i in outageObj ){
-			var lostTime = new Date(outageObj[i]["ifLostService"]);
-			var current = new Date();
-			var lastTime = dateDiff(lostTime, current);
-		
-			var str= "";
-			
-			str += "<li id='outage_"+outageObj[i]["@id"]+"'>";
-			str += "	<table>";
-			str += "		<tr>";
-			str += "			<td style='text-align:center;'>";
-			str += "				<img src='<c:url value="/resources/images/" />"+outageObj[i]["serviceLostEvent"]["@severity"].toLowerCase()+".png' style='width:110px; height:40px;'/>";
-			str += "			</td>";
-			str += "		</tr>";
-			str += "		<tr class='"+outageObj[i]["serviceLostEvent"]["@severity"].toLowerCase()+"'>";
-			str += "			<td style='text-align:center;'>";
-			str +=					outageObj[i]["ipAddress"];
-			str += "			</td>";
-			str += "		<tr>";
-			str += "			<td style='text-align:center;'>";
-			str += "				<a href=\"javascript:includeOut('"+outageObj[i]["@id"]+"');\">";
-			str += "					["+lastTime+"]";
-			str += "				</a>";
-			str += "			</td>";
-			str += "		</tr>";
-			str += "	</table>";
-			str += "</li>";
-			
-			$('#outageDiv').append($(str)).hide().fadeIn('slow');
-			
-		}
-		
-	}
-	/*//Outage Callback */
-	
-	/*//includeOut outage */
+	/* includeOut outage */
 	function includeOut(id){
 		
 		$('#outage_'+id).animate({opacity:'0.4',}).hide("slow",function(){
@@ -146,25 +127,75 @@
 		);
 		
 	}
+	/*//includeOut outage */
 	
-	function wsReceiveData(data){
-		
-		alert(data);
-		
-	}
-	
+	/* 그래프를 0%만들고 json데이터를 호출한다. */
 	function grapHide(idx){
 		
 		$('.graph-container>li:nth-child('+idx+') .bar-inner').css("height","");
-		setTimeout(grapShow, 800, idx);
-		
+		var categoriNm = getCategorieName(idx);
+		setTimeout(getCategoryToName, 800, grapShow, categoriNm, idx);
 	}
+	/*//그래프를 0%만들고 json데이터를 호출한다. */
 	
-	function grapShow(idx){
-		$('.graph-container>li:nth-child('+idx+') span div').html(" [50%]");
-		$('.graph-container>li:nth-child('+idx+')').attr("class","critical-graph");
-		$('.graph-container>li:nth-child('+idx+') .bar-inner').css("height","100%").css("bottom", "0");
+	/* 그래프를 그려준다. */
+	function grapShow(jsonObj, idx){
+		
+		var categoryObj = jsonObj["CategoryInfo"];
+		
+		var status = Number(categoryObj["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical";
+		
+		$('.graph-container>li:nth-child('+idx+') span div').html(" ["+Number(categoryObj["availabili"]).toFixed(2)+"%]");
+		$('.graph-container>li:nth-child('+idx+')').attr("class",status+"-graph");
+		$('.graph-container>li:nth-child('+idx+') .bar-inner').css("height",Number(categoryObj["availabili"]).toFixed(2)+"%").css("bottom", "0");
+		
+		addOutage(jsonObj);
 	}
+	/*//그래프를 그려준다. */
+	
+	/* outage append */
+	function addOutage(jsonObj){
+		//중단 목록
+		var outageObj = jsonObj["Outages"];
+		$('#outageDiv').empty();
+		for ( var i in outageObj) {
+			
+			var lostTime = new Date(outageObj[i]["iflostservice"]);
+			var current = new Date();
+			var lastTime = dateDiff(lostTime, current);
+			var sec = getSecDateDiff(lostTime, current);
+			var statu = sec <= 86400 ? "critical" : "major";
+			var str= "";
+			
+			str += "<li id='outage_"+outageObj[i]["outageid"]+"'>";
+			str += "	<table>";
+			str += "		<tr>";
+			str += "			<td style='text-align:center;'>";
+			str += "				<img src='<c:url value="/resources/images/" />"+statu+".png' style='width:110px; height:60px;'/>";
+			str += "			</td>";
+			str += "		</tr>";
+			str += "		<tr class='"+statu+"'>";
+			str += "			<td style='text-align:center;'>";
+			str +=					outageObj[i]["ipaddr"];
+			str += "			</td>";
+			str += "		<tr>";
+			str += "			<td style='text-align:center;'>";
+			str += "				<a href=\"javascript:includeOut('"+outageObj[i]["outageid"]+"');\">";
+			str += "					["+lastTime+"]";
+			str += "				</a>";
+			str += "			</td>";
+			str += "		</tr>";
+			str += "	</table>";
+			str += "</li>";
+			
+			if(sec <= 86400){
+				$('#outageDiv').prepend($(str)).fadeIn('slow');
+			}else{
+				$('#outageDiv').append($(str)).fadeIn('slow');
+			}
+		}
+	}
+	/*//outage append */
 	
 </script>
 </head>
@@ -185,11 +216,8 @@
 		<div class="row-fluid">
 			<div class="span12 well well-small">
 				<div class="row-fluid">
-					<div class="span9">
+					<div class="span12">
 						<h4 id="nodeLabel">데쉬보드</h4>
-					</div>
-					<div class="span3">
-						<jsp:include page="/include/statsBar.jsp" />
 					</div>
 				</div>
 			</div>
@@ -206,7 +234,7 @@
 		</div>
 		<div class="row-fluid">
 			<div class="row-fluid">
-				<h5>장애</h5>
+				<h5>중단&nbsp;서비스&nbsp;목록</h5>
 			</div>
 			<div class="row-fluid">
 				<div class="span12 well well-small">

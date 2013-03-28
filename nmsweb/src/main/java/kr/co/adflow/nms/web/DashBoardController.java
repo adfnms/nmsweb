@@ -72,7 +72,7 @@ public class DashBoardController {
 	// dashBoard
 	
 	@RequestMapping(value = "/dashboardtest", method = RequestMethod.GET)
-//	@PostConstruct
+
 	public @ResponseBody
 	String dashboardGroup(@RequestBody String data, HttpServletRequest request)
 			throws HandleException, MapperException, UtilException,
@@ -305,6 +305,33 @@ public class DashBoardController {
 
 		try {
 			result = service.allCategory();
+
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+
+		}
+
+		logger.debug(RETURNRESULT + result);
+		return result;
+	}
+	
+	@RequestMapping(value = "/dashboard/Category/Detail/{categoryName}", method = RequestMethod.GET)
+	public @ResponseBody
+	String allCategoryDetail(HttpServletRequest request, @PathVariable String categoryName) throws HandleException {
+
+		String result = null;
+		logger.info(PATH + request.getRequestURI());
+		
+//		CategoryMain main = service.getCategoryMain();
+//		Hashtable<String, CategoryInfoList> CateGoryTable =  main.getCateGoryTable();
+//		Set<String> aaa = CateGoryTable.keySet();
+//		CategoryInfoList infoList = CateGoryTable.get("NetWorkInterfaces");
+//		Set<String> bbbb = infoList.getCateGoryInfo().keySet();
+		
+
+		try {
+			result = service.cateGoryDetail(categoryName);
 
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
