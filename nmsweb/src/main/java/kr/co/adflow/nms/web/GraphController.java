@@ -43,13 +43,13 @@ public class GraphController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 		String dataJsonResult = null;
-		String parsingData=null;
+		String parsingData = null;
 		try {
 			result = (String) service.graphList();
 
-			 parsingData = gutil.graphNode(result);
+			parsingData = gutil.graphNode(result);
 			logger.debug("parsingDATA::" + parsingData);
-			dataJsonResult = gutil.graphNodeJson(parsingData);
+			// dataJsonResult = gutil.graphNodeJson(parsingData);
 
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -57,10 +57,12 @@ public class GraphController {
 		} catch (UtilException e) {
 			logger.error("Failed in Util", e);
 			throw e;
-		} catch (MapperException e) {
-			logger.error("Failed in mapper", e);
-			throw e;
 		}
+
+		// catch (MapperException e) {
+		// logger.error("Failed in mapper", e);
+		// throw e;
+		// }
 		logger.debug(RETURNRESULT + dataJsonResult);
 		return parsingData;
 	}
@@ -105,7 +107,7 @@ public class GraphController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 		String graphUrl = null;
-	
+
 		try {
 			result = (String) service.graphResourceIdSer(resourceId);
 			graphUrl = gutil.graphUrl(result);
@@ -115,7 +117,7 @@ public class GraphController {
 		} catch (UtilException e) {
 			logger.error("Failed in Util", e);
 			throw e;
-		} 
+		}
 		logger.debug(RETURNRESULT + graphUrl);
 		return graphUrl;
 	}
@@ -136,7 +138,7 @@ public class GraphController {
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
-		}catch (UtilException e) {
+		} catch (UtilException e) {
 			logger.error("Failed in Util", e);
 			throw e;
 		}
@@ -152,7 +154,7 @@ public class GraphController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 		String graphUrl = null;
-	
+
 		try {
 			result = (String) service.graphResourceIdSerWeek(resourceId);
 			graphUrl = gutil.graphUrl(result);
@@ -172,7 +174,7 @@ public class GraphController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 		String graphUrl = null;
-	
+
 		try {
 			result = (String) service.graphResourceIdSerMonth(resourceId);
 			graphUrl = gutil.graphUrl(result);
@@ -192,7 +194,7 @@ public class GraphController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 		String graphUrl = null;
-	
+
 		try {
 			result = (String) service.graphResourceIdSerYear(resourceId);
 			graphUrl = gutil.graphUrl(result);

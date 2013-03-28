@@ -106,9 +106,6 @@ public class DashBoardService {
 			}
 			String netWorkInterfaces = buf.toString();
 
-			
-			
-			
 			// database
 			int dataBaseServerSize = group.dataBaseServer().size();
 			StringBuffer buf1 = new StringBuffer();
