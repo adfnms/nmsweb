@@ -250,7 +250,7 @@ function dateDiff(FromTime, ToTime){
 	var _return;
 	
 	var fromDate = FromTime;
-		       
+
 	var toDate = ToTime;
 	    
 	var day = 1000*60*60*24;
@@ -268,12 +268,6 @@ function dateDiff(FromTime, ToTime){
 	minAfter = Math.floor(minAfter);
 	secAfter = Math.floor(secAfter);
 	
-	console.log("===============");
-	console.log(daysAfter);
-	console.log(hourAfter);
-	console.log(minAfter);
-	console.log(secAfter);
-	
 	if(daysAfter > 1){
 		_return = Math.round(daysAfter) + "일"; // 지난 날짜 출력	
 	}else if(daysAfter == 1){
@@ -285,13 +279,29 @@ function dateDiff(FromTime, ToTime){
 	}else{
 		_return = secAfter + "초"; // 지난 초 출력	
 	}
-	console.log("===============");
-	console.log("===============");
-	
 	return _return;
 	
 }
 
+function getSecDateDiff(FromTime, ToTime){
+	
+	var fromDate = FromTime;
+
+	var toDate = ToTime;
+	    
+	var sec = 1000;
+		
+	var secAfter = (toDate.getTime() - fromDate.getTime()) / sec;
+
+	secAfter = Math.floor(secAfter);
+	
+	return secAfter;
+}
+
+/**상태 정보
+ * @param level
+ * @returns {String}
+ */
 function getEventseverityToNum(level){
 	var statsStr = "";
 	switch(level){
@@ -318,5 +328,73 @@ function getEventseverityToNum(level){
 		break;
 	}	
 	
+	return statsStr;
+}
+
+/**
+ * @param idx
+ * @returns {String}
+ */
+function getCategorieName(idx){
+	
+	var statsStr = "";
+	
+	switch(idx){
+	case 1:
+		statsStr ="NetWorkInterfaces";
+		break;
+	case 2:
+		statsStr ="WebServers";
+		break;
+	case 3:
+		statsStr ="EmailServers";
+		break;
+	case 4:
+		statsStr ="DnsDhcpServers";
+		break;
+	case 5:
+		statsStr ="DatabaseServer";
+		break;
+	case 6:
+		statsStr ="JmxServers";
+		break;
+	case 7:
+		statsStr ="OtherServers";
+		break;
+	}
+	return statsStr;
+}
+
+/**
+ * @param idx
+ * @returns {String}
+ */
+function getCategorieIdx(categoriNm){
+	
+	var statsStr = "";
+	
+	switch(categoriNm){
+	case "NetWorkInterfaces":
+		statsStr = 1;
+		break;
+	case "WebServers":
+		statsStr = 2;
+		break;
+	case "EmailServers":
+		statsStr =3;
+		break;
+	case "DnsDhcpServers":
+		statsStr =4;
+		break;
+	case "DatabaseServer":
+		statsStr =5;
+		break;
+	case "JmxServers":
+		statsStr = 6;
+		break;
+	case "OtherServers":
+		statsStr = 7;
+		break;
+	}
 	return statsStr;
 }

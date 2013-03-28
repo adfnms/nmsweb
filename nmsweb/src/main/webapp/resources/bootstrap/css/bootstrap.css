@@ -6181,3 +6181,12 @@ a.badge:focus {
 .indeterminate{
 	background-image: -webkit-linear-gradient(top, #ADD9E6, #ADD9E6) !important;
 }
+
+.bs-docs {
+text-align:center;
+padding: 28px 0 26px 0;
+background-color: #fff;
+border: 1px solid #ddd;
+-webkit-border-radius: 4px;
+border-radius: 4px;
+}

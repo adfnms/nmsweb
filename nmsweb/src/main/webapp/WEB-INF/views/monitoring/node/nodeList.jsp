@@ -58,14 +58,32 @@
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="row-fluid">
-								<div class="span12">
-									<div class="span2 critical">Critical</div>
-									<div class="span2 major">Major</div>
-									<div class="span2 minor">Minor</div>
-									<div class="span2 warning">Warning</div>
-									<div class="span2 normal">Normal</div>
-									<div class="span2 cleared">Cleared</div>
-								</div>
+								<table class="span12">
+									<colgroup><col width="14%"/><col width="14%"/><col width="14%"/><col width="14%"/><col width="14%"/><col width="14%"/><col width="14%"/></colgroup>
+									<tr>
+										<td>
+											<div class="bs-docs critical"><h3>Critical</h3></div>
+										</td>
+										<td>
+											<div class="bs-docs major"><h3>Major</h3></div>
+										</td>
+										<td>
+											<div class="bs-docs minor"><h3>Minor</h3></div>
+										</td>
+										<td>
+											<div class="bs-docs warning"><h3>Warning</h3></div>
+										</td>
+										<td>
+											<div class="bs-docs normal"><h3>Normal</h3></div>
+										</td>
+										<td>
+											<div class="bs-docs cleared"><h3>Cleared</h3></div>
+										</td>
+										<td>
+											<div class="bs-docs indeterminate"><h3>Indeterminate</h3></div>
+										</td>
+									</tr>
+								</table>
 							</div>
 						</div>
 					</div>

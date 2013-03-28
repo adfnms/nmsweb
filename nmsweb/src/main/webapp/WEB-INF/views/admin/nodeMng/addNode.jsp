@@ -39,7 +39,7 @@
 	<div>
 		<form id="addNodeFrm">
 			<div class="row-fluid">
-				<h5>노드 IP&nbsp;<span class="label label-important">노드 추가는 다소 시간이 지연될 수 있습니다.</span></h5>
+				<h5>노드&nbsp;IP&nbsp;<span class="label label-important">노드&nbsp;추가는&nbsp;다소&nbsp;시간이&nbsp;지연될&nbsp;수&nbsp;있습니다.</span></h5>
 				<input type="text" id="nodeIpAddress" name="nodeIpAddress" class="span12"/>
 			</div>
 			<div class="row-fluid">
