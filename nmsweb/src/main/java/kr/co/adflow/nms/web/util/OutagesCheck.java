@@ -178,7 +178,7 @@ public class OutagesCheck extends TimerTask{
 									
 									Iterator categoryIt = categorySet.iterator();
 									
-									while (it.hasNext()) {
+									while (categoryIt.hasNext()) {
 										String categoryKey = (String) categoryIt.next();
 										
 										CategoryInfoList tempOldCategoryInfoList = CateGoryTable.get(categoryKey);
@@ -199,12 +199,19 @@ public class OutagesCheck extends TimerTask{
 												
 												if (tempCateGoryInfo.containsKey(tempOldOutage.getNodeid())) {
 													
+													
+													
 													CategoryInfo tempCategoryInfo2 = tempCateGoryInfo.get(tempOldOutage.getNodeid());
 													
 													int tempOutageCount = tempCategoryInfo2.getOutageCount();
 //													int tempOutageCount = tempCateGoryInfo.get(tempOldOutage.getNodeid()).getOutageCount();
 													tempOutageCount--;
 													tempCateGoryInfo.get(tempOldOutage.getNodeid()).setOutageCount(tempOutageCount);
+													
+													
+													int tempOutageTotalCount = tempOldCategoryInfoList.getOutageTotalCount();
+													tempOutageTotalCount--;
+													tempOldCategoryInfoList.setOutageTotalCount(tempOutageTotalCount);
 													
 												}
 												
@@ -250,7 +257,7 @@ public class OutagesCheck extends TimerTask{
 									
 									Iterator categoryIt = categorySet.iterator();
 									
-									while (it.hasNext()) {
+									while (categoryIt.hasNext()) {
 										String categoryKey = (String) categoryIt.next();
 										
 										CategoryInfoList tempNewCategoryInfoList = CateGoryTable.get(categoryKey);
@@ -280,6 +287,10 @@ public class OutagesCheck extends TimerTask{
 //													int tempOutageCount = tempCateGoryInfo.get(tempOldOutage.getNodeid()).getOutageCount();
 													tempOutageCount++;
 													tempCateGoryInfo.get(tempNewOutage.getNodeid()).setOutageCount(tempOutageCount);
+													
+													int tempOutageTotalCount = tempNewCategoryInfoList.getOutageTotalCount();
+													tempOutageTotalCount++;
+													tempNewCategoryInfoList.setOutageTotalCount(tempOutageTotalCount);
 													
 												}
 												
@@ -313,6 +324,7 @@ public class OutagesCheck extends TimerTask{
 					}
 					
 				} catch (Exception e) {
+					e.printStackTrace();
 					throw new HandleException(e);
 				} finally {
 					if (stmt != null)
