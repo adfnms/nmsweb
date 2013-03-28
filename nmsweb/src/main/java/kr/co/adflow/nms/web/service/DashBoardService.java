@@ -700,6 +700,54 @@ public class DashBoardService {
 		return result.toString();
 
 	}
+	
+	
+	
+	public String cateGoryDetail(String categoryName) throws HandleException {
+		StringBuffer result = new StringBuffer();
+
+		try {
+
+			CategoryInfoList categoryInfoList = this.getCategoryMain()
+					.getCateGoryTable().get(categoryName);
+
+			result.append("{\"CategoryInfo\":");
+
+			result.append("{\"name\":\"" + categoryName
+					+ "\"},");
+			
+			 Iterator<String> nodeCate=  categoryInfoList.getCateGoryInfo().keySet().iterator();
+			
+	
+
+			result.append("\"Detail\":[");
+
+			while (nodeCate.hasNext()) {
+				String infoKey = (String) nodeCate.next();
+
+				CategoryInfo cateInfo =  categoryInfoList.getCateGoryInfo().get(infoKey);
+
+				result.append("{\"nodeLabel\":\"" + cateInfo.getNodeLabel()
+						+ "\",\"outageCount\":\"" + cateInfo.getOutageCount()
+						+ "\",\"serviceCount\":\"" + cateInfo.getServiceCount()
+						+ "\",\"availavili\":\"" + cateInfo.getAvailabili() + "\"},");
+
+			}
+
+			// last "," delete
+
+			result.deleteCharAt(result.length() - 1);
+			result.append("]}");
+
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+
+		return result.toString();
+
+	}
+	
+	
 
 	public double nodeAvailability(int nodeIds, Date start, Date end)
 			throws HandleException {
