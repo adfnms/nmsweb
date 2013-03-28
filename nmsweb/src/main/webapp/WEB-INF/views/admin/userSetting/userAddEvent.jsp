@@ -125,19 +125,17 @@ function setDestination(obj){
  	}
  	
  	function regNotification(){
- 		
+ 		/*1.값 갖고오기  */
  		var name = $("#destiFrm input[name=name]").val();
  		var description = $("#destiFrm input[name=description]").val();
  		var subject = $("#destiFrm input[name=subject]").val();
- 		var numericMessage = $("#destiFrm input[name=numericMessage]").val();
- 		var textMessage = $("#destiFrm input[name=textMessage]").val();
+ 		var numericMessage = $("#destiFrm textarea[name=numericMessage]").val();
+ 		var textMessage = $("#destiFrm textarea[name=textMessage]").val();
  		var uei = $("#destinationFrm input[name=uei]").val();
  		var destinationPath = $("#destiFrm select").val();
- 		
- 		//alert("destinationPath:"+destinationPath);
- 		//alert(uei);
- 		
- 	}
+			
+ 		/*2.형식에 맞게 값 대입하기  */ 		
+ 	}	/*  */
 </script>
 </head>
 
@@ -222,7 +220,7 @@ function setDestination(obj){
 								<div class="span12">
 									<label class="span2 control-label">메시지 명</label>
 									<div class="span10 controls" >
-										<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
+										<input  type="text"   id="name"   name="name" class="span11"   placeholder=""> 
 									</div>
 								</div>
 							</div>
@@ -230,7 +228,7 @@ function setDestination(obj){
 								<div class="span12">
 									<label class="span2 control-label">설명</label>
 									<div class="span10 controls" >
-										<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
+										<input  type="text"   id="description"   name="description" class="span11"   placeholder=""> 
 									</div>
 								</div>
 							</div>
@@ -238,7 +236,7 @@ function setDestination(obj){
 								<div class="span12">
 									<label class="span2 control-label">메일 제목</label>
 									<div class="span10 controls" >
-										<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
+										<input  type="text"   id="subject"   name="subject" class="span11"   placeholder=""> 
 									</div>
 								</div>
 							</div>
@@ -246,7 +244,7 @@ function setDestination(obj){
 								<div class="span12">
 									<label class="span2 control-label">요약 메세지</label>
 									<div class="span10 controls" >
-										<textarea rows="3"    id=""   name="" class="span11"   placeholder=""></textarea>
+										<textarea rows="3"    id="numericMessage"   name="numericMessage" class="span11"   placeholder=""></textarea>
 									</div>
 								</div>
 							</div>
@@ -254,21 +252,13 @@ function setDestination(obj){
 								<div class="span12">
 									<label class="span2 control-label">메세지</label>
 									<div class="span10 controls" >
-										<textarea rows="3"    id=""   name="" class="span11"   placeholder=""></textarea>
+										<textarea rows="3"    id="textMessage"   name="textMessage" class="span11"   placeholder=""></textarea>
 									</div>
 								</div>
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
 									<label class="span2 control-label">목적지 선택</label>
-									<div class="span10 controls" >
-										<input  type="text"   id=""   name="" class="span11"   placeholder=""> 
-									</div>
-								</div>
-							</div>
-							<div class="row-fluid">
-								<div class="span12">
-									<label class="span2 control-label">이름</label>
 									<div class="span4 controls" >
 										<select   id="destinationPath" name="destinationPath">
 		               					
