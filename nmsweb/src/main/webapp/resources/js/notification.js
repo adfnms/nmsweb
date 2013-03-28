@@ -148,7 +148,7 @@ function getPathList(callback){
 		},
 		success : function(data) {
 			// 콜백함수
-			console.log(data);
+			//console.log(data);
 			if (typeof callback == "function") {
 				callback(data);
 			}
@@ -488,8 +488,9 @@ function destiInfo(jsonObj){
 	 $("#destiInfoDiv").append(str);
 }
 
+
+//모든 이벤트 목록 가져오기
 function getEventJsonObj(jsonObj){
-	console.log(jsonObj);
 	
 	var str = "";
 
@@ -500,7 +501,7 @@ function getEventJsonObj(jsonObj){
 		for ( var i in  eventObj){
 			
 			str += "<tr>";
-			str += "	<td class=\"span1\" onclick=\"javascript:setDestination('"+eventObj[i]["uei"]+"');\">";										
+			str += "	<td class=\"span1\" onclick=\"javascript:setDestination('"+eventObj[i]["uei"]+","+eventObj[i]["event-label"]+"');\">";										
 			str += "&nbsp;"+eventObj[i]["event-label"];												//event-label
 			str += "	</td>";													
 			str += "</tr>";
@@ -518,7 +519,6 @@ function getEventJsonObj(jsonObj){
 }
 
 function pathsNameStr(jsonObj){
-	console.log(jsonObj);
 	var str = "";
 
 	var pathsObj = jsonObj["path"];
@@ -553,6 +553,42 @@ function pathsNameStr(jsonObj){
 	
 	
 }
+
+
+//userInfo <select> str
+function pathsNameSelectStr(jsonObj){
+	
+	var str = "";
+
+	var pathsObj = jsonObj["path"];
+	
+	//console.log(pathsObj);
+	
+	if(pathsObj.length > 1){
+	
+		for ( var i in pathsObj) {
+			
+				str += "<option value=\""+pathsObj[i]["name"]+"\" >"+pathsObj[i]["name"]+"</option>";
+		}
+	}else{
+		str += "<option value=\""+pathsObj[0]["name"]+"\">"+pathsObj[0]["name"]+"</option>";	
+	}
+	
+	$("#destinationPath").append(str);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

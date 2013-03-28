@@ -54,14 +54,32 @@ function getEvent(jsonObj) {
 /* // GETConfirm kind of registered all event Callback */
 
 
-function setDestination(uei){
+function setDestination(obj){
 	
-	alert(uei);
+	var object = obj.split(',');
+	
+	for(var i = 0 ; i < object.length; i++)
+	{
+		var uei= object[0];
+		var name= object[1];
+		
+		$("#destinationFrm").find('[name=uei]:input').val(uei);
+		$("#destinationFrm").find('[name=NAME]:input').val(name);
+		
+		$("#StepOne").html("1단계&nbsp;&nbsp;<span class=\"label label-important\">이벤트 선택</span>&nbsp;&nbsp;&nbsp;"+name);
+	} 
+	
+	
 	/* 히든폼에 경로 보내기
 	1.uei,메세지명,설명,메일제목,요약메세지,메세지,목적지선택,이름*/
 	
 	/*2.목적지 관리버튼 에서 데이터가 목적지 선택으로*/
 }
+
+
+
+
+
 /**
  * GETGet a list of users
  * 사용자 리스트 전체가져오기
@@ -82,19 +100,42 @@ function setDestination(uei){
 		$("#groupTable").append(str);
 	} 	
 	
- 	/**
- 	 * Get a list of Paths
- 	 * Paths 리스트 전체가져오기
- 	 */
- 	 	function getPathsName(jsonObj) {
- 			var str =pathsNameStr(jsonObj);
- 			
- 			$("#PathsTable").append(str);
- 		} 		
-	
+/**
+ * Get a list of Paths
+ * Paths 리스트 전체가져오기
+ */
+ 	function getPathsName(jsonObj) {
+		var str =pathsNameStr(jsonObj);
+		var selectStr =pathsNameSelectStr(jsonObj);
+		
+		$("#PathsTable").append(str);
+		$("#destinationPath").append(selectStr);
+	}
+
+
+ 	function optionValue(name){
+ 		
+ 		alert(name);
+ 		
+ 		
+ 	}
 	
  	function destinationPathInfo(userid){
  		alert(userid);
+ 	}
+ 	
+ 	function regNotification(){
+ 		
+ 		var name = $("#destiFrm input[name=name]").val();
+ 		var description = $("#destiFrm input[name=description]").val();
+ 		var subject = $("#destiFrm input[name=subject]").val();
+ 		var numericMessage = $("#destiFrm input[name=numericMessage]").val();
+ 		var textMessage = $("#destiFrm input[name=textMessage]").val();
+ 		var uei = $("#destinationFrm input[name=uei]").val();
+ 		var destinationPath = $("#destiFrm select").val();
+ 		
+ 		//alert("destinationPath:"+destinationPath);
+ 		//alert(uei);
  		
  	}
 </script>
@@ -108,14 +149,14 @@ function setDestination(uei){
 		
 		<!-- Example row of columns -->
 		<form action="" id="destinationFrm" name="destinationFrm">	
-		<input type="hidden" id="" name="" value="" />				<!-- 메세지명 -->
-		<input type="hidden" id="" name="" value="" />				<!-- 설명 -->
-		<input type="hidden" id="" name="" value="" />				<!-- 메일제목 -->
-		<input type="hidden" id="" name="" value="" />				<!-- 요약메세지 -->
-		<input type="hidden" id="" name="" value="" />				<!-- 메세지 -->
-		<input type="hidden" id="" name="" value="" />				<!-- 목적지선택 -->
-		<input type="hidden" id="" name="" value="" />				<!-- 이름 -->
-		<input type="hidden" id="" name="" value="" />				<!-- uei -->
+			<input type="hidden" id="name" name="name" value="" />							<!-- 메세지명 -->
+			<input type="hidden" id="description" name="description" value="" />			<!-- 설명 -->
+			<input type="hidden" id="subject" name="subject" value="" />					<!-- 메일제목 -->
+			<input type="hidden" id="numericMessage" name="numericMessage" value="" />		<!-- 요약메세지 -->
+			<input type="hidden" id="textMessage" name="textMessage" value="" />			<!-- 메세지 -->
+			<input type="hidden" id="" name="destinationPath" value="" />	<!-- 목적지선택 -->
+			<input type="hidden" id="NAME" name="NAME" value="" />							<!--uei 이름 -->
+			<input type="hidden" id="uei" name="uei" value="" />							<!-- uei -->
 		</form>
 		
 		<div class="row-fluid">
@@ -134,7 +175,7 @@ function setDestination(uei){
 			  <div class="accordion-group">
 			    <div class="accordion-heading">
 				    <h3>
-				      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepOne">
+				      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepOne" id=StepOne >
 				        1단계&nbsp;&nbsp;<span class="label label-important">이벤트 선택</span>
 				      </a>
 			      	</h3>
@@ -144,8 +185,8 @@ function setDestination(uei){
 			        <div class="span12 well well-small">
 						<form id="eventInfoFrm" name = "memberInfoFrm" method="post">
 							<!--리스트 시작  -->	
-						<div class="span12" style="height:460px;  overflow-y:auto;">
-							<table class="table table-striped scrollspy"  id="eventListTable">
+						<div class="span12" style="height:347px;  overflow-y:auto;">
+							<table class="table table-striped table-hover table-condensed table-stacked"  id="eventListTable">
 								<colgroup>
 									<col class="span12"/>
 								</colgroup>
@@ -176,7 +217,7 @@ function setDestination(uei){
 			    <div id="eventStepTwo" class="accordion-body collapse">
 			      <div class="accordion-inner">
 					<div class="span12 well well-small">
-						<form id="memberInfoFrm" name = "memberInfoFrm" method="post">
+						<form id="destiFrm" name = "destiFrm" method="post">
 							<div class="row-fluid">
 								<div class="span12">
 									<label class="span2 control-label">메시지 명</label>
@@ -228,14 +269,10 @@ function setDestination(uei){
 							<div class="row-fluid">
 								<div class="span12">
 									<label class="span2 control-label">이름</label>
-									<div class="span4 controls">
-										<select>
-										  <option>1</option>
-										  <option>2</option>
-										  <option>3</option>
-										  <option>4</option>
-										  <option>5</option>
-										</select>
+									<div class="span4 controls" >
+										<select   id="destinationPath" name="destinationPath">
+		               					
+		               					</select>
 									</div>
 									<div class= "span2"></div>
 									<div class="span4 controls">
@@ -252,7 +289,7 @@ function setDestination(uei){
 								</div>
 								<div class = "span2"></div>
 								<div class="span4">
-									<a type="button" class="btn btn-primary" title="" href="javascript:regMember()">+ 공지등록</a>
+									<a type="button" class="btn btn-primary" title="" href="javascript:regNotification()">+ 공지등록</a>
 								</div>
 							</div>
 						</div>
@@ -285,11 +322,11 @@ function setDestination(uei){
 			        1단계&nbsp;[목적지&nbsp;선택]&nbsp;&nbsp;<span class="label label-info">공지 메시지 정의</span>
 			      </a></h4>
 			    </div>
-			    <div id="collapseOne" class="accordion-body collapse in" style="height:349px;  overflow-y:auto;">
+			    <div id="collapseOne" class="accordion-body collapse in" style="height:400px;  overflow-y:auto;">
 			      <div class="accordion-inner">
 			      <div class="span5" style="margin-left: 5px;" data-toggle="collapse">
 						<form id="memberInfoFrm" name = "memberInfoFrm" method="post">
-							<table class="table table-striped" id="PathsTable">
+							<table class="table table-striped table-hover table-condensed" id="PathsTable">
 								<colgroup>
 									<col class="span5"/>
 									<col class="span2"/>
@@ -365,7 +402,7 @@ function setDestination(uei){
 							<div class="row-fluid">
 								<div class="span12">
 									<label class="span3 control-label">Initial Targets</label>
-										<textarea  rows="3" id=""  name="" class="span12"   placeholder=""></textarea> 
+										<textarea  rows="4" id=""  name="" class="span12"   placeholder=""></textarea> 
 								</div>
 								<h4>
 								 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
@@ -392,8 +429,8 @@ function setDestination(uei){
 							<table>
 								<tr>
 									<td>
-										<div class="span3" style="margin-left: 0px; width: 233px; height:250px;overflow-y:auto;" >
-											<table class="table table-striped " id="userTable">
+										<div class="span3" style="margin-left: 0px; width: 233px; height:200px;overflow-y:auto;" >
+											<table class="table table-striped table-condensed" id="userTable">
 												<colgroup>
 													<col class="span3"/>
 													
@@ -405,8 +442,8 @@ function setDestination(uei){
 										</div>
 									</td>
 									<td>
-										<div class="span3" style="margin-left: 0px; width: 242px; height:250px;overflow-y:auto;">
-											<table class="table table-striped " id="groupTable">
+										<div class="span3" style="margin-left: 0px; width: 242px; height:200px;overflow-y:auto;">
+											<table class="table table-striped table-condensed" id="groupTable">
 												<colgroup>
 													<col class="span3"/>
 												</colgroup>
@@ -423,8 +460,8 @@ function setDestination(uei){
 							<table>
 								<tr>
 									<td>
-										<div class="span3" style="height:250px; margin-left: 0px; width: 233px; overflow-y:auto;"  >
-											<table class="table table-striped " id="roleTable">
+										<div class="span3" style="height:200px; margin-left: 0px; width: 233px; overflow-y:auto;"  >
+											<table class="table table-striped table-condensed" id="roleTable">
 												<colgroup>
 													<col class="span3"/>
 													
@@ -436,10 +473,10 @@ function setDestination(uei){
 										</div>
 									</td>
 									<td>
-										<div class="span3" style="margin-left: 0px; width: 242px; height:250px;overflow-y:auto;" >
-											<table class="table table-striped " id="emailTable">
+										<div class="span3" style="margin-left: 0px; width: 242px; height:200px;overflow-y:auto;">
+											<table class="table table-striped table-condensed" id="emailTable">
 												<colgroup>
-													<col class="span2"/>
+													<col class="span3"/>
 												</colgroup>
 													<tr>
 														<th>e-mail</th>
@@ -464,7 +501,7 @@ function setDestination(uei){
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		<h3 id="myModalLabel">입력방법</h3>
 	</div>
-	<div class="modal-body">
+	<div class="modal-body" style="max-height: 800px;">
 		<p>
 			@fatAd leggings keytar, brunch id art party dolor labore. Pitchfork yr enim lo-fi before they sold out qui. Tumblr farm-to-table bicycle rights whatever. Anim keffiyeh carles cardigan. Velit seitan mcsweeney's photo booth 3 wolf moon irure. Cosby sweater lomo jean shorts, williamsburg hoodie minim qui you probably haven't heard of them et cardigan trust fund culpa biodiesel wes anderson aesthetic. Nihil tattooed accusamus, cred irony biodiesel keffiyeh artisan ullamco consequat.
 			@mdoVeniam marfa mustache skateboard, adipisicing fugiat velit pitchfork beard. Freegan beard aliqua cupidatat mcsweeney's vero. Cupidatat four loko nisi, ea helvetica nulla carles. Tattooed cosby sweater food truck, mcsweeney's quis non freegan vinyl. Lo-fi wes anderson +1 sartorial. Carles non aesthetic exercitation quis gentrify. Brooklyn adipisicing craft beer vice keytar deserunt.

@@ -127,7 +127,7 @@
 			<form  id="userIdFrm" name="userIdFrm" method="post">
 				<input type="hidden" id ="user-id" name="user-id" value="" />
 			</form>
-				<table class="table table-striped table-hover" id="userListTable" >
+				<table class="table table-striped table-hover table-condensed" id="userListTable" >
 					<colgroup>
 						<col class="span2"/>
 						<col class="span3"/>

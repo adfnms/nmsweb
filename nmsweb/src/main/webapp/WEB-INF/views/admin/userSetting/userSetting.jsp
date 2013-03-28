@@ -106,7 +106,7 @@
 			<div class="row-fluid">
 				<div class="span12 well well-small">
 					<div class="row-fluid">
-						<table class="table table-striped" id="userTable">
+						<table class="table table-striped table-condensed" id="userTable">
 							<tr>
 								<th class="span1">ID</th>
 								<th class="span1">EventId</th>
@@ -131,7 +131,7 @@
 			<div class="row-fluid">
 				<div class="span12 well well-small">
 					<div class="row-fluid">
-						<table class="table table-striped" id="totalTable">
+						<table class="table table-striped table-condensed" id="totalTable">
 							<tr>
 								<th class="span1">ID</th>
 								<th class="span1">EventId</th>

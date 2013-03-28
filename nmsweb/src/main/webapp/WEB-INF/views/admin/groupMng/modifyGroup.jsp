@@ -85,7 +85,7 @@
 		<div class="accordion-heading">
 				    <h3>
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepTwo">
-				        	${name}&nbsp;&nbsp;<span class="label label-info">그룹&nbsp;명</span>
+				        	&nbsp;&nbsp;${name}&nbsp;&nbsp;<span class="label label-info">그룹&nbsp;명</span>
 						</a>
 					</h3>
 			    </div>
@@ -106,11 +106,11 @@
 		            <div style=" float:left;">
 		                <select  id="groupMemberListSelect" name="groupMemberListSelect" ondblclick="test.movetoleft();" style=" width:150px; border:1px solid #ccc; overflow:visible; height:200px;" class="select_right" multiple="multiple">
 		                </select>
-		                <p>
-		                    <strong><a href="javascript:test.top();" title="">최상위</a></strong>
-		                    <strong><a href="javascript:test.up();" title="">위로</a></strong>
-		                    <strong><a href="javascript:test.down();" title="">아래로</a></strong>
-		                    <strong><a href="javascript:test.bottom();" title="">최하위</a></strong>
+		                <p>&nbsp;&nbsp;&nbsp;
+		                    <strong><a class="icon-chevron-up" href="javascript:test.top();" title=""></a></strong>&nbsp;&nbsp;&nbsp;
+		                    <strong><a class="icon-arrow-up" href="javascript:test.up();" title=""></a></strong>&nbsp;&nbsp;&nbsp;
+		                    <strong><a class="icon-arrow-down" href="javascript:test.down();" title=""></a></strong>&nbsp;&nbsp;&nbsp;
+		                    <strong><a class="icon-chevron-down" href="javascript:test.bottom();" title=""></a></strong>
 		                </p>
 		            </div>
 					<input type="hidden" id="res" name="res" class="select_input">

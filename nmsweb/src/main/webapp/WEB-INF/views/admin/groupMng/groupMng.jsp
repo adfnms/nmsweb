@@ -81,7 +81,7 @@
 				<input type="hidden" id ="name" name="name" value="" />
 			</form>
 				
-				<table class="table table-striped table-hover" id="groupTable" >
+				<table class="table table-striped table-hover table-condensed" id="groupTable" >
 					<colgroup>
 						<col class="span4"/>
 						<col class="span5"/>
