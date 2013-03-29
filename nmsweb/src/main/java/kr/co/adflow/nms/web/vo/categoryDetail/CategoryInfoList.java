@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CategoryInfoList {
 
-	protected Hashtable<String, CategoryInfo> cateGoryInfo;
+	protected Hashtable<Integer, CategoryInfo> cateGoryInfo;
 
 	protected int outageTotalCount;
 	protected int serviceTotalCount;
@@ -20,9 +20,9 @@ public class CategoryInfoList {
 		this.serviceids = serviceids;
 	}
 
-	public Hashtable<String, CategoryInfo> getCateGoryInfo() {
+	public Hashtable<Integer, CategoryInfo> getCateGoryInfo() {
 		if (cateGoryInfo == null) {
-			cateGoryInfo = new Hashtable<String, CategoryInfo>();
+			cateGoryInfo = new Hashtable<Integer, CategoryInfo>();
 		}
 		return this.cateGoryInfo;
 	}

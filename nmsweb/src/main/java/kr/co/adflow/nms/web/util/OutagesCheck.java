@@ -173,18 +173,18 @@ public class OutagesCheck extends TimerTask{
 									
 									String key = tempOldOutage.getNodeid()+":"+tempOldOutage.getIpaddr()+":"+tempOldOutage.getServiceid();
 									
-									//Outage 정보 수정
+									//Outage �뺣낫 �섏젙
 									Set categorySet = CateGoryTable.keySet();
 									
 									Iterator categoryIt = categorySet.iterator();
 									
-									while (it.hasNext()) {
+									while (categoryIt.hasNext()) {
 										String categoryKey = (String) categoryIt.next();
 										
 										CategoryInfoList tempOldCategoryInfoList = CateGoryTable.get(categoryKey);
 										
 
-										//category에 해당 service가 있는지 확인 후 있으면 outage수를 -1함.
+										//category���대떦 service媛��덈뒗吏��뺤씤 ���덉쑝硫�outage�섎� -1��
 										String serviceIds = tempOldCategoryInfoList.getServiceids();
 										
 										if (serviceIds != null) {
@@ -193,11 +193,13 @@ public class OutagesCheck extends TimerTask{
 												
 												logger.debug("outagedelete :::; "+ categoryKey);
 												
-												Hashtable<String, CategoryInfo> tempCateGoryInfo = tempOldCategoryInfoList.getCateGoryInfo();
+												Hashtable<Integer, CategoryInfo> tempCateGoryInfo = tempOldCategoryInfoList.getCateGoryInfo();
 												
 												logger.debug("getNodeid :::; "+ tempOldOutage.getNodeid());
 												
 												if (tempCateGoryInfo.containsKey(tempOldOutage.getNodeid())) {
+													
+													
 													
 													CategoryInfo tempCategoryInfo2 = tempCateGoryInfo.get(tempOldOutage.getNodeid());
 													
@@ -205,6 +207,11 @@ public class OutagesCheck extends TimerTask{
 //													int tempOutageCount = tempCateGoryInfo.get(tempOldOutage.getNodeid()).getOutageCount();
 													tempOutageCount--;
 													tempCateGoryInfo.get(tempOldOutage.getNodeid()).setOutageCount(tempOutageCount);
+													
+													
+													int tempOutageTotalCount = tempOldCategoryInfoList.getOutageTotalCount();
+													tempOutageTotalCount--;
+													tempOldCategoryInfoList.setOutageTotalCount(tempOutageTotalCount);
 													
 												}
 												
@@ -245,18 +252,18 @@ public class OutagesCheck extends TimerTask{
 									
 									Outage tempNewOutage = newOutageList.get(newKey);
 									
-									//Outage 정보 수정
+									//Outage �뺣낫 �섏젙
 									Set categorySet = CateGoryTable.keySet();
 									
 									Iterator categoryIt = categorySet.iterator();
 									
-									while (it.hasNext()) {
+									while (categoryIt.hasNext()) {
 										String categoryKey = (String) categoryIt.next();
 										
 										CategoryInfoList tempNewCategoryInfoList = CateGoryTable.get(categoryKey);
 										
 
-										//category에 해당 service가 있는지 확인 후 있으면 outage수를 +1함.
+										//category���대떦 service媛��덈뒗吏��뺤씤 ���덉쑝硫�outage�섎� +1��
 										
 										String serviceIds = tempNewCategoryInfoList.getServiceids();
 										
@@ -268,7 +275,7 @@ public class OutagesCheck extends TimerTask{
 												
 												logger.debug("outage ADD :::; "+ categoryKey);
 												
-												Hashtable<String, CategoryInfo> tempCateGoryInfo = tempNewCategoryInfoList.getCateGoryInfo();
+												Hashtable<Integer, CategoryInfo> tempCateGoryInfo = tempNewCategoryInfoList.getCateGoryInfo();
 												
 												logger.debug("getNodeid :::; "+ tempNewOutage.getNodeid());
 												
@@ -280,6 +287,10 @@ public class OutagesCheck extends TimerTask{
 //													int tempOutageCount = tempCateGoryInfo.get(tempOldOutage.getNodeid()).getOutageCount();
 													tempOutageCount++;
 													tempCateGoryInfo.get(tempNewOutage.getNodeid()).setOutageCount(tempOutageCount);
+													
+													int tempOutageTotalCount = tempNewCategoryInfoList.getOutageTotalCount();
+													tempOutageTotalCount++;
+													tempNewCategoryInfoList.setOutageTotalCount(tempOutageTotalCount);
 													
 												}
 												
@@ -313,6 +324,7 @@ public class OutagesCheck extends TimerTask{
 					}
 					
 				} catch (Exception e) {
+					e.printStackTrace();
 					throw new HandleException(e);
 				} finally {
 					if (stmt != null)

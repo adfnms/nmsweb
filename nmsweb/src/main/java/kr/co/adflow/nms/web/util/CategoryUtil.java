@@ -54,6 +54,47 @@ public class CategoryUtil {
 		}
 		return resultId;
 	}
+	
+	
+	
+	public String categoriesServiceName(String data, ServiceVo serviceVo)
+			throws UtilException {
+
+		String resultName = null;
+		String groupName=null;
+		try {
+
+			int serviceVosize = serviceVo.getServiceList().size();
+			StringBuffer serviceidBuf = new StringBuffer();
+			for (int i = 0; i < serviceVosize; i++) {
+				if (data.contains(serviceVo.getServiceList().get(i)
+						.getServiceName())) {
+					serviceidBuf.append(serviceVo.getServiceList().get(i)
+							.getServiceName()
+							+ ",");
+				}
+
+			}
+
+			// serviceidBuf.deleteCharAt(serviceidBuf.length() - 1);
+
+			resultName = serviceidBuf.toString();
+			if (resultName.length() > 1) {
+				StringBuffer buf = new StringBuffer();
+				buf.append(resultName);
+				resultName = buf.deleteCharAt(buf.length() - 1).toString();
+			}
+		} catch (Exception e) {
+			throw new UtilException(e);
+		}
+		return resultName;
+	}
+	
+	
+	
+	
+	
+	
 
 	public ArrayList categoriesIdArray(String data, ServiceVo serviceVo)
 			throws UtilException {

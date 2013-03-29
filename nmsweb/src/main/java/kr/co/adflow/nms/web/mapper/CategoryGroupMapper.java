@@ -3,7 +3,8 @@ package kr.co.adflow.nms.web.mapper;
 import java.util.Iterator;
 
 import kr.co.adflow.nms.web.exception.MapperException;
-import kr.co.adflow.nms.web.vo.resultcategory.CategoryJsonGroup;
+
+import kr.co.adflow.nms.web.vo.resultcategory.CategoryXmlResultGroup;
 import kr.co.adflow.nms.web.vo.resultcategory.DNSDHCPServer;
 import kr.co.adflow.nms.web.vo.resultcategory.DataBaseServer;
 import kr.co.adflow.nms.web.vo.resultcategory.EmailServers;
@@ -24,9 +25,9 @@ public class CategoryGroupMapper {
 	private static final Logger logger = LoggerFactory
 			.getLogger(CategoryGroupMapper.class);
 
-	public CategoryJsonGroup cateJson(String data) throws MapperException {
+	public CategoryXmlResultGroup cateJson(String data) throws MapperException {
 
-		CategoryJsonGroup categoryJson = new CategoryJsonGroup();
+		CategoryXmlResultGroup categoryJson = new CategoryXmlResultGroup();
 
 		try {
 
@@ -43,6 +44,7 @@ public class CategoryGroupMapper {
 						Iterator<JsonNode> it2 = temp
 								.path("Network Interfaces").iterator();
 						while (it2.hasNext()) {
+						
 							NetWorkInterfaces network = new NetWorkInterfaces();
 							temp2 = it2.next();
 							network.setNetWorkServers(temp2.getTextValue());
