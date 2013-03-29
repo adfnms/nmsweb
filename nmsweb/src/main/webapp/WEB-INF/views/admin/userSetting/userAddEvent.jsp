@@ -130,12 +130,50 @@ function setDestination(obj){
  		var description = $("#destiFrm input[name=description]").val();
  		var subject = $("#destiFrm input[name=subject]").val();
  		var numericMessage = $("#destiFrm textarea[name=numericMessage]").val();
+ 		var rule = $("#destiFrm input[name=rule]").val();
  		var textMessage = $("#destiFrm textarea[name=textMessage]").val();
  		var uei = $("#destinationFrm input[name=uei]").val();
  		var destinationPath = $("#destiFrm select").val();
+ 		var status = $("#destiFrm input[name=status]").val();
+ 		
+ 		
+ 		alert("rule  :"+rule);
+ 		alert("destinationPath:"+destinationPath);
+ 		alert(" name :"+name);
+ 		alert(" description :"+description);
+ 		alert(" subject :"+subject);
+ 		alert(" numericMessage :"+numericMessage);
+ 		alert("textMessage  :"+textMessage);
+ 		alert("uei  :"+uei);
+ 		alert("status  :"+status);
+ 		
 			
- 		/*2.형식에 맞게 값 대입하기  */ 		
+ 		/*2.형식에 맞게 값 대입하기  */ 
+ 		
+ 		 a ( name,uei,subject,destinationPath,description,numericMessage,textMessage,rule);
+
+ 		
  	}	/*  */
+ 	
+ 	
+ 	function a ( name,uei,subject,destinationPath,description,numericMessage,textMessage,status){
+ 		
+ 		var str ="{\"name\":\""+name+"\",\"description\": \""+description+"\"," + 
+ 				"\"subject\": \""+subject+"\",\"status\": \"on\"," +
+ 				"\"parameter\": [],\"rule\": \""+rule+"\"," +
+ 				"\"varbind\": {" + 
+ 				"\"vbname\":\"testName\",\"vbvalue\": \"testName\"}," +
+ 				"\"writeable\":\"yes\",\"uei\": \""+uei+"\"," +
+ 				"\"noticeQueue\": \"null\",\"destinationPath\": \""+destinationPath+"\"," +
+ 				"\"textMessage\": \""+textMessage+"\",\"numericMessage\": \""+numericMessage+"\"," +
+ 				"\"eventSeverity\": \"null\"}";
+ 		console.log(str);
+ 		alert(str);
+ 		return str;
+ 	}
+ 	
+ 	
+ 	
 </script>
 </head>
 
@@ -218,7 +256,7 @@ function setDestination(obj){
 						<form id="destiFrm" name = "destiFrm" method="post">
 							<div class="row-fluid">
 								<div class="span12">
-									<label class="span2 control-label">메시지 명</label>
+									<label class="span2 control-label muted">메시지 명</label>
 									<div class="span10 controls" >
 										<input  type="text"   id="name"   name="name" class="span11"   placeholder=""> 
 									</div>
@@ -226,7 +264,7 @@ function setDestination(obj){
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<label class="span2 control-label">설명</label>
+									<label class="span2 control-label muted">설명</label>
 									<div class="span10 controls" >
 										<input  type="text"   id="description"   name="description" class="span11"   placeholder=""> 
 									</div>
@@ -234,7 +272,7 @@ function setDestination(obj){
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<label class="span2 control-label">메일 제목</label>
+									<label class="span2 control-label muted">메일 제목</label>
 									<div class="span10 controls" >
 										<input  type="text"   id="subject"   name="subject" class="span11"   placeholder=""> 
 									</div>
@@ -242,7 +280,7 @@ function setDestination(obj){
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<label class="span2 control-label">요약 메세지</label>
+									<label class="span2 control-label muted">요약 메세지</label>
 									<div class="span10 controls" >
 										<textarea rows="3"    id="numericMessage"   name="numericMessage" class="span11"   placeholder=""></textarea>
 									</div>
@@ -250,7 +288,7 @@ function setDestination(obj){
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<label class="span2 control-label">메세지</label>
+									<label class="span2 control-label muted">메세지</label>
 									<div class="span10 controls" >
 										<textarea rows="3"    id="textMessage"   name="textMessage" class="span11"   placeholder=""></textarea>
 									</div>
@@ -258,7 +296,7 @@ function setDestination(obj){
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<label class="span2 control-label">목적지 선택</label>
+									<label class="span2 control-label muted">목적지 선택</label>
 									<div class="span4 controls" >
 										<select   id="destinationPath" name="destinationPath">
 		               					
@@ -268,6 +306,19 @@ function setDestination(obj){
 									<div class="span4 controls">
 										<a type="button" class="btn" title="" href="#popDestinationPaths" data-toggle="modal">목적지관리</a>
 									</div>
+								</div>
+							</div>
+							<div class="row-fluid">
+								<div class="span12">
+									<label class="span2 control-label muted">Rule</label>
+									<div class="span4 controls" >
+										<input  type="text"   id="rule"   name="rule" class=""   placeholder="" value="(IPADDR IPLIKE *.*.*.*)"> 
+									</div>
+									<label class="span2 control-label muted" style ="font-size:16px;">status</label>
+									<label class="radio span2 ">    
+										<input type="radio" id="statusOn" name="status" value="on">on</label>
+									<label class="radio span2 ">    
+										<input type="radio" id="statusOff" name="status" value="off">off</label>
 								</div>
 							</div>
 						</form>
