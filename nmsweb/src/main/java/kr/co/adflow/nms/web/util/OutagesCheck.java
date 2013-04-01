@@ -173,7 +173,7 @@ public class OutagesCheck extends TimerTask{
 									
 									String key = tempOldOutage.getNodeid()+":"+tempOldOutage.getIpaddr()+":"+tempOldOutage.getServiceid();
 									
-									//Outage 정보 수정
+									//Outage Infomation collect
 									Set categorySet = CateGoryTable.keySet();
 									
 									Iterator categoryIt = categorySet.iterator();
@@ -252,7 +252,7 @@ public class OutagesCheck extends TimerTask{
 									
 									Outage tempNewOutage = newOutageList.get(newKey);
 									
-									//Outage 정보 수정
+									//Outage Infomation collect
 									Set categorySet = CateGoryTable.keySet();
 									
 									Iterator categoryIt = categorySet.iterator();
