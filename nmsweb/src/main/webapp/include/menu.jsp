@@ -31,7 +31,7 @@
               <li class="dropdown span2">
                 <a class="dropdown-toggle muted" id="drop5" role="button" data-toggle="dropdown" style="font-size:16px;" href="#">리포트<b class="caret"></b></a>
                 <ul id="menu3" class="dropdown-menu" role="menu" aria-labelledby="drop5">
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">자원별 리포트</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="<c:url value="/report/resource.do"/>">자원별 리포트</a></li>
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="#">사용자 지정 리포트</a></li>
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="#">DB 리포트</a></li>
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="#">통계리포트</a></li>

@@ -17,29 +17,12 @@
 <script src="<c:url value="/resources/js/service.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		//getCurrentOutagesForNode(outageList);
 
 		//서비스 option 가져오기
 		getServiceList(addServiceList);
 
 		getTotalIndexInfo(addIndexInfo, null);
 	});
-
-	// 	function outageList(jsonObj) {
-
-	// 		var outageObj = jsonObj["outage"];
-
-	// 		for( var i in outageObj ){
-
-	// 			var lostTime = new Date(outageObj[i]["ifLostService"]);
-	// 			var current = new Date();
-	// 			var lastTime = dateDiff(lostTime, current);
-
-	// 			$('#outageInfo').append("<a href='#'>"+outageObj[i]["ipAddress"]+"</a> ("+lastTime+")<br/>");
-
-	// 		}
-
-	// 	}
 
 	//서비스 리스트 가져오기
 	function addServiceList(jsonObj) {

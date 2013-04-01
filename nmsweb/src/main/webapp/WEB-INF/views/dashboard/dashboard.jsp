@@ -209,7 +209,7 @@
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value='/index.do'/>">Home</a> <span class="divider">/</span></li>
-					<li class="active"><a href="javascript:test();">데쉬보드</a></li>
+					<li class="active">데쉬보드</li>
 				</ul>
 			</div>
 		</div>
