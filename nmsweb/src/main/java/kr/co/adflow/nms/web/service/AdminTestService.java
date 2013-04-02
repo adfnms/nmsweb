@@ -26,8 +26,8 @@ public class AdminTestService {
 	String adminKey;
 	private @Value("#{config['DASHPAGE']}")
 	String dashKey;
-	private @Value("#{config['PERMISSIONURL']}")
-	String permissionUrl;
+	private @Value("#{config['XMLPATH']}")
+	String xmlPath;
 
 	
 	public String adminPerId(String id) throws HandleException {
@@ -38,7 +38,7 @@ public class AdminTestService {
 		InputStream is = null;
 		String result=null;
 		try {
-			is = new FileInputStream(permissionUrl);
+			is = new FileInputStream(xmlPath+"magic-users.properties");
 			properties.load(is);
 
 			for (String key : properties.stringPropertyNames()) {
@@ -54,13 +54,13 @@ public class AdminTestService {
 					if (data.equals("")&&id!=data) {
 						result=id;
 						properties.setProperty(adminKey, id);
-						properties.store(new FileOutputStream(permissionUrl),
+						properties.store(new FileOutputStream(xmlPath+"magic-users.properties"),
 								null);
 					} else if(id!=data&&!data.contains(id)) {
 						logger.debug("id!=data");
 						result=data+","+id;
 						properties.setProperty(adminKey, data + "," + id);
-						properties.store(new FileOutputStream(permissionUrl),
+						properties.store(new FileOutputStream(xmlPath+"magic-users.properties"),
 								null);
 					}else if(data.contains(id)){
 						logger.debug("else if data...equals");
@@ -93,7 +93,7 @@ public class AdminTestService {
 		InputStream is = null;
 		String result=null;
 		try {
-			is = new FileInputStream(permissionUrl);
+			is = new FileInputStream(xmlPath+"magic-users.properties");
 			properties.load(is);
 
 			for (String key : properties.stringPropertyNames()) {
@@ -109,12 +109,12 @@ public class AdminTestService {
 					if (data.equals("")&&id!=data) {
 						result=id;
 						properties.setProperty(dashKey, id);
-						properties.store(new FileOutputStream(permissionUrl),
+						properties.store(new FileOutputStream(xmlPath+"magic-users.properties"),
 								null);
 					} else if(id!=data&&!data.contains(id)) {
 						result=data+","+id;
 						properties.setProperty(dashKey, data + "," + id);
-						properties.store(new FileOutputStream(permissionUrl),
+						properties.store(new FileOutputStream(xmlPath+"magic-users.properties"),
 								null);
 					}else if(data.contains(id)){
 						logger.debug("else if data...equals");
@@ -147,7 +147,7 @@ public class AdminTestService {
 		InputStream is = null;
 		String result=null;
 		try {
-			is = new FileInputStream(permissionUrl);
+			is = new FileInputStream(xmlPath+"magic-users.properties");
 			properties.load(is);
 
 			for (String key : properties.stringPropertyNames()) {
@@ -181,7 +181,7 @@ public class AdminTestService {
 				logger.debug("size is 0");
 				String empty = "";
 				properties.setProperty(adminKey, empty);
-				properties.store(new FileOutputStream(permissionUrl), null);
+				properties.store(new FileOutputStream(xmlPath+"magic-users.properties"), null);
 			} else {
 				for (int j = 0; j < arrSplitValue.size(); j++) {
 					sbuf.append(arrSplitValue.get(j) + ",");
@@ -190,7 +190,7 @@ public class AdminTestService {
 						sbuf.length()).toString();
 				logger.debug("setPropertyData::" + deleteData);
 				properties.setProperty(adminKey, deleteData);
-				properties.store(new FileOutputStream(permissionUrl), null);
+				properties.store(new FileOutputStream(xmlPath+"magic-users.properties"), null);
 			}
 
 		} catch (Exception e) {
@@ -218,7 +218,7 @@ public class AdminTestService {
 		InputStream is = null;
 		String result=null;
 		try {
-			is = new FileInputStream(permissionUrl);
+			is = new FileInputStream(xmlPath+"magic-users.properties");
 			properties.load(is);
 
 			for (String key : properties.stringPropertyNames()) {
@@ -253,7 +253,7 @@ public class AdminTestService {
 				logger.debug("size is 0");
 				String empty = "";
 				properties.setProperty(dashKey, empty);
-				properties.store(new FileOutputStream(permissionUrl), null);
+				properties.store(new FileOutputStream(xmlPath+"magic-users.properties"), null);
 			} else {
 				for (int j = 0; j < arrSplitValue.size(); j++) {
 				
@@ -263,7 +263,7 @@ public class AdminTestService {
 						sbuf.length()).toString();
 				logger.debug("setPropertyData::" + deleteData);
 				properties.setProperty(dashKey, deleteData);
-				properties.store(new FileOutputStream(permissionUrl), null);
+				properties.store(new FileOutputStream(xmlPath+"magic-users.properties"), null);
 			}
 
 		} catch (Exception e) {
@@ -292,7 +292,7 @@ public class AdminTestService {
 		String result = null;
 
 		try {
-			is = new FileInputStream(permissionUrl);
+			is = new FileInputStream(xmlPath+"magic-users.properties");
 			properties.load(is);
 
 			for (String key : properties.stringPropertyNames()) {
@@ -350,7 +350,7 @@ public class AdminTestService {
 		String result = null;
 		
 		try {
-			is = new FileInputStream(permissionUrl);
+			is = new FileInputStream(xmlPath+"magic-users.properties");
 			properties.load(is);
 
 			for (String key : properties.stringPropertyNames()) {

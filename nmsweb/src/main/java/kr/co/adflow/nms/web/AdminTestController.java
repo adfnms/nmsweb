@@ -36,6 +36,7 @@ public class AdminTestController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 
+			int chan=Integer.parseInt(request.getParameter("1"));
 		try {
 			result = (String) service.adminPerId(id);
 		} catch (HandleException e) {
