@@ -3,35 +3,73 @@ mySelect.prototype={
 	sel_left:".select_left",
 	sel_right:".select_right",
 	sel_input:".select_input",
+	
+	/*왼쪽에서 오른쪽으로 이동*/
 	movetoright:function(){
 		var sel_left=$(this.sel_left);			
 		var sel_right=$(this.sel_right);
 		var select_html="";
+		
 		if(sel_left.find("option:selected").size()>0){
+			
 			res = new Array();
+			
 			sel_left.find("option:selected").each(function(i){
-				 select_html+="<option value='"+sel_left.find("option:selected").eq(i).attr("value")+"'>"+sel_left.find("option:selected").eq(i).html()+"</option>";
-				res[i] = sel_left.find("option:selected").eq(i).val();
+				 
+				select_html+="<option value='"+sel_left.find("option:selected").eq(i).attr("value")+"'>"+sel_left.find("option:selected").eq(i).html()+"</option>";
+				
+				/*test*/
+				var obj = document.right.groupMemberListSelect;
+			       
+					for( var i=0 ; i<obj.length ; i++ ){
+			               obj.options[i].selected = true;
+			              
+			               //alert("option값: "+obj.options[i].text);
+			               var group = obj.options[i].text;
+			               var user = $("#left select[name=userListSelect]").val();
+			               
+			              // alert("------user------"+user);
+			              
+			               
+			               if(user == group ){
+								
+			            	   alert("기존에 있습니다. 제거만 가능합니다");
+			            	   return;
+			               }
+			           }
+					
+					regInGroup();
+					/*test*/
+					res[i] = sel_left.find("option:selected").eq(i).val();
+					sel_right.append(select_html);
+					sel_left.find("option:selected").remove();
 			});
-			sel_right.append(select_html);
-			sel_left.find("option:selected").remove();
+			
 			this.hiddenvalue();
 
 		}else{
 			this.warning();
 		}
 	},
+	
+	/*오른쪽에서 왼쪽으로 이동*/
 	movetoleft:function(){
+		
+		
 		var sel_left=$(this.sel_left);
 		var sel_right=$(this.sel_right);
 		var select_html="";
 		if(sel_right.find("option:selected").size()>0){
 			sel_right.find("option:selected").each(function(i){
 				 select_html+="<option value='"+sel_right.find("option:selected").eq(i).attr("value")+"'>"+sel_right.find("option:selected").eq(i).html()+"</option>";
+				 console.log(select_html);
+				 
+				 var group = $("#right select[name=groupMemberListSelect]").val();
+				 delInGroup(group);
 			});
 			sel_left.append(select_html);
 			sel_right.find("option:selected").remove();
-			this.hiddenvalue();
+			//this.hiddenvalue();
 		}else{
 			this.warning();
 		}
@@ -82,7 +120,7 @@ mySelect.prototype={
 					var selected_html="<option selected='selected' value='"+_selected.attr("value")+"'>"+_selected.html()+"</option>";
 					_selected.prev().remove();
 					_selected.replaceWith(selected_html+prev_html);
-					this.hiddenvalue();
+					//this.hiddenvalue();
 				}else{
 					alert("최상단 입니다.");
 				}

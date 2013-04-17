@@ -16,7 +16,9 @@ try{
 
 %>
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
 <jsp:include page="/include/header.jsp">
 	<jsp:param value="이벤트 선택" name="title" />
@@ -28,6 +30,7 @@ try{
 <script src="<c:url value="/resources/js/notification.js" />"></script>
 <script src="<c:url value="/resources/js/group.js" />"></script>
 <script type="text/javascript">
+
 $(document).ready(function() {
 	
 	/* GETConfirm kind of registered all event */
@@ -64,7 +67,7 @@ function setDestination(obj){
 		var name= object[1];
 		
 		$("#destinationFrm").find('[name=uei]:input').val(uei);
-		$("#destinationFrm").find('[name=NAME]:input').val(name);
+		$("#destinationFrm").find('[name=noticeQueue]:input').val(name);
 		
 		$("#StepOne").html("1단계&nbsp;&nbsp;<span class=\"label label-important\">이벤트 선택</span>&nbsp;&nbsp;&nbsp;"+name);
 	} 
@@ -124,55 +127,71 @@ function setDestination(obj){
  		alert(userid);
  	}
  	
+ 	
+ 	/*get form[#destinationFrm] object*/
  	function regNotification(){
- 		/*1.값 갖고오기  */
- 		var name = $("#destiFrm input[name=name]").val();
- 		var description = $("#destiFrm input[name=description]").val();
- 		var subject = $("#destiFrm input[name=subject]").val();
- 		var numericMessage = $("#destiFrm textarea[name=numericMessage]").val();
- 		var rule = $("#destiFrm input[name=rule]").val();
- 		var textMessage = $("#destiFrm textarea[name=textMessage]").val();
- 		var uei = $("#destinationFrm input[name=uei]").val();
- 		var destinationPath = $("#destiFrm select").val();
- 		var status = $("#destiFrm input[name=status]").val();
  		
+ 		var uei = $("#destinationFrm input[name=uei]").val();						//0.이벤트
+ 		var noticeQueue = $("#destinationFrm input[name=noticeQueue]").val();		//1.이벤트 라벨
  		
- 		alert("rule  :"+rule);
- 		alert("destinationPath:"+destinationPath);
- 		alert(" name :"+name);
- 		alert(" description :"+description);
- 		alert(" subject :"+subject);
- 		alert(" numericMessage :"+numericMessage);
- 		alert("textMessage  :"+textMessage);
- 		alert("uei  :"+uei);
- 		alert("status  :"+status);
+ 		//alert("----------noticeQueue------------"+noticeQueue);
  		
-			
- 		/*2.형식에 맞게 값 대입하기  */ 
+ 		var name = $("#destiFrm input[name=name]").val();							//2.메세지명
+ 		var description = $("#destiFrm input[name=description]").val();				//3.설명
+ 		var subject = $("#destiFrm input[name=subject]").val();						//4.메일제목
+ 		var numericMessage = $("#destiFrm textarea[name=numericMessage]").val();	//5.요약메세지
+ 		var textMessage = $("#destiFrm textarea[name=textMessage]").val();			//6.rule
+ 		var destinationPath = $("#destiFrm select").val();							//7.목적지
+ 		var status = $("#destiFrm input[name=status]").val();						//8.상태
+ 		var rule = $("#destiFrm input[name=rule]").val();							//9.메세지
  		
- 		 a ( name,uei,subject,destinationPath,description,numericMessage,textMessage,rule);
+ 	var str=requestBodyStr ( uei,name,description,subject,numericMessage,textMessage,destinationPath,status,rule,noticeQueue);
 
+ 	//console.log('/' + version + '/notifications/searchUser/');
  		
- 	}	/*  */
+	 	 $.ajax({
+			
+			type : 'post',
+			url : '/' + version + '/notifications/eventNotifications',
+			contentType : 'application/json',
+			data : str,
+			error : function() {
+				alert('공지 등록 실패');
+			},
+			success : function(data) {
+				
+			}
+		}); 
  	
- 	
- 	function a ( name,uei,subject,destinationPath,description,numericMessage,textMessage,status){
- 		
- 		var str ="{\"name\":\""+name+"\",\"description\": \""+description+"\"," + 
- 				"\"subject\": \""+subject+"\",\"status\": \"on\"," +
- 				"\"parameter\": [],\"rule\": \""+rule+"\"," +
- 				"\"varbind\": {" + 
- 				"\"vbname\":\"testName\",\"vbvalue\": \"testName\"}," +
- 				"\"writeable\":\"yes\",\"uei\": \""+uei+"\"," +
- 				"\"noticeQueue\": \"null\",\"destinationPath\": \""+destinationPath+"\"," +
- 				"\"textMessage\": \""+textMessage+"\",\"numericMessage\": \""+numericMessage+"\"," +
- 				"\"eventSeverity\": \"null\"}";
- 		console.log(str);
- 		alert(str);
- 		return str;
  	}
  	
+function deletePath(pathName){
+ 		
+ 		console.log(pathName);
+ 		
+ 		/*  $.ajax({
+ 			
+ 			type : 'delete',
+ 			url : '/' + version + '/notifications/eventNotifications',
+ 			contentType : 'application/json',
+ 			data : str,
+ 			error : function() {
+ 				alert('공지 등록 실패');
+ 			},
+ 			success : function(data) {
+ 				
+ 			}
+ 		});  */
+ 		
+ 		
+ 	}
  	
+function selectPath(pathName){
+		
+		console.log(pathName);
+		
+		
+	}
  	
 </script>
 </head>
@@ -185,13 +204,7 @@ function setDestination(obj){
 		
 		<!-- Example row of columns -->
 		<form action="" id="destinationFrm" name="destinationFrm">	
-			<input type="hidden" id="name" name="name" value="" />							<!-- 메세지명 -->
-			<input type="hidden" id="description" name="description" value="" />			<!-- 설명 -->
-			<input type="hidden" id="subject" name="subject" value="" />					<!-- 메일제목 -->
-			<input type="hidden" id="numericMessage" name="numericMessage" value="" />		<!-- 요약메세지 -->
-			<input type="hidden" id="textMessage" name="textMessage" value="" />			<!-- 메세지 -->
-			<input type="hidden" id="" name="destinationPath" value="" />	<!-- 목적지선택 -->
-			<input type="hidden" id="NAME" name="NAME" value="" />							<!--uei 이름 -->
+			<input type="hidden" id="noticeQueue" name="noticeQueue" value="" />			<!--uei 이름 -->
 			<input type="hidden" id="uei" name="uei" value="" />							<!-- uei -->
 		</form>
 		
@@ -200,6 +213,7 @@ function setDestination(obj){
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
 					<li><a href="/v1/admin/setting.do">사용자 설정</a> <span class="divider">/</span></li>
+					<li><a href="/v1/admin/setting/configureNotification.do">공지 설정</a> <span class="divider">/</span></li>
 					<li class="active">공지추가</li>
 				</ul>
 			</div>
@@ -544,12 +558,8 @@ function setDestination(obj){
 	</div>
 	<div class="modal-body" style="max-height: 800px;">
 		<p>
-			@fatAd leggings keytar, brunch id art party dolor labore. Pitchfork yr enim lo-fi before they sold out qui. Tumblr farm-to-table bicycle rights whatever. Anim keffiyeh carles cardigan. Velit seitan mcsweeney's photo booth 3 wolf moon irure. Cosby sweater lomo jean shorts, williamsburg hoodie minim qui you probably haven't heard of them et cardigan trust fund culpa biodiesel wes anderson aesthetic. Nihil tattooed accusamus, cred irony biodiesel keffiyeh artisan ullamco consequat.
-			@mdoVeniam marfa mustache skateboard, adipisicing fugiat velit pitchfork beard. Freegan beard aliqua cupidatat mcsweeney's vero. Cupidatat four loko nisi, ea helvetica nulla carles. Tattooed cosby sweater food truck, mcsweeney's quis non freegan vinyl. Lo-fi wes anderson +1 sartorial. Carles non aesthetic exercitation quis gentrify. Brooklyn adipisicing craft beer vice keytar deserunt.
-			oneOccaecat commodo aliqua delectus. Fap craft beer deserunt skateboard ea. Lomo bicycle rights adipisicing banh mi, velit ea sunt next level locavore single-origin coffee in magna veniam. High life id vinyl, echo park consequat quis aliquip banh mi pitchfork. Vero VHS est adipisicing. Consectetur nisi DIY minim messenger bag. Cred ex in, sustainable delectus consectetur fanny pack iphone.
-			twoIn incididunt echo park, officia deserunt mcsweeney's proident master cleanse thundercats sapiente veniam. Excepteur VHS elit, proident shoreditch +1 biodiesel laborum craft beer. Single-origin coffee wayfarers irure four loko, cupidatat terry richardson master cleanse. Assumenda you probably haven't heard of them art party fanny pack, tattooed nulla cardigan tempor ad. Proident wolf nesciunt sartorial keffiyeh eu banh mi sustainable. Elit wolf voluptate, lo-fi ea portland before they sold out four loko. Locavore enim nostrud mlkshk brooklyn nesciunt.
-			threeAd leggings keytar, brunch id art party dolor labore. Pitchfork yr enim lo-fi before they sold out qui. Tumblr farm-to-table bicycle rights whatever. Anim keffiyeh carles cardigan. Velit seitan mcsweeney's photo booth 3 wolf moon irure. Cosby sweater lomo jean shorts, williamsburg hoodie minim qui you probably haven't heard of them et cardigan trust fund culpa biodiesel wes anderson aesthetic. Nihil tattooed accusamus, cred irony biodiesel keffiyeh artisan ullamco consequat.
-			Keytar twee blog, culpa messenger bag marfa whatever delectus food truck. Sapiente synth id assumenda. Locavore sed helvetica cliche irony, thundercats you probably haven't heard of them consequat hoodie gluten-free lo-fi fap aliquip. Labore elit placeat before they sold out, terry richardson proident brunch nesciunt quis cosby sweater pariatur keffiyeh ut helvetica artisan. Cardigan craft beer seitan readymade velit. VHS chambray laboris tempor veniam. Anim mollit minim commodo ullamco thundercats.
+		
+		
 		</p>
 	</div>
 	<div class="modal-footer">

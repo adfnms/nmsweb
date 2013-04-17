@@ -50,11 +50,16 @@
 		
 		//console.log(jsonObj);
 		
-		
+		if(jsonObj.result == "success")
+		{
 		var str = userNotiListjsonObj(jsonObj);
-		
-		
 		$('#userTable').append(str);
+		}else{
+			//console.log(jsonObj);
+			var str = getFailJsonObj();
+			$('#userTable').append(str);
+		}
+		
 
 	}
 	/*//My Notification Callback*/
@@ -63,11 +68,16 @@
 	
 	/* total Notification Callback */
 	  function totalNotificationList(jsonObj) {
-
+		  if(jsonObj.result == "success")
+			{
 		var str = totalNotiListjsonObj(jsonObj);
 		
 		$('#totalTable').append(str);
-
+			}else{
+				
+				var str = getFailJsonObj();
+				$('#totalTable').append(str);
+			}
 	}  
 	/*//total Notification Callback*/
 </script>
@@ -94,12 +104,11 @@
 		<div class="row-fluid">
 			<div class="row-fluid">
 				<div class="span12">
-					<div class="span4"><h4>나의공지정보</h4></div>
+					<div class="span3"><h4>나의공지정보</h4></div>
 					<div class="span3"></div>
 					<div class="span3"><jsp:include page="/include/statsBar.jsp" /></div>
-					<div class="span2">
-						<a type="button" class="btn btn-primary" title="" href="/v1/admin/setting/addEvent.do">+ 공지 추가</a>
-						<!-- <a type="button" class="btn btn-primary" title="" href="/v1/admin/graphTest.do">+ graphTest</a> -->
+					<div class="span3">
+						<a type="button" class="btn btn-primary" title="" href="/v1/admin/setting/configureNotification.do">configure notification</a>
 					</div>
 				</div>
 			</div>

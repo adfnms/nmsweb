@@ -77,10 +77,5 @@ try{
 		
 	}
 	
-	@Override
-	public UserTbl selectToDb(Map<String, Object> params) {
-		return (UserTbl) getSqlMapClientTemplate().queryForObject("com.bluecapsystem.nms.userManager.selectToDb", params);
-		
-	}
 
 }

@@ -89,35 +89,7 @@ public class UserManagerServiceImpl  extends BaseService implements UserManagerS
 		return ret;
 	}
 
-	@Override
-	public boolean selectToDb(String userId, OutParam<UserTbl> userTbl) {
-		boolean ret = false;
-		userTbl.set(null);
-		UserTbl UserTbl = new UserTbl();
-		Map<String, Object> params = new HashMap<String,Object>();
-		params.put("userId",userId);
-		
-		try
-		{
-			UserTbl = userManagerDao.selectToDb(params);
-			
-			userTbl.set(UserTbl);
-			
-			
-			ret = true;
-			
-		}catch(Exception ex){
-			
-			ex.printStackTrace();
-			
-			ret = false;
-		
-		}finally{
-			
-		}
-		return ret;
-	}
-	}
+}
 
 	
 	

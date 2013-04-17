@@ -560,11 +560,32 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 	var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
 	var str = "";
 
-	console.log(nodeObj);
-	if (nodeObj.length > 0) {
+	if (jsonObj["node"] == null || jsonObj["node"] ==""){
 		
-		if (nodeObj.length > 1) {
-	
+		str += "<tr>";
+		str += "<td>노드 목록이 없습니다!</td>";
+		str += "</tr>";
+		
+	}else if (jsonObj["@totalCount"] == 1 || jsonObj["@count"] == 1) {
+		
+		
+		str += "<tr>";
+		str += "<td>1</td>";
+		str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+ "'>"
+				+ nodeObj["@label"]+"&nbsp;[&nbsp;"+nodeObj["@id"]+"&nbsp;]"
+				+ "</a></td>";
+		str += "<td>"
+				+  new Date(nodeObj["createTime"]).format('yy-MM-dd hh:mm:ss')
+				+ "</td>";
+		if(auth == "Y"){
+			str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj["@id"]+'\');">관리</button></td>';
+			str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj["@id"]+'\');">삭제</button></td>';
+		}
+		str += "</tr>";
+		
+		
+	}else if (jsonObj["@totalCount"] > 1 || jsonObj["@count"] > 1) {
+			
 			for ( var i in nodeObj) {
 				str += "<tr>";
 				str += "<td>"
@@ -583,24 +604,9 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 				str += "</tr>";
 			}
 			
-		} else {
-	
-			str += "<tr>";
-			str += "<td>1</td>";
-			str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+ "'>"
-					+ nodeObj["@label"]+"&nbsp;[&nbsp;"+nodeObj["@id"]+"&nbsp;]"
-					+ "</a></td>";
-			str += "<td>"
-					+  new Date(nodeObj["createTime"]).format('yy-MM-dd hh:mm:ss')
-					+ "</td>";
-			if(auth == "Y"){
-				str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj["@id"]+'\');">관리</button></td>';
-				str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj["@id"]+'\');">삭제</button></td>';
-			}
-			str += "</tr>";
-		}
+		} 
 
-	}
+	
 	
 	return str;
 }
@@ -646,7 +652,6 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 				}else{
 					data += "&serviceId="+serviceObj[i]["serviceType"]["@id"];
 				}
-				
 			}
 
 		} else {

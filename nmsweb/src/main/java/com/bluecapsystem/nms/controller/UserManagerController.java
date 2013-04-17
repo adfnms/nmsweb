@@ -177,8 +177,6 @@ public class UserManagerController {
 		
 		ModelAndView model =  new ModelAndView();
 		
-		UserTbl userInfo = null;
-		OutParam<UserTbl> UserTbl = new OutParam<UserTbl>();
 		
 		//get userId Info
 		String dataUrl = "http://localhost:8080/v1/users/"+userId;
@@ -198,13 +196,7 @@ public class UserManagerController {
 			String userComments = jNode.path("user-comments").getTextValue();
 			String password = jNode.path("password").getTextValue();
 			
-			if(userManagerService.selectToDb(userId,UserTbl )==false){
-				logger.error("User info select to database error");
-			}
-			
-			userInfo = UserTbl.get();
 	
-			model.addObject("userInfo",userInfo);
 			model.addObject("Id",Id);
 			model.addObject("fullName",fullName);
 			model.addObject("userComments",userComments);

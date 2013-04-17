@@ -23,7 +23,7 @@ function getJSONStrToUser(userId,fullName,comments,password){
 
 
 /**
- * DELETE JSONSTRING �����
+ * DELETE JSONSTRING
  * @param userId
  * @returns {String}
  */
@@ -46,7 +46,9 @@ function JSONStrToUserFordelete(userId){
 function setUserBaseInfo(userId,fullName,comments,password){
 	
 	var data = getJSONStrToUser(userId,fullName,comments,password);
+	
 	var _return = false;
+	
 	$.ajax({
 		type:'post',
 		url:'<%=NMSProperties.getNmswebAddress()%>/users',
@@ -60,6 +62,7 @@ function setUserBaseInfo(userId,fullName,comments,password){
         	alert("성공하였습니다");
         }
 	});
+	
 	alert(_return);
 	
 	return _return;
@@ -97,23 +100,46 @@ function userListStr(jsonObj){
 
 	var userObj = jsonObj["user"];
 	
-	for ( var i in userObj) {
+	var totalCount = jsonObj["@totalCount"];
+
+	if (totalCount == 1) {
+		
 		str += "<tr>";
-		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
-		str += userObj[i]["user-id"];
+		str += "	<td onclick=\"javascript:getUserDetail('"+userObj["user-id"]+"');\">";
+		str += userObj["user-id"];
 		str += "	</td>";
-		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
-		str += userObj[i]["full-name"];
-		str += "	</td>";
-		str += "	<td>";
-		str += userObj[i]["user-comments"];
+		str += "	<td onclick=\"javascript:getUserDetail('"+userObj["user-id"]+"');\">";
+		str += userObj["full-name"];
 		str += "	</td>";
 		str += "	<td>";
-		str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteUser('"+userObj[i]["user-id"]+"');\">삭제</a>";
+		str += userObj["user-comments"];
+		str += "	</td>";
+		str += "	<td>";
+		str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteUser('"+userObj["user-id"]+"');\">삭제</a>";
 		str += "	</td>";
 		str += "</tr>";
+		
+	}else if(totalCount > 1){
+		
+		for ( var i in userObj) {
+			
+			str += "<tr>";
+			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
+			str += userObj[i]["user-id"];
+			str += "	</td>";
+			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
+			str += userObj[i]["full-name"];
+			str += "	</td>";
+			str += "	<td>";
+			str += userObj[i]["user-comments"];
+			str += "	</td>";
+			str += "	<td>";
+			str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteUser('"+userObj[i]["user-id"]+"');\">삭제</a>";
+			str += "	</td>";
+			str += "</tr>";
+		}
 	}
-
+	
 	$("#userListTable").append(str);
 	
 	
@@ -140,16 +166,30 @@ function userNameStr(jsonObj){
 }
 
 //userInfo <select> str
+
 function userNameSelectStr(jsonObj){
 	
-	var str = "";
+	var selectStr = "";
 		
-		var userObj = jsonObj["user"];
+	var userObj = jsonObj["user"];
+	
+	var totalCount = jsonObj["@totalCount"];
+	
+	if (totalCount == 1) {
+		
+		
+		selectStr += "<option class=\"text-info\" value=\""+userObj["user-id"]+"\">"+userObj["full-name"]+"</option>";
+		
+	}else if(totalCount > 1){
 		
 		for ( var i in userObj) {
-			str += "<option value=\""+userObj[i]["user-id"]+"\">"+userObj[i]["full-name"]+"</option>";
-		}
-		$("#userListSelect").append(str);
+					
+			selectStr += "<option class=\"text-info\" value=\""+userObj[i]["user-id"]+"\">"+userObj[i]["full-name"]+"</option>";
+				}
+		
+	}
+	
+		$("#userListSelect").append(selectStr);
 	}
 
 	

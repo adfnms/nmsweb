@@ -53,6 +53,62 @@
 		
 	}
 	
+	function regGroup(){
+		
+		var groupName = $("#groupInfoFrm input[name=name]").val();
+		var comments = $("#groupInfoFrm textarea[name=comments]").val();
+		var user = $("#groupInfoFrm input[name=user]").val();
+		
+		str = groupStr (groupName,comments,user);
+		
+		$.ajax({
+			type : 'post',
+			url : '/' + version + '/groups/',
+			dataType : 'json',
+			data : str,
+			contentType : 'application/json', 
+			error : function(data) {
+				//console.log(data);
+				alert('그룹 등록 서비스 실패');
+			},
+			success : function(data) {
+				
+				console.log("그룹 등록 서비스 성공");
+				
+				$(location).attr('href', "/v1/admin/groupMng/modifyGroup.do?name="+groupName);
+			}
+		}); 
+		
+	}
+	
+	function deleteGroup(name){
+		
+		$.ajax({
+			type : 'delete',
+			url : '/' + version + '/groups/'+name,
+			dataType : 'json',
+			contentType : 'application/json', 
+			error : function(data) {
+				//console.log(data);
+				alert('그룹 삭제 서비스 실패');
+			},
+			success : function(data) {
+				
+				console.log("그룹 삭제 서비스 성공");
+				
+				$(location).attr('href', "/v1/admin/groupMng.do");
+			}
+		}); 
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	
 </script>
 </head>
 
@@ -99,7 +155,7 @@
 					<div class="span12">
 					<div class="span10"></div>
 						<div class="span2 ">
-							<a type="button" class="btn btn-primary" title="" href="/v1/admin/userMng/userReg.do">+ 새 그룹 추가</a>
+							<a type="button" class="btn btn-primary" title="" href="#popupRegMethod" data-toggle="modal">새 그룹 등록</a> 
 						</div>
 					</div>
 					
@@ -110,5 +166,39 @@
 		<hr>
 	</div>
 	<!-- /container -->
+	
+	<!-- ------------------------그룹 등록 Popup창----------------------- -->	
+ <div id="popupRegMethod" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">새&nbsp;그룹&nbsp;등록</h3>
+	</div>
+	<form id ="groupInfoFrm" name= "groupInfoFrm">
+		<div class="modal-body" style="max-height: 800px;">
+			<div class="row-fluid">
+				<div class="span12">
+					<label class="span3 control-label"><h4>그룹&nbsp;명</h4></label>
+					<input type="text"   id="name"   name="name" class="span12"   placeholder=""> 
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span12">
+					<label class="span3 control-label"><h4>comments</h4></label>
+					<textarea  rows="4" id="comments"  name="comments" class="span12"   placeholder=""></textarea> 
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span12">
+					<input type="hidden"   id="user"   name="user" class="span12"   placeholder=""> 
+				</div>
+			</div>
+		</div>
+	</form>
+	<div class="modal-footer">
+		<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="javascript:regGroup()">등록</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div> 
+	
 </body>
 </html>

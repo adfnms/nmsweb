@@ -27,6 +27,9 @@
 		{
 			alert("추가되었습니다.");
 			self.close();
+		}else{
+			alert("추가가 실패 했습니다.");
+			self.close();
 		}
 		
 		window.opener.location.reload();

@@ -26,5 +26,4 @@ public interface UserManagerDao {
 	public void deleteToDb(UserTbl userTbl);
 	
 	
-	public UserTbl selectToDb(Map<String, Object> params);
 }

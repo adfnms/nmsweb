@@ -32,7 +32,6 @@
  * 사용자 리스트 전체가져오기
  */
  	function callbackUseList(jsonObj) {
-		console.log(jsonObj);
 		
 		var str = userListStr(jsonObj);
 		

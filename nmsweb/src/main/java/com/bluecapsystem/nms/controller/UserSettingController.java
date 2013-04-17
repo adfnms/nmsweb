@@ -34,19 +34,8 @@ public class UserSettingController
 	{
 		String Id =(String) session.getAttribute(Define.USER_ID_KEY);
 		ModelAndView model = new ModelAndView();
-		UserTbl userInfo = null;
 		
 		try{
-			OutParam<UserTbl> UserTbl = new OutParam<UserTbl>();
-			
-			if(userManagerService.selectToDb(userId,UserTbl )==false){
-				logger.error("User info select to database error");
-			}
-			
-			userInfo = UserTbl.get();
-	
-			model.addObject("userInfo",userInfo);
-			
 			
 			
 		}catch (Exception e) {
@@ -101,28 +90,22 @@ public class UserSettingController
 		model.setViewName("/admin/userSetting/outage");
 		return model;
 	}
-	@RequestMapping(value = "/admin/graphTest")
-	public ModelAndView graphTest(HttpServletRequest request, HttpServletResponse response)
+	@RequestMapping(value = "/admin/setting/configureNotification")
+	public ModelAndView configureNotification(HttpServletRequest request, HttpServletResponse response)
 	{
 		ModelAndView model = new ModelAndView();
-		
-	String a = "50%";
-	String b = "60%";
-	String c = "70%";
-	String d = "80%";
-	String e = "90%";
-	String f = "100%";
-	String g = "critical";
+		model.setViewName("/admin/userSetting/configureNotification");
+		return model;
+	}
 	
-		
-	model.addObject("50%",a);
-	model.addObject("60%",b);
-	model.addObject("70%",c);
-	model.addObject("80%",d);
-	model.addObject("90%",e);
-	model.addObject("100%",f);
-	model.addObject("critical",g);
-		model.setViewName("/admin/userSetting/graphTest");
+	@RequestMapping(value = "/admin/setting/modifyNotification")
+	public ModelAndView modifyNotification(HttpServletRequest request, HttpServletResponse response,
+	@RequestParam(value = "name", required = false)String name)
+	{
+		ModelAndView model = new ModelAndView();
+
+		model.addObject("name",name);
+		model.setViewName("/admin/userSetting/modifyNotification");
 		return model;
 	}
 	

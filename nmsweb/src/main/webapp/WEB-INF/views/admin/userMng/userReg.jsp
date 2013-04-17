@@ -47,7 +47,6 @@ try{
 			//Post Json Info String url method
 			var str = getJSONStrToUser(userId, fullName, userComments, password);
 		
-			//alert(str);
 			
 			$.ajax({
 		

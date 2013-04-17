@@ -1,25 +1,50 @@
 
+
+/*POST Adjust the information related with real occured, certain event*/
+/*reg Notification obj*/
+
+function requestBodyStr (uei,name,description,subject,numericMessage,textMessage,destinationPath,status,rule,noticeQueue){
+ 		
+ 		var str ="{\"name\":\""+name+"\",\"description\": \""+description+"\"," + 
+ 				"\"subject\": \""+subject+"\",\"status\": \""+status+"\"," +
+ 				"\"parameter\": [],\"rule\": \""+rule+"\"," +
+ 				"\"varbind\": {" + 
+ 				"\"vbname\":\"\",\"vbvalue\": \"\"}," +
+ 				"\"writeable\":\"yes\",\"uei\": \""+uei+"\"," +
+ 				"\"noticeQueue\": \""+noticeQueue+"\",\"destinationPath\": \""+destinationPath+"\"," +
+ 				"\"textMessage\": \""+textMessage+"\",\"numericMessage\": \""+numericMessage+"\"," +
+ 				"\"eventSeverity\": \"\"}";
+ 		
+ 		console.log(str);
+ 		
+ 		return str;
+ 	}
+
+
+
+
 //Return notification list related with given userName
 function getNotoficationList(callback, userId ,data){
-	console.log('/' + version + '/notifications/searchUser/'+userId+"?"+data);
+	//console.log('/' + version + '/notifications/searchUser/'+userId+"?"+data);
 	
 	$.ajax({
 		type : 'get',
-		url : '/' + version + '/notifications/searchUser/'+userId,
-		//url :'/v1/notifications/searchUser/admin?pagetime=2013-03-19%2014:10:22.510547-09&limit=3',
-		data : data,
+		//url : '/' + version + '/notifications/searchUser/'+userId,
+		url :'/v1/notifications/searchUser/admin?pagetime=2013-03-20T06:22:43.467-04:00&limit=2',
+		//data : data,
 		contentType: "application/json;charset=UTF-8", 
 		dataType : 'json',
 		error : function(data) {
-			
-			alert('나의 공지 리스트 가져오기 서비스 실패');
+			//alert('나의 공지 리스트 가져오기 서비스 실패');
+			if (typeof callback == "function") {
+				//console.log(data);
+				callback(data);
+			}
 		},
 		success : function(data) {
-			//console.log(data);
-			
 			
 			if (typeof callback == "function") {
-				
+				console.log(data);
 				callback(data);
 			}
 		}
@@ -32,7 +57,7 @@ function getNotoficationList(callback, userId ,data){
  */
 //Get total list of notification
 function getTotalNotoficationList(callback , data){
-	console.log('http://192.168.0.5:8081/' + version + '/notifications/allOutstand/?'+data);
+	//console.log('http://192.168.0.5:8081/' + version + '/notifications/allOutstand/?'+data);
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/notifications/allOutstand',
@@ -41,8 +66,10 @@ function getTotalNotoficationList(callback , data){
 		contentType : "application/json;charset=UTF-8", 
 		error : function(data) {
 			//console.log(data);
-		
-			alert('전체 공지 리스트 가져오기 서비스 실패');
+			if (typeof callback == "function") {
+				callback(data);
+			}
+			//alert('전체 공지 리스트 가져오기 서비스 실패');
 		},
 		success : function(data) {
 			// 콜백함수
@@ -61,7 +88,7 @@ function getTotalNotoficationList(callback , data){
  * only notofication
  */
 function getNotofication(callback , notifyid){
-	console.log('http://192.168.0.5:8081/' + version + '/notifications/?'+notifyid);
+	//console.log('http://192.168.0.5:8081/' + version + '/notifications/?'+notifyid);
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/notifications/'+notifyid,
@@ -87,7 +114,7 @@ function getNotofication(callback , notifyid){
  * only destination.
  */
 function gedestination(callback , notifyid){
-	console.log('http://192.168.0.5:8081/' + version + '/notifications/?'+notifyid);
+	//console.log('http://192.168.0.5:8081/' + version + '/notifications/?'+notifyid);
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/notifications/'+notifyid,
@@ -100,6 +127,7 @@ function gedestination(callback , notifyid){
 		success : function(data) {
 			// 콜백함수
 			if (typeof callback == "function") {
+				
 				callback(data);
 			}
 		}
@@ -111,8 +139,8 @@ function gedestination(callback , notifyid){
  * @param callback
  */
 function getEventUei(callback){
-	console.log('http://192.168.0.5:8081/' + version + '/notifications/events');
-	console.log('http://localhost:8080/' + version + '/notifications/events');
+	//console.log('http://192.168.0.5:8081/' + version + '/notifications/events');
+	//console.log('http://localhost:8080/' + version + '/notifications/events');
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/notifications/events',
@@ -121,6 +149,7 @@ function getEventUei(callback){
 		accept : "application/json",
 		error : function(data) {
 			console.log(data);
+			
 			alert('이벤트 리스트 가져오기 서비스 실패');
 		},
 		success : function(data) {
@@ -134,8 +163,8 @@ function getEventUei(callback){
 	
 }
 function getPathList(callback){
-	console.log('http://192.168.0.5:8081/' + version + '/notifications/destinationPaths');
-	console.log('http://localhost:8080/' + version + '/notifications/destinationPaths');
+	//console.log('http://192.168.0.5:8081/' + version + '/notifications/destinationPaths');
+	//console.log('http://localhost:8080/' + version + '/notifications/destinationPaths');
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/notifications/destinationPaths',
@@ -144,6 +173,7 @@ function getPathList(callback){
 		accept : "application/json",
 		error : function(data) {
 			console.log(data);
+			
 			alert('destinationPaths 리스트 가져오기 서비스 실패');
 		},
 		success : function(data) {
@@ -156,6 +186,69 @@ function getPathList(callback){
 	});
 	
 }
+
+function getAddedNoti(callback){
+	//console.log('http://192.168.0.5:8081/' + version + '/notifications/destinationPaths');
+	//console.log('http://localhost:8080/' + version + '/notifications/destinationPaths');
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/notifications/eventNotifications',
+		dataType : 'json',
+		contentType : "application/json",
+		accept : "application/json",
+		error : function(data) {
+			console.log(data);
+			
+			alert('eventNotifications 리스트 가져오기 서비스 실패');
+		},
+		success : function(data) {
+			// 콜백함수
+				//console.log(data);
+				
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+	
+}
+
+
+function modifyNoti(callback , name){
+	
+	
+	
+	$.ajax({
+		
+		type : 'get',
+		url : '/' + version + '/notifications/eventNotifications/'+name,
+		contentType : 'application/json',
+		dataType:'json',
+		async: false,
+		error : function(data) {
+			console.log(data);
+			
+			alert('Notification 정보 가져오기 서비스 실패');;
+		},
+		success : function(data) {
+			// 콜백함수
+			//console.log(data);
+			
+			if (typeof callback == "function") {
+				callback(data);
+			}
+			
+		}
+	});
+	
+	
+	
+	
+}
+
+
+
+
 
 /**
  *Return notification list related with given userName
@@ -172,7 +265,7 @@ function getUserNotiList(callback , userId, nowDate, recentCount){
 		return;
 		
 	}
-	var filter ="pagetime="+nowDate+".510547-09&limit="+recentCount;
+	var filter ="pagetime="+nowDate+".467-04:00&limit="+recentCount;
 	getNotoficationList(callback, userId ,filter);
 		
 }
@@ -204,8 +297,12 @@ function getdestinationDetail(callback , notifyid){
 	gedestination(callback, notifyid );
 	
 }
-/*********Get the notification specified by the certain ID*****/
-
+/*********Get information related with real occured all event*****/
+function getAddedNotifiList(callback){
+	
+	getAddedNoti(callback);
+	
+}
 
 
 /* GETConfirm kind of registered all event Callback */
@@ -214,6 +311,8 @@ function getAllEvent(callback){
 	getEventUei(callback);
 	
 }
+
+
 
 /******************************************  view String edit  **************************************************/
 
@@ -226,8 +325,10 @@ function getAllEvent(callback){
 function userNotiListjsonObj(jsonObj) {
 	
 		var str = "";
-
+		//alert("jsonObj");
 	var userObj = jsonObj["notifications"];
+	
+	
 	
 	if(userObj.length > 1){
 		
@@ -503,20 +604,36 @@ function getEventJsonObj(jsonObj){
 			str += "<tr>";
 			str += "	<td class=\"span1\" onclick=\"javascript:setDestination('"+eventObj[i]["uei"]+","+eventObj[i]["event-label"]+"');\">";										
 			str += "&nbsp;"+eventObj[i]["event-label"];												//event-label
-			str += "	</td>";													
-			str += "</tr>";
-			} 
-		}else{
-			str += "<tr>";
-			str += "	<td class=\"span1\">";										
-			str += eventObj[0]["event-label"];												//event-label
-			str += "	</td>";													
+			str += "	</td>";				
 			str += "</tr>";
 			
 		}
 	
 	 $("#eventListTable").append(str);
 }
+}
+
+//모든 이벤트 목록 select div 가져오기
+function getEventSelectJsonObj(jsonObj){
+	
+	var str = "";
+
+	var eventObj = jsonObj["event"]; 
+	
+	if(eventObj.length > 1){
+	
+		for ( var i in  eventObj){
+			str += "<option value=\""+eventObj[i]["uei"]+"\" >"+eventObj[i]["event-label"]+"</option>";
+		}
+		
+	}else{
+		str += "<option value=\""+eventObj[0]["uei"]+","+eventObj[0]["event-label"]+"\">"+eventObj[0]["event-label"]+"</option>";	
+	}
+	
+	 $("#uei").append(str);
+}
+
+
 
 function pathsNameStr(jsonObj){
 	var str = "";
@@ -534,10 +651,10 @@ function pathsNameStr(jsonObj){
 			str += pathsObj[i]["name"];
 			str += "	</td>";
 			str += "	<td>";
-			str += "<a type=\"button\" class=\"btn btn-success\" href=\"javascript:deleteUser('"+pathsObj[i]["name"]+"');\">선택</a>";
+			str += "<a type=\"button\"  class=\"btn btn-success\" onclick=\"javascript:selectPath('"+pathsObj[i]["name"]+"') \">선택</a>";
 			str += "	</td>";
 			str += "	<td>";
-			str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deletePath('"+pathsObj[i]["name"]+"');\">삭제</a>";
+			str += "<a type=\"button\"  class=\"btn btn-danger\" onclick=\"javascript:deletePath('"+pathsObj[i]["name"]+"');\">삭제</a>";
 			str += "	</td>";
 			str += "</tr>";
 			}
@@ -555,7 +672,7 @@ function pathsNameStr(jsonObj){
 }
 
 
-//userInfo <select> str
+// pathsName <select> str
 function pathsNameSelectStr(jsonObj){
 	
 	var str = "";
@@ -578,7 +695,70 @@ function pathsNameSelectStr(jsonObj){
 }
 
 
+function getFailJsonObj(){
+	var str = "";
 
+	str += "<tr>";
+	str += "<td></td>";
+	str += "<td></td>";
+	str += "<td></td>";
+	str += "<td></td>";
+	str += "<td></td>";
+	str += "<td>공지 사항이 없습니다!</td>";
+	str += "</tr>";
+	return str;
+}
+//추가된 공지 목록 가져오기
+function addNotiStr(jsonObj){
+	
+	var str = "";
+	
+	 if(jsonObj.length > 1){
+	
+		for ( var i in  jsonObj){
+			
+			
+			str += "<tr>";//데이터가 한개 이상일때 
+			str += "	<td class=\"span1 text-error\">";										
+			str += "<strong>&nbsp;"+jsonObj[i]["status"];												//event-label
+			str += "	<strong></td>";
+			str += "	<td class=\"span3\">";
+			str += "&nbsp;"+jsonObj[i]["name"];												//event-label
+			str += "	</td>";
+			str += "	<td class=\"span3\">";
+			str += "&nbsp;"+jsonObj[i]["uei"];												//event-label
+			str += "	</td>";
+			str += "	<td class=\"span1\">";
+			str += "<a type=\"button\" class=\"btn btn-warning \" href=\"javascript:modifyNotification('"+jsonObj[i]["name"]+"');\">수정</a>";
+			str += "	</td>";
+			str += "	<td class=\"span1\">";
+			str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteNotification('"+jsonObj[i]["name"]+"');\">삭제</a>";
+			str += "	</td>";
+			str += "</tr>";
+			} 
+		}else{//데이터가 한개일때 
+			str += "<tr>";
+			str += "	<td class=\"span1 text-error\" onclick=\"javascript:getnoti('"+jsonObj[0]["name"]+"');\">";										
+			str += "<strong>&nbsp;"+jsonObj[0]["status"];												//event-label
+			str += "	<strong></td>";
+			str += "	<td class=\"span3\" onclick=\"javascript:getnoti('"+jsonObj[0]["name"]+"');\">";
+			str += "&nbsp;"+jsonObj[0]["name"];												//event-label
+			str += "	</td>";
+			str += "	<td class=\"span3\" onclick=\"javascript:getnoti('"+jsonObj[0]["name"]+"');\">";
+			str += "&nbsp;"+jsonObj[0]["uei"];												//event-label
+			str += "	</td>";
+			str += "	<td class=\"span1\">";
+			str += "<a type=\"button\" class=\"btn btn-warning \" href=\"javascript:modifyNotification('"+jsonObj[0]["name"]+"');\">수정</a>";
+			str += "	</td>";
+			str += "	<td class=\"span1\">";
+			str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteNotification('"+jsonObj[0]["name"]+"');\">삭제</a>";
+			str += "	</td>";
+			str += "</tr>";
+			
+		}
+	
+	 $("#notificationTable").append(str);
+}
 
 
 

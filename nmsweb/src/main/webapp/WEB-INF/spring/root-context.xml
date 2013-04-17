@@ -15,6 +15,7 @@
 		<property name="locations">
 			<list>
 				<value>classpath:config/nms.properties</value>
+				
 			</list>
 		</property>
 	</bean>
@@ -28,14 +29,16 @@
 	</bean>
 
 	<!-- ibatis 설정 -->
-	 <bean id="nmsDataSource" class="org.apache.commons.dbcp.BasicDataSource" 
-		destroy-method="close"> <property name="driverClassName" value="${jdbc.nms.driverClassName}" 
-		/> <property name="url" value="${jdbc.nms.url}" /> <property name="username" 
-		value="${jdbc.nms.username}" /> <property name="password" value="${jdbc.nms.password}" 
-		/> </bean>
-
-	 <bean id="nmsSqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean"> 
-		<property name="configLocation" value="classpath:config/nms-sql-map-config.xml" 
-		/> <property name="dataSource" ref="nmsDataSource" /> </bean> 
+	 <bean id="nmsDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
+	 	<property name="driverClassName" value="${jdbc.nms.driverClassName}" /> 
+	 	<property name="url" value="${jdbc.nms.url}" /> 
+	 	<property name="username" value="${jdbc.nms.username}" /> 
+	 	<property name="password" value="${jdbc.nms.password}" /> 
+	 </bean>
+	 
+	 <bean id="nmsSqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="classpath:config/nms-sql-map-config.xml" />
+		<property name="dataSource" ref="nmsDataSource" />
+	</bean>
 
 </beans>

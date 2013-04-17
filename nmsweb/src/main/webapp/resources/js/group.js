@@ -1,4 +1,13 @@
 
+function groupStr (name,comments,user){
+ 		
+ 		var str ="{\"group\":[{\"name\":\""+name+"\",\"comments\":\""+comments+"\"," +
+ 				"\"user\":\""+user+"\"}]}";
+ 		
+ 		console.log(str);
+ 		return str;
+ 	}	
+
 /**
  * 
  * @param callback
@@ -23,7 +32,7 @@ function getGroupList(callback){
 }
 
 function getGroupDeteil(callback , name){
-	console.log('http://192.168.0.5:8081/' + version + '/groups/?'+name);
+	console.log('http://192.168.0.23:8080/' + version + '/groups/?'+name);
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/groups/'+name,
@@ -35,7 +44,7 @@ function getGroupDeteil(callback , name){
 		},
 		success : function(data) {
 			
-			console.log(data);
+			console.log("그룹 상세정보 가져오기 : "+data["name"]);
 			
 			// 콜백함수
 			if (typeof callback == "function") {
@@ -83,10 +92,10 @@ function groupListStr(jsonObj){
 	
 	for ( var i in userObj) {
 		str += "<tr>";
-		str += "	<td onclick=\"javascript:getGroupInfo('"+userObj[i]["name"]+"');\">";
+		str += "	<td class=\"text-success\" onclick=\"javascript:getGroupInfo('"+userObj[i]["name"]+"');\">";
 		str += userObj[i]["name"];
 		str += "	</td>";
-		str += "	<td onclick=\"javascript:getGroupInfo('"+userObj[i]["name"]+"');\">";
+		str += "	<td class=\"muted\" onclick=\"javascript:getGroupInfo('"+userObj[i]["name"]+"');\">";
 		str += userObj[i]["comments"];
 		str += "	</td>";
 		str += "	<td>";
@@ -103,25 +112,56 @@ function groupListStr(jsonObj){
 //userInfo <select> str
 function groupMemberSelectStr(jsonObj){
 	
-	var str = "";
-		
-		var groupObj = jsonObj["user"];
-			for ( var i in groupObj) {
+	
+	var name = jsonObj["name"];
+	var comments = jsonObj["comments"];
+	var user = jsonObj["user"];
+	
+	console.log("groupMemberSelectStr name : "+name);
+	console.log("groupMemberSelectStr comments : "+comments);
+	console.log("groupMemberSelectStr user : "+user);
+	console.log("groupMemberSelectStr length : "+user.length);
+	
+	var selectStr = "";
+	
+	for ( var i=0 ; i<user.length ; i++){
+		var userOne = user[i].length;
+	}
+		if(userOne == 1){
+			
+			selectStr += "<option value=\""+user+"\">"+user+"</option>";
+			
+		}else{
+			for ( var i=0 ; i<user.length ; i++){
+					{
+						selectStr += "<option class=\"text-warning\" value=\""+user[i]+"\">"+user[i]+"</option>";
+					}
+				}
+		}
+		$("#groupMemberListSelect").append(selectStr);
+}
+		/*for ( var i in groupObj) {
 			
 				str += "<option value=\""+groupObj[i]+"\">"+groupObj[i]+"</option>";
-		}
+		}*/
 		
-			$("#groupMemberListSelect").append(str);
+			
+	
+
+
+
+
+
+
+
+
+/*function (len) {
+	var s = '', i = 0;
+	while (i++ < len) {
+		s += this;
 	}
-
-
-
-
-
-
-
-
-
-
+	return s;
+}
+*/
 
 

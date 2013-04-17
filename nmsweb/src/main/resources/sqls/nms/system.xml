@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.bluecapsystem.nms.system">
+
+	<resultMap id="MenuTbl" class="com.bluecapsystem.nms.dto.MenuTbl" >
+		<result property="menuId" 		column="menu_id" />
+		<result property="menuLev" 		column="menu_lev" />
+		<result property="menuOrd" 		column="menu_ord" />
+		<result property="upperMenuId" 	column="upper_menu_id" />
+		<result property="menuNm" 		column="menu_nm" />
+		<result property="url" 			column="url" />
+		<result property="menuDesc" 	column="menu_desc" />
+		<result property="openYn"		column="open_yn"/>
+		<result property="regrId" 		column="regrid" />
+		<result property="regDt" 		column="reg_dt" />
+		<result property="modrId" 		column="modrid" />
+		<result property="modDt" 		column="mod_dt" />
+		<result property="useYn" 	column="use_yn" />
+	</resultMap>
+	
+    <select id="selectMenu" resultMap="MenuTbl" parameterClass="java.util.Map">
+			select	menu_id, menu_lev, menu_ord, upper_menu_id, menu_nm, url,
+					menu_desc, open_yn, regrid, reg_dt, modrid, mod_dt, use_yn
+			from	menu_tbl 
+		
+	    	order by menu_lev, upper_menu_id, menu_ord
+    </select>
+    
+</sqlMap>
+	
