@@ -9,8 +9,7 @@ public class UserTbl {
 	
 	private String userId;	
 	private String userNm;
-	private String userGrade;
-	private String groupId;
+	private String groupNm;
 	private String regrId;
 	private Timestamp regDt; 
 	private String modrId;
@@ -19,6 +18,12 @@ public class UserTbl {
 	private String nowDate;
 	
 	
+	public String getGroupNm() {
+		return groupNm;
+	}
+	public void setGroupNm(String groupNm) {
+		this.groupNm = groupNm;
+	}
 	public String getNowDate() {
 		return nowDate;
 	}
@@ -37,18 +42,7 @@ public class UserTbl {
 	public void setUserNm(String userNm) {
 		this.userNm = userNm;
 	}
-	public String getUserGrade() {
-		return userGrade;
-	}
-	public void setUserGrade(String userGrade) {
-		this.userGrade = userGrade;
-	}
-	public String getGroupId() {
-		return groupId;
-	}
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
-	}
+	
 	public String getRegrId() {
 		return regrId;
 	}

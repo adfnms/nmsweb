@@ -89,6 +89,46 @@ public class UserManagerServiceImpl  extends BaseService implements UserManagerS
 		return ret;
 	}
 
+	@Override
+	public boolean deleteUserTbl(UserTbl userTbl) {
+		boolean ret = false;
+		try
+		{
+			userManagerDao.deleteUserTbl(userTbl);
+			
+			ret = true;
+			
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			ret = false;
+		}finally
+		{
+			
+		}
+		return ret;
+	}
+
+	@Override
+	public boolean regUserTbl(UserTbl userTbl) {
+		boolean ret = false;
+		try
+		{
+			userManagerDao.regUserTbl(userTbl);
+			
+			ret = true;
+			
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			ret = false;
+		}finally
+		{
+			
+		}
+		return ret;
+	}
+
 }
 
 	

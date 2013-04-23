@@ -8,11 +8,11 @@
 		
      	INSERT INTO USER_TBL (
      		
-     		user_id, user_nm, user_grade, group_id, regrid, reg_dt, modrid, mod_dt, use_yn
+     		user_id, user_nm, regrid, reg_dt, modrid, mod_dt, use_yn
 			
 			) VALUES (
      		
-     		#userId#, #userNm#, #userGrade#, #groupId#, #regrId#, date(now()), #modrId#, date(now()), #useYn#
+     		#userId#, #userNm#, #regrId#, date(now()), #modrId#, date(now()), #useYn#
      	);
 
     </insert>
@@ -25,8 +25,6 @@
 			
 				user_id		=#userId#, 
 				user_nm		=#userNm#, 
-				user_grade	=#userGrade#, 
-				group_id	=#groupId#, 
 				regrid		=#regrId#, 
 				reg_dt		=date(now()), 
 				modrid		=#modrId#, 
@@ -51,12 +49,32 @@
     
     <select id="selectToDb" resultClass="com.bluecapsystem.nms.dto.UserTbl">
 		SELECT now() as nowDate;
-		
-			<!-- MODRID	as	modrId
-		
-		FROM  USER_TBL
-			
+		<!--MODRID	as	modrId
+			FROM  USER_TBL
 			WHERE user_id=#userId# -->
   	</select>
+  	
+  	<update id="regUserTbl" parameterClass="com.bluecapsystem.nms.dto.UserTbl">
+    	UPDATE USER_TBL
+    	
+    	SET 
+    	mod_dt		=date(now()), 
+    	modrid		=#modrId#, 
+    	group_nm	=#groupNm#
+    	
+    	WHERE user_id=#userId#
+    </update>
+    
+    <update id="deleteUserTbl" parameterClass="com.bluecapsystem.nms.dto.UserTbl">
+    	UPDATE USER_TBL
+    	
+    	SET 
+    	mod_dt		=date(now()), 
+    	modrid		=#modrId#, 
+    	group_nm	=#groupNm#
+    	
+    	WHERE user_id=#userId#
+    </update>
+  	
 
 </sqlMap>

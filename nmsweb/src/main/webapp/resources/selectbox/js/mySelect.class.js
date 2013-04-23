@@ -65,7 +65,9 @@ mySelect.prototype={
 				 console.log(select_html);
 				 
 				 var group = $("#right select[name=groupMemberListSelect]").val();
+				 
 				 delInGroup(group);
+				 
 			});
 			sel_left.append(select_html);
 			sel_right.find("option:selected").remove();

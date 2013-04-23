@@ -26,6 +26,62 @@
 		
 	    	order by menu_lev, upper_menu_id, menu_ord
     </select>
-    
+   
+    <!-- <select id="getAuth" resultClass="com.bluecapsystem.nms.dto.AuthTbl">
+		
+		SELECT  
+			AUTH_ID as authId,
+			AUTH_NM as authNm
+		
+		FROM AUTH_TBL 
+	
+		WHERE USE_YN='Y'
+		
+		ORDER BY authId
+	
+	</select> -->
+	
+	 <insert id="regGroupTbl" parameterClass="com.bluecapsystem.nms.dto.GroupTbl">
+		
+     	INSERT INTO GROUP_TBL (
+     		
+     		 group_nm, group_comments,  reg_dt, regrid, modrid, mod_dt, use_yn
+			
+			) VALUES (
+     		
+     		 #groupNm#, #groupComments#, date(now()), #regrId#,  #modrId#, date(now()), #useYn#
+     	);
+
+    </insert>
+	
+	<delete id="deleteGroupTbl" parameterClass="com.bluecapsystem.nms.dto.GroupTbl">
+    	
+    	
+    	DELETE FROM group_tbl  
+    	
+    	WHERE group_nm = #groupNm#;
+    	
+    </delete>
+	
+	
+	<insert id="regMenuAuth" parameterClass="com.bluecapsystem.nms.dto.MenuGroupTbl">
+		
+     	INSERT INTO MENU_GROUP_TBL (
+     		GROUP_NM,MENU_ID,REGRID,REG_DT
+     					
+			) VALUES (
+     		
+     		#groupNm#,#menuId#,#regrId#,date(now()) 
+     	)
+	</insert> 	
+
+    <delete id="delMenuAuth" parameterClass="com.bluecapsystem.nms.dto.MenuGroupTbl">
+    	
+    	DELETE FROM MENU_GROUP_TBL  
+    	
+    	WHERE GROUP_NM = #groupNm#;
+    		
+    </delete>
+	
 </sqlMap>
 	

@@ -302,6 +302,10 @@ public class UserManagerController {
 		//odel.setViewName("jsonView");
 		return model;
 	}
+	
+	
+	
+	
 	/**
 	 * USER DELETE TO DATABASE
 	 * @param request
@@ -339,4 +343,12 @@ public class UserManagerController {
 		
 		return model;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

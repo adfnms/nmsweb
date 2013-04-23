@@ -8,28 +8,6 @@ function groupStr (name,comments,user){
  		return str;
  	}	
 
-/**
- * 
- * @param callback
- */
-function getGroupList(callback){
-	
-	$.ajax({
-		type:'get',
-		url:'/v1/groups',
-		dataType:'json',
-		contentType: 'application/json',
-		error:function(data){
-            alert('그룹 리스트 실패');
-        },
-        success: function(data){
-        	
-        	if( typeof callback == "function" ) {
-		        callback(data);
-		    }
-        }
-	});
-}
 
 function getGroupDeteil(callback , name){
 	console.log('http://192.168.0.23:8080/' + version + '/groups/?'+name);
@@ -55,6 +33,49 @@ function getGroupDeteil(callback , name){
 	
 }
 
+function getAuth(callback){
+	
+	$.ajax({
+		url:'/v1/admin/getGroup.ajax',
+        type:'get',
+        dataType:'json',
+        async:false,
+		error : function(data) {
+			console.log(data);
+			alert('권한 가져오기 서비스 실패');
+		},
+		success : function(data) {
+			
+			// 콜백함수
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+	
+}
+/**
+ * 
+ * @param callback
+ */
+function getGroupList(callback){
+	
+	$.ajax({
+		type:'get',
+		url:'/v1/groups',
+		dataType:'json',
+		contentType: 'application/json',
+		error:function(data){
+            alert('그룹 리스트 실패');
+        },
+        success: function(data){
+        	
+        	if( typeof callback == "function" ) {
+		        callback(data);
+		    }
+        }
+	});
+}
 
 
 function getGroupMember(callback , name){
@@ -75,7 +96,7 @@ function groupNameStr(jsonObj){
 	for ( var i in userObj) {
 		str += "<tr>";
 		
-		str += "	<td onclick=\"javascript:destinationPathInfo('"+userObj[i]["name"]+"');\">";
+		str += "	<td onclick=\"javascript:destinationGroup('"+userObj[i]["name"]+"');\">";
 		str += userObj[i]["name"];
 		str += "	</td>";
 		str += "</tr>";
@@ -87,22 +108,37 @@ function groupNameStr(jsonObj){
 function groupListStr(jsonObj){
 	
 	var str = "";
-
-	var userObj = jsonObj["group"];
+	var groupObj = jsonObj["group"];
 	
-	for ( var i in userObj) {
-		str += "<tr>";
-		str += "	<td class=\"text-success\" onclick=\"javascript:getGroupInfo('"+userObj[i]["name"]+"');\">";
-		str += userObj[i]["name"];
-		str += "	</td>";
-		str += "	<td class=\"muted\" onclick=\"javascript:getGroupInfo('"+userObj[i]["name"]+"');\">";
-		str += userObj[i]["comments"];
-		str += "	</td>";
-		str += "	<td>";
-		str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteGroup('"+userObj[i]["name"]+"');\">삭제</a>";
-		str += "	</td>";
-		str += "</tr>";
+	if (jsonObj["@totalCount"] == 1) {
+		
+		
+		
+	}else if (jsonObj["@totalCount"] > 1){
+		
+		for ( var i in groupObj) {
+			
+			
+			//alert(authObj[i].authNm);
+			//alert(authObj[i].authId);
+			str += "<tr>";
+			str += "	<td class=\"text-info\">";
+			str += groupObj[i]["name"];
+			str += "	</td>";
+			str += "	<td class=\"text-success\">";
+			str += groupObj[i]["comments"];
+			str += "	</td>";
+			str += "	<td>";
+			str += "<a type=\"button\" class=\"btn \" href=\"javascript:getGroupInfo('"+groupObj[i]["name"]+"');\">권한 설정</a>";
+			str += "	</td>";
+			str += "	<td>";
+			str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteGroup('"+groupObj[i]["name"]+"');\">삭제</a>";
+			str += "	</td>";
+			str += "</tr>";
+		}
+		
 	}
+	
 
 	$("#groupTable").append(str);
 	

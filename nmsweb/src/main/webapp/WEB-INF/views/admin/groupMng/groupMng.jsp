@@ -22,6 +22,8 @@
 		/* 그룹 전체 리스트 */
 		/*	Get a list of group */
 		getGroupList(getGroup);
+		
+		//getAuth(getGroup);
 	});
 	
 	
@@ -29,15 +31,24 @@
  * Get a list of group
  * 그룹 리스트 전체가져오기
  */
- 	function getGroup(jsonObj) {
+ 	/* function getGroup(jsonObj) {
 		console.log(jsonObj);
 		
 		var str = groupListStr(jsonObj);
 		
 		$("#groupTable").append(str);
 
+	}  */
+ 	function getGroup(jsonObj) {
+		
+		console.log(jsonObj);
+		
+		
+		var str = groupListStr(jsonObj);
+		
+		$("#groupTable").append(str);
+
 	} 
-	
 	
 	/*그룹 상세정보 갖고오기*/
 	
@@ -53,17 +64,16 @@
 		
 	}
 	
-	function regGroup(){
+	 function regGroup(){
 		
 		var groupName = $("#groupInfoFrm input[name=name]").val();
-		var comments = $("#groupInfoFrm textarea[name=comments]").val();
+		var comments = $("#groupInfoFrm input[name=comments]").val();
 		var user = $("#groupInfoFrm input[name=user]").val();
 		
 		str = groupStr (groupName,comments,user);
-		
-		$.ajax({
+		 $.ajax({
 			type : 'post',
-			url : '/' + version + '/groups/',
+			url : '<c:url value="/groups/" />',
 			dataType : 'json',
 			data : str,
 			contentType : 'application/json', 
@@ -75,17 +85,17 @@
 				
 				console.log("그룹 등록 서비스 성공");
 				
-				$(location).attr('href', "/v1/admin/groupMng/modifyGroup.do?name="+groupName);
+				regGroupTbl(groupName,comments);
 			}
 		}); 
 		
-	}
+	} 
 	
 	function deleteGroup(name){
 		
-		$.ajax({
+		 $.ajax({
 			type : 'delete',
-			url : '/' + version + '/groups/'+name,
+			url : '<c:url value="/groups/" />'+name,
 			dataType : 'json',
 			contentType : 'application/json', 
 			error : function(data) {
@@ -95,19 +105,55 @@
 			success : function(data) {
 				
 				console.log("그룹 삭제 서비스 성공");
+				deleteGroupTbl(name);
 				
-				$(location).attr('href', "/v1/admin/groupMng.do");
 			}
 		}); 
-		
-		
-		
-		
-		
 	}
 	
+	 function regGroupTbl(groupName,comments){
+		 alert("groupName : "+groupName);
+		 alert("comments : "+comments);
+		
+	      $.ajax({
+			type : 'get',
+			url : '<c:url value="/admin/groupMng/regGroup.do" />',
+			data: 'groupName='+groupName+'&comments='+comments,
+			contentType : 'application/json', 
+			error : function(data) {
+				//console.log(data);
+				alert('그룹 등록 서비스 실패');
+			},
+			success : function(data) {
+				
+				console.log("그룹 등록 서비스 성공");
+				
+				$(location).attr('href', "/v1/admin/groupMng/modifyGroup.do?name="+groupName);
+			}
+		});   
+	    
+	}
 	
-	
+	function deleteGroupTbl(groupName){
+		
+		
+		$.ajax({
+			type : 'get',
+			url : '<c:url value="/admin/groupMng/deleteGroupTbl.do" />',
+			data: 'groupName='+groupName,
+			contentType : 'application/json', 
+			error : function(data) {
+				//console.log(data);
+				alert('그룹 삭제 서비스 실패');
+			},
+			success : function(data) {
+				
+				console.log("그룹 삭제 서비스 성공");
+				$(location).attr('href', "/v1/admin/groupMng.do");
+			}
+		});  
+		
+	}
 	
 </script>
 </head>
@@ -116,7 +162,9 @@
 	<div class="container">
 
 		<jsp:include page="/include/menu.jsp" />
-
+			<form  id="groupFrm" name="groupFrm">
+				<input type="hidden" id ="name" name="name" value="" />
+			</form>
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
@@ -127,27 +175,22 @@
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
-
+			
 		<div class="row-fluid">
 			<div class="span12 well well-small">
 			
-			<form  id="groupFrm" name="groupFrm">
-				<input type="hidden" id ="name" name="name" value="" />
-			</form>
+			
 				
 				<table class="table table-striped table-hover table-condensed" id="groupTable" >
-					<colgroup>
-						<col class="span4"/>
-						<col class="span5"/>
-						<col class="span2"/>
-					</colgroup>
-					<thead>
+					
+					
 						<tr>
-							<th>Group(GroupName)</th>
-							<th>소개(Comment)</th>
+							<th>Group(Name)</th>
+							<th>Group(Comments)</th>
+							<th>&nbsp;</th>
 							<th>&nbsp;</th>
 						</tr>
-					</thead>
+					
 				</table>
 			
 			</div>
@@ -155,7 +198,7 @@
 					<div class="span12">
 					<div class="span10"></div>
 						<div class="span2 ">
-							<a type="button" class="btn btn-primary" title="" href="#popupRegMethod" data-toggle="modal">새 그룹 등록</a> 
+							 <a type="button" class="btn btn-primary" title="" href="#popupRegMethod" data-toggle="modal">새 그룹 등록</a> 
 						</div>
 					</div>
 					
@@ -163,6 +206,7 @@
 			
 				
 		</div>
+		
 		<hr>
 	</div>
 	<!-- /container -->
@@ -174,25 +218,24 @@
 		<h3 id="myModalLabel">새&nbsp;그룹&nbsp;등록</h3>
 	</div>
 	<form id ="groupInfoFrm" name= "groupInfoFrm">
-		<div class="modal-body" style="max-height: 800px;">
-			<div class="row-fluid">
-				<div class="span12">
-					<label class="span3 control-label"><h4>그룹&nbsp;명</h4></label>
-					<input type="text"   id="name"   name="name" class="span12"   placeholder=""> 
+				<div class="span5 well well-small" style="width: 540px;" >
+					<div class="row-fluid">
+						<div class="span9">
+							<label class="span4 control-label">Group&nbsp;Name</label>
+							<div class="span7 controls">
+								<input style="width: 367px;" type="text"   id="name"   name="name"   placeholder="Group&nbsp;Name" value="" > 
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span9">
+							<label class="span4 control-label">Group&nbsp;comments</label>
+							<div class="span7 controls">
+								<input style="width: 367px;" type="text"   id="comments"   name="comments"   placeholder="Group&nbsp;comments" value="" > 
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="row-fluid">
-				<div class="span12">
-					<label class="span3 control-label"><h4>comments</h4></label>
-					<textarea  rows="4" id="comments"  name="comments" class="span12"   placeholder=""></textarea> 
-				</div>
-			</div>
-			<div class="row-fluid">
-				<div class="span12">
-					<input type="hidden"   id="user"   name="user" class="span12"   placeholder=""> 
-				</div>
-			</div>
-		</div>
 	</form>
 	<div class="modal-footer">
 		<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="javascript:regGroup()">등록</button>

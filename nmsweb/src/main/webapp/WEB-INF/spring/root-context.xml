@@ -40,5 +40,14 @@
 		<property name="configLocation" value="classpath:config/nms-sql-map-config.xml" />
 		<property name="dataSource" ref="nmsDataSource" />
 	</bean>
+	
+		<!-- TrasactionManager -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="nmsDataSource"/>
+	</bean>
+	
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager"/>
+	</bean>
 
 </beans>

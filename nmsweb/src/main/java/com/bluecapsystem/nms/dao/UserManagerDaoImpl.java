@@ -47,7 +47,8 @@ public class UserManagerDaoImpl extends BaseDao implements UserManagerDao{
 	
 	@Override
 	public void modifyToDb(UserTbl userTbl) {
-try{
+
+		try{
 			
 			super.getSqlMapClientTemplate().update("com.bluecapsystem.nms.userManager.modifyToDb", userTbl);
 			
@@ -63,9 +64,7 @@ try{
 	 */
 	@Override
 	public void deleteToDb(UserTbl userTbl) {
-try{
-			
-			
+		try{
 
 			super.getSqlMapClientTemplate().update("com.bluecapsystem.nms.userManager.deleteToDb", userTbl);
 			
@@ -76,6 +75,36 @@ try{
 		return ;
 		
 	}
+	@Override
+	public void deleteUserTbl(UserTbl userTbl) {
+
+		try{
+			
+			super.getSqlMapClientTemplate().update("com.bluecapsystem.nms.userManager.deleteUserTbl", userTbl);
+			
+		}catch(Exception ex){
+			
+			ex.printStackTrace();
+		}
+		return ;
+	}
+		
+	
+	@Override
+	public void regUserTbl(UserTbl userTbl) {
+		
+		try{
+			
+			super.getSqlMapClientTemplate().update("com.bluecapsystem.nms.userManager.regUserTbl", userTbl);
+			
+		}catch(Exception ex){
+			
+			ex.printStackTrace();
+		}
+		return ;
+	}
+		
+	
 	
 
 }

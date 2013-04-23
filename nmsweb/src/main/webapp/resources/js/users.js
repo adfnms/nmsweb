@@ -91,7 +91,55 @@ function getUserListTotal(callback){
         }
 	});
 }
+/**
+ * 사용자DB 그룹삭제  
+ * @param userName
+ * @param groupName
+ */
+function deleteUserTbl(userName,groupName){
+	
+	$.ajax({
+		type : 'get',
+		//url : '<c:url value="/admin/userMng/deleteUserTbl.do" />',
+		url : '/' + version + '/admin/userMng/deleteUserTbl/' ,
+		data: 'groupName='+groupName+'&userName='+userName,
+		contentType : 'application/json', 
+		error : function(data) {
+			//console.log(data);
+			alert('사용자DB 그룹등록 서비스 실패');
+		},
+		success : function(data) {
+			console.log("사용자DB 그룹등록 서비스 성공");
+		}
+	});  
+	
+}
 
+/**
+ * 사용자DB 그룹등록  
+ * @param userName
+ * @param groupName
+ */
+
+function regUserTbl(userName,groupName){
+	
+	$.ajax({
+		type : 'get',
+		//url : '<c:url value="/admin/userMng/regUserTbl.do" />',
+		url : '/' + version + '/admin/userMng/regUserTbl/' ,
+		data: 'groupName='+groupName+'&userName='+userName,
+		contentType : 'application/json', 
+		error : function(data) {
+			//console.log(data);
+			alert('사용자DB 그룹등록 서비스 실패');
+		},
+		success : function(data) {
+			
+			console.log("사용자DB 그룹등록 서비스 성공");
+		}
+	});  
+	
+}
 
 //--------------------------------------<div>---------------------------------------------
 function userListStr(jsonObj){

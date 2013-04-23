@@ -26,9 +26,18 @@ public interface UserManagerService {
 	public boolean deleteToDb(UserTbl userTbl);
 	
 	/**
-	 *  select database test
-	 * @param userId
-	 * @param newsTbl
+	 * USER DELETE GROUP TO DATABASE
+	 * @param userTbl
 	 * @return
 	 */
+	public boolean deleteUserTbl(UserTbl userTbl);
+	
+	/**
+	 * USER REG GROUP TO DATABASE
+	 * @param userTbl
+	 * @return
+	 */
+	public boolean regUserTbl(UserTbl userTbl);
+	
+	
 }

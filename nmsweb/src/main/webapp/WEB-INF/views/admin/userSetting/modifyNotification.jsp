@@ -126,11 +126,30 @@ function setDestination(obj){
  		
  		
  	}
+	function destinationGroup(GroupNm){
+		//alert("destinationGroup : "+GroupNm);
+		
+		$("#groupTr").html("<th class=\"span3 control-label  text-success\">selected : "+GroupNm+"</th>");
+		$("#groupTableDiv").html("<label class=\"span3 control-label\">Group Targets :</label><div class=\"span9 controls\" > <h4 style= \"margin-top: 0px;\" class=\"text-success\">"+GroupNm+"</h4> <input type=\"hidden\" id=\"\"  name=\"\" class=\"span12\" value=\""+GroupNm+"\"></div>");
+		
+	}
+	
+	
+	
 	
  	function destinationPathInfo(userid){
- 		alert(userid);
+ 		
+ 		
+ 		//alert("destinationPathInfo : "+userid);
+ 		$("#userTr").html("<th class=\"span3 control-label text-success\">selected :"+userid+"</th>");
+ 		$("#userTableDiv").html("<label class=\"span3 control-label\">User Targets :</label><div class=\"span9 controls\" > <h4 style= \"margin-top: 0px;\" class=\"text-success\">"+userid+"</h4> <input type=\"hidden\" id=\"\"  name=\"\" class=\"span12\" value=\""+userid+"\"></div>");
+ 		
  	}
- 	
+ 	function addEmail(){
+ 		var email = $("#emailTable input[name=email]").val();	
+ 		$("#emailTableDiv").html("<label class=\"span3 control-label\">e-mail Targets :</label><div class=\"span9 controls\" > <h4 style= \"margin-top: 0px;\" class=\"text-success\">"+email+"</h4> <input type=\"hidden\" id=\"\"  name=\"\" class=\"span12\" value=\""+email+"\"></div>");
+ 		
+ 	}
  	
  	/*get form[#destinationFrm] object*/
  	function regNotification(){
@@ -395,6 +414,7 @@ function setDestination(obj){
 	<div class="modal-body" >
 		<div>
 			<div class="accordion" id="accordion3">
+			<!-- --------------------------목적지 설정 1단계 popup--------------------- -->
 			  <div class="accordion-group">
 			    <div class="accordion-heading">
 			    	<h4>
@@ -422,18 +442,113 @@ function setDestination(obj){
 							</table>
 						</form>
 						<h4>
-							<a class="accordion-toggle text-success" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
+							<a class="accordion-toggle text-success" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
 								 [Add&nbsp;New&nbsp;Path]
 						  </a></h4>
 					</div>
 			      </div>
 			    </div>
 			  </div>
+			  			  <!-- --------------------------목적지 설정 2단계 popup--------------------- -->
+			  <div class="accordion-group">
+			    <div class="accordion-heading">
+			    <h4>
+			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
+			        2단계&nbsp;[목적지&nbsp;대상&nbsp;관리]&nbsp;&nbsp;<span class="label label-info">목적지 관리</span>
+			      </a></h4>
+			    </div>
+			    <div id="collapseThree" class="accordion-body collapse">
+			      <div class="accordion-inner">
+				    <div class="span5" style="margin-left: 5px;">
+						<div>
+							<table>
+								<tr>
+									<td>
+										<div class="span3" style="margin-left: 0px; width: 233px; height:200px;overflow-y:auto;" >
+											<table class="table table-striped table-condensed" id="userTable">
+												<colgroup>
+													<col class="span3"/>
+													
+												</colgroup>
+													<tr id="userTr">
+														<th>user</th>
+													</tr>
+											</table>
+										</div>
+									</td>
+									<td>
+										<div class="span3" style="margin-left: 0px; width: 242px; height:200px;overflow-y:auto;">
+											<table class="table table-striped table-condensed" id="groupTable">
+												<colgroup>
+													<col class="span3"/>
+												</colgroup>
+													<tr id ="groupTr">
+														<th>group</th>
+													</tr>
+											</table>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div>
+							<table>
+								<tr>
+									<td>
+										<div class="span3" style="height:200px; margin-left: 0px; width: 233px; overflow-y:auto;"  >
+											<table class="table table-striped table-condensed" id="roleTable">
+												<colgroup>
+													<col class="span3"/>
+													
+												</colgroup>
+													<tr>
+														<th>role</th>
+													</tr>
+											</table>
+										</div>
+									</td>
+									<td>
+										<div class="span3" style="margin-left: 0px; width: 242px; height:200px;">
+											<table class="table table-condensed" id="emailTable">
+													<tr>
+														<th>e-mail</th>
+													</tr>
+													<tr>
+														<td>
+															<input type="text"  style="width: 240px;margin-top: -5px; margin-bottom: -3px; margin-left: -5px;" id="email"   name="email" class="span3"   placeholder=" ex) OpenNms@google.com">
+														</td>			
+													</tr>
+													<tr>
+														<td>
+															<h4>
+															<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" onclick="javascript:addEmail()">
+										        				[add&nbsp;e-mail]
+										      				</a></h4>
+														</td>			
+													</tr>
+										 
+													
+											</table>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<h4>
+							<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
+		        				[next]
+		      				</a>
+	      				</h4>
+					</div>
+			      </div>
+			    </div>
+			  </div>
+			  <!-- --------------------------목적지 설정 3단계 popup--------------------- -->
 			  <div class="accordion-group">
 			    <div class="accordion-heading">
 				    <h4>
 					     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
-					        2단계&nbsp;[목적지&nbsp;명]&nbsp;&nbsp;<span class="label label-info">목적지 관리</span>
+					        3단계&nbsp;[목적지&nbsp;명]&nbsp;&nbsp;<span class="label label-info">목적지 관리</span>
 					     </a>
 				     </h4>
 			    </div>
@@ -451,7 +566,7 @@ function setDestination(obj){
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<label class="span3 control-label">Initial Delay:</label>
+									<label class="span3 control-label">Initial Delay  :</label>
 									<div class="span9 controls" >
 										<select>
 											<option>0s</option>
@@ -480,14 +595,40 @@ function setDestination(obj){
 								</div>
 							</div>
 							<div class="row-fluid">
-								<div class="span12">
-									<label class="span3 control-label">Initial Targets</label>
-										<textarea  rows="4" id=""  name="" class="span12"   placeholder=""></textarea> 
+								<div class="span12" id="userTableDiv">
+									<label class="span3 control-label">user Targets  :</label>
+									<div class="span9 controls" ><h4 style= "margin-top: 0px;"></h4>
+										<input type="hidden"   id=""   name="" class="span12"   placeholder=""> 
+									</div>
+								</div>
+							</div>
+							<div class="row-fluid">
+								<div class="span12" id="groupTableDiv">
+									<label class="span3 control-label">group Targets  :</label>
+									<div class="span9 controls" ><h4 style= "margin-top: 0px;"></h4>
+										<input type="hidden"   id=""   name="" class="span12"   placeholder=""> 
+									</div>
+								</div>
+							</div>
+							<div class="row-fluid">
+								<div class="span12" id="roleTableDiv">
+									<label class="span3 control-label">role Targets :</label>
+									<div class="span9 controls" ><h4 style= "margin-top: 0px;"></h4>
+										<input type="hidden" id=""  name="" class="span12"   placeholder="">
+									</div>	
+								</div>
+							</div>
+							<div class="row-fluid">
+								<div class="span12" id="emailTableDiv">
+									<label class="span3 control-label">email Targets :</label>
+									<div class="span9 controls" ><h4 style= "margin-top: 0px;"></h4>
+										<input type="hidden" id=""  name="" class="span12"   placeholder="">
+									</div>
 								</div>
 								<h4>
-								 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
-			        				[add&nbsp;targets]
-			      				</a></h4>
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
+				        				[add&nbsp;targets]
+				      				</a></h4>
 							</div>
 						</form>
 						<!-- <a type="button" class="btn btn-primary" href="#popupShow3" onclick="pop3Togling()" class="pop3Togling">3단계로</a> --> 
@@ -495,82 +636,7 @@ function setDestination(obj){
 			      </div>
 			    </div>
 			  </div>
-			  <div class="accordion-group">
-			    <div class="accordion-heading">
-			    <h4>
-			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
-			        3단계&nbsp;[목적지&nbsp;대상&nbsp;관리]&nbsp;&nbsp;<span class="label label-info">목적지 관리</span>
-			      </a></h4>
-			    </div>
-			    <div id="collapseThree" class="accordion-body collapse">
-			      <div class="accordion-inner">
-				    <div class="span5" style="margin-left: 5px;">
-						<div>
-							<table>
-								<tr>
-									<td>
-										<div class="span3" style="margin-left: 0px; width: 233px; height:200px;overflow-y:auto;" >
-											<table class="table table-striped table-condensed" id="userTable">
-												<colgroup>
-													<col class="span3"/>
-													
-												</colgroup>
-													<tr>
-														<th>user</th>
-													</tr>
-											</table>
-										</div>
-									</td>
-									<td>
-										<div class="span3" style="margin-left: 0px; width: 242px; height:200px;overflow-y:auto;">
-											<table class="table table-striped table-condensed" id="groupTable">
-												<colgroup>
-													<col class="span3"/>
-												</colgroup>
-													<tr>
-														<th>group</th>
-													</tr>
-											</table>
-										</div>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<div>
-							<table>
-								<tr>
-									<td>
-										<div class="span3" style="height:200px; margin-left: 0px; width: 233px; overflow-y:auto;"  >
-											<table class="table table-striped table-condensed" id="roleTable">
-												<colgroup>
-													<col class="span3"/>
-													
-												</colgroup>
-													<tr>
-														<th>role</th>
-													</tr>
-											</table>
-										</div>
-									</td>
-									<td>
-										<div class="span3" style="margin-left: 0px; width: 242px; height:200px;overflow-y:auto;">
-											<table class="table table-striped table-condensed" id="emailTable">
-												<colgroup>
-													<col class="span3"/>
-												</colgroup>
-													<tr>
-														<th>e-mail</th>
-													</tr>
-											</table>
-										</div>
-									</td>
-								</tr>
-							</table>
-						</div>
-					</div>
-			      </div>
-			    </div>
-			  </div>
+
 			</div>
 		</div>
 	</div>

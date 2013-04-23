@@ -25,5 +25,17 @@ public interface UserManagerDao {
 	 */
 	public void deleteToDb(UserTbl userTbl);
 	
+	/**
+	 * USER DELETE GROUP TO DATABASE
+	 * @param 
+	 */
+	public void deleteUserTbl(UserTbl userTbl);
+	
+	/**
+	 * USER REG GROUP TO DATABASE
+	 * @param 
+	 */
+	public void regUserTbl(UserTbl userTbl);
+	
 	
 }

@@ -63,7 +63,6 @@
 		
 	}
 
-
 	function loadMenuItems(){
 		
 		var menuItem = null;
@@ -98,29 +97,43 @@
 function saveMenuItems()
 {
 	var checkItemId = g_menuItems.getAllChecked();
+	alert(checkItemId);
 	var checkItemIds = checkItemId.split(',');
 	
-	//$("#SaveMenuItemsFrm").children().remove();
-	
-	var baseInput = $('<input type="hidden" name="menuId" value="" />');
+	$("#SaveMenuItemsFrm").children().remove();
 	
 	for(var i = 0; i < checkItemIds.length; i++)
 	{
-		$("#SaveMenuItemsFrm").append(baseInput.clone().val(checkItemIds[i]));
+		
+		var tmpTr = $('<tr></tr>');
+		var tmpTd = $('<td><input type="hidden" name="menuId" value="" /></td>'); 
+		var tmpTd2 = $('<td><input type="hidden" name="groupName" value="${name}" /></td>'); 
+		
+		tmpTr.append(tmpTd);
+		tmpTr.append(tmpTd2);
+		
+		tmpTd.find('input[name=menuId]').val(checkItemIds[i]);
+		
+		$("#SaveMenuItemsFrm").append(tmpTr);
+		
 	}
 	
 	alert('요청이 완료되었습니다.');
 	
 	var data = $("#SaveMenuItemsFrm").serialize();
 
-	$.ajax({
-        url:'/cms/auth/regAuthMenu.ajax',
+	console.log("tree checkbox menuId : "+data);
+	
+	
+	 $.ajax({
+      	url : '<c:url value="/admin/groupMng/regGroupMenu.do" />',
         type:'post',
         dataType:'json',
         data:data,
         async:false,
         error:function(data, status, err){
             alert('Error, service not found');
+            
             $("#SaveMenuItemsFrm").children().remove();
             
         },
@@ -132,7 +145,7 @@ function saveMenuItems()
        		}
         	
         }
-	});
+	}); 
 	
 }
 	
@@ -163,7 +176,7 @@ function saveMenuItems()
 	
 	/****************SelectBox Script*****************/
 	 var test=new mySelect();
-	 var roleTest=new myRoleSelect();
+	/*  var roleTest=new myRoleSelect(); */
 	/****************SelectBox Script*****************/	
 	
 	
@@ -171,12 +184,14 @@ function saveMenuItems()
 	
 	
 	
-function regInGroup(){
+	function regInGroup(){
 		
 		var groupName = ('${name}');// 그룹명
-		 var userName = $("#left select[name=userListSelect]").val();//사용자name
+		var userName = $("#left select[name=userListSelect]").val();//사용자name
 		
-		$.ajax({
+		 
+		 
+ 		$.ajax({
 				
 				type : 'put',
 				url : '/' + version + '/groups/'+groupName+'/users/'+userName,
@@ -187,28 +202,14 @@ function regInGroup(){
 				},
 				success : function(data) {
 					console.log("그룹등록 성공");
+					regUserTbl(userName,groupName);
 				}
-			}); 
-		
-		/* right select 부분을 모두 선택한 것처럼 만든다.*/
-		/* var obj = document.right.groupMemberListSelect;
-	       try{
-	           for( var i=0 ; i<obj.length ; i++ ){
-	               obj.options[i].selected = true;
-	              
-	               //alert("option값: "+obj.options[i].text);
-	               
-	               var userName = obj.options[i].text; // 사용자 이름
-	                
-	           }
-	       }catch(e){} */
-		
-	}
+			});  
+		}
 	
-	function delInGroup(){
-		
+	function delInGroup(userName){
+
 		var groupName = ('${name}');// 그룹명
-		 var userName = $("#right select[name=groupMemberListSelect]").val();//사용자name
 		
 		 $.ajax({
 		   				
@@ -220,24 +221,14 @@ function regInGroup(){
    					//alert('그룹 내  사용자 삭제 실패');
    				},
    				success : function(data) {
-   					alert("그룹삭제 성공");
+   					deleteUserTbl(userName,groupName);
    				}
-   			}); 
-		 /* left select 부분을 모두 선택한 것처럼 만든다.*/
-		 /*  var obj = document.left.userListSelect;
-	       try{
-	           for( var i=0 ; i<obj.length ; i++ ){
-	               obj.options[i].selected = true;
-	               
-	               //alert("option값: "+obj.options[i].text);
-	              
-	              var userName = obj.options[i].text;
-	               alert("----delInGroup----"+userName);
-	           }
-	       }catch(e){}   */
+   			});  
 		
 		
 	}
+	
+	
 	
 </script>
 
@@ -247,7 +238,8 @@ function regInGroup(){
 	<div class="container">
 
 		<jsp:include page="/include/menu.jsp" />
-
+		<form name="SaveMenuItemsFrm" id="SaveMenuItemsFrm">
+		</form>
 		<div class="row-fluid">
 			<div class="span12" style="height: 0px;" >
 				<ul class="breadcrumb well well-small">
@@ -263,7 +255,7 @@ function regInGroup(){
 			<div class="span4">
 				<div class="accordion-heading">
 				    <h3>
-						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepTwo">
+						<a  href="/v1/admin/groupMng.do">
 				        	&nbsp;&nbsp;${name}&nbsp;&nbsp;<span class="label label-info">그룹&nbsp;명</span>
 						</a>
 					</h3>
@@ -274,39 +266,44 @@ function regInGroup(){
 				<a type="button" class="btn btn-primary" title="" href="/v1/admin/groupMng.do" style="margin-top: 29px;">FINISH</a>
 			</div>  
 		</div>
-		<!-- <div class="row-fluid">
-					<div class="span2 ">
-						<a type="button" class="btn btn-primary" title="" href="/v1/admin/userMng/userReg.do">+ 새 그룹 추가</a>
-					</div>
-			</div> -->
 			
 		<div class="row-fluid">	
-		<div class=" span5 well">
+		<div class=" span6 well">
 			
 			<form  id="groupFrm" name="groupFrm">
 				<input type="hidden" id ="name" name="name" value="${name}" />
 			</form>
 				 <form action="###" method="post" id="left" name ="left">
+					<div class="row-fluid" style="margin-top: -39px; ">
+						<!-- <div class="span2 "></div> -->
+						<div class="span5 ">
+							<h4><a type="text"  title="" href="/v1/admin/userMng.do">Users</a></h4>
+						</div>
+						<div class="span2 "></div>
+						<div class="span3 ">
+							<h4><a type="text"  title="" href="/v1/admin/groupMng.do">${name}</a></h4>
+						</div>
+					</div>
 		            <div style="float:left;">
-		                 <select id="userListSelect" name="userListSelect" ondblclick="test.movetoright();" multiple="multiple" class="select_left" style="display:block;width:150px;height:200px;overflow:visible;">
+		                 <select id="userListSelect" name="userListSelect" ondblclick="test.movetoright();" multiple="multiple" class="select_left" style="display:block;width:180px;height:290px;overflow:visible;">
 			                <!--------<option str>----------->
-			                
+			                <!--------<option str>----------->
 			                <!--------<option str>----------->
 		                </select> 
 		            </div>
 		            </form>
 		            <div style=" float:left; padding:8px;">
-		            	<p style=" padding-bottom:12px;"><input onclick="test.movetoright()" type="button"  class="button_movetoright btn-warning" value="&gt;&gt;" style ="margin-top: 30px;" /></p>
-		                <p><input onclick="test.movetoleft(); delInGroup(); "  type="button" class="button_movetoleft btn-info" value="&lt;&lt;" style ="margin-top: 50px;"  /></p>
+		            	<p style=" padding-bottom:12px;"><input onclick="test.movetoright()" type="button"  class="button_movetoright btn-warning" value="&gt;&gt;" style ="margin-top: 70px;margin-left: 18px;margin-right: 18px;" /></p>
+		                <p><input onclick="test.movetoleft();"  type="button" class="button_movetoleft btn-info" value="&lt;&lt;" style ="margin-top: 50px; margin-left: 18px;margin-right: 18px;"  /></p>
 		            </div>
 		            
 		            
 		            
 		           <form action="###" method="post" id="right" name ="right"> 
 		            <div style=" float:left;">
-		                <select  id="groupMemberListSelect" name="groupMemberListSelect" ondblclick="test.movetoleft();" style=" width:150px ; border:1px solid #ccc; overflow:visible; height:200px;" class="select_right" multiple="multiple">
+		                <select  id="groupMemberListSelect" name="groupMemberListSelect" ondblclick="test.movetoleft();" style=" margin-top: -20px; width:180px ; border:1px solid #ccc; overflow:visible; height:290px;" class="select_right" multiple="multiple">
 			                <!--------<option str>----------->
-			                
+			                <!--------<option str>----------->
 			                <!--------<option str>----------->
 		                </select>
 		               <!--  <p>&nbsp;&nbsp;&nbsp;
@@ -319,19 +316,8 @@ function regInGroup(){
 					<input type="hidden" id="res" name="res" class="select_input">
 		      </form>
       
-		     <!-- <div class="row-fluid">
-					<div class="span12">
-					<div class="span10"></div>
-						<div class="span2 ">
-							<a type="button" class="btn btn-primary" title="" href="javascript:regInGroup();">저장</a>
-						</div>
-					</div>
-					
-				</div>  -->
 		      
 			</div>
-			<div class=" span1">&nbsp;</div>
-			
 			
 			<!-- tree -->
 			 <div class="span6 well ">
@@ -347,7 +333,7 @@ function regInGroup(){
 					</tr>
 					<tr>
 						<td>
-							<p class="buTton4"><a href="javascript:saveMenuItems();">저장</a></p>
+							<p class="btn" style="margin-bottom: -14px; margin-left: 362px;"><a href="javascript:saveMenuItems();">저장</a></p>
 						</td>
 					</tr>
 				</table>    
@@ -356,54 +342,6 @@ function regInGroup(){
 			<!-- tree -->
 			
 			
- 			<%-- <div class="span5 well ">
-			
-			<form  id="groupFrm" name="groupFrm">
-				<input type="hidden" id ="name" name="name" value="${name}" />
-			</form>
-				 <form action="###" method="post" id="left" name ="left">
-		            <div style="float:left;">
-		                 <select id="userListSelect" name="userListSelect" ondblclick="roleTest.movetoright();" multiple="multiple" class="select_left" style="display:block;width:150px;height:200px;overflow:visible;">
-			                <!--------<option str>----------->
-			                
-			                <!--------<option str>----------->
-		                </select> 
-		            </div>
-		            </form>
-		            <div style=" float:left; padding:8px;">
-		            	<p style=" padding-bottom:12px;"><input onclick="roleTest.movetoright()" type="button"  class="button_movetoright btn-warning" value="&gt;&gt;" /></p>
-		                <p><input onclick="roleTest.movetoleft(); delInRole(); "  type="button" class="button_movetoleft btn-info" value="&lt;&lt;" /></p>
-		            </div>
-		            
-		            
-		            
-		           <form action="###" method="post" id="right" name ="right"> 
-		            <div style=" float:left;">
-		                <select  id="groupMemberListSelect" name="groupMemberListSelect" ondblclick="roleTest.movetoleft();" style=" width:150px; border:1px solid #ccc; overflow:visible; height:200px;" class="select_right" multiple="multiple">
-			                <!--------<option str>----------->
-			                
-			                <!--------<option str>----------->
-		                </select>
-		               <!--  <p>&nbsp;&nbsp;&nbsp;
-		                    <strong><a class="icon-chevron-up" href="javascript:roleTest.top();" title=""></a></strong>&nbsp;&nbsp;&nbsp;
-		                    <strong><a class="icon-arrow-up" href="javascript:roleTest.up();" title=""></a></strong>&nbsp;&nbsp;&nbsp;
-		                    <strong><a class="icon-arrow-down" href="javascript:roleTest.down();" title=""></a></strong>&nbsp;&nbsp;&nbsp;
-		                    <strong><a class="icon-chevron-down" href="javascript:roleTest.bottom();" title=""></a></strong>
-		                </p> -->
-		            </div>
-					<input type="hidden" id="res" name="res" class="select_input">
-		      </form>
-      
-		     <!-- <div class="row-fluid">
-					<div class="span12">
-					<div class="span10"></div>
-						<div class="span2 ">
-							<a type="button" class="btn btn-primary" title="" href="javascript:regInGroup();">저장</a>
-						</div>
-					</div>
-					
-				</div>  -->
-		      </div>  --%>
 			</div>
 		
 		

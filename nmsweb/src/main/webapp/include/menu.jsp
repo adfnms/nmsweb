@@ -43,7 +43,6 @@
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="<c:url value="/admin/node.do" />">노드관리</a></li>
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="<c:url value="/admin/groupMng.do" />">그룹관리</a></li>
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="<c:url value="/admin/userMng.do" />">사용자 관리</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="<c:url value="/admin/menuMng.do" />">메뉴 관리</a></li>
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="<c:url value="/admin/setting.do" />">사용자 설정</a></li>
                 </ul>
               </li>
