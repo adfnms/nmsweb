@@ -45,16 +45,26 @@ $(document).ready(function() {
 	/* GET list of the initial agent(destination) accept to notification */
 	getPathList(getPathsName);
 	
-	
+	/* Method to accept notification*/
+	/* /v1/notifications/commands */
+	 //getAllCommends(getCommends); 
 	
 });
+
+
+function getCommends(jsonObj) {
+
+	console.log(jsonObj);
+	var str = getCommendsJsonObj(jsonObj);
+}
+
 
 /* GETConfirm kind of registered all event Callback */
 function getEvent(jsonObj) {
 
 		var str = getEventJsonObj(jsonObj);
-		$('#userTable').append(str);
-
+		 
+		//$("#eventListTable").append(str);
 	}
 /* // GETConfirm kind of registered all event Callback */
 
@@ -73,26 +83,87 @@ function setDestination(obj){
 		
 		$("#changeOne").html("&nbsp;&nbsp;<span class=\"label label-important\">변경&nbsp;uei</span>&nbsp;&nbsp;&nbsp;"+name);
 	} 
-	
-	
-	/* 히든폼에 경로 보내기
-	1.uei,메세지명,설명,메일제목,요약메세지,메세지,목적지선택,이름*/
-	
-	/*2.목적지 관리버튼 에서 데이터가 목적지 선택으로*/
 }
 
-
-
-
+function pathRegister(){
+	
+	
+	//var destiName = ('${name}');
+	//var roleName = $("#destiFrm select[name=status]").val();
+	//var roleAutoNotify = $("#desinationSettingFrm select[name=roleAutoNotify]").val();
+	//var roleCommand = $("#desinationSettingFrm select[name=roleCommand]").val();
+	//var roleInterval = $("#destiPathInfoFrm select[name=roleInterval]").val();
+	
+	var userName = $("#PathFrm input[name=userName]").val();
+	var groupName = $("#PathFrm input[name=groupName]").val();
+	var email = $("#emailTable input[name=email]").val();
+	var name = $("#destiPathInfoFrm input[name=Name]").val();
+	
+	
+	if($("#destiPathInfoFrm input[name=Name]").val() == "")
+  	{
+		alert("Destnation Name 에 Path Name을 입력해주세요");
+  		
+  		return false;
+  	}
+	
+	
+	var initialDelay = $("#destiPathInfoFrm select[name=initialDelay]").val();
+	var userInterval = $("#destiPathInfoFrm select[name=userInterval]").val();
+	var groupInterval = $("#destiPathInfoFrm select[name=groupInterval]").val();
+	var emailInterval = $("#destiPathInfoFrm select[name=emailInterval]").val();
+	var userAutoNotify = $("#desinationSettingFrm select[name=userAutoNotify]").val();
+	var userCommand = $("#desinationSettingFrm select[name=userCommand]").val();
+	var groupAutoNotify = $("#desinationSettingFrm select[name=groupAutoNotify]").val();
+	var groupCommand = $("#desinationSettingFrm select[name=groupCommand]").val();
+	var emailAutoNotify = $("#desinationSettingFrm select[name=emailAutoNotify]").val();
+	var emailCommand = $("#desinationSettingFrm select[name=emailCommand]").val();
+	
+	var roleName = ("");
+	var roleAutoNotify =("");
+	var roleCommand = ("");
+	var roleInterval =("");
+	
+	
+	
+	
+	
+	
+	
+	var str	=	getPathName(name,initialDelay,userInterval,userName,userAutoNotify,userCommand,
+							groupInterval,groupName,groupAutoNotify,groupCommand,
+							roleInterval,roleName,roleAutoNotify,roleCommand,
+							emailInterval,emailCommand,emailAutoNotify,email); 
+	
+	 $.ajax({
+			
+			type : 'post',
+			url : '/' + version + '/notifications/destinationPaths',
+			contentType : 'application/json',
+			Accept : 'application/json', 
+			data : str,
+			error : function() {
+				alert('도착지 등록 실패');
+			},
+			success : function(data) {
+				$("#destinationPath").children().remove();
+				$("#PathsTable").children().remove();
+				getPathList(getPathsName);
+				//$(location).attr('href', "/v1/admin/setting/modifyNotification.do?name="+destiName);
+			}
+		}); 
+	
+	
+}
 
 /**
  * GETGet a list of users
  * 사용자 리스트 전체가져오기
  */
  	function callbackUseList(jsonObj) {
-		var str =userNameStr(jsonObj);
-		
-		$("#userListTable").append(str);
+ 		
+	var str =userNameStr(jsonObj);
+		$("#userTable").append(str);
 	} 
 	
 /**
@@ -105,7 +176,7 @@ function setDestination(obj){
 		$("#groupTable").append(str);
 	} 	
 	
-/**
+/**  메세지  
  * Get a list of Paths
  * Paths 리스트 전체가져오기
  */
@@ -127,10 +198,17 @@ function setDestination(obj){
  		
  	}
 	function destinationGroup(GroupNm){
-		//alert("destinationGroup : "+GroupNm);
-		
+		/*Set Destination Target*/
 		$("#groupTr").html("<th class=\"span3 control-label  text-success\">selected : "+GroupNm+"</th>");
-		$("#groupTableDiv").html("<label class=\"span3 control-label\">Group Targets :</label><div class=\"span9 controls\" > <h4 style= \"margin-top: 0px;\" class=\"text-success\">"+GroupNm+"</h4> <input type=\"hidden\" id=\"\"  name=\"\" class=\"span12\" value=\""+GroupNm+"\"></div>");
+		$("#groupTableDiv").html("<h4 style= \"margin-top: 0px; margin-left: 12px;\" class=\"text-success\">"+GroupNm+"</h4>");
+		
+		/*Set Destination Setting*/
+		$("#groupSelect").html("<label class=\"span5 control-label  text-success\"><h4>"+GroupNm+"</h4></label>");
+		
+		/*Set GroupName Hidden [PathFrm] Form*/
+		$("#PathFrm").find('[name=groupName]:input').val(GroupNm);
+		
+		
 		
 	}
 	
@@ -142,13 +220,20 @@ function setDestination(obj){
  		
  		//alert("destinationPathInfo : "+userid);
  		$("#userTr").html("<th class=\"span3 control-label text-success\">selected :"+userid+"</th>");
- 		$("#userTableDiv").html("<label class=\"span3 control-label\">User Targets :</label><div class=\"span9 controls\" > <h4 style= \"margin-top: 0px;\" class=\"text-success\">"+userid+"</h4> <input type=\"hidden\" id=\"\"  name=\"\" class=\"span12\" value=\""+userid+"\"></div>");
  		
+ 		
+ 		$("#userTableDiv").html("<h4 style= \"margin-top: 0px; margin-left: 12px;\" class=\"text-success\">"+userid+"</h4>");
+ 		$("#userSelect").html("<label class=\"span5 control-label  text-success\"><h4>"+userid+"</h4></label>");
+ 		
+ 		$("#PathFrm").find('[name=userName]:input').val(userid);
  	}
  	function addEmail(){
  		var email = $("#emailTable input[name=email]").val();	
- 		$("#emailTableDiv").html("<label class=\"span3 control-label\">e-mail Targets :</label><div class=\"span9 controls\" > <h4 style= \"margin-top: 0px;\" class=\"text-success\">"+email+"</h4> <input type=\"hidden\" id=\"\"  name=\"\" class=\"span12\" value=\""+email+"\"></div>");
+ 		//$("#emailTableDiv").html("<label class=\"span3 control-label\">e-mail Targets :</label><div class=\"span9 controls\" > <h4 style= \"margin-top: 0px;\" class=\"text-success\">"+email+"</h4> <input type=\"hidden\" id=\"\"  name=\"\" class=\"span12\" value=\""+email+"\"></div>");
  		
+ 		$("#emailTableDiv").html("<h4 style= \"margin-top: 0px; margin-left: 12px;\" class=\"text-success\">"+email+"</h4>");
+ 		$("#emailSelect").html("<label class=\"span5 control-label  text-success\"><h4>"+email+"</h4></label>");
+ 	
  	}
  	
  	/*get form[#destinationFrm] object*/
@@ -178,22 +263,8 @@ function setDestination(obj){
  		
  	var str=requestBodyStr ( uei,name,description,subject,numericMessage,textMessage,destinationPath,status,rule,noticeQueue);
 
- 		//alert(str);
  		
- 	  $.ajax({
-		
-			type : 'put',
-			url : '/' + version + '/notifications/eventNotifications',
-			contentType : 'application/json',
-			Accept : 'application/json', 
-			data : str,
-			error : function() {
-				alert('공지 수정 실패');
-			},
-			success : function(data) {
-				$(location).attr('href', "/v1/admin/setting/configureNotification.do");
-			}
-		}); 
+ 		regNotificationAjax();
  	 
  	}
  	
@@ -225,9 +296,110 @@ function setDestination(obj){
  		$("input[name=status]").filter('input[value='+status+']').attr("checked", true);
  		//document.getElementById('destinationPath').value = (destinationPath==null?'':destinationPath);
  		$("select[name=destinationPath] option[value="+destinationPath+"]").attr("selected",true);
+ 	
  	}
  	
+ 	function deletePath(PathName){
+ 		
+ 		//var destiName = ('${name}');
+ 		var option = confirm(" 삭제 하시겠습니까? ");
+		
+		if(option == true )
+		{
+			deletePathAjax(PathName);
+	 		
+		}else if(option == false ){
+		 	
+			alert("취소 되었습니다.");
+			}
+ 	}
  	
+ 	function modifyPath(PathName){
+ 		
+ 		modifyPathAjax(PathName);
+ 		
+ 	}
+ 	
+ 	function modifyPathstr(data){
+ 		
+ 		//console.log("data[name]");
+ 		target=data["target"];
+ 		
+ 		if(target.length > 1){
+ 			
+ 			for ( var i in  target){
+ 				userCommand = target[i]["command"];
+ 			}
+ 		
+ 		userName = target[0]["name"];
+ 		$("#userTr").children().remove();
+ 		$("#userTableDiv").children().remove();
+ 		$("#userSelect").children().remove();
+		$("#userTr").html("<th class=\"span3 control-label text-success\">selected :"+userName+"</th>");
+ 		$("#userTableDiv").html("<h4 style= \"margin-top: 0px; margin-left: 12px;\" class=\"text-success\">"+userName+"</h4>");
+ 		$("#userSelect").html("<label class=\"span5 control-label  text-success\"><h4>"+userName+"</h4></label>");
+ 		$("#PathFrm").find('[name=userName]:input').val(userName);
+ 		
+ 		
+ 		groupName = target[1]["name"];
+ 		
+ 		$("#groupTr").children().remove();
+ 		$("#groupTableDiv").children().remove();
+ 		$("#groupSelect").children().remove();
+ 		$("#groupTr").html("<th class=\"span3 control-label  text-success\">selected : "+groupName+"</th>");
+		$("#groupTableDiv").html("<h4 style= \"margin-top: 0px; margin-left: 12px;\" class=\"text-success\">"+groupName+"</h4>");
+		$("#groupSelect").html("<label class=\"span5 control-label  text-success\"><h4>"+groupName+"</h4></label>");
+		$("#PathFrm").find('[name=groupName]:input').val(groupName);
+ 		
+ 		
+ 		
+ 		email = target[3]["name"];
+ 		$("#emailTableDiv").children().remove();
+ 		$("#emailSelect").children().remove();
+ 		$("#emailTableDiv").html("<h4 style= \"margin-top: 0px; margin-left: 12px;\" class=\"text-success\">"+email+"</h4>");
+ 		$("#emailSelect").html("<label class=\"span5 control-label  text-success\"><h4>"+email+"</h4></label>");
+ 		$("#emailTable").find('[name=email]:input').val(email);
+ 		
+ 		
+ 		roleName = target[2]["name"];
+ 		
+ 		userAutoNotify = target[0]["autoNotify"];
+ 		$("select[name=userAutoNotify] option[value="+userAutoNotify+"]").attr("selected",true);
+ 		groupAutoNotify = target[1]["autoNotify"];
+ 		$("select[name=groupAutoNotify] option[value="+groupAutoNotify+"]").attr("selected",true);
+ 		//roleAutoNotify =target[2]["autoNotify"];
+ 		emailAutoNotify = target[3]["autoNotify"];
+ 		$("select[name=emailAutoNotify] option[value="+emailAutoNotify+"]").attr("selected",true);
+ 		
+ 		userCommand =target[0]["command"];
+ 		$("select[name=userCommand] option[value="+userCommand+"]").attr("selected",true);
+ 		groupCommand = target[1]["command"];
+ 		$("select[name=groupCommand] option[value="+groupCommand+"]").attr("selected",true);
+ 		emailCommand = target[3]["command"];
+ 		$("select[name=emailCommand] option[value="+emailCommand+"]").attr("selected",true);
+ 		//roleCommand =target[2]["command"];
+ 		
+ 		
+ 		name = data["name"];
+ 		$("#destiPathInfoFrm").find('[name=Name]:input').val(name);
+ 		initialDelay = data["initialDelay"];
+
+ 		$("select[name=initialDelay] option[value="+initialDelay+"]").attr("selected",true);
+ 		
+ 		
+ 		
+ 		userInterval = target[0]["interval"];
+ 		$("select[name=userInterval] option[value="+userInterval+"]").attr("selected",true);
+ 		groupInterval = target[1]["interval"];
+ 		$("select[name=groupInterval] option[value="+groupInterval+"]").attr("selected",true);
+ 		emailInterval = target[3]["interval"];
+ 		$("select[name=emailInterval] option[value="+emailInterval+"]").attr("selected",true);
+ 		//roleInterval =target[2]["interval"];
+ 		
+ 		
+ 		
+ 		}
+ 	}
 </script>
 </head>
 
@@ -239,8 +411,13 @@ function setDestination(obj){
 		
 		<!-- Example row of columns -->
 		<form action="" id="destinationFrm" name="destinationFrm">	
-			<input type="hidden" id="noticeQueue" name="noticeQueue" value="" />			<!--uei 이름 -->
-			<input type="hidden" id="uei" name="uei" value="" />							<!-- uei -->
+			<input type="hidden" id="noticeQueue" name="noticeQueue" value="" />			
+			<input type="hidden" id="uei" name="uei" value="" />							
+		</form>
+		<form action="" id="PathFrm" name="PathFrm">	
+			<input type="hidden" id="userName" name="userName" value="" />	
+			<input type="hidden" id="initialDelay" name="initialDelay" value="" />			
+			<input type="hidden" id="groupName" name="groupName" value="" />
 		</form>
 		
 		<div class="row-fluid">
@@ -388,14 +565,6 @@ function setDestination(obj){
 			    </div>
 			     
 			  </div>
-			  	<!-- <div class="row-fluid">
-					<div class="span12">
-						<div class = "span8"></div>
-						<div class="span4">
-							<a type="button" class="btn btn-primary" title="" href="javascript:regNotification()">+ 공지등록</a>
-						</div>
-					</div>
-				</div> -->
 			</div>
 			<!-- test -->
 		</div>
@@ -419,7 +588,7 @@ function setDestination(obj){
 			    <div class="accordion-heading">
 			    	<h4>
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseOne">
-			        1단계&nbsp;[목적지&nbsp;선택]&nbsp;&nbsp;<span class="label label-info">공지 메시지 정의</span>
+			        [Destination&nbsp;Configration]&nbsp;&nbsp;<span class="label label-important">Destination&nbsp;Modify</span>
 			      </a></h4>
 			    </div>
 			    <div id="collapseOne" class="accordion-body collapse in" style="height:400px;  overflow-y:auto;">
@@ -454,7 +623,7 @@ function setDestination(obj){
 			    <div class="accordion-heading">
 			    <h4>
 			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
-			        2단계&nbsp;[목적지&nbsp;대상&nbsp;관리]&nbsp;&nbsp;<span class="label label-info">목적지 관리</span>
+			        [Destination&nbsp;Target]&nbsp;&nbsp;<span class="label label-info">Target Select</span>
 			      </a></h4>
 			    </div>
 			    <div id="collapseThree" class="accordion-body collapse">
@@ -464,24 +633,17 @@ function setDestination(obj){
 							<table>
 								<tr>
 									<td>
-										<div class="span3" style="margin-left: 0px; width: 233px; height:200px;overflow-y:auto;" >
+										<div class="span3" style="margin-left: 0px; width: 233px; height:200px;">
 											<table class="table table-striped table-condensed" id="userTable">
-												<colgroup>
-													<col class="span3"/>
-													
-												</colgroup>
-													<tr id="userTr">
+													<tr id ="userTr">
 														<th>user</th>
 													</tr>
 											</table>
 										</div>
 									</td>
 									<td>
-										<div class="span3" style="margin-left: 0px; width: 242px; height:200px;overflow-y:auto;">
+										<div class="span3" style="margin-left: 0px; width: 242px; height:200px;">
 											<table class="table table-striped table-condensed" id="groupTable">
-												<colgroup>
-													<col class="span3"/>
-												</colgroup>
 													<tr id ="groupTr">
 														<th>group</th>
 													</tr>
@@ -492,10 +654,32 @@ function setDestination(obj){
 							</table>
 						</div>
 						<div>
-							<table>
+						<div class="span5" style="">
+											<table class="table table-condensed" id="emailTable">
+													<tr>
+														<th>e-mail</th>
+													</tr>
+													<tr>
+														<td>
+															<input type="text"  style="width: 477px; margin-top: -5px; margin-bottom: -3px; margin-left: -7px;" id="email"   name="email" class="span3" value="OpenNms@google.com"  placeholder=" ex) OpenNms@google.com">
+														</td>			
+													</tr>
+													<tr>
+														<td>
+															<h4>
+															<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" onclick="javascript:addEmail()">
+										        				[add&nbsp;e-mail]
+										      				</a></h4>
+														</td>			
+													</tr>
+										 
+													
+											</table>
+										</div>
+							<%-- <table>
 								<tr>
 									<td>
-										<div class="span3" style="height:200px; margin-left: 0px; width: 233px; overflow-y:auto;"  >
+										<div class="span3" style="height:200px; margin-left: 0px; width: 233px; "  >
 											<table class="table table-striped table-condensed" id="roleTable">
 												<colgroup>
 													<col class="span3"/>
@@ -515,7 +699,7 @@ function setDestination(obj){
 													</tr>
 													<tr>
 														<td>
-															<input type="text"  style="width: 240px;margin-top: -5px; margin-bottom: -3px; margin-left: -5px;" id="email"   name="email" class="span3"   placeholder=" ex) OpenNms@google.com">
+															<input type="text"  style="width: 240px;margin-top: -5px; margin-bottom: -3px; margin-left: -5px;" id="email"   name="email" class="span3" value="OpenNms@google.com"  placeholder=" ex) OpenNms@google.com">
 														</td>			
 													</tr>
 													<tr>
@@ -532,13 +716,23 @@ function setDestination(obj){
 										</div>
 									</td>
 								</tr>
-							</table>
+							</table> --%>
 						</div>
-						<h4>
-							<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
-		        				[next]
-		      				</a>
-	      				</h4>
+	      				<div class="row-fluid">
+								<div class="span12">
+								<div class="span10 controls" >
+									<h4><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseOne">
+				        				[BEFORE]
+				      				</a></h4>
+									</div>
+									<!-- <div class="span3 controls" ></div> -->
+									<div class="span2 controls" >
+									<h4><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
+				        				[NEXT]
+				      				</a></h4>
+									</div>
+								</div>
+							</div>
 					</div>
 			      </div>
 			    </div>
@@ -548,19 +742,19 @@ function setDestination(obj){
 			    <div class="accordion-heading">
 				    <h4>
 					     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
-					        3단계&nbsp;[목적지&nbsp;명]&nbsp;&nbsp;<span class="label label-info">목적지 관리</span>
+					      [Destination&nbsp;Name]&nbsp;&nbsp;<span class="label label-info">Destination info</span>
 					     </a>
 				     </h4>
 			    </div>
 			    <div id="collapseTwo" class="accordion-body collapse">
 			      <div class="accordion-inner">
 			    <div class="span5" style="margin-left: 5px;">
-						<form id="memberInfoFrm" name = "memberInfoFrm" method="post">
+						<form id="destiPathInfoFrm" name = "destiPathInfoFrm" method="post">
 							<div class="row-fluid">
 								<div class="span12">
-									<label class="span3 control-label">메시지 명</label>
+									<label class="span3 control-label">Path Name</label>
 									<div class="span9 controls" >
-										<input type="text"   id=""   name="" class="span12"   placeholder=""> 
+										<input type="text"   id="Name"   name="Name" class="span12"  value="" placeholder=""> 
 									</div>
 								</div>
 							</div>
@@ -568,75 +762,336 @@ function setDestination(obj){
 								<div class="span12">
 									<label class="span3 control-label">Initial Delay  :</label>
 									<div class="span9 controls" >
-										<select>
-											<option>0s</option>
-											<option>1s</option>
-											<option>2s</option>
-											<option>5s</option>
-											<option>10s</option>
-											<option>15s</option>
-											<option>30s</option>
-											<option>0m</option>
-											<option>1m</option>
-											<option>2m</option>
-											<option>5m</option>
-											<option>10m</option>
-											<option>15m</option>
-											<option>30m</option>
-											<option>0h</option>
-											<option>1h</option>
-											<option>2h</option>
-											<option>3h</option>
-											<option>6h</option>
-											<option>12h</option>
-											<option>1d</option>
+										<select id="initialDelay" name="initialDelay">
+											<option value="0s">0s</option>
+											<option value="1s">1s</option>
+											<option value="2s">2s</option>
+											<option value="5s">5s</option>
+											<option value="10s">10s</option>
+											<option value="15s">15s</option>
+											<option value="30s">30s</option>
+											<option value="0m">0m</option>
+											<option value="1m">1m</option>
+											<option value="2m">2m</option>
+											<option value="5m">5m</option>
+											<option value="10m">10m</option>
+											<option value="15m">15m</option>
+											<option value="30m">30m</option>
+											<option value="0h">0h</option>
+											<option value="1h">1h</option>
+											<option value="2h">2h</option>
+											<option value="3h">3h</option>
+											<option value="6h">6h</option>
+											<option value="12h">12h</option>
+											<option value="1d">1d</option>
 										</select>
 									</div>
 								</div>
 							</div>
-							<div class="row-fluid">
-								<div class="span12" id="userTableDiv">
-									<label class="span3 control-label">user Targets  :</label>
-									<div class="span9 controls" ><h4 style= "margin-top: 0px;"></h4>
-										<input type="hidden"   id=""   name="" class="span12"   placeholder=""> 
-									</div>
-								</div>
-							</div>
-							<div class="row-fluid">
-								<div class="span12" id="groupTableDiv">
-									<label class="span3 control-label">group Targets  :</label>
-									<div class="span9 controls" ><h4 style= "margin-top: 0px;"></h4>
-										<input type="hidden"   id=""   name="" class="span12"   placeholder=""> 
-									</div>
-								</div>
-							</div>
-							<div class="row-fluid">
-								<div class="span12" id="roleTableDiv">
-									<label class="span3 control-label">role Targets :</label>
-									<div class="span9 controls" ><h4 style= "margin-top: 0px;"></h4>
-										<input type="hidden" id=""  name="" class="span12"   placeholder="">
-									</div>	
-								</div>
-							</div>
-							<div class="row-fluid">
+							
+							<!-- <div class="row-fluid">
 								<div class="span12" id="emailTableDiv">
 									<label class="span3 control-label">email Targets :</label>
 									<div class="span9 controls" ><h4 style= "margin-top: 0px;"></h4>
 										<input type="hidden" id=""  name="" class="span12"   placeholder="">
 									</div>
 								</div>
-								<h4>
-									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
-				        				[add&nbsp;targets]
-				      				</a></h4>
+								<div class="span12" id="emailTableDiv">
+									<div class="span9 controls" ><h4 style= "margin-top: 0px;"></h4></div>
+								</div>
+							</div> -->
+							
+							<!-- test -->
+							
+							<div class="row-fluid span12" style="width: 509px;">
+								<div class="span3">
+									<label class="control-label">User Targets  :</label>
+								</div>
+								<div class="span6" id="userTableDiv" style ="margin-left: -9px; width: 260px;">
+									
+								</div>
+								<select style =" width: 79px; margin-left: 27px;" id="userInterval" name="userInterval">
+									<option value="0s">0s</option>
+											<option value="1s">1s</option>
+											<option value="2s">2s</option>
+											<option value="5s">5s</option>
+											<option value="10s">10s</option>
+											<option value="15s">15s</option>
+											<option value="30s">30s</option>
+											<option value="0m">0m</option>
+											<option value="1m">1m</option>
+											<option value="2m">2m</option>
+											<option value="5m">5m</option>
+											<option value="10m">10m</option>
+											<option value="15m">15m</option>
+											<option value="30m">30m</option>
+											<option value="0h">0h</option>
+											<option value="1h">1h</option>
+											<option value="2h">2h</option>
+											<option value="3h">3h</option>
+											<option value="6h">6h</option>
+											<option value="12h">12h</option>
+											<option value="1d">1d</option>
+								</select>
 							</div>
+							<div class="row-fluid span12" style="width: 509px;">
+								<div class="span3">
+									<label class="control-label">Group Targets  :</label>
+								</div>
+								<div class="span6" id="groupTableDiv" style ="margin-left: -9px; width: 260px;">
+									
+								</div>
+								<select style =" width: 79px; margin-left: 27px;" id="groupInterval" name="groupInterval">
+									<option value="0s">0s</option>
+											<option value="1s">1s</option>
+											<option value="2s">2s</option>
+											<option value="5s">5s</option>
+											<option value="10s">10s</option>
+											<option value="15s">15s</option>
+											<option value="30s">30s</option>
+											<option value="0m">0m</option>
+											<option value="1m">1m</option>
+											<option value="2m">2m</option>
+											<option value="5m">5m</option>
+											<option value="10m">10m</option>
+											<option value="15m">15m</option>
+											<option value="30m">30m</option>
+											<option value="0h">0h</option>
+											<option value="1h">1h</option>
+											<option value="2h">2h</option>
+											<option value="3h">3h</option>
+											<option value="6h">6h</option>
+											<option value="12h">12h</option>
+											<option value="1d">1d</option>
+								</select>
+							</div>
+							<!-- <div class="row-fluid span12" style="width: 509px;">
+								<div class="span3">
+									<label class="control-label">Role Targets  :</label>
+								</div>
+								<div class="span6" id="roleTableDiv" style ="margin-left: -9px; width: 260px;">
+									
+								</div>
+								<select style =" width: 79px; margin-left: 27px;" id="roleInterval" name="roleInterval">
+									<option value="0s">0s</option>
+											<option value="1s">1s</option>
+											<option value="2s">2s</option>
+											<option value="5s">5s</option>
+											<option value="10s">10s</option>
+											<option value="15s">15s</option>
+											<option value="30s">30s</option>
+											<option value="0m">0m</option>
+											<option value="1m">1m</option>
+											<option value="2m">2m</option>
+											<option value="5m">5m</option>
+											<option value="10m">10m</option>
+											<option value="15m">15m</option>
+											<option value="30m">30m</option>
+											<option value="0h">0h</option>
+											<option value="1h">1h</option>
+											<option value="2h">2h</option>
+											<option value="3h">3h</option>
+											<option value="6h">6h</option>
+											<option value="12h">12h</option>
+											<option value="1d">1d</option>
+								</select>
+							</div> -->
+							<div class="row-fluid span12" style="width: 509px;">
+								<div class="span3">
+									<label class="control-label">e-mail Targets  :</label>
+								</div>
+								<div class="span6" id="emailTableDiv" style ="margin-left: -9px; width: 260px;">
+									
+								</div>
+								<select style =" width: 79px; margin-left: 27px;" id="emailInterval" name="emailInterval">
+									<option value="0s">0s</option>
+											<option value="1s">1s</option>
+											<option value="2s">2s</option>
+											<option value="5s">5s</option>
+											<option value="10s">10s</option>
+											<option value="15s">15s</option>
+											<option value="30s">30s</option>
+											<option value="0m">0m</option>
+											<option value="1m">1m</option>
+											<option value="2m">2m</option>
+											<option value="5m">5m</option>
+											<option value="10m">10m</option>
+											<option value="15m">15m</option>
+											<option value="30m">30m</option>
+											<option value="0h">0h</option>
+											<option value="1h">1h</option>
+											<option value="2h">2h</option>
+											<option value="3h">3h</option>
+											<option value="6h">6h</option>
+											<option value="12h">12h</option>
+											<option value="1d">1d</option>
+								</select>
+							</div>
+							
+							<!-- test -->
+							
 						</form>
+						<div class="row-fluid">
+								<div class="span12">
+								<div class="span10 controls" >
+									<h4><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
+				        				[BEFORE]
+				      				</a></h4>
+									</div>
+									<!-- <div class="span3 controls" ></div> -->
+									<div class="span2 controls" >
+									<h4><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseFour">
+				        				[NEXT]
+				      				</a></h4>
+									</div>
+								</div>
+							</div>
 						<!-- <a type="button" class="btn btn-primary" href="#popupShow3" onclick="pop3Togling()" class="pop3Togling">3단계로</a> --> 
 					</div>
 			      </div>
 			    </div>
 			  </div>
+ <!-- --------------------------목적지 설정 4단계 popup--------------------- -->
 
+			<div class="accordion-group">
+			    <div class="accordion-heading">
+			    <h4>
+			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseFour">
+			        [Destination&nbsp;Setting]&nbsp;&nbsp;<span class="label label-info">Setting</span>
+			      </a></h4>
+			    </div>
+			    <div id="collapseFour" class="accordion-body collapse">
+			      <div class="accordion-inner">
+				    <div class="span5" style="margin-left: 5px;">
+						<form id="desinationSettingFrm" name = "desinationSettingFrm" method="post">
+							<div class="row-fluid span12" style="width: 509px;">
+								<div class="span5" id ="userSelect">
+									<label class="span5 control-label">USER</label>
+								</div>
+								<div class="span5">
+									<select style ="margin-left: -17px; width: 221px;" id="userCommand" name="userCommand">
+										<option value="javaPagerEmail">javaPagerEmail</option>
+										<option value="javaEmail">javaEmail</option>
+										<option value="textPage">textPage</option>
+										<option value="numericPage">numericPage</option>
+										<option value="xmppMessage">xmppMessage</option>
+										<option value="xmppGroupMessage">xmppGroupMessage</option>
+										<option value="ircCat">ircCat</option>
+										<option value="callWorkPhone">callWorkPhone</option>
+										<option value="callHomePhone">callHomePhone</option>
+										<option value="microblogUpdate">microblogUpdate</option>
+										<option value="microblogReply">microblogReply</option>
+										<option value="microblogDM">microblogDM</option>
+									</select>
+								</div>
+								<select style =" width: 65px; margin-left: 14px;" id="userAutoNotify" name="userAutoNotify">
+									<option value="on">on</option>
+									<option value="off">off</option>
+									<option value="auto">auto</option>
+								</select>
+							</div>
+							<div class="row-fluid span12" style="width: 509px;">
+								<div class="span5" id ="groupSelect">
+									<label class="span5 control-label">GROUP</label>
+								</div>
+								<div class="span5">
+									<select style ="margin-left: -17px; width: 221px;" id="groupCommand" name="groupCommand">
+										<option value="javaPagerEmail">javaPagerEmail</option>
+										<option value="javaEmail">javaEmail</option>
+										<option value="textPage">textPage</option>
+										<option value="numericPage">numericPage</option>
+										<option value="xmppMessage">xmppMessage</option>
+										<option value="xmppGroupMessage">xmppGroupMessage</option>
+										<option value="ircCat">ircCat</option>
+										<option value="callWorkPhone">callWorkPhone</option>
+										<option value="callHomePhone">callHomePhone</option>
+										<option value="microblogUpdate">microblogUpdate</option>
+										<option value="microblogReply">microblogReply</option>
+										<option value="microblogDM">microblogDM</option>
+									</select>
+								</div>
+								<select style =" width: 65px; margin-left: 14px;" id="groupAutoNotify" name="groupAutoNotify">
+									<option value="on">on</option>
+									<option value="off">off</option>
+									<option value="auto">auto</option>
+								</select>
+							</div>
+							<!-- <div class="row-fluid span12" style="width: 509px;">
+								<div class="span5" id ="roleSelect">
+									<label class="span5 control-label">ROLE</label>
+								</div>
+								<div class="span5">
+									<select style ="margin-left: -17px; width: 221px;" id="roleCommand" name="roleCommand">
+										<option value="javaPagerEmail">javaPagerEmail</option>
+										<option value="javaEmail">javaEmail</option>
+										<option value="textPage">textPage</option>
+										<option value="numericPage">numericPage</option>
+										<option value="xmppMessage">xmppMessage</option>
+										<option value="xmppGroupMessage">xmppGroupMessage</option>
+										<option value="ircCat">ircCat</option>
+										<option value="callWorkPhone">callWorkPhone</option>
+										<option value="callHomePhone">callHomePhone</option>
+										<option value="microblogUpdate">microblogUpdate</option>
+										<option value="microblogReply">microblogReply</option>
+										<option value="microblogDM">microblogDM</option>
+									</select>
+								</div>
+								<select style =" width: 65px; margin-left: 14px;" id="roleAutoNotify" name="roleAutoNotify">
+									<option>on</option>
+									<option>off</option>
+									<option>auto</option>
+								</select>
+							</div> -->
+							<div class="row-fluid span12" style="width: 509px;">
+								<div class="span5" id ="emailSelect">
+									<label class="span5 control-label">E-MAIL</label>
+								</div>
+								<div class="span5">
+									<select style ="margin-left: -17px; width: 221px;" id="emailCommand" name="emailCommand">
+										<option value="javaPagerEmail">javaPagerEmail</option>
+										<option value="javaEmail">javaEmail</option>
+										<option value="textPage">textPage</option>
+										<option value="numericPage">numericPage</option>
+										<option value="xmppMessage">xmppMessage</option>
+										<option value="xmppGroupMessage">xmppGroupMessage</option>
+										<option value="ircCat">ircCat</option>
+										<option value="callWorkPhone">callWorkPhone</option>
+										<option value="callHomePhone">callHomePhone</option>
+										<option value="microblogUpdate">microblogUpdate</option>
+										<option value="microblogReply">microblogReply</option>
+										<option value="microblogDM">microblogDM</option>
+									</select>
+								</div>
+								<select style =" width: 65px; margin-left: 14px;" id="emailAutoNotify" name="emailAutoNotify">
+									<option value="on">on</option>
+									<option value="off">off</option>
+									<option value="auto">auto</option>
+								</select>
+							</div>	
+						</form>
+						<div class="row-fluid">
+							<div class="span12">
+								<div class="span7 controls" >
+									<h4>
+										<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
+				        				[BEFORE]
+				      					</a>
+				      				</h4>
+								</div>
+								<!-- <div class="span3 controls" ></div> -->
+								<div class="span5 controls" >
+									<h4>
+										<a class="accordion-toggle text-error" data-toggle="collapse" data-parent="#accordion3" onclick="javascript:pathRegister()" href="#collapseOne">
+				        					[PATH REGISTER]
+				      					</a>
+				      				</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+			      </div>
+			    </div>
+			  </div>
 			</div>
 		</div>
 	</div>

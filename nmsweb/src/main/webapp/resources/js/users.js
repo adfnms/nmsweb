@@ -192,27 +192,43 @@ function userListStr(jsonObj){
 	
 	
 }
-
+/**/
 function userNameStr(jsonObj){
 	
 	var str = "";
 
 	var userObj = jsonObj["user"];
 	
-	for ( var i in userObj) {
+	var totalCount = jsonObj["@totalCount"];
+	
+	if (totalCount == 1) {
+
 		str += "<tr>";
+		str += "	<td onclick=\"javascript:destinationPathInfo('"+userObj["user-id"]+"');\">";
+		str += "&nbsp;"+userObj["full-name"];
+		str += "	</td>";
+		str += "</tr>";
 		
+		$("#userTable").append(str);
+	}else if(totalCount > 1){
+		
+	
+		for ( var i in userObj) {
+		
+		str += "<tr>";
 		str += "	<td onclick=\"javascript:destinationPathInfo('"+userObj[i]["user-id"]+"');\">";
 		str += "&nbsp;"+userObj[i]["full-name"];
 		str += "	</td>";
 		str += "</tr>";
+		
+		$("#userTable").append(str);
 	}
 
-	$("#userTable").append(str);
+	
 	
 	
 }
-
+}
 //userInfo <select> str
 
 function userNameSelectStr(jsonObj){

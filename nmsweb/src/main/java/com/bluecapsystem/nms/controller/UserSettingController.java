@@ -104,6 +104,8 @@ public class UserSettingController
 	{
 		ModelAndView model = new ModelAndView();
 
+		System.out.println(name);
+		
 		model.addObject("name",name);
 		model.setViewName("/admin/userSetting/modifyNotification");
 		return model;

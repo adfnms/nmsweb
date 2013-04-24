@@ -95,7 +95,6 @@ function groupNameStr(jsonObj){
 	
 	for ( var i in userObj) {
 		str += "<tr>";
-		
 		str += "	<td onclick=\"javascript:destinationGroup('"+userObj[i]["name"]+"');\">";
 		str += userObj[i]["name"];
 		str += "	</td>";

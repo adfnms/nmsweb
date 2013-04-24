@@ -20,7 +20,69 @@ function requestBodyStr (uei,name,description,subject,numericMessage,textMessage
  		return str;
  	}
 
-
+/**
+ * /v1/notifications/destinationPaths/TESTPath5
+ * get path Name str
+ */
+function getPathName(name,initialDelay,userInterval,userName,userAutoNotify,userCommand,
+					groupInterval,groupName,groupAutoNotify,groupCommand,
+					roleInterval,roleName,roleAutoNotify,roleCommand,
+					emailInterval,emailCommand,emailAutoNotify,email){
+	
+	var str = "	{\"name\": \""+name+"\",\"initial-delay\": \""+initialDelay+"\", "+
+			  "	\"target\":[{\"interval\": \""+userInterval+"\",\"name\": \""+userName+"\",\"autoNotify\": \""+userAutoNotify+"\",\"command\": \""+userCommand+"\"},"+
+						   "{\"interval\": \""+groupInterval+"\",\"name\": \""+groupName+"\",\"autoNotify\": \""+groupAutoNotify+"\",\"command\": \""+groupCommand+"\"},"+
+						   "{\"interval\": \""+roleInterval+"\",\"name\": \""+roleName+"\",\"autoNotify\": \""+roleAutoNotify+"\",\"command\": \""+roleCommand+"\"},"+
+						   "{\"interval\": \""+emailInterval+"\",\"name\": \""+email+"\",\"autoNotify\": \""+emailAutoNotify+"\",\"command\": \""+emailCommand+"\"}]}"; 
+	
+	console.log(str);
+	
+	
+	
+	
+/*	
+	var	str="		{\"escalate\": [],										"+
+			"		 \"name\": \""+name+"\",								"+
+			"		\"target\": [											"+
+			" 			{													"+
+			"      	    \"interval\": \""+userInterval+"\",					"+
+			"				\"command\": [									"+
+			"              \""+userCommand+"\"								"+
+			"				],												"+
+			"           	\"autoNotify\": \""+userAutoNotify+"\",			"+
+			"           	\"name\": \""+userName+"\"						"+
+			"       	},													"+
+			"       	{													"+
+			"				\"interval\": \""+groupInterval+"\",			"+
+			"				\"command\": [									"+
+			"				\""+groupCommand+"\"							"+
+			"				],												"+
+			"				\"autoNotify\": \""+groupAutoNotify+"\",		"+
+			"				\"name\": \""+groupName+"\"						"+
+			"			},													"+
+			"			{													"+
+			"				\"interval\": \""+roleInterval+"\",				"+
+			"				\"command\": [									"+
+			"				\""+roleCommand+"\"								"+
+			"				],												"+
+			"				\"autoNotify\": \""+roleAutoNotify+"\",			"+
+			"				\"name\": \""+roleName+"\"						"+
+			"			},													"+
+			"			{													"+
+			"				\"interval\": \""+emailInterval+"\",			"+
+			"				\"command\": [									"+
+			"				\""+emailCommand+"\"							"+
+			"				],												"+
+			"				\"autoNotify\": \""+emailAutoNotify+"\",		"+
+			"				\"name\": \""+email+"\"							"+
+			"			}													"+
+			"		],														"+
+			"		\"initialDelay\": \""+initialDelay+"\"					"+
+			"	}";
+*/	
+	return str;
+	
+}
 
 
 //Return notification list related with given userName
@@ -216,8 +278,6 @@ function getAddedNoti(callback){
 
 function modifyNoti(callback , name){
 	
-	
-	
 	$.ajax({
 		
 		type : 'get',
@@ -241,12 +301,93 @@ function modifyNoti(callback , name){
 		}
 	});
 	
+}
+
+function getAllCommends(callback){
 	
-	
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/notifications/commands',
+		dataType : 'json',
+		contentType : "application/json",
+		accept : "application/json",
+		error : function(data) {
+			console.log(data);
+			
+			alert('commands 리스트 가져오기 서비스 실패');
+		},
+		success : function(data) {
+			console.log(data);
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
 	
 }
 
 
+function deletePathAjax(PathName){
+	
+	$.ajax({
+			
+		type : 'delete',
+		url : '/' + version + '/notifications/destinationPaths/'+PathName,
+		contentType : 'application/json',
+		Accept : 'application/json', 
+		error : function() {
+			alert('Path 삭제 실패');
+		},
+		success : function(data) {
+			
+			$("#destinationPath").children().remove();
+			$("#PathsTable").children().remove();
+			getPathList(getPathsName);
+			
+		}
+	}); 
+		
+}
+
+
+
+function regNotificationAjax(PathName){
+	
+	$.ajax({
+		
+		type : 'put',
+		url : '/' + version + '/notifications/eventNotifications',
+		contentType : 'application/json',
+		Accept : 'application/json', 
+		data : str,
+		error : function() {
+			alert('공지 수정 실패');
+		},
+		success : function(data) {
+			$(location).attr('href', "/v1/admin/setting/configureNotification.do");
+		}
+	}); 
+		
+}
+function modifyPathAjax(PathName){
+	$.ajax({
+			type : 'get',
+			url : '/' + version + '/notifications/destinationPaths/'+PathName,
+			dataType : 'json',
+			contentType : "application/json",
+			accept : "application/json",
+			error : function(data) {
+				console.log(data);
+				
+				alert('PathName Info 가져오기 서비스 실패');
+			},
+			success : function(data) {
+				console.log(data);
+				modifyPathstr(data);
+			}
+		});
+	
+}
 
 
 
@@ -651,7 +792,7 @@ function pathsNameStr(jsonObj){
 			str += pathsObj[i]["name"];
 			str += "	</td>";
 			str += "	<td>";
-			str += "<a type=\"button\"  class=\"btn btn-success\" onclick=\"javascript:selectPath('"+pathsObj[i]["name"]+"') \">선택</a>";
+			str += "<a type=\"button\"  class=\"btn accordion-toggle btn-success\" href=\"#collapseTwo\" onclick=\"javascript:modifyPath('"+pathsObj[i]["name"]+"') \">수정</a>";
 			str += "	</td>";
 			str += "	<td>";
 			str += "<a type=\"button\"  class=\"btn btn-danger\" onclick=\"javascript:deletePath('"+pathsObj[i]["name"]+"');\">삭제</a>";
@@ -660,9 +801,15 @@ function pathsNameStr(jsonObj){
 			}
 	}else{
 		str += "<tr>";
-		str += "	<td>";										
-		str += pathsObj[0]["name"];												
-		str += "	</td>";													
+		str += "	<td>";
+		str += pathsObj[0]["name"];
+		str += "	</td>";
+		str += "	<td>";
+		str += "<a type=\"button\"  class=\"btn btn-success\" href=\"#collapseTwo\" onclick=\"javascript:modifyPath('"+pathsObj[0]["name"]+"') \">수정</a>";
+		str += "	</td>";
+		str += "	<td>";
+		str += "<a type=\"button\"  class=\"btn btn-danger\" onclick=\"javascript:deletePath('"+pathsObj[0]["name"]+"');\">삭제</a>";
+		str += "	</td>";
 		str += "</tr>";
 	}
 
@@ -762,7 +909,32 @@ function addNotiStr(jsonObj){
 
 
 
-
+function getCommendsJsonObj(jsonObj){
+	
+	var str = "";
+	
+	var commendsObj = jsonObj["command"];
+	
+	console.log(commendsObj);
+	
+	/*if(pathsObj.length > 1){
+	
+		for ( var i in pathsObj) {
+			
+				str += "<option value=\""+pathsObj[i]["name"]+"\" >"+pathsObj[i]["name"]+"</option>";
+		}
+	}else{
+		str += "<option value=\""+pathsObj[0]["name"]+"\">"+pathsObj[0]["name"]+"</option>";	
+	}*/
+	
+	$("#commends").append(str);
+	
+	
+	
+	
+	
+	
+}
 
 
 
