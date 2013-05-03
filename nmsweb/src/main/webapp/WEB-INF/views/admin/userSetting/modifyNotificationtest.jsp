@@ -119,20 +119,20 @@ function regNotification(){
  			var uei= object[0];
  			var eventRabel= object[1];
  			
- 			alert("--------------uei----------------------"+uei);// uei
- 			alert("--------------eventRabel---------------"+eventRabel); //eventRabel
+ 			//alert("--------------uei----------------------"+uei);// uei
+ 			//alert("--------------eventRabel---------------"+eventRabel); //eventRabel
  		
  		
  		
  		
- 		alert("--------------name----------------------"+name);
+ 		/* alert("--------------name----------------------"+name);
  		alert("--------------description----------------------"+description);
  		alert("--------------subject----------------------"+subject);
  		alert("--------------numericMessage----------------------"+numericMessage);
  		alert("--------------textMessage----------------------"+textMessage);
  		alert("--------------destinationPath----------------------"+destinationPath);
  		alert("--------------status----------------------"+status);
- 		alert("--------------rule----------------------"+rule); 
+ 		alert("--------------rule----------------------"+rule);  */
  		
  		
 }

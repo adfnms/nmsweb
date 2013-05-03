@@ -398,3 +398,78 @@ function getCategorieIdx(categoriNm){
 	}
 	return statsStr;
 }
+
+function yesterday(){
+	
+	var now = new Date();
+	var year= now.getFullYear();
+	var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
+	var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
+	
+	
+	var changeDate = new Date();
+	
+	changeDate.setFullYear(year, mon-1, day-1);
+	var yesterY = changeDate.getFullYear();
+    var yesterM = changeDate.getMonth() + 1;
+    var yesterD = changeDate.getDate();
+    if(yesterM < 10)    { yesterM = "0" + yesterM; }
+    if(yesterD < 10)    { yesterD = "0" + yesterD; }
+    
+    var yesterdate = yesterY + "년" + yesterM + "월" + yesterD+"일";
+    
+    return yesterdate;
+	
+}
+
+function beforeOneWeek(){
+	var now = new Date();
+	var year= now.getFullYear();
+	var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
+	var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
+	var changeDate = new Date();
+	changeDate.setFullYear(year, mon-1, day-7);
+	
+	var y = changeDate.getFullYear();
+	var m = changeDate.getMonth() + 1;
+	var d = changeDate.getDate();
+	if(m < 10) { m = "0" + m; }
+	if(d < 10) { d = "0" + d; }
+
+	var resultDate = y + "년" + m + "월" + d+"일";
+	return resultDate;
+	
+}
+function beforeOneMonth(){
+	var now = new Date();
+	var year= now.getFullYear();
+	var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
+	var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
+	var changeDate = new Date();
+	changeDate.setFullYear(year, mon-1, day);
+	
+	var y = changeDate.getFullYear();
+    var m = changeDate.getMonth();
+    var d = changeDate.getDate();
+    
+    if(m < 10)    { m = "0" + m; }
+    
+    var resultDate = y + "년" + m+ "월" + d+"일";
+    return resultDate;
+	
+}
+function beforeOneyear(){
+	var now = new Date();
+	var year= now.getFullYear();
+	var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
+	var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
+	var changeDate = new Date();
+	changeDate.setFullYear(year-1, mon, day);
+	
+	var y = changeDate.getFullYear();
+    var m = changeDate.getMonth();
+    var d = changeDate.getDate();
+    
+    var resultDate = y + "년" + m+ "월" + d+"일";
+    return resultDate;
+}

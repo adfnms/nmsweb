@@ -389,6 +389,54 @@ function modifyPathAjax(PathName){
 	
 }
 
+function registerSetPathAjax(){
+	
+	$.ajax({
+			
+			type : 'post',
+			url : '/' + version + '/notifications/destinationPaths',
+			contentType : 'application/json',
+			Accept : 'application/json', 
+			data : str,
+			error : function() {
+				alert('도착지 등록 실패');
+			},
+			success : function(data) {
+				$("#destinationPath").children().remove();
+				$("#PathsTable").children().remove();
+				getPathList(getPathsName);
+				//$(location).attr('href', "/v1/admin/setting/modifyNotification.do?name="+destiName);
+			}
+		}); 
+	
+	
+	
+	
+}
+
+
+function modifySetPathAjax(){
+	
+	$.ajax({
+		
+		type : 'put',
+		url : '/' + version + '/notifications/destinationPaths',
+		contentType : 'application/json',
+		Accept : 'application/json', 
+		data : str,
+		error : function() {
+			alert('도착지 수정 실패');
+		},
+		success : function(data) {
+			$("#destinationPath").children().remove();
+			$("#PathsTable").children().remove();
+			getPathList(getPathsName);
+			//$(location).attr('href', "/v1/admin/setting/modifyNotification.do?name="+destiName);
+		}
+	}); 
+	
+}
+
 
 
 /**
@@ -786,13 +834,13 @@ function pathsNameStr(jsonObj){
 		for ( var i in pathsObj) {
 			
 			
-			
 			str += "<tr>";
 			str += "	<td>";
 			str += pathsObj[i]["name"];
 			str += "	</td>";
 			str += "	<td>";
-			str += "<a type=\"button\"  class=\"btn accordion-toggle btn-success\" href=\"#collapseTwo\" onclick=\"javascript:modifyPath('"+pathsObj[i]["name"]+"') \">수정</a>";
+			str += "	<a type=\"button\" class=\"btn btn-success accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion3\" onclick=\"javascript:modifyPath('"+pathsObj[i]["name"]+"') \" href=\"#collapseThree\">수정</a>";
+			//str += "<a type=\"button\"  class=\"btn accordion-toggle btn-success\" href=\"#collapseTwo\" onclick=\"javascript:modifyPath('"+pathsObj[i]["name"]+"') \">수정</a>";
 			str += "	</td>";
 			str += "	<td>";
 			str += "<a type=\"button\"  class=\"btn btn-danger\" onclick=\"javascript:deletePath('"+pathsObj[i]["name"]+"');\">삭제</a>";

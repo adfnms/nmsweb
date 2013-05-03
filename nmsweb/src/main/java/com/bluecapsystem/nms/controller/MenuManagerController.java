@@ -14,23 +14,28 @@ import com.bluecapsystem.nms.define.Define;
 
 
 @Controller
-public class ReportManagerController extends BaseController
+public class MenuManagerController extends BaseController
 {
 	
-	@RequestMapping(value = "/report/resource")
-	public ModelAndView index(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+	@RequestMapping(value = "/menu/menuHide")
+	public ModelAndView menuHide(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 	{
 		ModelAndView model = new ModelAndView();
 		try{
 		String Id =(String) session.getAttribute(Define.USER_ID_KEY);
 		
+		System.out.println("--------------Id--------------");
+		System.out.println(Id);
+		System.out.println("-------------Id---------------");
+		
 		}catch (Exception e) {
 			
 			logger.info("");
+			
 			e.printStackTrace();
 		}
 		
-		model.setViewName("/report/resource");
+		model.setViewName("jsonView");
 		return model;
 	}
 

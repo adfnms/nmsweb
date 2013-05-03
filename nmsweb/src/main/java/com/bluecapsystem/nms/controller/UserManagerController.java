@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bluecapsystem.frm.BaseController;
 import com.bluecapsystem.nms.define.Define;
 import com.bluecapsystem.nms.define.NMSProperties;
 import com.bluecapsystem.nms.dto.UserTbl;
@@ -26,12 +27,11 @@ import com.bluecapsystem.nms.util.OutParam;
 import com.bluecapsystem.nms.util.Util;
 
 @Controller
-public class UserManagerController {
+public class UserManagerController extends BaseController{
 	
 	@Autowired
 	private UserManagerService userManagerService;
 	 
-	private static final Logger logger = LoggerFactory.getLogger(loginController.class);
 	/** MAIN CONTROLLER USERMANAGER  
 	 * @param request
 	 * @param response
