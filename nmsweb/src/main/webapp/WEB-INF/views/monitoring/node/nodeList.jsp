@@ -17,26 +17,45 @@
 		
 		/* 모든 데이터를 id로 정렬하여 가져온다 */
 		getNodeTotalList(addNodeLists, "orderBy=id&limit=0");
+		
 	});
 	
 	//callback 함수 jsonObj를 이용 파싱 후 append
 	function addNodeLists(jsonObj) {
-		
 		$('#nodeListTable').empty();
-
-		var str = getTabletagToSearchJsonObj(jsonObj,"N");
 		
-		$('#nodeListTable').append(str);
-
+		$.ajax({
+			type : 'get',
+			url : '<c:url value="/menu/showMenu.do" />',
+			contentType : 'application/json', 
+			error : function(data) {
+				alert('사용자 그룹 menu리스트 서비스 실패');
+			},
+			success : function(data) {
+				console.log(data);
+				
+				for(var i = 0; i < data.userList.length; i++)
+	       		{
+	        		var	groupName= data.userList[i].groupNm;
+	       		}
+				var str = getTabletagToSearchJsonObj(jsonObj,groupName);
+				
+				$('#nodeListTable').append(str);
+			}
+		});   	
+		
+		
 	}
+	
+	
+	
+	
 </script>
 </head>
 
 <body>
 	<div class="container">
-
 		<jsp:include page="/include/menu.jsp" />
-
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
@@ -55,7 +74,7 @@
 							<h4>노드&nbsp;목록</h4>
 						</div>
 					</div>
-					<div class="row-fluid">
+					<%-- <div class="row-fluid">
 						<div class="span12">
 							<div class="row-fluid">
 								<table class="span12">
@@ -86,7 +105,7 @@
 								</table>
 							</div>
 						</div>
-					</div>
+					</div> --%>
 				</div>
 			</div>
 		</form>

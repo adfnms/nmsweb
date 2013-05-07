@@ -33,7 +33,7 @@ public class GroupServiceImpl extends BaseService implements GroupService
 		
 		ret = groupDao.selectMenuList(sysId, refMenuList);
 		
-		System.out.println("--------------refMenuList----SystemService----------"+refMenuList);
+		//System.out.println("--------------refMenuList----SystemService----------"+refMenuList);
 		if(ret == false)
 		{
 			logger.error("fail of get menu list");

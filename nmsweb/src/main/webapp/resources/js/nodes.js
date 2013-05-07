@@ -27,7 +27,26 @@ function getNodeTotalList(callback, data) {
 		}
 	});
 }
+function getNodeListSideBar(callback, data) {
 
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/nodes',
+		dataType : 'json',
+		data : data,
+		async : false,
+		contentType : 'application/json',
+		error : function(data) {
+			alert('모든 노드정보 가져오기 실패');
+		},
+		success : function(data) {
+			// 콜백함수
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+}
 
 /** get interface Info
  * @param callback
@@ -577,7 +596,7 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 		str += "<td>"
 				+  new Date(nodeObj["createTime"]).format('yy-MM-dd hh:mm:ss')
 				+ "</td>";
-		if(auth == "Y"){
+		if(auth == "Admin"){
 			str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj["@id"]+'\');">관리</button></td>';
 			str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj["@id"]+'\');">삭제</button></td>';
 		}
@@ -597,7 +616,7 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 				str += "<td>"
 						+  new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss')
 						+ "</td>";
-				if(auth == "Y"){
+				if(auth == "Admin"){
 					str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj[i]["@id"]+'\');">관리</button></td>';
 					str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj[i]["@id"]+'\');">삭제</button></td>';
 				}
@@ -610,6 +629,41 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 	
 	return str;
 }
+
+
+/****************************************************************test**************************************************************/
+
+function getNodelistJsonObj(jsonObj){
+	
+	var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
+	var str = "";
+
+	if (jsonObj["node"] == null || jsonObj["node"] ==""){
+		
+		str += "<li>";
+		str += "<a href=\"\">노드 목록이 없습니다!</a>";
+		str += "</li>";
+		
+	}else if (jsonObj["@totalCount"] == 1 || jsonObj["@count"] == 1) {
+		
+		
+		str += "<li><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+ "'><h5>"
+				+ nodeObj["@label"]
+				+ "</h5></a></li>";
+		
+		
+	}else if (jsonObj["@totalCount"] > 1 || jsonObj["@count"] > 1) {
+			
+			for ( var i in nodeObj) {
+				str += "<li><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+ "'><h5>"
+						+ nodeObj[i]["@label"]
+						+ "</h5></a></li>";
+			}
+		} 
+	return str;
+}
+/****************************************************************test**************************************************************/
+
 
 /** 이벤트 정보를 table 테그 Str로 만들어준다. 
  * @param jsonObj

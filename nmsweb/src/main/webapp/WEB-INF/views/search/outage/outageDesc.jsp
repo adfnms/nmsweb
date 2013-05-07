@@ -12,6 +12,7 @@
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/outages.js" />"></script>
+<script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		

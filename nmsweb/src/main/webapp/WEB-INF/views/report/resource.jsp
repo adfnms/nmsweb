@@ -195,18 +195,6 @@
 				</ul>
 			</div>
 		</div>
-<!-- /*****************************Menu tester**************************************/ -->
-					<div class="span3">
-						<a type="button" class="btn btn-primary" title="" href="javascript:hideMenu()">hide</a>
-					</div>
-					<div class="span3">
-						<a type="button" class="btn btn-primary" title="" href="javascript:showMenu()">show</a>
-					</div>
-
-<!-- /*****************************Menu tester**************************************/ -->
-		
-		
-		
 		<div class="row-fluid">
 			<div class="span12 well well-small">
 				<div class="row-fluid">

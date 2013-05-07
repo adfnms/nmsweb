@@ -10,6 +10,7 @@ public class UserTbl {
 	private String userId;	
 	private String userNm;
 	private String groupNm;
+	private String menuId;
 	private String regrId;
 	private Timestamp regDt; 
 	private String modrId;
@@ -18,6 +19,12 @@ public class UserTbl {
 	private String nowDate;
 	
 	
+	public String getMenuId() {
+		return menuId;
+	}
+	public void setMenuId(String menuId) {
+		this.menuId = menuId;
+	}
 	public String getGroupNm() {
 		return groupNm;
 	}
@@ -73,8 +80,4 @@ public class UserTbl {
 	public void setUseYn(String useYn) {
 		this.useYn = useYn;
 	}
-	
-	
-	
-	
 }

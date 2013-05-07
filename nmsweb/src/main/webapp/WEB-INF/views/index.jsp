@@ -15,6 +15,7 @@
 <script src="<c:url value="/resources/js/outages.js" />"></script>
 <script src="<c:url value="/resources/js/category.js" />"></script>
 <script src="<c:url value="/resources/js/service.js" />"></script>
+<script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 
@@ -100,9 +101,7 @@
 
 <body>
 	<div class="container">
-
-		<jsp:include page="/include/menu.jsp" />
-
+		<jsp:include page="/include/menu.jsp" /> 
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">

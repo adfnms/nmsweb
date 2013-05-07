@@ -267,15 +267,15 @@ function getOutageInfoBox(jsonObj) {
 			+ '</a></td>'
 			+ '				<th>회복 시간</th>'
 			+ '				<td>'
-			+ outageObj["serviceRegainedEvent"]["time"]
+			//+ outageObj["serviceRegainedEvent"]["time"]
 			+ '</td>'
 			+ '				<th>회복 이벤트</th>'
 			+ '				<td><a href="/'
 			+ version
 			+ '/search/event/eventDesc.do?eventId='
-			+ outageObj["serviceRegainedEvent"]["@id"]
+			//+ outageObj["serviceRegainedEvent"]["@id"]
 			+ '">'
-			+ outageObj["serviceRegainedEvent"]["@id"]
+			//+ outageObj["serviceRegainedEvent"]["@id"]
 			+ '</a></td>'
 			+ '			</tr>'
 			+ '			<tr>'
@@ -288,11 +288,11 @@ function getOutageInfoBox(jsonObj) {
 			+ '&intf='
 			+ outageObj["ipAddress"]
 			+ '&serviceNm='
-			+ nullCheckJsonObject(
-					outageObj["serviceRegainedEvent"]["serviceType"], "name")
+			//+ nullCheckJsonObject(
+			//		outageObj["serviceRegainedEvent"]["serviceType"], "name")
 			+ '">'
-			+ nullCheckJsonObject(
-					outageObj["serviceRegainedEvent"]["serviceType"], "name")
+			//+ nullCheckJsonObject(
+			//		outageObj["serviceRegainedEvent"]["serviceType"], "name")
 			+ '					</a>' + '				</td>' + '				<td colspan="4"></td>'
 			+ '			</tr>' + '		</table>' + '	</div>' + '</div>';
 

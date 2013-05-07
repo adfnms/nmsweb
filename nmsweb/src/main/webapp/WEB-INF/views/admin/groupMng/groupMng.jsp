@@ -16,6 +16,7 @@
 <script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script src="<c:url value="/resources/js/notification.js" />"></script>
 <script src="<c:url value="/resources/js/group.js" />"></script>
+<script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		

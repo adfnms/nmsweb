@@ -60,15 +60,6 @@ public class GroupDaoImpl extends BaseDao implements GroupDao
 		return ret;
 	}
 
-	
-	/*@Override
-	public List<AuthTbl> getAuth(Map<String, Object> params) {
-		return (List<AuthTbl>) getSqlMapClientTemplate().queryForList("com.bluecapsystem.nms.system.getAuth", params);
-	}*/
-
-
-
-
 	@Override
 	public void regGroupTbl(GroupTbl groupTbl) {
 		try{

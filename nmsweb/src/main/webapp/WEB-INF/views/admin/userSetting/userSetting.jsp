@@ -14,6 +14,7 @@
 </jsp:include>
 <script src="<c:url value="/resources/js/users.js" />"></script>
 <script src="<c:url value="/resources/js/notification.js" />"></script>
+<script src="<c:url value="/resources/js/nodes.js" />"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {

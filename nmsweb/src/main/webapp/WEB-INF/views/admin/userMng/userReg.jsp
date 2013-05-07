@@ -25,6 +25,7 @@ try{
 
 <script src="<c:url value="/resources/js/users.js" />"></script>
 <script src="<c:url value="/resources/js/requisitions.js" />"></script>
+<script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script type="text/javascript">
 	
 	// Reg User Info

@@ -151,52 +151,35 @@ function groupMemberSelectStr(jsonObj){
 	var name = jsonObj["name"];
 	var comments = jsonObj["comments"];
 	var user = jsonObj["user"];
-	
+	console.log(jsonObj);
 	console.log("groupMemberSelectStr name : "+name);
 	console.log("groupMemberSelectStr comments : "+comments);
 	console.log("groupMemberSelectStr user : "+user);
-	console.log("groupMemberSelectStr length : "+user.length);
 	
 	var selectStr = "";
 	
-	for ( var i=0 ; i<user.length ; i++){
-		var userOne = user[i].length;
-	}
-		if(userOne == 1){
-			
-			selectStr += "<option value=\""+user+"\">"+user+"</option>";
-			
-		}else{
-			for ( var i=0 ; i<user.length ; i++){
-					{
-						selectStr += "<option class=\"text-warning\" value=\""+user[i]+"\">"+user[i]+"</option>";
-					}
-				}
-		}
-		$("#groupMemberListSelect").append(selectStr);
-}
-		/*for ( var i in groupObj) {
-			
-				str += "<option value=\""+groupObj[i]+"\">"+groupObj[i]+"</option>";
-		}*/
+	if(user == undefined ){
 		
-			
+		
+		selectStr += "<option value=\"\"></option>";
+		$("#groupMemberListSelect").append(selectStr);
+	}else{
 	
-
-
-
-
-
-
-
-
-/*function (len) {
-	var s = '', i = 0;
-	while (i++ < len) {
-		s += this;
-	}
-	return s;
+		for ( var i=0 ; i<user.length ; i++){
+			var userOne = user[i].length;
+		}
+			if(userOne == 1){
+				
+				selectStr += "<option value=\""+user+"\">"+user+"</option>";
+				
+			}else{
+				for ( var i=0 ; i<user.length ; i++){
+						{
+							selectStr += "<option class=\"text-warning\" value=\""+user[i]+"\">"+user[i]+"</option>";
+						}
+					}
+			}
+		}
+		
+	$("#groupMemberListSelect").append(selectStr);
 }
-*/
-
-

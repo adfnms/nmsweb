@@ -3,85 +3,87 @@
 
 <sqlMap namespace="com.bluecapsystem.nms.system">
 
-	<resultMap id="MenuTbl" class="com.bluecapsystem.nms.dto.MenuTbl" >
-		<result property="menuId" 		column="menu_id" />
-		<result property="menuLev" 		column="menu_lev" />
-		<result property="menuOrd" 		column="menu_ord" />
-		<result property="upperMenuId" 	column="upper_menu_id" />
-		<result property="menuNm" 		column="menu_nm" />
-		<result property="url" 			column="url" />
-		<result property="menuDesc" 	column="menu_desc" />
-		<result property="openYn"		column="open_yn"/>
-		<result property="regrId" 		column="regrid" />
-		<result property="regDt" 		column="reg_dt" />
-		<result property="modrId" 		column="modrid" />
-		<result property="modDt" 		column="mod_dt" />
-		<result property="useYn" 	column="use_yn" />
+	<resultMap id="MenuTbl" class="com.bluecapsystem.nms.dto.MenuTbl">
+		<result property="menuId" column="menu_id" />
+		<result property="menuLev" column="menu_lev" />
+		<result property="menuOrd" column="menu_ord" />
+		<result property="upperMenuId" column="upper_menu_id" />
+		<result property="menuNm" column="menu_nm" />
+		<result property="url" column="url" />
+		<result property="menuDesc" column="menu_desc" />
+		<result property="openYn" column="open_yn" />
+		<result property="regrId" column="regrid" />
+		<result property="regDt" column="reg_dt" />
+		<result property="modrId" column="modrid" />
+		<result property="modDt" column="mod_dt" />
+		<result property="useYn" column="use_yn" />
 	</resultMap>
-	
-    <select id="selectMenu" resultMap="MenuTbl" parameterClass="java.util.Map">
-			select	menu_id, menu_lev, menu_ord, upper_menu_id, menu_nm, url,
-					menu_desc, open_yn, regrid, reg_dt, modrid, mod_dt, use_yn
-			from	menu_tbl 
-		
-	    	order by menu_lev, upper_menu_id, menu_ord
-    </select>
-   
-    <!-- <select id="getAuth" resultClass="com.bluecapsystem.nms.dto.AuthTbl">
-		
-		SELECT  
-			AUTH_ID as authId,
-			AUTH_NM as authNm
-		
-		FROM AUTH_TBL 
-	
-		WHERE USE_YN='Y'
-		
-		ORDER BY authId
-	
-	</select> -->
-	
-	 <insert id="regGroupTbl" parameterClass="com.bluecapsystem.nms.dto.GroupTbl">
-		
-     	INSERT INTO GROUP_TBL (
-     		
-     		 group_nm, group_comments,  reg_dt, regrid, modrid, mod_dt, use_yn
-			
-			) VALUES (
-     		
-     		 #groupNm#, #groupComments#, date(now()), #regrId#,  #modrId#, date(now()), #useYn#
-     	);
 
-    </insert>
+	<select id="selectMenu" resultMap="MenuTbl" parameterClass="java.util.Map">
+		select 
+			MENU_ID, MENU_LEV, MENU_ORD, UPPER_MENU_ID, MENU_NM, URL,
+			MENU_DESC, OPEN_YN, REGRID, REG_DT, MODRID, MOD_DT, USE_YN
+		from 
+			MENU_TBL
+		order by 
+			MENU_LEV, UPPER_MENU_ID, MENU_ORD
+	</select>
+
 	
+	<select id="showMenu" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.UserTbl">
+
+		SELECT 
+			MENU_ID AS menuId,
+			UT.GROUP_NM AS groupNm
+		FROM 
+			USER_TBL UT
+		INNER 
+			JOIN MENU_GROUP_TBL MGT ON MGT.GROUP_NM = UT.GROUP_NM
+		WHERE 
+			USER_ID = #userId#
+	</select>
+
+	<insert id="regGroupTbl" parameterClass="com.bluecapsystem.nms.dto.GroupTbl">
+
+		INSERT INTO GROUP_TBL (
+
+		GROUP_NM, GROUP_COMMENTS, REG_DT, REGRID, MODRID, MOD_DT, USE_YN
+
+		) VALUES (
+
+		#groupNm#, #groupComments#, date(now()), #regrId#, #modrId#, date(now()),
+		#useYn#
+		);
+
+	</insert>
+
 	<delete id="deleteGroupTbl" parameterClass="com.bluecapsystem.nms.dto.GroupTbl">
-    	
-    	
-    	DELETE FROM group_tbl  
-    	
-    	WHERE group_nm = #groupNm#;
-    	
-    </delete>
-	
-	
-	<insert id="regMenuAuth" parameterClass="com.bluecapsystem.nms.dto.MenuGroupTbl">
-		
-     	INSERT INTO MENU_GROUP_TBL (
-     		GROUP_NM,MENU_ID,REGRID,REG_DT
-     					
-			) VALUES (
-     		
-     		#groupNm#,#menuId#,#regrId#,date(now()) 
-     	)
-	</insert> 	
 
-    <delete id="delMenuAuth" parameterClass="com.bluecapsystem.nms.dto.MenuGroupTbl">
-    	
-    	DELETE FROM MENU_GROUP_TBL  
-    	
-    	WHERE GROUP_NM = #groupNm#;
-    		
-    </delete>
-	
+		DELETE FROM GROUP_TBL
+
+		WHERE GROUP_NM = #groupNm#;
+
+	</delete>
+
+
+	<insert id="regMenuAuth" parameterClass="com.bluecapsystem.nms.dto.MenuGroupTbl">
+
+		INSERT INTO MENU_GROUP_TBL (
+		GROUP_NM,MENU_ID,REGRID,REG_DT
+
+		) VALUES (
+
+		#groupNm#,#menuId#,#regrId#,date(now())
+		)
+	</insert>
+
+	<delete id="delMenuAuth" parameterClass="com.bluecapsystem.nms.dto.MenuGroupTbl">
+
+		DELETE FROM MENU_GROUP_TBL
+
+		WHERE GROUP_NM = #groupNm#;
+
+	</delete>
+
 </sqlMap>
 	

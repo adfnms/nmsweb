@@ -7,28 +7,34 @@ $(document).ready(function(){
 	rePositionSideBar();
 	$(window).resize( function(e){ rePositionSideBar();});
 	
+	/* 노드리스트 갖고오기 */
+	getNodeListSideBar(addNodeListsSideBar, "orderBy=id&limit=0");
 });
 
 function rePositionSideBar(){
 	var conWidth = $(".container").width();
 	var	width  = conWidth + ( ($(document).width() -conWidth) /2 ); 
-	$("#sideBar").css("left",width+20);
+	$("#sideBar").css("left",width+14);
 }
+
+function addNodeListsSideBar(jsonObj) {
+	
+	$('#sideBarNodeList').empty();
+	
+	
+			var str = getNodelistJsonObj(jsonObj);
+			
+			$('#sideBarNodeList').append(str);
+	
+	
+}
+
 </script>
 
 <div class="well affix hidden-phone" id="sideBar">
 	<ul class="nav nav-list">
-		<li class="nav-header">노드 리스트</li>
-		<li class="active"><a href="#">192.168.0.10</a></li>
-		<li><a href="#">192.168.0.10</a></li>
-		<li><a href="#">192.168.0.10</a></li>
-		<li><a href="#">192.168.0.10</a></li>
-		<li><a href="#">192.168.0.10</a></li>
-		<li><a href="#">192.168.0.10</a></li>
-		<li><a href="#">192.168.0.10</a></li>
-		<li><a href="#">192.168.0.10</a></li>
-		<li><a href="#">192.168.0.10</a></li>
-		<li><a href="#">192.168.0.10</a></li>
+		<li class="nav-header"><h5>노드&nbsp;리스트</h5></li>
+		<li class="nav-header" id="sideBarNodeList"></li>
 	</ul>
 </div>
 <!--/.well -->
