@@ -106,7 +106,7 @@ public class loginController {
 						//--------------------------세션 생성-----------------------------
 						request.getSession().setAttribute(Define.USER_ID_KEY, Id); 
 						request.getSession().setAttribute(Define.FULL_NAME_KEY, name);
-						request.getSession().setAttribute(Define.GROUP_ID_KEY, "");// �׷� ����
+						request.getSession().setAttribute(Define.GROUP_ID_KEY, "");
 						//--------------------------세션 생성-----------------------------
 						result = true;
 						
@@ -140,8 +140,9 @@ public class loginController {
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
 	public String loginout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
+		
 		session.invalidate();
-		return "redirect:/"+NMSProperties.getNmswebVersion()+"/index.do";
+		return "redirect:/login.do";
 	}
 }
 

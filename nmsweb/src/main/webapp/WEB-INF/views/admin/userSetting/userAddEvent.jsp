@@ -112,6 +112,15 @@ function setDestination(obj){
  		var uei = $("#destinationFrm input[name=uei]").val();						//0.이벤트
  		var noticeQueue = $("#destinationFrm input[name=noticeQueue]").val();		//1.이벤트 라벨
  		var name = $("#destiFrm input[name=name]").val();							//2.메세지명
+ 		
+ 		 if($("#destiFrm input[name=name]").val() == "")
+ 	  	{
+ 	  		alert('메시지 명을 입력해주세요!');
+ 	  		
+ 	  		return false;
+ 	  	}
+ 		
+ 		
  		var description = $("#destiFrm input[name=description]").val();				//3.설명
  		var subject = $("#destiFrm input[name=subject]").val();						//4.메일제목
  		var numericMessage = $("#destiFrm textarea[name=numericMessage]").val();	//5.요약메세지
@@ -119,6 +128,10 @@ function setDestination(obj){
  		var destinationPath = $("#destiFrm select").val();							//7.목적지
  		var status = $("#destiFrm input[name=status]").val();						//8.상태
  		var rule = $("#destiFrm input[name=rule]").val();							//9.메세지
+ 		
+ 		alert(name);
+ 		
+ 		
  		
  	var str=requestBodyStr ( uei,name,description,subject,numericMessage,textMessage,destinationPath,status,rule,noticeQueue);
  		
@@ -196,6 +209,7 @@ function setDestination(obj){
 
  	
  	
+ 	
 	function destinationGroup(GroupNm){
 		/*Set Destination Target*/
 		$("#groupTr").html("<th class=\"span3 control-label  text-success\">selected : "+GroupNm+"</th>");
@@ -231,7 +245,7 @@ function setDestination(obj){
  	}
  	
  	/*get form[#destinationFrm] object*/
- 	function regNotification(){
+ 	function modiNotification(){
  		
  		var uei = $("#destinationFrm input[name=uei]").val();						//0.이벤트
  		var noticeQueue = $("#destinationFrm input[name=noticeQueue]").val();		//1.이벤트 라벨
@@ -485,11 +499,20 @@ function setDestination(obj){
 			<div class="accordion" id="accordion2">
 			  <div class="accordion-group">
 			    <div class="accordion-heading">
-				    <h3>
-				      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepOne" id=StepOne >
-				        1단계&nbsp;&nbsp;<span class="label label-important">이벤트 선택</span>
-				      </a>
-			      	</h3>
+			      	<div class="row-fluid"> 
+			      		<div class="span11">
+				      		<h3>
+						      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepOne" id=StepOne >
+						        1단계&nbsp;&nbsp;<span class="label label-important">이벤트 선택</span></a>
+					      	</h3>
+				      	</div> 
+						<div class="span1"  style="margin-left: 4px; margin-top: 9px;">
+							<h3> 
+								<a type="button" class="btn accordion-toggle" data-toggle="collapse" style="width: 44px;" data-parent="#accordion2" title=""  href="#eventStepTwo" id=StepOne>next</a>
+								<!-- <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepTwo" id=StepOne >[next]</a> -->
+							</h3>
+						</div>
+					</div>
 			    </div>
 			    <div id="eventStepOne" class="accordion-body collapse in">
 			      <div class="accordion-inner">
@@ -519,11 +542,21 @@ function setDestination(obj){
 			  </div>
 			  <div class="accordion-group">
 			    <div class="accordion-heading">
-				    <h3>
-						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepTwo">
-				        	2단계&nbsp;&nbsp;<span class="label label-important">공지 메시지 정의</span>
-						</a>
-					</h3>
+			    	<div class="row-fluid"> 
+					    <div class="span11">
+						    <h3>
+								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepTwo">
+						        	2단계&nbsp;&nbsp;<span class="label label-important">공지 메시지 정의</span>
+								</a>
+							</h3>
+					    </div>
+					    <div class="span1"  style="margin-left: 4px; margin-top: 9px;">
+							<h3> 
+								<a type="button" class="btn accordion-toggle" data-toggle="collapse" style="width: 44px;" data-parent="#accordion2" title=""  href="#eventStepOne" id=StepOne>before</a>
+								<!-- <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepOne" id=StepOne >[before]</a> -->
+							</h3>
+						</div>
+					</div>	
 			    </div>
 			    <div id="eventStepTwo" class="accordion-body collapse">
 			      <div class="accordion-inner">
@@ -572,47 +605,47 @@ function setDestination(obj){
 							<div class="row-fluid">
 								<div class="span12">
 									<label class="span2 control-label muted">목적지 선택</label>
-									<div class="span4 controls" >
+									<div class="span3 controls" >
 										<select   id="destinationPath" name="destinationPath">
 		               					
 		               					</select>
 									</div>
-									<div class= "span2"></div>
+									<div class= "span2"><a type="button" class="btn" title="" href="#popDestinationPaths" data-toggle="modal">목적지관리</a></div>
 									<div class="span4 controls">
-										<a type="button" class="btn" title="" href="#popDestinationPaths" data-toggle="modal">목적지관리</a>
 									</div>
 								</div>
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<label class="span2 control-label muted">Rule</label>
-									<div class="span4 controls" >
-										<input  type="text"   id="rule"   name="rule" class=""   placeholder="" value="(IPADDR IPLIKE *.*.*.*)"> 
-									</div>
 									<label class="span2 control-label muted" style ="font-size:16px;">status</label>
 									<label class="radio span2 ">    
 										<input type="radio" id="statusOn" name="status" value="on">on</label>
 									<label class="radio span2 ">    
 										<input type="radio" id="statusOff" name="status" value="off">off</label>
+									<label class="span2 control-label muted">&nbsp;</label>
+									<div class="span4 controls" >
+										<input  type="hidden"   id="rule"   name="rule" class=""   placeholder="" value="(IPADDR IPLIKE *.*.*.*)"> 
+									</div>
+									
 								</div>
 							</div>
 						</form>
-						<div class="row-fluid">
-							<div class="span12">
-								<div class = "span2"></div>
-								<div class="span4 controls">
-									<a type="button" class="btn" title="" href="#popupRegMethod" data-toggle="modal">입력방법</a> 
-								</div>
-								<div class = "span2"></div>
-								<div class="span4">
-									<a type="button" class="btn btn-primary" title="" href="javascript:regNotification()">+ 공지등록</a>
-								</div>
-							</div>
-						</div>
 					</div>
 			      </div>
 			    </div>
 			  </div>
+			</div>
+			<div class="row-fluid">
+				<div class="span12">
+					<!-- <div class = "span2"></div>
+					<div class="span4 controls">
+						<a type="button" class="btn" title="" href="#popupRegMethod" data-toggle="modal">입력방법</a> 
+					</div> -->
+					<div class = "span10"></div>
+					<div class="span2" style="width: 99px; margin-left: 71px;">
+						<a type="button" class="btn btn-primary" title="" href="javascript:regNotification()">+ 공지등록</a>
+					</div>
+				</div>
 			</div>
 			<!-- test -->
 		</div>
@@ -636,7 +669,7 @@ function setDestination(obj){
 			    <div class="accordion-heading">
 			    	<h4>
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseOne">
-			        	[Destination&nbsp;Configration]&nbsp;&nbsp;<span class="label label-important">Destination&nbsp;Modify</span>
+			        	Destination&nbsp;Configration&nbsp;&nbsp;<span class="label label-info">Destination&nbsp;Modify</span>
 					</a></h4>
 			    </div>
 			    <div id="collapseOne" class="accordion-body collapse in" style="height:400px;  overflow-y:auto;">
@@ -651,7 +684,7 @@ function setDestination(obj){
 								</colgroup>
 								<thead>
 									<tr>
-										<th>Existing Paths</th>
+										<th><h4>Existing Paths</h4></th>
 										<th>&nbsp;</th>
 										<th>&nbsp;</th>
 									</tr>
@@ -659,8 +692,8 @@ function setDestination(obj){
 							</table>
 						</form>
 						<h4>
-							<a class="accordion-toggle text-success" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
-								 [Add&nbsp;New&nbsp;Path]
+							<a type="button" class="accordion-toggle btn btn-success" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
+								 Add&nbsp;New&nbsp;Path
 						  </a></h4>
 					</div>
 			      </div>
@@ -671,7 +704,7 @@ function setDestination(obj){
 			    <div class="accordion-heading">
 			    <h4>
 			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
-			        [Destination&nbsp;Target]&nbsp;&nbsp;<span class="label label-warning">Target Select</span>
+			        Destination&nbsp;Target&nbsp;&nbsp;<span class="label label-info">Target Select</span>
 			      </a></h4>
 			    </div>
 			    <div id="collapseThree" class="accordion-body collapse">
@@ -681,7 +714,7 @@ function setDestination(obj){
 							<table>
 								<tr>
 									<td>
-										<div class="span3" style="margin-left: 0px; width: 233px; height:200px;">
+										<div class="span3" style="margin-left: 0px; width: 233px; height:200px; overflow-y:auto;">
 											<table class="table table-striped table-condensed" id="userTable">
 													<tr id ="userTr">
 														<th>user</th>
@@ -690,7 +723,7 @@ function setDestination(obj){
 										</div>
 									</td>
 									<td>
-										<div class="span3" style="margin-left: 0px; width: 242px; height:200px;">
+										<div class="span3" style="margin-left: 0px; width: 242px; height:200px; overflow-y:auto;">
 											<table class="table table-striped table-condensed" id="groupTable">
 													<tr id ="groupTr">
 														<th>group</th>
@@ -715,67 +748,30 @@ function setDestination(obj){
 									<tr>
 										<td>
 											<h4>
-											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" onclick="javascript:addEmail()">
-						        				[add&nbsp;e-mail]
+											<a type="button" class="accordion-toggle btn btn-primary" data-toggle="collapse" data-parent="#accordion3" onclick="javascript:addEmail()">
+						        				e-mail&nbsp;등록
 						      				</a></h4>
 										</td>			
 									</tr>
 								</table>
 							</div>
-							<%-- <table>
-								<tr>
-									<td>
-										<div class="span3" style="height:200px; margin-left: 0px; width: 233px; "  >
-											<table class="table table-striped table-condensed" id="roleTable">
-												<colgroup>
-													<col class="span3"/>
-													
-												</colgroup>
-													<tr>
-														<th>role</th>
-													</tr>
-											</table>
-										</div>
-									</td>
-									<td>
-										<div class="span3" style="margin-left: 0px; width: 242px; height:200px;">
-											<table class="table table-condensed" id="emailTable">
-													<tr>
-														<th>e-mail</th>
-													</tr>
-													<tr>
-														<td>
-															<input type="text"  style="width: 240px;margin-top: -5px; margin-bottom: -3px; margin-left: -5px;" id="email"   name="email" class="span3" value="OpenNms@google.com"  placeholder=" ex) OpenNms@google.com">
-														</td>			
-													</tr>
-													<tr>
-														<td>
-															<h4>
-															<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" onclick="javascript:addEmail()">
-										        				[add&nbsp;e-mail]
-										      				</a></h4>
-														</td>			
-													</tr>
-										 
-													
-											</table>
-										</div>
-									</td>
-								</tr>
-							</table> --%>
 						</div>
 	      				<div class="row-fluid">
 							<div class="span12">
 								<div class="span10 controls" >
-									<h4><a class="accordion-toggle muted" data-toggle="collapse" data-parent="#accordion3" href="#collapseOne">
-				        				[BEFORE]
-				      				</a></h4>
+									<h4>
+										<a type="button" class="accordion-toggle btn" data-toggle="collapse" data-parent="#accordion3" href="#collapseOne">
+					        				BEFORE
+					      				</a>
+				      				</h4>
 								</div>
 									<!-- <div class="span3 controls" ></div> -->
 								<div class="span2 controls" >
-									<h4><a class="accordion-toggle muted" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
-				        				[NEXT]
-				      				</a></h4>
+									<h4>
+										<a type="button" class="accordion-toggle btn" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
+					        				NEXT
+					      				</a>
+				      				</h4>
 								</div>
 							</div>
 						</div>
@@ -788,7 +784,7 @@ function setDestination(obj){
 			    <div class="accordion-heading">
 				    <h4>
 					     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
-					      [Destination&nbsp;Name]&nbsp;&nbsp;<span class="label label-inverse">Destination info</span>
+					      Destination&nbsp;Name&nbsp;&nbsp;<span class="label label-info">Destination info</span>
 					     </a>
 				     </h4>
 			    </div>
@@ -837,21 +833,6 @@ function setDestination(obj){
 									</div>
 								</div>
 							</div>
-							
-							<!-- <div class="row-fluid">
-								<div class="span12" id="emailTableDiv">
-									<label class="span3 control-label">email Targets :</label>
-									<div class="span9 controls" ><h4 style= "margin-top: 0px;"></h4>
-										<input type="hidden" id=""  name="" class="span12"   placeholder="">
-									</div>
-								</div>
-								<div class="span12" id="emailTableDiv">
-									<div class="span9 controls" ><h4 style= "margin-top: 0px;"></h4></div>
-								</div>
-							</div> -->
-							
-							<!-- test -->
-							
 							<div class="row-fluid span12" style="width: 509px;">
 								<div class="span3">
 									<label class="control-label">User Targets  :</label>
@@ -914,37 +895,6 @@ function setDestination(obj){
 											<option value="1d">1d</option>
 								</select>
 							</div>
-							<!-- <div class="row-fluid span12" style="width: 509px;">
-								<div class="span3">
-									<label class="control-label">Role Targets  :</label>
-								</div>
-								<div class="span6" id="roleTableDiv" style ="margin-left: -9px; width: 260px;">
-									
-								</div>
-								<select style =" width: 79px; margin-left: 27px;" id="roleInterval" name="roleInterval">
-									<option value="0s">0s</option>
-											<option value="1s">1s</option>
-											<option value="2s">2s</option>
-											<option value="5s">5s</option>
-											<option value="10s">10s</option>
-											<option value="15s">15s</option>
-											<option value="30s">30s</option>
-											<option value="0m">0m</option>
-											<option value="1m">1m</option>
-											<option value="2m">2m</option>
-											<option value="5m">5m</option>
-											<option value="10m">10m</option>
-											<option value="15m">15m</option>
-											<option value="30m">30m</option>
-											<option value="0h">0h</option>
-											<option value="1h">1h</option>
-											<option value="2h">2h</option>
-											<option value="3h">3h</option>
-											<option value="6h">6h</option>
-											<option value="12h">12h</option>
-											<option value="1d">1d</option>
-								</select>
-							</div> -->
 							<div class="row-fluid span12" style="width: 509px;">
 								<div class="span3">
 									<label class="control-label">e-mail Targets  :</label>
@@ -983,14 +933,14 @@ function setDestination(obj){
 						<div class="row-fluid">
 							<div class="span12">
 								<div class="span10 controls" >
-									<h4><a class="accordion-toggle muted" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
-				        				[BEFORE]
+									<h4><a type="button" class="accordion-toggle btn" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
+				        				BEFORE
 				      				</a></h4>
 								</div>
 									<!-- <div class="span3 controls" ></div> -->
 								<div class="span2 controls" >
-									<h4><a class="accordion-toggle muted" data-toggle="collapse" data-parent="#accordion3" href="#collapseFour">
-			        					[NEXT]
+									<h4><a type="button" class="accordion-toggle btn" data-toggle="collapse" data-parent="#accordion3" href="#collapseFour">
+			        					NEXT
 			      					</a></h4>
 								</div>
 							</div>
@@ -1005,7 +955,7 @@ function setDestination(obj){
 			    <div class="accordion-heading">
 			    <h4>
 			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseFour">
-			        [Destination&nbsp;Setting]&nbsp;&nbsp;<span class="label label-success">Setting</span>
+			        Destination&nbsp;Setting&nbsp;&nbsp;<span class="label label-info">Setting</span>
 			      </a></h4>
 			    </div>
 			    <div id="collapseFour" class="accordion-body collapse">
@@ -1064,32 +1014,6 @@ function setDestination(obj){
 									<option value="auto">auto</option>
 								</select>
 							</div>
-							<!-- <div class="row-fluid span12" style="width: 509px;">
-								<div class="span5" id ="roleSelect">
-									<label class="span5 control-label">ROLE</label>
-								</div>
-								<div class="span5">
-									<select style ="margin-left: -17px; width: 221px;" id="roleCommand" name="roleCommand">
-										<option value="javaPagerEmail">javaPagerEmail</option>
-										<option value="javaEmail">javaEmail</option>
-										<option value="textPage">textPage</option>
-										<option value="numericPage">numericPage</option>
-										<option value="xmppMessage">xmppMessage</option>
-										<option value="xmppGroupMessage">xmppGroupMessage</option>
-										<option value="ircCat">ircCat</option>
-										<option value="callWorkPhone">callWorkPhone</option>
-										<option value="callHomePhone">callHomePhone</option>
-										<option value="microblogUpdate">microblogUpdate</option>
-										<option value="microblogReply">microblogReply</option>
-										<option value="microblogDM">microblogDM</option>
-									</select>
-								</div>
-								<select style =" width: 65px; margin-left: 14px;" id="roleAutoNotify" name="roleAutoNotify">
-									<option>on</option>
-									<option>off</option>
-									<option>auto</option>
-								</select>
-							</div> -->
 							<div class="row-fluid span12" style="width: 509px;">
 								<div class="span6" id ="emailSelect">
 									<label class="span6 control-label">E-MAIL</label>
@@ -1121,8 +1045,8 @@ function setDestination(obj){
 							<div class="span12">
 								<div class="span4 controls" >
 									<h4>
-										<a class="accordion-toggle muted" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
-				        				[BEFORE]
+										<a type="button" class="accordion-toggle btn" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
+				        				BEFORE
 				      					</a>
 				      				</h4>
 								</div>
@@ -1130,22 +1054,22 @@ function setDestination(obj){
 								
 								<div class="span4 controls" id= "pathReSet" >
 									<h4>
-										<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" onclick="javascript:PathReSet()" href="#collapseOne">
-				        					[PATH RESET]
+										<a type="button" class="accordion-toggle btn btn-inverse" data-toggle="collapse" data-parent="#accordion3" onclick="javascript:PathReSet()" href="#collapseOne">
+				        					PATH RESET
 				      					</a>
 				      				</h4>
 								</div>
 								<div class="span4 controls" id= "pathRegister" >
 									<h4 style="width: 158px;">
-										<a class="accordion-toggle text-error" data-toggle="collapse" data-parent="#accordion3" onclick="javascript:pathRegister()" href="#collapseOne">
-				        					[PATH REGISTER]
+										<a type="button" class="accordion-toggle btn btn-primary" data-toggle="collapse" data-parent="#accordion3" onclick="javascript:pathRegister()" href="#collapseOne">
+				        					PATH REGISTER
 				      					</a>
 				      				</h4>
 								</div>
 								<div class="span4 controls" id= "pathModify" style="display:none" >
 									<h4>
-										<a class="accordion-toggle text-error" data-toggle="collapse" data-parent="#accordion3" onclick="javascript:PathModify()" href="#collapseOne">
-				        					[PATH MODIFY]
+										<a type="button" class="accordion-toggle btn btn-warning" data-toggle="collapse" data-parent="#accordion3" onclick="javascript:PathModify()" href="#collapseOne">
+				        					PATH MODIFY
 				      					</a>
 				      				</h4>
 								</div>

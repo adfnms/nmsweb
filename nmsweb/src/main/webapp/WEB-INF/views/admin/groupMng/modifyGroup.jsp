@@ -18,6 +18,7 @@
 <script src="<c:url value="/resources/js/group.js" />"></script>
 <script src="<c:url value="/resources/selectbox/js/mySelect.class.js" />"></script>
 <script src="<c:url value="/resources/selectbox/js/myRoleSelect.class.js" />"></script>
+<script src="<c:url value="/resources/js/nodes.js" />"></script>
 <!--dhtmlx-->
 <link rel="STYLESHEET" type="text/css" href="<c:url value="/dhtmlx/dhtmlx.css"/>">
 <script  src="<c:url value="/dhtmlx/dhtmlxGrid/codebase/dhtmlxcommon.js"/>"></script>
@@ -255,16 +256,16 @@ function saveMenuItems()
 			<div class="span4">
 				<div class="accordion-heading">
 				    <h3>
-						<a  href="/v1/admin/groupMng.do">
+						<abbr title="선택한 그룹이름"><a  href="/v1/admin/groupMng.do">
 				        	&nbsp;&nbsp;${name}&nbsp;&nbsp;<span class="label label-info">그룹&nbsp;명</span>
-						</a>
+						</a></abbr>
 					</h3>
 			    </div>
 			</div> 
 			<div class="span5 "></div>
-			<div class="span3">
+			<!-- <div class="span3">
 				<a type="button" class="btn btn-primary" title="" href="/v1/admin/groupMng.do" style="margin-top: 29px;">FINISH</a>
-			</div>  
+			</div>  --> 
 		</div>
 			
 		<div class="row-fluid">	
@@ -277,11 +278,11 @@ function saveMenuItems()
 					<div class="row-fluid" style="margin-top: -39px; ">
 						<!-- <div class="span2 "></div> -->
 						<div class="span5 ">
-							<h4><a type="text"  title="" href="/v1/admin/userMng.do">Users</a></h4>
+							<h4><abbr title="해당 그룹에 추가시킬 사용자 목록"><a type="text"  title="" href="/v1/admin/userMng.do">Users</a></abbr></h4>
 						</div>
 						<div class="span2 "></div>
 						<div class="span3 ">
-							<h4><a type="text"  title="" href="/v1/admin/groupMng.do">${name}</a></h4>
+							<h4><abbr title="해당 그룹"><a type="text"  title="" href="/v1/admin/groupMng.do">${name}</a></abbr></h4>
 						</div>
 					</div>
 		            <div style="float:left;">
@@ -321,7 +322,7 @@ function saveMenuItems()
 			
 			<!-- tree -->
 			 <div class="span6 well ">
-			
+			<h4 style="margin-top: -7px; margin-bottom: -15px;"><abbr title="그룹에 추가할 메뉴 항목">메뉴&nbsp;항목&nbsp;트리</abbr></h4>
 			<form  id="groupFrm" name="groupFrm">
 				<input type="hidden" id ="name" name="name" value="${name}" />
 			</form>

@@ -445,7 +445,7 @@ function modifySetPathAjax(){
  * @param userId
  * @param recentCount
  */
-function getUserNotiList(callback , userId, nowDate, recentCount){
+function getUserNotiList(callback , userId, nowDate, recentCount ){
 	
 	if(userId == null){
 		
@@ -455,7 +455,7 @@ function getUserNotiList(callback , userId, nowDate, recentCount){
 		
 	}
 	var filter ="pagetime="+nowDate+".467-04:00&limit="+recentCount;
-	getNotoficationList(callback, userId ,filter);
+	getNotoficationList(callback, userId ,filter );
 		
 }
 
@@ -465,7 +465,7 @@ function getUserNotiList(callback , userId, nowDate, recentCount){
  * @param userId
  * @param recentCount
  */
-function getTotalNotiList(callback, nowDate, recentCount){
+function getTotalNotiList(callback, nowDate, recentCount ){
 	
 	var filter ="pagetime="+nowDate+".510547-09&limit="+recentCount;
 	getTotalNotoficationList(callback,filter);
@@ -511,7 +511,7 @@ function getAllEvent(callback){
 /**
  * @param jsonObj
  */
-function userNotiListjsonObj(jsonObj) {
+function userNotiListjsonObj(jsonObj,MyNoti) {
 	
 		var str = "";
 		//alert("jsonObj");
@@ -553,6 +553,7 @@ function userNotiListjsonObj(jsonObj) {
 			
 			
 			str += "<tr>";
+			if(MyNoti == "My"){
 			str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";										
 			str += userObj[i]["notifyid"];											//notifyid
 			str += "	</a></td>";
@@ -569,11 +570,13 @@ function userNotiListjsonObj(jsonObj) {
 			str += "	<td class=\"span6\" >";
 			str += userObj[i]["textmsg"];											//textmsg
 			str += "	</td>";
+			}
 			str += "</tr>";
 			}
 		
 	} else {
 		str += "<tr>";
+		if(MyNoti == "My"){
 		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";		//Id
 		str += userObj[0]["notifyid"];
 		str += "	</td>";
@@ -589,6 +592,7 @@ function userNotiListjsonObj(jsonObj) {
 		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";
 		str += userObj[0]["textmsg"];
 		str += "	</td>";
+		}
 		str += "</tr>";
 	
 		
@@ -599,7 +603,7 @@ function userNotiListjsonObj(jsonObj) {
 /**
  * @param jsonObj
  */
-function totalNotiListjsonObj(jsonObj) {
+function totalNotiListjsonObj(jsonObj ,totalNoti) {
 	
 	var str = "";
 
@@ -632,6 +636,7 @@ function totalNotiListjsonObj(jsonObj) {
 			
 			
 			str += "<tr>";
+			if(totalNoti == "My"){
 			str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";										
 			str += userObj[i]["notifyid"];											//notifyid
 			str += "	</a></td>";
@@ -648,11 +653,13 @@ function totalNotiListjsonObj(jsonObj) {
 			str += "	<td class=\"span6\" >";
 			str += userObj[i]["textmsg"];											//textmsg
 			str += "	</td>";
+			}
 			str += "</tr>";
 		}
 		
 	}else{
 		str += "<tr>";
+		if(totalNoti == "My"){
 		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";		//Id
 		str += userObj[0]["notifyid"];
 		str += "	</td>";
@@ -668,6 +675,7 @@ function totalNotiListjsonObj(jsonObj) {
 		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";
 		str += userObj[0]["textmsg"];
 		str += "	</td>";
+		}
 		str += "</tr>";
 		
 	}
@@ -835,11 +843,11 @@ function pathsNameStr(jsonObj){
 			
 			
 			str += "<tr>";
-			str += "	<td>";
+			str += "	<td style=\"width: 330px;\">";
 			str += pathsObj[i]["name"];
 			str += "	</td>";
 			str += "	<td>";
-			str += "	<a type=\"button\" class=\"btn btn-success accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion3\" onclick=\"javascript:modifyPath('"+pathsObj[i]["name"]+"') \" href=\"#collapseThree\">수정</a>";
+			str += "	<a type=\"button\" class=\"btn btn-warning accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion3\" onclick=\"javascript:modifyPath('"+pathsObj[i]["name"]+"') \" href=\"#collapseThree\">수정</a>";
 			//str += "<a type=\"button\"  class=\"btn accordion-toggle btn-success\" href=\"#collapseTwo\" onclick=\"javascript:modifyPath('"+pathsObj[i]["name"]+"') \">수정</a>";
 			str += "	</td>";
 			str += "	<td>";
@@ -962,8 +970,6 @@ function getCommendsJsonObj(jsonObj){
 	var str = "";
 	
 	var commendsObj = jsonObj["command"];
-	
-	console.log(commendsObj);
 	
 	/*if(pathsObj.length > 1){
 	

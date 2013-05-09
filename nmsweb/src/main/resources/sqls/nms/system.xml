@@ -34,6 +34,8 @@
 
 		SELECT 
 			MENU_ID AS menuId,
+			UT.USER_ID AS userId,
+			UT.USER_NM AS userNm,
 			UT.GROUP_NM AS groupNm
 		FROM 
 			USER_TBL UT

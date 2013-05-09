@@ -14,7 +14,10 @@ $(document).ready(function(){
 function rePositionSideBar(){
 	var conWidth = $(".container").width();
 	var	width  = conWidth + ( ($(document).width() -conWidth) /2 ); 
-	$("#sideBar").css("left",width+14);
+	$("#sideBar").css("left",width+26);
+	$("#sideBarNodeList").css("margin-right",-30);
+	$("#sideBarNodeList").css("margin-left",-30);
+	$("#sideBarNodeList").css("margin-top",-14);
 }
 
 function addNodeListsSideBar(jsonObj) {

@@ -1,7 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page session="false"%>
+<%@page import="com.bluecapsystem.nms.define.Define"%>
+<%@ page session="true"%>
+<%
+boolean g_isLogin 	= false;
+String userNm = null;
+
+try{
+	userNm	= session.getAttribute(Define.FULL_NAME_KEY).toString(); 
+}catch(Exception ex){
+	g_isLogin = false;
+}
+
+%>
 <script type="text/javascript">
 $(document).ready(function() {
 	menuManager();
@@ -22,18 +34,43 @@ function menuManager(){
 		success : function(data) {
 			console.log(data);
 			
-			for(var i = 0; i < data.userList.length; i++)
-       		{
-        		if(data.userList[i].menuId != null)
-        		{
-        			menuId = data.userList[i].menuId; 
+			if(data.groupNm != "visitor"){
+				for(var i = 0; i < data.userList.length; i++)
+	       		{
+					menuId = data.userList[i].menuId; 
+        			userId = data.userList[i].userId; 
+        			userNm = data.userList[i].userNm; 
         			showMenu(menuId);
-        		}
-       		}
+        			$("#logInDiv").html("<h4><a class=\"text-success\" href=\"<c:url value="/admin/userMng.do" />\">"+userNm+"</a>&nbsp;님</h4>");
+	       		}
+			}else{
+    			
+    			var userName = $("#userIdFrm input[name=userNm]").val();
+    			$("#logInDiv").html("<h4><a class=\"text-success\">"+userName+"</a>&nbsp;님</h4>");
+    		}
 			
+			$("#logOutDiv").html("<h5><a class=\"text-error\" href=\"javascript:logOut();\">LogOut&nbsp;&nbsp;&nbsp;</a></h5>");
 		}
 	});   
 }
+
+
+function logOut(){
+	
+	$.ajax({
+		type : 'post',
+		url : '<c:url value="/logout.do" />',
+		async: false,
+		error : function(data) {
+			_return = false;
+		},
+		success : function(data) {
+			_return = true;
+			location.href ="/"+version+"/login.do?";
+		}
+	});
+}
+
 
  function showMenu(menuId){
 	var Id=new Array(menuId);
@@ -45,8 +82,21 @@ function menuManager(){
 
 
 </script>
-	
-<h3 class="muted"><a href="<c:url value="/index.do" />">Network manage System</a></h3>
+<form id="userIdFrm" name="userIdFrm">
+	<input type="hidden" id ="userNm" name="userNm" value="<%= userNm %>" />
+</form>
+<div class="row-fluid">
+	<div class="span12">
+		<div class="span9 controls"><h3 class="muted"><a href="<c:url value="/index.do" />">Network manage System</a></h3></div>
+		<div class="span1 controls" style="text-align: right; margin-top: 15px; " id="logOutDiv">
+			<h5><a class="text-error" href="<c:url value="/login.do" />">LogIn&nbsp;&nbsp;&nbsp;</a></h5>
+		</div>
+		<div class="span2 controls" style="text-align: left; margin-top: 15px; margin-left: 20px;" id="logInDiv">
+			<h4 class="muted"><a href="<c:url value="" />">로그인&nbsp;하세요</a></h4>
+		</div>
+	</div>
+</div>	
+<%-- <h3 class="muted"><a href="<c:url value="/index.do" />">Network manage System</a></h3> --%>
 <div class="navbar-inner " style="margin-bottom: 10px;">
 	<div class="container">
 		<div class="">

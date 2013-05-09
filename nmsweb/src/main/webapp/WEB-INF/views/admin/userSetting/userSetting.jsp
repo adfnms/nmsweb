@@ -28,7 +28,7 @@
 		/*-------------------- //시간함수----------------------*/
 		
 		/*Your outstanding notices*/
-		getUserNotiList(userNotificationList, "${userId}", encodeTime, "5");
+		getUserNotiList(userNotificationList, "${userId}", encodeTime, "5" );
 		
 		/*All outstanding notices*/
 		getTotalNotiList(totalNotificationList, encodeTime, "5");
@@ -48,12 +48,14 @@
 	
 	/* My Notification Callback */
 	function userNotificationList(jsonObj) {
-		
+	
+		var MyNoti = ('${myNotification}');
+	
 		//console.log(jsonObj);
 		
 		if(jsonObj.result == "success")
 		{
-		var str = userNotiListjsonObj(jsonObj);
+		var str = userNotiListjsonObj(jsonObj,MyNoti);
 		$('#userTable').append(str);
 		}else{
 			//console.log(jsonObj);
@@ -69,9 +71,13 @@
 	
 	/* total Notification Callback */
 	  function totalNotificationList(jsonObj) {
+		
+		  var totalNoti = ('${totalNotification}');
+			
+		
 		  if(jsonObj.result == "success")
 			{
-		var str = totalNotiListjsonObj(jsonObj);
+		var str = totalNotiListjsonObj(jsonObj,totalNoti);
 		
 		$('#totalTable').append(str);
 			}else{
@@ -105,12 +111,8 @@
 		<div class="row-fluid">
 			<div class="row-fluid">
 				<div class="span12">
-					<div class="span3"><h4>나의공지정보</h4></div>
-					<div class="span3"></div>
-					<div class="span3"><jsp:include page="/include/statsBar.jsp" /></div>
-					<div class="span3">
-						<a type="button" class="btn btn-primary" title="" href="/v1/admin/setting/configureNotification.do">configure notification</a>
-					</div>
+					<div class="span9"><h4>나의공지정보</h4></div>
+					<div class="span3" style="margin-top: 6px;"><jsp:include page="/include/statsBar.jsp" /></div>
 				</div>
 			</div>
 			<div class="row-fluid">
@@ -118,19 +120,17 @@
 					<div class="row-fluid">
 						<table class="table table-striped table-condensed" id="userTable">
 							<tr>
-								<th class="span1">ID</th>
-								<th class="span1">EventId</th>
-								<th class="span1">Status</th>
-								<th class="span2">PageTime</th>
-								<th class="span1">Interface</th>
-								<th class="span6">Message</th>
+								<th class="span1"><h4>ID</h4></th>
+								<th class="span1"><h4>EventId</h4></th>
+								<th class="span1"><h4>Status</h4></th>
+								<th class="span2"><h4>PageTime</h4></th>
+								<th class="span1"><h4>Interface</h4></th>
+								<th class="span6"><h4>Message</h4></th>
 							</tr>
 						</table>
 					</div>
 				</div>
 			</div>
-			
-			
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="span4"><h4>전체공지정보</h4></div>
@@ -143,42 +143,27 @@
 					<div class="row-fluid">
 						<table class="table table-striped table-condensed" id="totalTable">
 							<tr>
-								<th class="span1">ID</th>
-								<th class="span1">EventId</th>
-								<th class="span1">Status</th>
-								<th class="span2">PageTime</th>
-								<th class="span1">Interface</th>
-								<th class="span6">Message</th>
+								<th class="span1"><h4>ID</h4></th>
+								<th class="span1"><h4>EventId</h4></th>
+								<th class="span1"><h4>Status</h4></th>
+								<th class="span2"><h4>PageTime</h4></th>
+								<th class="span1"><h4>Interface</h4></th>
+								<th class="span6"><h4>Message</h4></th>
 							</tr>
 						</table>
 					</div>
 				</div>
 			</div>
-			<!--<hr>
-		 	<div class="row-fluid">
-				<div class="span12">
-					<div class="span4"><h4> All acknowledged notices</h4></div>
-					<div class="span3"></div>
-					<div class="span2"></div>
-				</div>
-			</div>
-			<div class="row-fluid">
-				<div class="span12">
-					<div class="row-fluid">
-						<table class="table table-striped" id="ackTable">
-							<tr>
-								<th class="span1">ID</th>
-								<th class="span1">Status</th>
-								<th class="span2">PageTime</th>
-								<th class="span1">Interface</th>
-								<th class="span7">Message</th>
-							</tr>
-						</table>
-					</div>
-				</div>
-			</div> -->
+			
 		</div>
-		<hr>
+		<div class="row-fluid">
+				<div class="span12">
+				<div class="span9" style="width: 80.358974%;"></div>
+					<div class="span2" style="width: 16.529915%;">
+						<a type="button" class="btn btn-primary" title="" href="/v1/admin/setting/configureNotification.do">configure notification</a>
+					</div>
+				</div>
+			</div>
 		</div>
 		
 		

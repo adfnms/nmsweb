@@ -148,8 +148,8 @@
 							<div class="well well-small">
 								<div class="row-fluid">
 									<div class="span12">
-										나의 알림(2,314) <a href="#">[확인]</a><br /> 모든 알림(2,314) <a
-											href="#">[확인]</a><br />
+										나의 알림(2,314) <a href="<c:url value="/admin/setting.do?myNotification=My" />">[확인]</a><br /> 모든 알림(2,314) <a
+											href="<c:url value="/admin/setting.do?totalNotification=Total" />">[확인]</a><br />
 									</div>
 								</div>
 							</div>

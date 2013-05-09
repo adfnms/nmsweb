@@ -33,10 +33,31 @@
  * 사용자 리스트 전체가져오기
  */
  	function callbackUseList(jsonObj) {
+		console.log(jsonObj);
 		
-		var str = userListStr(jsonObj);
+		$.ajax({
+			type : 'get',
+			url : '<c:url value="/menu/showMenu.do" />',
+			contentType : 'application/json', 
+			error : function(data) {
+				alert('사용자 그룹 menu리스트 서비스 실패');
+			},
+			success : function(data) {
+				console.log(data);
+				
+				for(var i = 0; i < data.userList.length; i++)
+	       		{
+	        		var	groupName= data.userList[i].groupNm;
+	       		}
+				var str = userListStr(jsonObj,groupName);
+				
+				$("#userListTable").append(str);
+			}
+		});   	
 		
-		$("#userListTable").append(str);
+		
+		
+		
 
 	} 
 
@@ -44,13 +65,14 @@
  * 사용자 상세정보 갖고 오기
  */
 	function getUserDetail(user_id){
+		alert(user_id);
 		
-		$("#userIdFrm").find('[name=user-id]:input').val(user_id);
+		$("#userIdModiFrm").find('[name=user-id]:input').val(user_id);
 		
-		var frm = document.getElementById("userIdFrm");
+		 var frm = document.getElementById("userIdModiFrm");
 		
 		frm.action = "/v1/admin/userMng/userModify.do";
-		frm.submit();
+		frm.submit(); 
 		
 		
 	}
@@ -60,7 +82,7 @@
 	 */
 	function deleteUser(userId){
 		
-		$("#userIdFrm").find('[name=user-id]:input').val(userId);
+		$("#userIdModiFrm").find('[name=user-id]:input').val(userId);
 		
 		
 	
@@ -68,23 +90,30 @@
 		
 		if(option == true )
 		{
-		
-			$.ajax({
+			if(userId == "admin"){
 				
-				type : 'delete',
-				url : 'http://localhost:8080/v1/users/'+userId,
-				contentType : 'application/json',
-				dataType:'json',
-				error : function(data) {
-					alert('삭제 서비스 실패');
-				},
-				success : function(data) {
-					alert("삭제성공");
-					
-					deleteToDb(userId);
-				}
-			});
+				alert("삭제할 수 없습니다.");
+				return false;
 			
+			}else{
+				alert("1");
+				$.ajax({
+					
+					type : 'delete',
+					url : 'http://localhost:8080/v1/users/'+userId,
+					contentType : 'application/json',
+					dataType:'json',
+					error : function(data) {
+						alert('삭제 서비스 실패');
+					},
+					success : function(data) {
+						alert("삭제성공");
+						
+						deleteToDb(userId);
+					}
+				});
+			}
+		
 		}else if(option == false ){
 		 	
 			alert("취소 되었습니다.");
@@ -93,10 +122,10 @@
 	}
 	
 	function deleteToDb(userId){
-		
+		alert("2");
 		//var userId = $("#userInfoFrm input[name=user-id]").val();
 		
-		var frm = document.getElementById("userIdFrm");
+		var frm = document.getElementById("userIdModiFrm");
 		
 		
 		//frm.action = '<c:url value="/admin/userMng/modifyToDb.do"/>';
@@ -107,6 +136,10 @@
 </head>
 
 <body>
+	<form  id="userIdModiFrm" name="userIdModiFrm">
+		<input type="hidden" id ="user-id" name="user-id" value="" />
+	</form>
+
 	<div class="container">
 
 		<jsp:include page="/include/menu.jsp" />
@@ -124,9 +157,7 @@
 
 		<div class="row-fluid">
 			<div class="span12 well well-small">
-			<form  id="userIdFrm" name="userIdFrm" method="post">
-				<input type="hidden" id ="user-id" name="user-id" value="" />
-			</form>
+			
 				<table class="table table-striped table-hover table-condensed" id="userListTable" >
 					<colgroup>
 						<col class="span2"/>
@@ -135,9 +166,9 @@
 					</colgroup>
 					<thead>
 						<tr>
-							<th>사용자 ID</th>
-							<th>이름(FullName)</th>
-							<th>소개</th>
+							<th><h4>사용자&nbsp;ID</h4></th>
+							<th><h4>이름(FullName)</h4></th>
+							<th><h4>소개</h4></th>
 						</tr>
 					</thead>
 				</table>

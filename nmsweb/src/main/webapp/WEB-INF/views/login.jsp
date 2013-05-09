@@ -77,9 +77,19 @@
 			<h2 class="form-signin-heading">로그인</h2>
 			<input type="text"  id="user-id" name="user-id" class="input-block-level" placeholder="ID" value="admin"/>
 			<input type="password"  id="password" name="password" class="input-block-level" placeholder="Password" value="admin"/>
-			<div>
-			<a class="btn btn-large btn-primary" href="javascript:memberLogIn()">로그인</a>
+			<!------------------------------------------>
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="span7 controls" style="margin-left: 25px;">
+					<%-- <a class="btn btn-large btn-primary" href="<c:url value="/admin/userMng/userReg.do" />">사용자등록</a> --%>
+					</div>
+					<div class=" controls">
+						
+						<a class="btn btn-large btn-primary" href="javascript:memberLogIn()">로그인</a>
+					</div>
+				</div>
 			</div>
+			<!------------------------------------------>
 		</form>
 	</div>
 

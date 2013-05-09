@@ -8,11 +8,11 @@
 		
      	INSERT INTO USER_TBL (
      		
-     		user_id, user_nm, regrid, reg_dt, modrid, mod_dt, use_yn
+     		user_id, user_nm,group_nm, regrid, reg_dt, modrid, mod_dt, use_yn
 			
 			) VALUES (
      		
-     		#userId#, #userNm#, #regrId#, date(now()), #modrId#, date(now()), #useYn#
+     		#userId#, #userNm#, #groupNm#, #regrId#, date(now()), #modrId#, date(now()), #useYn#
      	);
 
     </insert>

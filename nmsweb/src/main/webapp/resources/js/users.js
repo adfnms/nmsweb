@@ -142,7 +142,7 @@ function regUserTbl(userName,groupName){
 }
 
 //--------------------------------------<div>---------------------------------------------
-function userListStr(jsonObj){
+function userListStr(jsonObj ,groupNm){
 	
 	var str = "";
 
@@ -153,6 +153,7 @@ function userListStr(jsonObj){
 	if (totalCount == 1) {
 		
 		str += "<tr>";
+		if(groupNm == "Admin"){
 		str += "	<td onclick=\"javascript:getUserDetail('"+userObj["user-id"]+"');\">";
 		str += userObj["user-id"];
 		str += "	</td>";
@@ -165,6 +166,7 @@ function userListStr(jsonObj){
 		str += "	<td>";
 		str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteUser('"+userObj["user-id"]+"');\">삭제</a>";
 		str += "	</td>";
+		}
 		str += "</tr>";
 		
 	}else if(totalCount > 1){
@@ -172,6 +174,7 @@ function userListStr(jsonObj){
 		for ( var i in userObj) {
 			
 			str += "<tr>";
+			if(groupNm == "Admin"){
 			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
 			str += userObj[i]["user-id"];
 			str += "	</td>";
@@ -184,6 +187,7 @@ function userListStr(jsonObj){
 			str += "	<td>";
 			str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteUser('"+userObj[i]["user-id"]+"');\">삭제</a>";
 			str += "	</td>";
+			}
 			str += "</tr>";
 		}
 	}

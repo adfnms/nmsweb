@@ -94,22 +94,39 @@
 	
 	function deleteGroup(name){
 		
-		 $.ajax({
-			type : 'delete',
-			url : '<c:url value="/groups/" />'+name,
-			dataType : 'json',
-			contentType : 'application/json', 
-			error : function(data) {
-				//console.log(data);
-				alert('그룹 삭제 서비스 실패');
-			},
-			success : function(data) {
+		var option = confirm(" 삭제 하시겠습니까? ");
+		
+		if(option == true )
+		{
+			if(name == "Admin" ||name=="visitorGroup"){
 				
-				console.log("그룹 삭제 서비스 성공");
-				deleteGroupTbl(name);
-				
+				alert("삭제할수 없는 그룹입니다.");
+				return false;
+			}else{
+				$.ajax({
+					type : 'delete',
+					url : '<c:url value="/groups/" />'+name,
+					dataType : 'json',
+					contentType : 'application/json', 
+					error : function(data) {
+						//console.log(data);
+						alert('그룹 삭제 서비스 실패');
+					},
+					success : function(data) {
+						
+						console.log("그룹 삭제 서비스 성공");
+						deleteGroupTbl(name);
+						
+					}
+				}); 
 			}
-		}); 
+				 
+			 
+			}else if(option == false ){
+			 	
+				alert("취소 되었습니다.");
+				}
+		 
 	}
 	
 	 function regGroupTbl(groupName,comments){
@@ -186,8 +203,8 @@
 					
 					
 						<tr>
-							<th>Group(Name)</th>
-							<th>Group(Comments)</th>
+							<th><h4><abbr title="그룹 이름">GroupName</abbr></h4></th>
+							<th><h4><abbr title="그룹 설명">GroupComments</abbr></h4></th>
 							<th>&nbsp;</th>
 							<th>&nbsp;</th>
 						</tr>
@@ -199,7 +216,7 @@
 					<div class="span12">
 					<div class="span10"></div>
 						<div class="span2 ">
-							 <a type="button" class="btn btn-primary" title="" href="#popupRegMethod" data-toggle="modal">새 그룹 등록</a> 
+							<abbr title="새 그룹 등록 버튼"><a type="button" class="btn btn-primary" title="" href="#popupRegMethod" data-toggle="modal">새 그룹 등록</a></abbr>
 						</div>
 					</div>
 					

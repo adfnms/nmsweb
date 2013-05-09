@@ -128,10 +128,10 @@ function groupListStr(jsonObj){
 			str += groupObj[i]["comments"];
 			str += "	</td>";
 			str += "	<td>";
-			str += "<a type=\"button\" class=\"btn \" href=\"javascript:getGroupInfo('"+groupObj[i]["name"]+"');\">권한 설정</a>";
+			str += "<abbr title=\"권한 설정 버튼\"><a type=\"button\" class=\"btn \" href=\"javascript:getGroupInfo('"+groupObj[i]["name"]+"');\">권한 설정</a></abbr>";
 			str += "	</td>";
 			str += "	<td>";
-			str += "<a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteGroup('"+groupObj[i]["name"]+"');\">삭제</a>";
+			str += "<abbr title=\"그룹 삭제 버튼\"><a type=\"button\" class=\"btn btn-danger\" href=\"javascript:deleteGroup('"+groupObj[i]["name"]+"');\">삭제</a></abbr>";
 			str += "	</td>";
 			str += "</tr>";
 		}

@@ -166,7 +166,7 @@ public class UserManagerController extends BaseController{
 	 * @param locale
 	 * @return
 	 */
-	@RequestMapping(value = "/admin/userMng/userModify", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/userMng/userModify")
 	public ModelAndView userManage(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
 						@RequestParam(value = "user-id", required = false)String userId)
 	{
@@ -248,6 +248,7 @@ public class UserManagerController extends BaseController{
 			    userTbl.setUserNm(userNm);
 			    userTbl.setModrId(Id);
 			    userTbl.setRegrId(Id);
+			    userTbl.setGroupNm("visitorGroup");
 			    userTbl.setUseYn("Y");
 				   
 			    if(userManagerService.regToDb (userTbl)==false){
@@ -315,7 +316,7 @@ public class UserManagerController extends BaseController{
 	 * @param userTbl
 	 * @return
 	 */
-	@RequestMapping(value = "/admin/userMng/deleteToDb", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/userMng/deleteToDb", method = RequestMethod.GET)
 	public ModelAndView deleteToDb(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
 			@RequestParam(value = "user-id", required = false)String userId,
 			@ModelAttribute("UserTbl") UserTbl userTbl)

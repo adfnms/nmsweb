@@ -81,6 +81,8 @@
 				},
 				success : function(data) {
 					alert("삭제성공");
+					$("#notificationTable").children().remove();
+					getAddedNotifiList(getAddNotiList);
 				}
 			});
 			
@@ -100,7 +102,9 @@
 
 <body>
 	<div class="container">
-
+		<form  id="userIdFrm" name="userIdFrm" method="post">
+			<input type="hidden" id ="user-id" name="user-id" value="" />
+		</form>
 		<jsp:include page="/include/menu.jsp" />
 
 		<div class="row-fluid">
@@ -119,26 +123,14 @@
 			
 			
 			<div class="span12 well well-small">
-			<div class="row-fluid">
-				<div class="span12">
-				<div class="span10"></div>
-					<div class="span2 ">
-						<a type="button" class="btn btn-primary" title="" href="/v1/admin/setting/addEvent.do">+ 공지 추가</a>
-						<!-- <a type="button" class="btn btn-primary" title="" onclick="javascript:alert('test') " >alert test</a> -->
-					</div>
-				</div>
-				
-			</div>
-			<form  id="userIdFrm" name="userIdFrm" method="post">
-				<input type="hidden" id ="user-id" name="user-id" value="" />
-			</form>
+			
 				<table class="table table-striped table-hover table-condensed" id="notificationTable" >
 				
 					<thead>
 						<tr>
-							<th>status</th>
-							<th>notification</th>
-							<th>uei</th>
+							<th><h3>status</h3></th>
+							<th><h3>notification</h3></th>
+							<th><h3>uei</h3></th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -149,7 +141,15 @@
 			
 				
 		</div>
-		<hr>
+		<div class="row-fluid">
+				<div class="span12">
+				<div class="span11"></div>
+					<div class="span1"  style="margin-left: -20px; margin-top: -5px;">
+						<a type="button" style="width: 77px;" class="btn btn-primary" title="" href="/v1/admin/setting/addEvent.do">+ 공지 추가</a>
+					</div>
+				</div>
+				
+			</div>
 	</div>
 	<!-- /container -->
 </body>

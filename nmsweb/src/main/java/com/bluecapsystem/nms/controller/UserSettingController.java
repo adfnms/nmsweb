@@ -30,10 +30,25 @@ public class UserSettingController
 	
 	@RequestMapping(value = "/admin/setting")
 	public ModelAndView setting(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-			@RequestParam(value = "user-id", required = false)String userId)
+			@RequestParam(value = "user-id", required = false)String userId,
+			@RequestParam(value = "myNotification", required = false)String myNotification,
+			@RequestParam(value = "totalNotification", required = false)String totalNotification)
 	{
 		String Id =(String) session.getAttribute(Define.USER_ID_KEY);
 		ModelAndView model = new ModelAndView();
+		
+		
+		
+		if(myNotification != null){
+			System.out.println("----------------------------");
+			System.out.println(myNotification);
+			System.out.println("----------------------------");
+		}else{
+			System.out.println("----------------------------");
+			System.out.println(totalNotification);
+			System.out.println("----------------------------");
+		}
+		
 		
 		try{
 			
@@ -44,7 +59,8 @@ public class UserSettingController
 			e.printStackTrace();
 		}
 		model.addObject("userId",Id);
-		
+		model.addObject("totalNotification",totalNotification);
+		model.addObject("myNotification",myNotification);
 		model.setViewName("/admin/userSetting/userSetting");
 		return model;
 	}

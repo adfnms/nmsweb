@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bluecapsystem.frm.BaseController;
@@ -25,6 +26,7 @@ public class MenuManagerController extends BaseController
 	@Autowired
 	private MenuManagerService menuManagerService;
 	
+	//@SuppressWarnings("unused")
 	@RequestMapping(value = "/menu/showMenu")
 	public ModelAndView showMenu(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 	{
@@ -37,14 +39,32 @@ public class MenuManagerController extends BaseController
 		try{
 			 
 			String userId =(String) session.getAttribute(Define.USER_ID_KEY);
-		
+			
+			System.out.println("----------------------------------");
+			System.out.println(userId);
+			System.out.println("----------------------------------");
+
 			if(menuManagerService.showMenu(userId, userTbl)==false)
 		 	{
 				logger.error("로그인 권한 해당 메뉴 리스트 실패");
 			}
 		
 			userList =userTbl.get();
-			groupNm =userList.get(0).getGroupNm();
+				
+			
+			if(userList.size() !=0){
+				
+				groupNm =userList.get(0).getGroupNm();
+				
+			}else{
+				
+				groupNm = "visitor";
+			
+			}
+			
+			
+			
+			
 			
 		}catch (Exception e) {
 			
