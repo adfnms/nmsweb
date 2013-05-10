@@ -616,7 +616,11 @@ public class NodeService {
 				} catch (Exception e) {
 				}
 		}
-
+                 
+                if(result.toString().equals("{\"nodes\":]}")){
+		      result.delete(0,result.toString().length());
+		      result.append("{\"node\":\"null\"}");
+		}
 		return result.toString();
 	}
 	
