@@ -190,7 +190,7 @@ public class GraphUtil {
 				bf.append(",");
 
 			}
-			bf.delete(bf.length() - 3, bf.length());
+			bf.delete(bf.length() - 2, bf.length());
 			bf.append("\"}");
 			result = bf.toString();
 		} catch (Exception e) {
