@@ -165,17 +165,18 @@ function getSpecificNode(callback, nodeId) {
 
 /**
  * search node from serviceId
- * 
+ * 제공서비스 검색기능
  * @param callback
  * @param ipAddress
  */
+
 function searchNodeFromServiceId(callback, serviceId) {
 
 	if (serviceId == "") {
 		alert("서비스 정보가 없습니다.");
 		return;
 	}
-
+alert(serviceId);
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/nodes/searchService/' + serviceId,
@@ -185,7 +186,9 @@ function searchNodeFromServiceId(callback, serviceId) {
 			alert("[" + ipAddress + '] 서비스 정보 검색 실패');
 		},
 		success : function(data) {
-
+			console.log("1 : nodes.js");
+			console.log(data);
+			
 			data = JSON.stringify(data).replaceAll('"nodeid"', '"@id"');
 			data = data.replaceAll('"nodelabel"', '"@label"');
 			data = JSON.parse(data);
@@ -629,9 +632,54 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 	
 	return str;
 }
-
-
-/****************************************************************test**************************************************************/
+/******************************************************************************************************************************/
+function getSearchNodeserviceJsonObj(jsonObj, auth){
+	
+	var nodeObj = jsonObj["nodes"] != null ? jsonObj["nodes"] : jsonObj["nodes"];
+	var str = "";
+	console.log(nodeObj);
+	
+if (jsonObj["nodes"] == null || jsonObj["nodes"] ==""){
+		
+		str += "<tr>";
+		str += "<td>노드 목록이 없습니다!</td>";
+		str += "</tr>";
+		
+	}else if (nodeObj.length == 1) {
+		str += "<tr>";
+		str += "<td>1</td>";
+		str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+ "'>"
+				+ nodeObj["@label"]+"&nbsp;[&nbsp;"+nodeObj["@id"]+"&nbsp;]"
+				+ "</a></td>";
+		
+		if(auth == "Admin"){
+			str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj["@id"]+'\');">관리</button></td>';
+			str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj["@id"]+'\');">삭제</button></td>';
+		}
+		str += "</tr>";
+		
+		
+	}else if (nodeObj.length > 1) {
+		
+		for ( var i in nodeObj) {
+			str += "<tr>";
+			str += "<td>"
+					+ "[&nbsp;"+nodeObj[i]["@id"]+"&nbsp;]"
+					+ "</td>";
+			str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+ "'>"
+					+ nodeObj[i]["@label"]
+					+ "</a></td>";
+			
+			if(auth == "Admin"){
+				str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj[i]["@id"]+'\');">관리</button></td>';
+				str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj[i]["@id"]+'\');">삭제</button></td>';
+			}
+			str += "</tr>";
+		}
+	}
+	return str;
+}
+/******************************************************************************************************************************/
 
 function getNodelistJsonObj(jsonObj){
 	
@@ -681,7 +729,7 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 		contentType : 'application/json',
 		async : false,
 		error : function(data) {
-			alert("[" + ipAddress + '] 서비스 정보 검색 실패');
+			alert("[" + ipAddress + '] Avail 정보 검색 실패');
 		},
 		success : function(data) {
 

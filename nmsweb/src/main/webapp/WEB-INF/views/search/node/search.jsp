@@ -39,7 +39,7 @@
 
 	//callback 함수 jsonObj를 이용 파싱 후 append
 	function addNodeLists(jsonObj) {
-		
+		console.log(jsonObj);
 		$('#nodeListTable').empty();
 
 		$.ajax({
@@ -50,7 +50,7 @@
 				alert('사용자 그룹 menu리스트 서비스 실패');
 			},
 			success : function(data) {
-				console.log(data);
+				//console.log(data);
 				
 				for(var i = 0; i < data.userList.length; i++)
 	       		{
@@ -66,6 +66,38 @@
 		
 
 	}
+	
+	//callback 함수 jsonObj를 이용 파싱 후 append
+	function addNodeserviceLists(jsonObj) {
+		console.log("2 : search.jsp");
+		console.log(jsonObj);
+		$('#nodeListTable').empty();
+
+		$.ajax({
+			type : 'get',
+			url : '<c:url value="/menu/showMenu.do" />',
+			contentType : 'application/json', 
+			error : function(data) {
+				alert('사용자 그룹 menu리스트 서비스 실패');
+			},
+			success : function(data) {
+				//console.log(data);
+				
+				for(var i = 0; i < data.userList.length; i++)
+	       		{
+	        		var	groupName= data.userList[i].groupNm;
+	       		}
+				var str = getSearchNodeserviceJsonObj(jsonObj,groupName);
+				$('#nodeListTable').append(str);
+			}
+		});   	
+		
+		
+		
+		
+
+	}
+	
 
 	
 	/* Service list Callback */
@@ -104,9 +136,9 @@
 	function schNodeFromService() {
 
 		var serviceId = $('#searchNodeFrm select[name=serviceId]').val();
+		//제공서비스 검색기능
+		searchNodeFromServiceId(addNodeserviceLists, serviceId);
 		
-		searchNodeFromServiceId(addNodeLists, serviceId);
-
 	}
 	/*//service search button */
 	

@@ -32,7 +32,7 @@ function menuManager(){
 			alert('사용자 그룹 menu리스트 서비스 실패');
 		},
 		success : function(data) {
-			console.log(data);
+			///console.log(data);
 			
 			if(data.groupNm != "visitor"){
 				for(var i = 0; i < data.userList.length; i++)

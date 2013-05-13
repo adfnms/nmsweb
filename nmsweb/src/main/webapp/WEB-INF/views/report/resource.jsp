@@ -57,7 +57,7 @@
 			var id = nodeIdsp[0];
 			var value = nodeIdsp[1];
 		
-		$("#nodeInfo").html("<h5 id=\"nodeInfo\" class=\"text-success\">"+value+"</h5>");
+		$("#nodeInfo").html("<div class=\"span12 text-success\"><h5>"+value+"</h5></div>");
 		
 		var graphObj = getGraphInfoToNodeId(id);
 		
@@ -91,16 +91,12 @@
 		var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
 		var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
 		
-		$("#fromDate").html("<h5 id=\"fromDate\" class=\"text-success\">FromDate :"+year+'년'+mon+'월'+day+'일'+"</h5>");
+		$("#fromDate").html("<div class=\"span12\" ><h5 id=\"fromDate\" class=\"text-success\">FromDate :"+year+'년'+mon+'월'+day+'일'+"</h5></div>");
 		var beforeOneDay=yesterday(); //하루전
-		$("#toDate").html("<h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeOneDay+"</h5>");
-		
-		var beforeWeek=beforeOneWeek(); //일주일전
-		var beforeMonth=beforeOneMonth(); //한달전
-		var beforeyear=beforeOneyear(); //일년전
+		$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeOneDay+"</h5></div>");
 		
 	   
-		$('#recodDiv').hide("slow");
+		$('#trHide').hide();
 		$('#recodInfoTable').append(str);
 		$("#deth2").show("show");
 		
@@ -111,7 +107,7 @@
 			var val = valsp[0];
 			var resource = valsp[1];
 		
-			$("#ResourceInfo").html("<h5 id=\"ResourceInfo\" class=\"text-success\">Resource : "+resource+"</h5>");
+			$("#ResourceInfo").html("<div class=\"span12\"><h5 class=\"text-success\">Resource : "+resource+"</h5>");
 			$('#timePeriod').show();
 		
 			var graphUrlObj = getGraphUrls(val);
@@ -146,7 +142,32 @@
 		for (i = 0; i < document.reltimeform.rtstatus.length; i++) {
             if (document.reltimeform.rtstatus[i].selected) {
                 var value = document.reltimeform.rtstatus[i].value;
-                goRelativeTime(value);
+               /*value	=	day,
+							week,
+							month,
+							year
+               */
+                var beforeOneDay=yesterday(); //하루전
+                var beforeWeek=beforeOneWeek(); //일주일전
+        		var beforeMonth=beforeOneMonth(); //한달전
+        		var beforeyear=beforeOneyear(); //일년전
+               
+             
+        		if(value=="day"){
+        			//alert(beforeOneDay);
+        			$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeOneDay+"</h5></div>");
+        		}else if(value=="week"){
+        			//alert(beforeWeek);
+        			$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeWeek+"</h5></div>");
+        		}else if(value=="month"){
+        			 //alert(beforeMonth);
+        			 $("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeMonth+"</h5></div>");
+        		}else if(value=="year"){
+        			// alert(beforeyear);
+        			 $("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeyear+"</h5></div>");
+        		}
+               
+               goRelativeTime(value);
             }
         }
     }
@@ -195,8 +216,102 @@
 				</ul>
 			</div>
 		</div>
+		
+<!----------------------------------->
+
+		<div class="row-fluid">	
+		<div class=" span6 well">
 		<div class="row-fluid">
-			<div class="span12 well well-small">
+					<div class="span12 text-center">
+						<h4 id="nodeLabel">자원별&nbsp;노드&nbsp;목록</h4>
+					</div>
+				</div>
+			<div class="span12 well well-small" style=" height:152px; overflow-y:auto;">
+				
+				<div class="row-fluid" >
+					<div class="span12 text-center" id="recodDiv">
+						<table class="table table-striped table-hover table-condensed table-stacked" id="recodTable" ></table>
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid">
+					<div class="span12 text-center">
+						<h4 id="nodeLabel">자원별&nbsp;Resource&nbsp;목록</h4>
+					</div>
+				</div>
+			 <div class="span12 well well-small" style=" height:180px; overflow-y:auto;">
+				<div class="row-fluid">
+					<div class="span12" id="recodInfoDiv">
+						<table class="table table-striped table-hover table-condensed table-stacked" id="recodInfoTable">
+							<tr id = "trHide">
+								
+								<td><h4 class="text-error text-center">자원별&nbsp;노드&nbsp;목록을&nbsp;선택해&nbsp;주세요.</h4></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			</div>
+			<!-- tree -->
+			 <div class="span6 well ">
+			 <div class="span12 well well-small">
+		 		<div class="span12 text-center">
+					<h4 id="nodeLabel">선택한&nbsp;노드</h4>
+				</div>
+				<div class="row-fluid text-center" id="nodeInfo">
+					<!-- <div class="span6" ></div> -->
+					<!-- <div class="span12 " id="nodeInfo"><h5></h5></div> -->
+					<!-- <div class="span6" ></div> -->
+				</div>
+				<div class="span12 text-center" style="margin-left: 0px;">
+					<h4 id="nodeLabel">선택한&nbsp;리소스</h4>
+				</div>
+				<div class="row-fluid text-center" id="ResourceInfo">
+				</div>
+				<div class="span12 text-center"  style="margin-left: 0px;" id="nodeLabel">
+					<h4 id="nodeLabel">오늘&nbsp;날짜</h4>
+				</div>
+				<div class="row-fluid text-center" id="fromDate">
+				</div>
+				<div class="span12 text-center"  style="margin-left: 0px;">
+					<h4 id="nodeLabel">검색&nbsp;날짜</h4>
+				</div>
+				<div class="row-fluid text-center" id="toDate">
+				</div>
+				<div class="span12 text-center"  style="margin-left: 0px;">
+					<h4 id="nodeLabel">조건&nbsp;기간</h4>
+				</div>
+				<div class="row-fluid span12"  style="display:none" id="timePeriod">
+					<div class="span2">
+						<label class="control-label"></label>
+					</div>
+					<div class="span4">
+						<label class="control-label" style="margin-left: 14px;">Time period  :</label>
+					</div>
+					<form name="reltimeform" action="">
+						<select style =" width: 145px; margin-left: -31px; " id="rtstatus" name="rtstatus" onchange="relativeTimeFormChange();">
+									<option value="day" selected>Last Day</option>
+									<option value="week">Last Week</option>
+									<option value="month" >Last Month</option>
+									<option value="year" >Last Year</option>
+						</select>
+					</form>
+				</div>
+			</div>
+		      </div>  
+			
+			<!-- tree -->
+			
+			
+			</div>
+
+
+<!----------------------------------->
+		
+		
+		
+		<div class="row-fluid">
+			<!-- <div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12 text-center">
 						<h4 id="nodeLabel">자원별&nbsp;노드&nbsp;목록</h4>
@@ -207,10 +322,10 @@
 						<table class="table table-striped table-hover table-condensed table-stacked" id="recodTable"></table>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<div class="row-fluid">
-			<div class="span12 well well-small">
+			<!-- <div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12 text-center">
 						<h4 id="nodeLabel">자원별&nbsp;그래프&nbsp;목록</h4>
@@ -221,11 +336,11 @@
 						<table class="table table-striped table-hover table-condensed table-stacked" id="recodInfoTable"></table>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<div class="row-fluid">
 			<div class="span12 well well-small">
-				<div class="row-fluid text-center">
+				<!--  <div class="row-fluid text-center">
 					<div class="span3" ></div>
 					<div class="span6 " id="nodeInfo"><h5></h5></div>
 					<div class="span3" ></div>
@@ -260,7 +375,7 @@
 									<option value="year" >Last Year</option>
 						</select>
 					</form>
-				</div>
+				</div> -->
 				<div class="row-fluid">
 					<div class="span12">
 						<h4 id="nodeLabel"></h4>
@@ -270,7 +385,7 @@
 					<div class="span3" ></div>
 					<div class="span6" id="grephDiv"></div>
 					<div class="span3" ></div>
-				</div>
+				</div> 
 			</div>
 		</div>
 	</div>
