@@ -490,7 +490,7 @@ public class DashBoardService {
 						Iterator<Integer> it = cateGoryInfo.keySet().iterator();
 
 						while (it.hasNext()) {
-							int categoryInfoKey =  it.next();
+							int categoryInfoKey = it.next();
 
 							CategoryInfo categoryInfo = cateGoryInfo
 									.get(categoryInfoKey);
@@ -683,16 +683,25 @@ public class DashBoardService {
 			result.append("\"Detail\":[");
 
 			while (nodeCate.hasNext()) {
-				int infoKey =  nodeCate.next();
+				int infoKey = nodeCate.next();
 
 				CategoryInfo cateInfo = categoryInfoList.getCateGoryInfo().get(
 						infoKey);
+				if (cateInfo.getNodeLabel() != null) {
+					result.append("{\"nodeLabel\":\"" + cateInfo.getNodeLabel()
+							+ "\",\"outageCount\":\""
+							+ cateInfo.getOutageCount()
+							+ "\",\"serviceCount\":\""
+							+ cateInfo.getServiceCount()
+							+ "\",\"availavili\":\"" + cateInfo.getAvailabili()
+							+ "\"},");
+				} else {
+					result.append("{\"nodeLabel\":\"" + "null"
+							+ "\",\"outageCount\":\"" + "null"
+							+ "\",\"serviceCount\":\"" + "null"
+							+ "\",\"availavili\":\"" + "null" + "\"},");
 
-				result.append("{\"nodeLabel\":\"" + cateInfo.getNodeLabel()
-						+ "\",\"outageCount\":\"" + cateInfo.getOutageCount()
-						+ "\",\"serviceCount\":\"" + cateInfo.getServiceCount()
-						+ "\",\"availavili\":\"" + cateInfo.getAvailabili()
-						+ "\"},");
+				}
 
 			}
 
