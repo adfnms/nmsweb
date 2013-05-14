@@ -692,7 +692,8 @@ public class DashBoardService {
 
 				CategoryInfo cateInfo = categoryInfoList.getCateGoryInfo().get(
 						infoKey);
-				if (cateInfo.getNodeLabel() != null) {
+		
+				if (cateInfo.getNodeLabel().length()>1) {
 					result.append("{\"nodeLabel\":\"" + cateInfo.getNodeLabel()
 							+ "\",\"outageCount\":\""
 							+ cateInfo.getOutageCount()
