@@ -734,7 +734,7 @@ public class DashBoardService {
 		}
 		String result2 = result.toString();
 		if (result2.contains("\"Detail\":],")) {
-			result2 = result2.replace("\"Detail\":],", "");
+			result2 = result2.replace("\"Detail\":],", "\"Detail\":\"null\",");
 		}
 
 		return result2;
