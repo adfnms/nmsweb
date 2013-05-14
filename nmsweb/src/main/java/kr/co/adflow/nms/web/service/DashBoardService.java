@@ -414,7 +414,7 @@ public class DashBoardService {
 								tempInfo.setServiceCount(tempCount);
 								totalServiceCount++;
 
-								double availabili = info.getAvailabili();
+								// double availabili = info.getAvailabili();
 
 								double availabili2 = serviceAvailability(
 										info.getNodeId(), info.getIpAddress(),
@@ -424,7 +424,9 @@ public class DashBoardService {
 
 								totalAvl = totalAvl + availabili2;
 
-								info.setAvailabili((availabili + availabili2)
+								// info.setAvailabili((availabili + availabili2)
+								// / totalServiceCount);
+								info.setAvailabili(availabili2
 										/ totalServiceCount);
 
 								String outageKey = String.valueOf(rst.getInt(1)
