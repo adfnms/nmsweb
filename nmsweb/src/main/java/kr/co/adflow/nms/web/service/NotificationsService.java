@@ -48,17 +48,21 @@ import kr.co.adflow.nms.web.vo.notifications.Notifications;
 @Service
 public class NotificationsService {
 
-	//private static final String XMLPATH = "d:\\OpenNMS\\etc\\";
+	// private static final String XMLPATH = "d:\\OpenNMS\\etc\\";
 
 	private static final String METHOD = "method";
 	private static final String URL = "url";
 	private static final String PASSWORD = "password";
 	private static final String USERNAME = "username";
 	private static final String Accept = "accept";
-	private @Value("#{config['XMLPATH']}") String xmlPath;
-	private @Value("#{config['NMSURL']}") String ipAddr;
-	private @Value("#{config['LOGINID']}") String loginId;
-	private @Value("#{config['LOGINPASS']}") String loginPass;
+	private @Value("#{config['XMLPATH']}")
+	String xmlPath;
+	private @Value("#{config['NMSURL']}")
+	String ipAddr;
+	private @Value("#{config['LOGINID']}")
+	String loginId;
+	private @Value("#{config['LOGINPASS']}")
+	String loginPass;
 	private static final Logger logger = LoggerFactory
 			.getLogger(NotificationsService.class);
 
@@ -66,7 +70,7 @@ public class NotificationsService {
 	private Handler handler;
 
 	public String notificationsFilter(String filter) throws HandleException {
-	
+
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, loginId);
@@ -87,7 +91,7 @@ public class NotificationsService {
 	}
 
 	public String notifications() throws HandleException {
-	
+
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, loginId);
@@ -108,7 +112,7 @@ public class NotificationsService {
 	}
 
 	public String notifications(String id) throws HandleException {
-		
+
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, loginId);
@@ -129,7 +133,7 @@ public class NotificationsService {
 	}
 
 	public String notificationsCount() throws HandleException {
-	
+
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, loginId);
@@ -212,7 +216,7 @@ public class NotificationsService {
 
 			dPath = (DestinationPaths) ob;
 			int size = dPath.getPath().size();
-			
+
 			ObjectMapper om = new ObjectMapper();
 
 			boolean check = true;
@@ -222,9 +226,9 @@ public class NotificationsService {
 				if (pathName.equals(dPath.getPath().get(i).getName())) {
 
 					path = dPath.getPath().get(i);
-					
-					result = om.defaultPrettyPrintingWriter().writeValueAsString(
-							path);
+
+					result = om.defaultPrettyPrintingWriter()
+							.writeValueAsString(path);
 					check = false;
 					break;
 				}
@@ -567,7 +571,7 @@ public class NotificationsService {
 			Notifications eNoti = new Notifications();
 
 			Object ob = xUtil.xmlRead(filePath, classname, eNoti);
-			
+
 			ObjectMapper om = new ObjectMapper();
 
 			eNoti = (Notifications) ob;
@@ -581,10 +585,10 @@ public class NotificationsService {
 						.getName())) {
 
 					noti = eNoti.getNotification().get(i);
-					
-					result = om.defaultPrettyPrintingWriter().writeValueAsString(
-							noti);
-					
+
+					result = om.defaultPrettyPrintingWriter()
+							.writeValueAsString(noti);
+
 					check = false;
 					break;
 				}
@@ -821,7 +825,8 @@ public class NotificationsService {
 		return result;
 	}
 
-	public String notificationsConfigStatusPut(String status) throws HandleException {
+	public String notificationsConfigStatusPut(String status)
+			throws HandleException {
 
 		String result = null;
 
@@ -849,8 +854,9 @@ public class NotificationsService {
 
 		return result;
 	}
-	
-	public String notificationsSearchUserCount(String userName) throws HandleException {
+
+	public String notificationsSearchUserCount(String userName)
+			throws HandleException {
 
 		StringBuffer result = new StringBuffer();
 
@@ -872,8 +878,9 @@ public class NotificationsService {
 
 				if (conn != null) {
 					stmt = conn.createStatement();
-					sql = "SELECT count(notifyid)"+
-						  " FROM notifications WHERE answeredBy is null and notifyid in (SELECT DISTINCT usersnotified.notifyid FROM usersnotified WHERE usersnotified.userid='"+userName+"')";
+					sql = "SELECT count(notifyid)"
+							+ " FROM notifications WHERE answeredBy is null and notifyid in (SELECT DISTINCT usersnotified.notifyid FROM usersnotified WHERE usersnotified.userid='"
+							+ userName + "')";
 
 					logger.debug("sql:::" + sql);
 					rst = stmt.executeQuery(sql);
@@ -904,8 +911,9 @@ public class NotificationsService {
 
 		return result.toString();
 	}
-	
-	public String notificationsSearchUser(String userName, String pagetime, int limit) throws HandleException {
+
+	public String notificationsSearchUser(String userName, String pagetime,
+			int limit) throws HandleException {
 
 		StringBuffer resultTemp = new StringBuffer();
 		String result = null;
@@ -928,34 +936,51 @@ public class NotificationsService {
 
 				if (conn != null) {
 					stmt = conn.createStatement();
-					sql = "SELECT notifyid, textmsg, subject, numericmsg, pagetime, respondtime, answeredby, nodeid, interfaceid, serviceid, queueid, eventid, eventuei, notifconfigname"+
-						  " FROM notifications WHERE answeredBy is null and pagetime < '"+ pagetime +"' and notifyid in (SELECT DISTINCT usersnotified.notifyid FROM usersnotified WHERE usersnotified.userid='"+userName+"') Order by pagetime desc";
+					sql = "SELECT notifyid, textmsg, subject, numericmsg, pagetime, respondtime, answeredby, nodeid, interfaceid, serviceid, queueid, eventid, eventuei, notifconfigname"
+							+ " FROM notifications WHERE answeredBy is null and pagetime < '"
+							+ pagetime
+							+ "' and notifyid in (SELECT DISTINCT usersnotified.notifyid FROM usersnotified WHERE usersnotified.userid='"
+							+ userName + "') Order by pagetime desc";
 
 					logger.debug("sql:::" + sql);
 					rst = stmt.executeQuery(sql);
-					
+
 					int count = 0;
 
 					resultTemp.append("{\"notifications\":[");
 					while (rst.next()) {
 
-						resultTemp.append("{\"notifyid\":\"" + rst.getInt(1) + "\",");
-						resultTemp.append("\"textmsg\":\""+ rst.getString(2) + "\",");
-						resultTemp.append("\"subject\":\""+ rst.getString(3) + "\",");
-						resultTemp.append("\"numericmsg\":\""+ rst.getString(4) + "\",");
-						resultTemp.append("\"pagetime\":\""+ rst.getString(5) + "\",");
-						resultTemp.append("\"respondtime\":\""+ rst.getString(6) + "\",");
-						resultTemp.append("\"answeredby\":\""+ rst.getString(7) + "\",");
-						resultTemp.append("\"nodeid\":\""+ rst.getInt(8) + "\",");
-						resultTemp.append("\"interfaceid\":\""+ rst.getString(9) + "\",");
-						resultTemp.append("\"serviceid\":\""+ rst.getInt(10) + "\",");
-						resultTemp.append("\"queueid\":\""+ rst.getString(11) + "\",");
-						resultTemp.append("\"eventid\":\""+ rst.getInt(12) + "\",");
-						resultTemp.append("\"eventuei\":\""+ rst.getString(13) + "\",");
-						resultTemp.append("\"notifconfigname\":\""+ rst.getString(14) + "\"},");
-						
+						resultTemp.append("{\"notifyid\":\"" + rst.getInt(1)
+								+ "\",");
+						resultTemp.append("\"textmsg\":\"" + rst.getString(2)
+								+ "\",");
+						resultTemp.append("\"subject\":\"" + rst.getString(3)
+								+ "\",");
+						resultTemp.append("\"numericmsg\":\""
+								+ rst.getString(4) + "\",");
+						resultTemp.append("\"pagetime\":\"" + rst.getString(5)
+								+ "\",");
+						resultTemp.append("\"respondtime\":\""
+								+ rst.getString(6) + "\",");
+						resultTemp.append("\"answeredby\":\""
+								+ rst.getString(7) + "\",");
+						resultTemp.append("\"nodeid\":\"" + rst.getInt(8)
+								+ "\",");
+						resultTemp.append("\"interfaceid\":\""
+								+ rst.getString(9) + "\",");
+						resultTemp.append("\"serviceid\":\"" + rst.getInt(10)
+								+ "\",");
+						resultTemp.append("\"queueid\":\"" + rst.getString(11)
+								+ "\",");
+						resultTemp.append("\"eventid\":\"" + rst.getInt(12)
+								+ "\",");
+						resultTemp.append("\"eventuei\":\"" + rst.getString(13)
+								+ "\",");
+						resultTemp.append("\"notifconfigname\":\""
+								+ rst.getString(14) + "\"},");
+
 						count++;
-						if (count >= limit){
+						if (count >= limit) {
 							break;
 						}
 
@@ -966,17 +991,13 @@ public class NotificationsService {
 					// last "&" delete.
 					resultTemp.deleteCharAt(resultTemp.length() - 1);
 					resultTemp.append("]}");
-					
+
 					result = resultTemp.toString();
-					
-					
+
 					result = result.replaceAll("\n", "\\n")
-							.replaceAll("\'", "\\'")
-							.replaceAll("\"", "\\\"")
-							.replaceAll("\r", "\\r")
-							.replaceAll("\t", "\\t")
-							.replaceAll("\b", "\\b")
-							.replaceAll("\f", "\\f");
+							.replaceAll("\'", "\\'").replaceAll("\"", "\\\"")
+							.replaceAll("\r", "\\r").replaceAll("\t", "\\t")
+							.replaceAll("\b", "\\b").replaceAll("\f", "\\f");
 					logger.debug("ResultSet Json:::" + result.toString());
 				}
 			}
@@ -994,10 +1015,12 @@ public class NotificationsService {
 				} catch (Exception e) {
 				}
 		}
-
+		if (result.equals("{\"notifications\":]}")) {
+			result = "{\"notifications\":\"null\"}";
+		}
 		return result;
 	}
-	
+
 	public String notificationsAllAckCount() throws HandleException {
 
 		StringBuffer result = new StringBuffer();
@@ -1020,8 +1043,8 @@ public class NotificationsService {
 
 				if (conn != null) {
 					stmt = conn.createStatement();
-					sql = "SELECT count(notifyid)"+
-						  " FROM notifications WHERE answeredBy is not null";
+					sql = "SELECT count(notifyid)"
+							+ " FROM notifications WHERE answeredBy is not null";
 
 					logger.debug("sql:::" + sql);
 					rst = stmt.executeQuery(sql);
@@ -1052,8 +1075,9 @@ public class NotificationsService {
 
 		return result.toString();
 	}
-	
-	public String notificationsAllAck(String pagetime, int limit) throws HandleException {
+
+	public String notificationsAllAck(String pagetime, int limit)
+			throws HandleException {
 
 		StringBuffer resultTemp = new StringBuffer();
 		String result = null;
@@ -1076,34 +1100,49 @@ public class NotificationsService {
 
 				if (conn != null) {
 					stmt = conn.createStatement();
-					sql = "SELECT notifyid, textmsg, subject, numericmsg, pagetime, respondtime, answeredby, nodeid, interfaceid, serviceid, queueid, eventid, eventuei, notifconfigname"+
-						  " FROM notifications WHERE answeredBy is not null and pagetime < '"+ pagetime +"' Order by pagetime desc";
+					sql = "SELECT notifyid, textmsg, subject, numericmsg, pagetime, respondtime, answeredby, nodeid, interfaceid, serviceid, queueid, eventid, eventuei, notifconfigname"
+							+ " FROM notifications WHERE answeredBy is not null and pagetime < '"
+							+ pagetime + "' Order by pagetime desc";
 
 					logger.debug("sql:::" + sql);
 					rst = stmt.executeQuery(sql);
-					
+
 					int count = 0;
 
 					resultTemp.append("{\"notifications\":[");
 					while (rst.next()) {
 
-						resultTemp.append("{\"notifyid\":\"" + rst.getInt(1) + "\",");
-						resultTemp.append("\"textmsg\":\""+ rst.getString(2) + "\",");
-						resultTemp.append("\"subject\":\""+ rst.getString(3) + "\",");
-						resultTemp.append("\"numericmsg\":\""+ rst.getString(4) + "\",");
-						resultTemp.append("\"pagetime\":\""+ rst.getString(5) + "\",");
-						resultTemp.append("\"respondtime\":\""+ rst.getString(6) + "\",");
-						resultTemp.append("\"answeredby\":\""+ rst.getString(7) + "\",");
-						resultTemp.append("\"nodeid\":\""+ rst.getInt(8) + "\",");
-						resultTemp.append("\"interfaceid\":\""+ rst.getString(9) + "\",");
-						resultTemp.append("\"serviceid\":\""+ rst.getInt(10) + "\",");
-						resultTemp.append("\"queueid\":\""+ rst.getString(11) + "\",");
-						resultTemp.append("\"eventid\":\""+ rst.getInt(12) + "\",");
-						resultTemp.append("\"eventuei\":\""+ rst.getString(13) + "\",");
-						resultTemp.append("\"notifconfigname\":\""+ rst.getString(14) + "\"},");
-						
+						resultTemp.append("{\"notifyid\":\"" + rst.getInt(1)
+								+ "\",");
+						resultTemp.append("\"textmsg\":\"" + rst.getString(2)
+								+ "\",");
+						resultTemp.append("\"subject\":\"" + rst.getString(3)
+								+ "\",");
+						resultTemp.append("\"numericmsg\":\""
+								+ rst.getString(4) + "\",");
+						resultTemp.append("\"pagetime\":\"" + rst.getString(5)
+								+ "\",");
+						resultTemp.append("\"respondtime\":\""
+								+ rst.getString(6) + "\",");
+						resultTemp.append("\"answeredby\":\""
+								+ rst.getString(7) + "\",");
+						resultTemp.append("\"nodeid\":\"" + rst.getInt(8)
+								+ "\",");
+						resultTemp.append("\"interfaceid\":\""
+								+ rst.getString(9) + "\",");
+						resultTemp.append("\"serviceid\":\"" + rst.getInt(10)
+								+ "\",");
+						resultTemp.append("\"queueid\":\"" + rst.getString(11)
+								+ "\",");
+						resultTemp.append("\"eventid\":\"" + rst.getInt(12)
+								+ "\",");
+						resultTemp.append("\"eventuei\":\"" + rst.getString(13)
+								+ "\",");
+						resultTemp.append("\"notifconfigname\":\""
+								+ rst.getString(14) + "\"},");
+
 						count++;
-						if (count >= limit){
+						if (count >= limit) {
 							break;
 						}
 
@@ -1114,19 +1153,14 @@ public class NotificationsService {
 					// last "&" delete.
 					resultTemp.deleteCharAt(resultTemp.length() - 1);
 					resultTemp.append("]}");
-					
-					
+
 					result = resultTemp.toString();
-					
-					
+
 					result = result.replaceAll("\n", "\\n")
-							.replaceAll("\'", "\\'")
-							.replaceAll("\"", "\\\"")
-							.replaceAll("\r", "\\r")
-							.replaceAll("\t", "\\t")
-							.replaceAll("\b", "\\b")
-							.replaceAll("\f", "\\f");
-					
+							.replaceAll("\'", "\\'").replaceAll("\"", "\\\"")
+							.replaceAll("\r", "\\r").replaceAll("\t", "\\t")
+							.replaceAll("\b", "\\b").replaceAll("\f", "\\f");
+
 					logger.debug("ResultSet Json:::" + result.toString());
 				}
 			}
@@ -1144,10 +1178,13 @@ public class NotificationsService {
 				} catch (Exception e) {
 				}
 		}
-
-		return result.toString();
+		String result2=result.toString();
+		if (result2.equals("{\"notifications\":]}")) {
+			result2 = "{\"notifications\":\"null\"}";
+		}
+		return result2;
 	}
-	
+
 	public String notificationsAllOutstandCount() throws HandleException {
 
 		StringBuffer result = new StringBuffer();
@@ -1170,8 +1207,8 @@ public class NotificationsService {
 
 				if (conn != null) {
 					stmt = conn.createStatement();
-					sql = "SELECT count(notifyid)"+
-						  " FROM notifications WHERE answeredBy is null";
+					sql = "SELECT count(notifyid)"
+							+ " FROM notifications WHERE answeredBy is null";
 
 					logger.debug("sql:::" + sql);
 					rst = stmt.executeQuery(sql);
@@ -1202,8 +1239,9 @@ public class NotificationsService {
 
 		return result.toString();
 	}
-	
-	public String notificationsAllOutstand(String pagetime, int limit) throws HandleException {
+
+	public String notificationsAllOutstand(String pagetime, int limit)
+			throws HandleException {
 
 		StringBuffer resultTemp = new StringBuffer();
 		String result = null;
@@ -1226,34 +1264,49 @@ public class NotificationsService {
 
 				if (conn != null) {
 					stmt = conn.createStatement();
-					sql = "SELECT notifyid, textmsg, subject, numericmsg, pagetime, respondtime, answeredby, nodeid, interfaceid, serviceid, queueid, eventid, eventuei, notifconfigname"+
-						  " FROM notifications WHERE answeredBy is null and pagetime < '"+ pagetime +"' Order by pagetime desc";
+					sql = "SELECT notifyid, textmsg, subject, numericmsg, pagetime, respondtime, answeredby, nodeid, interfaceid, serviceid, queueid, eventid, eventuei, notifconfigname"
+							+ " FROM notifications WHERE answeredBy is null and pagetime < '"
+							+ pagetime + "' Order by pagetime desc";
 
 					logger.debug("sql:::" + sql);
 					rst = stmt.executeQuery(sql);
-					
+
 					int count = 0;
 
 					resultTemp.append("{\"notifications\":[");
 					while (rst.next()) {
 
-						resultTemp.append("{\"notifyid\":\"" + rst.getInt(1) + "\",");
-						resultTemp.append("\"textmsg\":\""+ rst.getString(2) + "\",");
-						resultTemp.append("\"subject\":\""+ rst.getString(3) + "\",");
-						resultTemp.append("\"numericmsg\":\""+ rst.getString(4) + "\",");
-						resultTemp.append("\"pagetime\":\""+ rst.getString(5) + "\",");
-						resultTemp.append("\"respondtime\":\""+ rst.getString(6) + "\",");
-						resultTemp.append("\"answeredby\":\""+ rst.getString(7) + "\",");
-						resultTemp.append("\"nodeid\":\""+ rst.getInt(8) + "\",");
-						resultTemp.append("\"interfaceid\":\""+ rst.getString(9) + "\",");
-						resultTemp.append("\"serviceid\":\""+ rst.getInt(10) + "\",");
-						resultTemp.append("\"queueid\":\""+ rst.getString(11) + "\",");
-						resultTemp.append("\"eventid\":\""+ rst.getInt(12) + "\",");
-						resultTemp.append("\"eventuei\":\""+ rst.getString(13) + "\",");
-						resultTemp.append("\"notifconfigname\":\""+ rst.getString(14) + "\"},");
-						
+						resultTemp.append("{\"notifyid\":\"" + rst.getInt(1)
+								+ "\",");
+						resultTemp.append("\"textmsg\":\"" + rst.getString(2)
+								+ "\",");
+						resultTemp.append("\"subject\":\"" + rst.getString(3)
+								+ "\",");
+						resultTemp.append("\"numericmsg\":\""
+								+ rst.getString(4) + "\",");
+						resultTemp.append("\"pagetime\":\"" + rst.getString(5)
+								+ "\",");
+						resultTemp.append("\"respondtime\":\""
+								+ rst.getString(6) + "\",");
+						resultTemp.append("\"answeredby\":\""
+								+ rst.getString(7) + "\",");
+						resultTemp.append("\"nodeid\":\"" + rst.getInt(8)
+								+ "\",");
+						resultTemp.append("\"interfaceid\":\""
+								+ rst.getString(9) + "\",");
+						resultTemp.append("\"serviceid\":\"" + rst.getInt(10)
+								+ "\",");
+						resultTemp.append("\"queueid\":\"" + rst.getString(11)
+								+ "\",");
+						resultTemp.append("\"eventid\":\"" + rst.getInt(12)
+								+ "\",");
+						resultTemp.append("\"eventuei\":\"" + rst.getString(13)
+								+ "\",");
+						resultTemp.append("\"notifconfigname\":\""
+								+ rst.getString(14) + "\"},");
+
 						count++;
-						if (count >= limit){
+						if (count >= limit) {
 							break;
 						}
 
@@ -1264,18 +1317,14 @@ public class NotificationsService {
 					// last "&" delete.
 					resultTemp.deleteCharAt(resultTemp.length() - 1);
 					resultTemp.append("]}");
-					
+
 					result = resultTemp.toString();
-					
-					
+
 					result = result.replaceAll("\n", "\\n")
-							.replaceAll("\'", "\\'")
-							.replaceAll("\"", "\\\"")
-							.replaceAll("\r", "\\r")
-							.replaceAll("\t", "\\t")
-							.replaceAll("\b", "\\b")
-							.replaceAll("\f", "\\f");
-					
+							.replaceAll("\'", "\\'").replaceAll("\"", "\\\"")
+							.replaceAll("\r", "\\r").replaceAll("\t", "\\t")
+							.replaceAll("\b", "\\b").replaceAll("\f", "\\f");
+
 					logger.debug("ResultSet Json:::" + result.toString());
 				}
 			}
@@ -1293,9 +1342,11 @@ public class NotificationsService {
 				} catch (Exception e) {
 				}
 		}
-
-		return result.toString();
+		String result2 = result.toString();
+		if (result2.equals("{\"notifications\":]}")) {
+			result2 = "{\"notifications\":\"null\"}";
+		}
+		return result2;
 	}
-
 
 }
