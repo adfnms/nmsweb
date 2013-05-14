@@ -733,7 +733,7 @@ public class DashBoardService {
 			throw new HandleException(e);
 		}
 		String result2 = result.toString();
-		if (result2.equals("\"Detail\":],")) {
+		if (result2.contains("\"Detail\":],")) {
 			result2 = result2.replace("\"Detail\":],", "");
 		}
 
