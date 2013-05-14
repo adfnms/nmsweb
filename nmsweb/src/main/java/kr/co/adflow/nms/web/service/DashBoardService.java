@@ -505,7 +505,7 @@ public class DashBoardService {
 						logger.debug("av:" + av);
 						totalAvl = totalAvl / av;
 						if (Double.isNaN(totalAvl)) {
-							infoList.setAvailabiliAv(0.0);
+							totalAvl=0.0;
 						}
 						infoList.setServiceids(categorygroupId);
 						infoList.setOutageTotalCount(totalOutageCount);
