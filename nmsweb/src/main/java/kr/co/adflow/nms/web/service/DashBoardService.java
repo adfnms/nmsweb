@@ -505,7 +505,7 @@ public class DashBoardService {
 						logger.debug("av:" + av);
 						totalAvl = totalAvl / av;
 						if (Double.isNaN(totalAvl)) {
-							totalAvl=0.0;
+							totalAvl = 0.0;
 						}
 						infoList.setServiceids(categorygroupId);
 						infoList.setOutageTotalCount(totalOutageCount);
@@ -692,22 +692,12 @@ public class DashBoardService {
 
 				CategoryInfo cateInfo = categoryInfoList.getCateGoryInfo().get(
 						infoKey);
-		
-				if (cateInfo.getNodeLabel().length()>1) {
-					result.append("{\"nodeLabel\":\"" + cateInfo.getNodeLabel()
-							+ "\",\"outageCount\":\""
-							+ cateInfo.getOutageCount()
-							+ "\",\"serviceCount\":\""
-							+ cateInfo.getServiceCount()
-							+ "\",\"availavili\":\"" + cateInfo.getAvailabili()
-							+ "\"},");
-				} else {
-					result.append("{\"nodeLabel\":\"" + "null"
-							+ "\",\"outageCount\":\"" + "null"
-							+ "\",\"serviceCount\":\"" + "null"
-							+ "\",\"availavili\":\"" + "null" + "\"},");
 
-				}
+				result.append("{\"nodeLabel\":\"" + cateInfo.getNodeLabel()
+						+ "\",\"outageCount\":\"" + cateInfo.getOutageCount()
+						+ "\",\"serviceCount\":\"" + cateInfo.getServiceCount()
+						+ "\",\"availavili\":\"" + cateInfo.getAvailabili()
+						+ "\"},");
 
 			}
 
@@ -742,8 +732,12 @@ public class DashBoardService {
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
+		String result2 = result.toString();
+		if (result2.equals("\"Detail\":],")) {
+			result2 = result2.replace("\"Detail\":],", "");
+		}
 
-		return result.toString();
+		return result2;
 
 	}
 
