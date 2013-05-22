@@ -19,6 +19,10 @@ public class CategoryController
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "cateNm", required = false)String cateNm) 
 	{
+		/*System.out.println("----------------------------------");
+		System.out.println(cateNm);
+		System.out.println("----------------------------------");*/
+		
 		ModelAndView model = new ModelAndView();
 		model.addObject("cateNm",cateNm);
 		model.setViewName("/category/nodeList");

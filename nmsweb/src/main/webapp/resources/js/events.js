@@ -153,7 +153,8 @@ function getTabletagToEventJsonObj(jsonObj){
  * @param jsonObj
  */
 function getEventinfoBox(jsonObj){
-	console.log(jsonObj);
+	//console.log(jsonObj);
+	small= jsonObj["event"]["@severity"].toLowerCase();
 	var eventInfoStr = 	'<div class="row-fluid">'+
 						'	<div class="span12">'+
 						'		<h5>이벤트&nbsp;['+jsonObj["event"]["@id"]+']</h5>'+
@@ -164,7 +165,7 @@ function getEventinfoBox(jsonObj){
 						'	<table class="table table-striped">'+
 						'		<tr>'+
 						'			<th>상태</th>'+
-						'			<td>'+jsonObj["event"]["@severity"]+'</td>'+
+						'			<td class="'+small+'">'+jsonObj["event"]["@severity"]+'</td>'+
 						'			<th>노드</th>'+
 						'			<td>'+
 						'				<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+jsonObj["event"]["nodeId"]+'">'+

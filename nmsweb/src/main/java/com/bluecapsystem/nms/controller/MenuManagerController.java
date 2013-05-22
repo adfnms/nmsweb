@@ -40,9 +40,9 @@ public class MenuManagerController extends BaseController
 			 
 			String userId =(String) session.getAttribute(Define.USER_ID_KEY);
 			
-			System.out.println("----------------------------------");
+			/*System.out.println("----------------------------------");
 			System.out.println(userId);
-			System.out.println("----------------------------------");
+			System.out.println("----------------------------------");*/
 
 			if(menuManagerService.showMenu(userId, userTbl)==false)
 		 	{

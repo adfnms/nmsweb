@@ -16,22 +16,27 @@
 <script src="<c:url value="/resources/js/notification.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
 
+
 <script type="text/javascript">
+var limit =5;
+var offset = 0;
+//var pageNum = 1;
+var time = new Date().format("yyyy-MM-dd hh:mm:ss");
+
+//var reDate	=	time.addDate(1); 
+var encodeTime = encodeURI(time);
 	$(document).ready(function() {
 		
 		/*--------------------시간함수----------------------*/
-		var time = new Date().format("yyyy-MM-dd hh:mm:ss");
 		
-		//var reDate	=	time.addDate(1); 
-		var encodeTime = encodeURI(time);
 		
 		/*-------------------- //시간함수----------------------*/
 		
 		/*Your outstanding notices*/
-		getUserNotiList(userNotificationList, "${userId}", encodeTime, "5" );
-		
+		//getUserNotiList(userNotificationList, "${userId}", encodeTime, "5" );
+		getUserNotiList(userNotificationList, "${userId}", encodeTime, "limit="+limit+"&offset="+offset );
 		/*All outstanding notices*/
-		getTotalNotiList(totalNotificationList, encodeTime, "5");
+		getTotalNotiList(totalNotificationList, encodeTime,  "limit="+limit+"&offset="+offset);
 		
 		/* All acknowledged notices*/
 		//getAllAcknowledged(allAcknowledgedList, encodeTime, "5");
@@ -49,11 +54,25 @@
 	/* My Notification Callback */
 	function userNotificationList(jsonObj) {
 	
-		var MyNoti = ('${myNotification}');
-	
-		//console.log(jsonObj);
 		
-		if(jsonObj.result == "success")
+		//console.log(jsonObj["notifications"]);
+		var obj = jsonObj["notifications"];
+		 
+		if(obj == "null"){
+				
+			  var str = getFailJsonObj();
+				$('#userTable').append(str);
+				
+			}else{
+				var str = userNotiListjsonObj(jsonObj);
+				$('#userTable').append(str);
+				
+				
+			}
+		//var MyNoti = ('${myNotification}');
+		
+		
+		/* if(jsonObj.result == "success")
 		{
 		var str = userNotiListjsonObj(jsonObj,MyNoti);
 		$('#userTable').append(str);
@@ -61,7 +80,7 @@
 			//console.log(jsonObj);
 			var str = getFailJsonObj();
 			$('#userTable').append(str);
-		}
+		} */
 		
 
 	}
@@ -72,21 +91,30 @@
 	/* total Notification Callback */
 	  function totalNotificationList(jsonObj) {
 		
-		  var totalNoti = ('${totalNotification}');
+		 
+		 
+		  var str = totalNotiListjsonObj(jsonObj);
+		  
+		  $('#totalTable').append(str);
+		  
+		  var userObj = jsonObj["notifications"];
 			
-		
-		  if(jsonObj.result == "success")
-			{
-		var str = totalNotiListjsonObj(jsonObj,totalNoti);
-		
-		$('#totalTable').append(str);
-			}else{
-				
-				var str = getFailJsonObj();
-				$('#totalTable').append(str);
-			}
+		//var	totalLength = userObj.length;
+		  
+		 // getPagingHtml($('#pagingDiv'), "goSearchPageing",totalLength, pageNum, "10", "10" );
 	}  
 	/*//total Notification Callback*/
+	//페이징 처리 스크립트
+	/* function goSearchPageing(pageNm){
+		
+		pageNum = pageNm;
+		
+		offset = (parseInt(pageNm)-1) * limit;
+		
+		getTotalNotiList(totalNotificationList, encodeTime,  "limit="+limit+"&offset="+offset);
+		
+				
+	} */
 </script>
 </head>
 
@@ -111,7 +139,8 @@
 		<div class="row-fluid">
 			<div class="row-fluid">
 				<div class="span12">
-					<div class="span9"><h4>나의공지정보</h4></div>
+					<div class="span1 text-error"><h4 style="margin-left: 15px;">${userId}</h4></div>
+					<div class="span8"><h4 style="margin-left: -10px;"> was notified</h4></div>
 					<div class="span3" style="margin-top: 6px;"><jsp:include page="/include/statsBar.jsp" /></div>
 				</div>
 			</div>
@@ -133,9 +162,9 @@
 			</div>
 			<div class="row-fluid">
 				<div class="span12">
-					<div class="span4"><h4>전체공지정보</h4></div>
+					<div class="span1 text-error"><h4 style="margin-left: 15px;">All</h4></div>
+					<div class="span8"><h4 style="margin-left: -43px;"> outstanding notices</h4></div>
 					<div class="span3"></div>
-					<div class="span2"></div>
 				</div>
 			</div>
 			<div class="row-fluid">
@@ -152,6 +181,9 @@
 							</tr>
 						</table>
 					</div>
+				</div>
+				<div class="row-fluid">
+					<div class="span12" id="pagingDiv"></div>
 				</div>
 			</div>
 			

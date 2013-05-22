@@ -34,7 +34,7 @@
 	}
 
 	function addIndexInfo(jsonObj) {
-
+		
 		var categoryObj = jsonObj["CategoryInfo"];
 
 		var totalAvail = 0;
@@ -45,39 +45,77 @@
 		var str = "";
 		str += '<table class="table table-striped">';
 		str += '	<colgroup><col class="span6" /><col class="span3" /><col class="span3" /></colgroup>';
-		str += '	<tr><th>카테고리</th><th>중단</th><th>이용률</th></tr>';
+		str += '	<tr><th>카테고리</th><th>중단</th><th></th><th>이용률</th></tr>';
 
 		for ( var i in categoryObj) {
-			var status = Number(categoryObj[i]["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical";
+			//var status = Number(categoryObj[i]["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical";
+			
+			
+			if(Number(categoryObj[i]["availabili"]).toFixed(2) >= 100){
+				var status = "normal";
+			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 90 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 99){
+				var status = "warning";
+			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 80 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 89){
+				var status = "minor";
+			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 70 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 79){
+				var status = "major";
+			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) <= 69){
+				var status = "critical";
+			} 
+			
+			if(outageCount == 0){
+				var statusCount = "normal";
+			}else{
+				var statusCount = "critical";
+			} 
 			
 			var avail = Number(categoryObj[i]["availabili"]).toFixed(2);
-			var outageOunt = categoryObj[i]["outageTotalCount"];
+			var outageCount = categoryObj[i]["outageTotalCount"];
 			var serviceCount = categoryObj[i]["serviceTotalCount"];
 
 			str += '	<tr>';
 			str += '		<td><a href="<c:url value="/category/nodeList?cateNm=" />'+categoryObj[i]["name"]+'">' + categoryObj[i]["name"] + '</a></td>';
-			str += '		<td>' + outageOunt + ' of ' + serviceCount + '</td>';
+			str += '		<td class="'+statusCount+'">' + outageCount + ' of ' + serviceCount + '</td>';
+			str += '	<td style="width: 1px;";></td>';
 			str += '		<th class="'+status+'">' + avail + '%</th>';
 			str += '	</tr>';
 
 			totalAvail += parseInt(avail);
-			outageTotalCount += parseInt(outageOunt);
+			outageTotalCount += parseInt(outageCount);
 			serviceTotalCount += parseInt(serviceCount);
 		}
 
 		str += '</table>';
 
 		$('#categoryInfo').append(str);
-
+		
+		if(outageTotalCount == 0){
+			var statusTotal = "normal";
+		}else{
+			var statusTotal = "critical";
+		} 
+		
+		if(Number(categoryObj[i]["availabili"]).toFixed(2) >= 100){
+			var statustotalAvail = "normal";
+		}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 90 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 99){
+			var statustotalAvail = "warning";
+		}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 80 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 89){
+			var statustotalAvail = "minor";
+		}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 70 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 79){
+			var statustotalAvail = "major";
+		}else if (Number(categoryObj[i]["availabili"]).toFixed(2) <= 69){
+			var statustotalAvail = "critical";
+		} 
 		// 전체 가용률
 		var tstr = "";
 		tstr += '<table class="table table-striped">';
 		tstr += '	<colgroup><col class="span6" /><col class="span3" /><col class="span3" /></colgroup>';
-		tstr += '	<tr><th>전체</th><th>중단</th><th>이용률</th></tr>';
+		tstr += '	<tr><th>전체</th><th>중단</th><th></th><th>이용률</th></tr>';
 		tstr += '	<tr><td>전체 가용률</td>';
-		tstr += '	<td>' + outageTotalCount + ' of ' + serviceTotalCount
+		tstr += '	<td class="'+statusTotal+'">' + outageTotalCount + ' of ' + serviceTotalCount
 				+ '</td>';
-		tstr += '	<td>' + (totalAvail / categoryObj.length).toFixed(2)
+		tstr += '	<td style="width: 1px;";></td>';
+		tstr += '	<td class="'+statustotalAvail+'">' + (totalAvail / categoryObj.length).toFixed(2)
 				+ '%</td>';
 		tstr += '	</tr></table>';
 

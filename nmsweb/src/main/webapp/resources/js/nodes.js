@@ -176,7 +176,6 @@ function searchNodeFromServiceId(callback, serviceId) {
 		alert("서비스 정보가 없습니다.");
 		return;
 	}
-alert(serviceId);
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/nodes/searchService/' + serviceId,
@@ -582,6 +581,14 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 	var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
 	var str = "";
 
+	str += "<tr>";
+	str += "<td><h4>id</h4></td>";
+	str += "<td><h4>Node</h4></td>";
+	str += "<td><h4>Node Create Time</h4></td>";
+	str += "<td><h4>&nbsp;</h4></td>";
+	str += "<td><h4>&nbsp;</h4></td>";
+	str += "</tr>";
+	
 	if (jsonObj["node"] == null || jsonObj["node"] ==""){
 		
 		str += "<tr>";
@@ -648,19 +655,18 @@ if (jsonObj["nodes"] == null || jsonObj["nodes"] ==""){
 	}else if (nodeObj.length == 1) {
 		str += "<tr>";
 		str += "<td>1</td>";
-		str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+ "'>"
-				+ nodeObj["@label"]+"&nbsp;[&nbsp;"+nodeObj["@id"]+"&nbsp;]"
+		str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj[0]["@id"]+ "'>"
+				+ nodeObj[0]["@label"]+"&nbsp;[&nbsp;"+nodeObj[0]["@id"]+"&nbsp;]"
 				+ "</a></td>";
 		
 		if(auth == "Admin"){
-			str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj["@id"]+'\');">관리</button></td>';
-			str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj["@id"]+'\');">삭제</button></td>';
+			str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj[0]["@id"]+'\');">관리</button></td>';
+			str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj[0]["@id"]+'\');">삭제</button></td>';
 		}
 		str += "</tr>";
 		
 		
 	}else if (nodeObj.length > 1) {
-		
 		for ( var i in nodeObj) {
 			str += "<tr>";
 			str += "<td>"

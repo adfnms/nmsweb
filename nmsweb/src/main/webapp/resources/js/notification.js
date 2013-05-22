@@ -88,12 +88,11 @@ function getPathName(name,initialDelay,userInterval,userName,userAutoNotify,user
 //Return notification list related with given userName
 function getNotoficationList(callback, userId ,data){
 	//console.log('/' + version + '/notifications/searchUser/'+userId+"?"+data);
-	
 	$.ajax({
 		type : 'get',
-		//url : '/' + version + '/notifications/searchUser/'+userId,
-		url :'/v1/notifications/searchUser/admin?pagetime=2013-03-20T06:22:43.467-04:00&limit=2',
-		//data : data,
+		url : '/' + version + '/notifications/searchUser/'+userId,
+		//url :'/v1/notifications/searchUser/admin?pagetime=2013-03-20T06:22:43.467-04:00&limit=2',
+		data : data,
 		contentType: "application/json;charset=UTF-8", 
 		dataType : 'json',
 		error : function(data) {
@@ -104,9 +103,7 @@ function getNotoficationList(callback, userId ,data){
 			}
 		},
 		success : function(data) {
-			
 			if (typeof callback == "function") {
-				console.log(data);
 				callback(data);
 			}
 		}
@@ -454,7 +451,7 @@ function getUserNotiList(callback , userId, nowDate, recentCount ){
 		return;
 		
 	}
-	var filter ="pagetime="+nowDate+".467-04:00&limit="+recentCount;
+	var filter ="pagetime="+nowDate+".467-04:00&"+recentCount;
 	getNotoficationList(callback, userId ,filter );
 		
 }
@@ -466,8 +463,7 @@ function getUserNotiList(callback , userId, nowDate, recentCount ){
  * @param recentCount
  */
 function getTotalNotiList(callback, nowDate, recentCount ){
-	
-	var filter ="pagetime="+nowDate+".510547-09&limit="+recentCount;
+	var filter ="pagetime="+nowDate+".510547-09&"+recentCount;
 	getTotalNotoficationList(callback,filter);
 		
 }
@@ -511,10 +507,10 @@ function getAllEvent(callback){
 /**
  * @param jsonObj
  */
-function userNotiListjsonObj(jsonObj,MyNoti) {
+function userNotiListjsonObj(jsonObj) {
 	
 		var str = "";
-		//alert("jsonObj");
+		
 	var userObj = jsonObj["notifications"];
 	
 	
@@ -527,7 +523,6 @@ function userNotiListjsonObj(jsonObj,MyNoti) {
 			
 			
 			/************************Get @severity  from event****************************/
-			 
 			var eventId = userObj[i]["eventid"];
 			
 			var stat = "";
@@ -544,16 +539,13 @@ function userNotiListjsonObj(jsonObj,MyNoti) {
 				},
 				success : function(data) {
 					stat = data["event"]["@severity"];
-					
 				}
-
 			});
 			
 			/************************Get @severity  from event****************************/
 			
 			
 			str += "<tr>";
-			if(MyNoti == "My"){
 			str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";										
 			str += userObj[i]["notifyid"];											//notifyid
 			str += "	</a></td>";
@@ -570,13 +562,11 @@ function userNotiListjsonObj(jsonObj,MyNoti) {
 			str += "	<td class=\"span6\" >";
 			str += userObj[i]["textmsg"];											//textmsg
 			str += "	</td>";
-			}
 			str += "</tr>";
 			}
 		
 	} else {
 		str += "<tr>";
-		if(MyNoti == "My"){
 		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";		//Id
 		str += userObj[0]["notifyid"];
 		str += "	</td>";
@@ -592,7 +582,6 @@ function userNotiListjsonObj(jsonObj,MyNoti) {
 		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";
 		str += userObj[0]["textmsg"];
 		str += "	</td>";
-		}
 		str += "</tr>";
 	
 		
@@ -603,10 +592,13 @@ function userNotiListjsonObj(jsonObj,MyNoti) {
 /**
  * @param jsonObj
  */
-function totalNotiListjsonObj(jsonObj ,totalNoti) {
+function totalNotiListjsonObj(jsonObj) {
 	
 	var str = "";
 
+	console.log(jsonObj);
+	
+	
 	var userObj = jsonObj["notifications"];
 	if(userObj.length >1){
 		for ( var i in userObj) {
@@ -629,14 +621,13 @@ function totalNotiListjsonObj(jsonObj ,totalNoti) {
 				success : function(data) {
 					stat = data["event"]["@severity"];
 					
-					
 				}
 
 			});
 			
 			
 			str += "<tr>";
-			if(totalNoti == "My"){
+			
 			str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";										
 			str += userObj[i]["notifyid"];											//notifyid
 			str += "	</a></td>";
@@ -653,13 +644,13 @@ function totalNotiListjsonObj(jsonObj ,totalNoti) {
 			str += "	<td class=\"span6\" >";
 			str += userObj[i]["textmsg"];											//textmsg
 			str += "	</td>";
-			}
+			
 			str += "</tr>";
 		}
 		
 	}else{
 		str += "<tr>";
-		if(totalNoti == "My"){
+		
 		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";		//Id
 		str += userObj[0]["notifyid"];
 		str += "	</td>";
@@ -675,7 +666,7 @@ function totalNotiListjsonObj(jsonObj ,totalNoti) {
 		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";
 		str += userObj[0]["textmsg"];
 		str += "	</td>";
-		}
+		
 		str += "</tr>";
 		
 	}

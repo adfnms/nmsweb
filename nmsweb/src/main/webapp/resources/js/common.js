@@ -52,13 +52,24 @@ function setUrlData(urlData) {
  */
 function getPagingHtml(jsonObj, callback, totalCount, crruntPageNm, rowSize,
 		pageBlockSize) {
-
+	
+	alert("totalCount : "+totalCount);
+	alert("crruntPageNm : "+crruntPageNm);
+	alert("rowSize : "+rowSize);
+	alert("pageBlockSize : "+pageBlockSize);
+	
+	// ex) int Val = Math.floor(3.78) Val = 3
 	var startPage = Math.floor(crruntPageNm / pageBlockSize) + 1;
+	
+	alert("startPage : "+startPage);
+	
+	// ex) int Val = Math.ceil(3.38) Val = 4
+	var endPage = Math.ceil(totalCount / rowSize) > parseInt(startPage)+ parseInt(pageBlockSize) - 1 
+				? parseInt(startPage)+ parseInt(pageBlockSize) - 1 
+				: Math.ceil(totalCount / rowSize);
 
-	var endPage = Math.ceil(totalCount / rowSize) > parseInt(startPage)
-			+ parseInt(pageBlockSize) - 1 ? parseInt(startPage)
-			+ parseInt(pageBlockSize) - 1 : Math.ceil(totalCount / rowSize);
-
+	alert("endPage : "+endPage);
+	
 	var str = "<div class='pagination' style='text-align:center;'><ul>";
 	if ((startPage * pageBlockSize * 2) <= startPage) {
 		str += '<li><a href="javascript:' + callback + '(\'1\');"><<</a></li>';

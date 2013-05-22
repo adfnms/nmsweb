@@ -43,7 +43,7 @@
 			str += "</tr>";
 			
 		}
-		
+		$('#recodTable').empty();
 		$('#recodTable').append(str);
 	}
 	
@@ -95,8 +95,9 @@
 		var beforeOneDay=yesterday(); //하루전
 		$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeOneDay+"</h5></div>");
 		
-	   
+		
 		$('#trHide').hide();
+		$('#recodInfoTable').empty();
 		$('#recodInfoTable').append(str);
 		$("#deth2").show("show");
 		
@@ -106,7 +107,12 @@
 			var valsp=val.split(",");
 			var val = valsp[0];
 			var resource = valsp[1];
-		
+			
+			var dayString="day";
+			$("select[name=rtstatus] option[value="+dayString+"]").attr("selected",true);
+			var beforeOneDay=yesterday(); //하루전
+			$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeOneDay+"</h5></div>");
+			
 			$("#ResourceInfo").html("<div class=\"span12\"><h5 class=\"text-success\">Resource : "+resource+"</h5>");
 			$('#timePeriod').show();
 		
@@ -223,7 +229,7 @@
 		<div class=" span6 well">
 		<div class="row-fluid">
 					<div class="span12 text-center">
-						<h4 id="nodeLabel">자원별&nbsp;노드&nbsp;목록</h4>
+						<h4 id="nodeLabel">Node&nbsp;List</h4>
 					</div>
 				</div>
 			<div class="span12 well well-small" style=" height:152px; overflow-y:auto;">
@@ -236,7 +242,7 @@
 			</div>
 			<div class="row-fluid">
 					<div class="span12 text-center">
-						<h4 id="nodeLabel">자원별&nbsp;Resource&nbsp;목록</h4>
+						<h4 id="nodeLabel">Resource&nbsp;List</h4>
 					</div>
 				</div>
 			 <div class="span12 well well-small" style=" height:180px; overflow-y:auto;">
@@ -245,7 +251,7 @@
 						<table class="table table-striped table-hover table-condensed table-stacked" id="recodInfoTable">
 							<tr id = "trHide">
 								
-								<td><h4 class="text-error text-center">자원별&nbsp;노드&nbsp;목록을&nbsp;선택해&nbsp;주세요.</h4></td>
+								<td><h4 class="text-error text-center">Node&nbsp;List를&nbsp;선택해&nbsp;주세요.</h4></td>
 							</tr>
 						</table>
 					</div>
@@ -256,7 +262,7 @@
 			 <div class="span6 well ">
 			 <div class="span12 well well-small">
 		 		<div class="span12 text-center">
-					<h4 id="nodeLabel">선택한&nbsp;노드</h4>
+					<h4 id="nodeLabel">Node&nbsp;노드</h4>
 				</div>
 				<div class="row-fluid text-center" id="nodeInfo">
 					<!-- <div class="span6" ></div> -->
@@ -264,7 +270,7 @@
 					<!-- <div class="span6" ></div> -->
 				</div>
 				<div class="span12 text-center" style="margin-left: 0px;">
-					<h4 id="nodeLabel">선택한&nbsp;리소스</h4>
+					<h4 id="nodeLabel">선택한&nbsp;Resource</h4>
 				</div>
 				<div class="row-fluid text-center" id="ResourceInfo">
 				</div>

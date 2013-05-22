@@ -15,7 +15,7 @@
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script type="text/javascript">
 	var pageNum = 1;
-	var limit = 20;
+	var limit =20;
 	var offset = 0;
 	$(document).ready(function() {
 		
@@ -24,8 +24,11 @@
 	});
 	
 	function addOutage(jsonObj){
-
-		var str = "<tr><th>인터페이스</th><th>서비스</th><th>중단 시간</th><th>회복 시간</th><th>ID</th></tr>";
+		
+		console.log("addOutage");
+		console.log(jsonObj);
+		
+		var str = "<tr><th>ID</th><th>인터페이스</th><th>중단 시간</th><th>회복 시간</th><th>서비스</th></tr>";
 		str += getTabletagToOutageSearchJsonObj(jsonObj);
 		$('#outageListTable').empty();
 		$('#outageListTable').append(str);
@@ -126,11 +129,11 @@
 					<div class="span12">
 						<table class="table table-striped" id="outageListTable">
 							<tr>
+								<th>ID</th>
 								<th>인터페이스</th>
 								<th>서비스</th>
 								<th>중단 시간</th>
 								<th>회복 시간</th>
-								<th>ID</th>
 							</tr>
 						</table>
 					</div>

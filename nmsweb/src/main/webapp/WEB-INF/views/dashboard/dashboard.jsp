@@ -21,6 +21,7 @@
 	$(document).ready(function() {
 		
 		/* Recent Events */
+		/*이벤트 목록  */
 		eventListAct();
 		
 		getTotalIndexInfo(initDashboard, null);
@@ -36,7 +37,19 @@
 			
 			var cateIdx = getCategorieIdx(categoryObj[i]["name"]);
 			
-			var status = Number(categoryObj[i]["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical";
+			 //var status = Number(categoryObj[i]["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical"; 
+			
+			/* if(Number(categoryObj["availabili"]).toFixed(2) >= 100){
+				var status = "normal";
+			}else if (Number(categoryObj["availabili"]).toFixed(2) >= 90 && Number(categoryObj["availabili"]).toFixed(2) <= 99){
+				var status = "warning";
+			}else if (Number(categoryObj["availabili"]).toFixed(2) >= 80 && Number(categoryObj["availabili"]).toFixed(2) <= 89){
+				var status = "minor";
+			}else if (Number(categoryObj["availabili"]).toFixed(2) >= 80 && Number(categoryObj["availabili"]).toFixed(2) <= 79){
+				var status = "major";
+			}else if (Number(categoryObj["availabili"]).toFixed(2) <= 69){
+				var status = "critical";
+			} */
  			
 			$('.graph-container>li:nth-child('+cateIdx+') span div').html(" ["+Number(categoryObj[i]["availabili"]).toFixed(2)+"%]");
 			$('.graph-container>li:nth-child('+cateIdx+')').attr("class",status+"-graph");
@@ -62,19 +75,18 @@
 		setTimeout(chkstats, 3000);
 	}
 	
+	/*이벤트 목록  */
 	function eventListAct(){
 		
 		var data = "==6";
  		getTotalEvenstListForDashboard(addEvents,data,"10");
 		
 	}
-	
+	/*이벤트 목록  */
 	/* Evnet Callback */
 	function addEvents(jsonObj){
-		console.log(jsonObj);
 		var str = "";
 		var events = jsonObj["event"];
-		console.log(events);
 		str = "	<div class='row-fluid'>"
 			+ "		<h5>이벤트&nbsp;목록&nbsp;["
 			+ events.length
@@ -143,7 +155,20 @@
 		
 		var categoryObj = jsonObj["CategoryInfo"];
 		
-		var status = Number(categoryObj["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical";
+		/* var status = Number(categoryObj["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical"; */
+		
+		if(Number(categoryObj["availabili"]).toFixed(2) >= 100){
+			var status = "normal";
+		}else if (Number(categoryObj["availabili"]).toFixed(2) >= 90 && Number(categoryObj["availabili"]).toFixed(2) <= 99){
+			var status = "warning";
+		}else if (Number(categoryObj["availabili"]).toFixed(2) >= 80 && Number(categoryObj["availabili"]).toFixed(2) <= 89){
+			var status = "minor";
+		}else if (Number(categoryObj["availabili"]).toFixed(2) >= 70 && Number(categoryObj["availabili"]).toFixed(2) <= 79){
+			var status = "major";
+		}else if (Number(categoryObj["availabili"]).toFixed(2) <= 69){
+			var status = "critical";
+		}
+		
 		
 		$('.graph-container>li:nth-child('+idx+') span div').html(" ["+Number(categoryObj["availabili"]).toFixed(2)+"%]");
 		$('.graph-container>li:nth-child('+idx+')').attr("class",status+"-graph");

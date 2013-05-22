@@ -135,7 +135,7 @@ function seachOutageToNodeId(callback, nodeId){
  * @param jsonObj
  */
 function getTabletagToOutageJsonObj(jsonObj) {
-
+	
 	var outages = jsonObj["outage"];
 
 	var str = "";
@@ -178,7 +178,7 @@ function getTabletagToOutageJsonObj(jsonObj) {
 						+ new Date(nullCheckJsonObject(
 								outages[i]["serviceLostEvent"], "time"))
 								.format('yy-MM-dd hh:mm:ss') + "</td>";
-				str += "<td>"
+				str += "<td class=\"text-success\">"
 						+ new Date(nullCheckJsonObject(
 								outages[i]["serviceRegainedEvent"], "time"))
 								.format('yy-MM-dd hh:mm:ss') + "</td>";
@@ -306,7 +306,6 @@ function getOutageInfoBox(jsonObj) {
  */
 function getTabletagToOutageSearchJsonObj(jsonObj) {
 	var outages = jsonObj["outage"];
-	
 	var str = "";
 	if (jsonObj["@count"] != "undefined" && jsonObj["@count"] != 0) {
 
@@ -315,36 +314,38 @@ function getTabletagToOutageSearchJsonObj(jsonObj) {
 			for ( var i in outages) {
 
 				str += "<tr>";
-				str += "<td><a href='/" + version
-						+ "/search/node/interfaceDesc.do?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"]
-						+ "&intf=" + outages[i]["ipAddress"] + "'>"
-						+ outages[i]["ipAddress"] + "</a></td>";
-				str += "<td><a href='/"
-						+ version
-						+ "/search/service/serviceDesc?nodeId="
-						+ outages[i]["serviceLostEvent"]["nodeId"]
-						+ "&intf="
-						+ outages[i]["ipAddress"]
-						+ "&serviceNm="
-						+ nullCheckJsonObject(
-								outages[i]["serviceLostEvent"]["serviceType"],
-								"name")
-						+ "'>"
-						+ nullCheckJsonObject(
-								outages[i]["serviceLostEvent"]["serviceType"],
-								"name") + "</a></td>";
-				str += "<td class=\"text-error\">"
-						+ new Date(nullCheckJsonObject(
-								outages[i]["serviceLostEvent"], "time"))
-								.format('yy-MM-dd hh:mm:ss') + "</td>";
-				str += "<td>"
-						+ new Date(nullCheckJsonObject(
-								outages[i]["serviceRegainedEvent"], "time"))
-								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				
 				str += "<td><a href='/" + version
 						+ "/search/outage/outageDesc?outageId="
 						+ outages[i]["@id"] + "'>" + outages[i]["@id"]
 						+ "</a></td>";
+				
+				str += "<td><a href='/" + version
+						+ "/search/node/interfaceDesc.do?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"]
+						+ "&intf=" + outages[i]["ipAddress"] + "'>"
+						+ outages[i]["ipAddress"] + "</a></td>";
+				str += "<td class=\"text-error\">"
+						+ new Date(nullCheckJsonObject(
+								outages[i]["serviceLostEvent"], "time"))
+								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				str += "<td class=\"text-success\">"
+						+ new Date(nullCheckJsonObject(
+								outages[i]["serviceRegainedEvent"], "time"))
+								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				str += "<td><a href='/"
+					+ version
+					+ "/search/service/serviceDesc?nodeId="
+					+ outages[i]["serviceLostEvent"]["nodeId"]
+					+ "&intf="
+					+ outages[i]["ipAddress"]
+					+ "&serviceNm="
+					+ nullCheckJsonObject(
+							outages[i]["serviceLostEvent"]["serviceType"],
+							"name")
+					+ "'>"
+					+ nullCheckJsonObject(
+							outages[i]["serviceLostEvent"]["serviceType"],
+							"name") + "</a></td>";
 				str += "</tr>";
 			}
 
@@ -352,35 +353,37 @@ function getTabletagToOutageSearchJsonObj(jsonObj) {
 			outages = outages == null ? jsonObj : jsonObj["outage"];
 			str += "<tr>";
 			str += "<td><a href='/" + version
-					+ "/search/node/interfaceDesc.do?nodeId=" + outages["serviceLostEvent"]["nodeId"]
-					+ "&intf=" + outages["ipAddress"] + "'>"
-					+ outages["ipAddress"] + "</a></td>";
-			str += "<td><a href='/"
-					+ version
-					+ "/search/service/serviceDesc?nodeId="
-					+ outages["serviceLostEvent"]["nodeId"]
-					+ "&intf="
-					+ outages["ipAddress"]
-					+ "&serviceNm="
-					+ nullCheckJsonObject(
-							outages["serviceLostEvent"]["serviceType"],
-							"name")
-					+ "'>"
-					+ nullCheckJsonObject(
-							outages["serviceLostEvent"]["serviceType"],
-							"name") + "</a></td>";
+				+ "/search/outage/outageDesc?outageId="
+				+ outages["@id"] + "'>" + outages["@id"]
+				+ "</a></td>";
+			
+			str += "<td><a href='/" + version
+				+ "/search/node/interfaceDesc.do?nodeId=" + outages["serviceLostEvent"]["nodeId"]
+				+ "&intf=" + outages["ipAddress"] + "'>"
+				+ outages["ipAddress"] + "</a></td>";
+			
 			str += "<td class=\"text-error\">"
-					+ new Date(nullCheckJsonObject(
+				+ new Date(nullCheckJsonObject(
 							outages["serviceLostEvent"], "time"))
 							.format('yy-MM-dd hh:mm:ss') + "</td>";
 			str += "<td>"
-					+ new Date(nullCheckJsonObject(
+				+ new Date(nullCheckJsonObject(
 							outages["serviceRegainedEvent"], "time"))
 							.format('yy-MM-dd hh:mm:ss') + "</td>";
-			str += "<td><a href='/" + version
-					+ "/search/outage/outageDesc?outageId="
-					+ outages["@id"] + "'>" + outages["@id"]
-					+ "</a></td>";
+			str += "<td><a href='/"
+				+ version
+				+ "/search/service/serviceDesc?nodeId="
+				+ outages["serviceLostEvent"]["nodeId"]
+				+ "&intf="
+				+ outages["ipAddress"]
+				+ "&serviceNm="
+				+ nullCheckJsonObject(
+						outages["serviceLostEvent"]["serviceType"],
+						"name")
+				+ "'>"
+				+ nullCheckJsonObject(
+						outages["serviceLostEvent"]["serviceType"],
+						"name") + "</a></td>";
 			str += "</tr>";
 		}
 
