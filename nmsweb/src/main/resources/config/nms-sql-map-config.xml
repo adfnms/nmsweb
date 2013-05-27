@@ -10,4 +10,5 @@
 	<sqlMap resource="sqls/sample.xml" />
 	<sqlMap resource="sqls/nms/userManager.xml" />
 	<sqlMap resource="sqls/nms/system.xml" />
+	<sqlMap resource="sqls/nms/assets.xml" />
 </sqlMapConfig>

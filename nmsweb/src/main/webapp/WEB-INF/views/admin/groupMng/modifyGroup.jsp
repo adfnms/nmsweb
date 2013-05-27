@@ -48,7 +48,6 @@
 	function initMenuTree()
 	{
 		g_menuItems = new dhtmlXTreeObject('divMenuTree', '100%', '100%', 0);
-		
 		g_menuItems.setImagePath('<c:url value="/dhtmlx/imgs/csh_bluebooks/"/>');
 		g_menuItems.enableTreeLines(true);
 		g_menuItems.enableCheckBoxes(true); 
@@ -66,9 +65,50 @@
 
 	function loadMenuItems(){
 		
-		var menuItem = null;
+		/**************************************************************************/	
+		
+		  $.ajax({
+		      	url : '<c:url value="/admin/groupMng/getMenuTree.do" />',
+		        type:'post',
+		        dataType:'json',
+		        async:false,
+		        error:function(data, status, err){
+		            alert('Error, service not found');
+		            alert(res.errorMessage);
+		        },
+		        success:function(res){
+		        	console.log(res);
+		        
+		        	//g_menuItems.setCheck(res.menuItems.menuId,false);
+		         if(res.isSuccess == true){
+		       			
+		        	 if(res.isSuccess == false)
+		        		{
+		         		alert(res.errorMessage);        		
+		         		return;
+		        		}
+		         	
+		         	for(var i = 0; i < res.menuItems.length; i++)
+		         	{
+		 	        	var parent = 0;
+		 	        	if(res.menuItems[i].upperMenuId != null)
+		         		{
+		         			parent = res.menuItems[i].upperMenuId;
+		         		}
+		 	        	g_menuItems.insertNewChild(parent, res.menuItems[i].menuId, res.menuItems[i].menuNm, null);
+		 	        	g_menuItems.setUserData(res.menuItems[i].menuId, 'menuItem', res.menuItems[i]);
+		 	        	
+		         	}
+		       		}
+		        }
+		  
+			});  
+		
+	/**************************************************************************/
+		
+		/* var menuItem = null;
 
-		<c:forEach var="menuItem" items="${menuItems}">
+	 	 <c:forEach var="menuItem" items="${menuItems}">
 		
 			<c:set var="parentId" value="0" />
 			<c:if test="${not empty menuItem.upperMenuId}">
@@ -84,13 +124,13 @@
 				url : '${menuItem.url}',
 				openYn : '${menuItem.openYn}'
 			};
-			
+			console.log(menuItem);
 			g_menuItems.insertNewChild(${parentId}, ${menuItem.menuId}, '${menuItem.menuNm}', null);
-    		g_menuItems.setUserData(menuItem.menuId, 'menuItem', menuItem);
+    		g_menuItems.setUserData(menuItem.menuId, 'menuItem', menuItem); 
 		
-		</c:forEach>
+		</c:forEach>  */
 		
-	
+		selectMeunId();
 		
 	}
 
@@ -123,7 +163,6 @@ function saveMenuItems()
 	
 	var data = $("#SaveMenuItemsFrm").serialize();
 
-	console.log("tree checkbox menuId : "+data);
 	
 	
 	 $.ajax({
@@ -131,7 +170,6 @@ function saveMenuItems()
         type:'post',
         dataType:'json',
         data:data,
-        async:false,
         error:function(data, status, err){
             alert('Error, service not found');
             
@@ -149,6 +187,46 @@ function saveMenuItems()
 	}); 
 	
 }
+	
+	function selectMeunId(){
+
+		/**************************************************************************/	
+			var groupNm = ('${name}');// 그룹명
+			
+			  $.ajax({
+			      	url : '<c:url value="/admin/groupMng/selectMeunId.do?groupNm=" />'+groupNm,
+			        type:'post',
+			        dataType:'json',
+			        async:false,
+			        error:function(data, status, err){
+			            alert('Error, service not found');
+			            alert(res.errorMessage);
+			        },
+			        success:function(res){
+			        	console.log(res);
+			        
+			        	//g_menuItems.setCheck(res.menuItems.menuId,false);
+			         if(res.isSuccess == true){
+			       			
+			       			for(var i = 0; i < res.menuItems.length; i++)
+				        	{
+				        		alert("res.menuItems[i].menuId : "+res.menuItems[i].menuId);
+				        		
+				        		g_menuItems.setCheck(res.menuItems[i].menuId,true);
+				        	}	
+			       			
+			       		}
+			        }
+			  
+				});  
+			
+		/**************************************************************************/
+		
+		
+		
+		
+	}
+	
 	
 	/*********************************dhtmlx*tree*********************************************/
 	

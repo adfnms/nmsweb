@@ -65,7 +65,6 @@
  * 사용자 상세정보 갖고 오기
  */
 	function getUserDetail(user_id){
-		alert(user_id);
 		
 		$("#userIdModiFrm").find('[name=user-id]:input').val(user_id);
 		
@@ -96,7 +95,6 @@
 				return false;
 			
 			}else{
-				alert("1");
 				$.ajax({
 					
 					type : 'delete',
@@ -122,7 +120,6 @@
 	}
 	
 	function deleteToDb(userId){
-		alert("2");
 		//var userId = $("#userInfoFrm input[name=user-id]").val();
 		
 		var frm = document.getElementById("userIdModiFrm");
@@ -132,10 +129,13 @@
 		frm.action = "/v1/admin/userMng/deleteToDb.do";
 	    frm.submit();
 	}
+	
 </script>
 </head>
 
 <body>
+
+
 	<form  id="userIdModiFrm" name="userIdModiFrm">
 		<input type="hidden" id ="user-id" name="user-id" value="" />
 	</form>
@@ -158,7 +158,7 @@
 		<div class="row-fluid">
 			<div class="span12 well well-small">
 			
-				<table class="table table-striped table-hover table-condensed" id="userListTable" >
+				<table class="table table-striped table-hover table-condensed " id="userListTable" >
 					<colgroup>
 						<col class="span2"/>
 						<col class="span3"/>
@@ -188,5 +188,8 @@
 		<hr>
 	</div>
 	<!-- /container -->
+	
+	
+	
 </body>
 </html>

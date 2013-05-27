@@ -39,7 +39,7 @@ public class UserSettingController
 		
 		
 		
-		if(myNotification != null){
+		/*if(myNotification != null){
 			System.out.println("----------------------------");
 			System.out.println(myNotification);
 			System.out.println("----------------------------");
@@ -47,7 +47,7 @@ public class UserSettingController
 			System.out.println("----------------------------");
 			System.out.println(totalNotification);
 			System.out.println("----------------------------");
-		}
+		}*/
 		
 		
 		try{

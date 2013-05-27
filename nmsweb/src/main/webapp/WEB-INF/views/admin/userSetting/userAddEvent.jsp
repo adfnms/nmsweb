@@ -129,7 +129,6 @@ function setDestination(obj){
  		var status = $("#destiFrm input[name=status]").val();						//8.상태
  		var rule = $("#destiFrm input[name=rule]").val();							//9.메세지
  		
- 		alert(name);
  		
  		
  		

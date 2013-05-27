@@ -9,6 +9,8 @@ import com.bluecapsystem.nms.dto.MenuTbl;
 public interface GroupDao 
 {
 	boolean selectMenuList(String sysId, List<MenuTbl> refMenuList);
+	
+	boolean getMenuId(String groupNm, List<MenuGroupTbl> menuIds);
 	//public List<AuthTbl> getAuth(Map<String, Object> params);
 	public void regGroupTbl(GroupTbl groupTbl);
 	

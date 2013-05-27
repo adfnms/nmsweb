@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.bluecapsystem.nms.assets">
+
+
+
+	<select id="getSearchAssets" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.AssetsTbl">
+		select 
+			ID AS id,
+			ASS.NODEID AS nodeid, 
+			NODELABEL AS nodeLabel,
+			CATEGORY AS category, 
+			MANUFACTURER AS manufacturer, 
+			VENDOR AS vendor, 
+			MODELNUMBER AS modelnumber, 
+			SERIALNUMBER AS serialnumber, 
+			DESCRIPTION AS description, 
+			CIRCUITID AS circuitid, 
+			ASSETNUMBER AS assetnumber, 
+			ASS.OPERATINGSYSTEM AS operatingsystem, 
+			RACK AS rack, 
+			SLOT AS slot, 
+			PORT AS port, 
+			REGION AS region, 
+			DIVISION AS division, 
+			DEPARTMENT AS department, 
+			ADDRESS1 AS address1, 
+			ADDRESS2 AS address2, 
+			CITY AS city, 
+			STATE AS state, 
+			ZIP AS zip, 
+			BUILDING AS building, 
+			FLOOR AS floor, 
+			ROOM AS room, 
+			VENDORPHONE AS vendorphone, 
+			VENDORFAX AS vendorfax, 
+			VENDORASSETNUMBER AS vendorassetnumber, 
+			USERLASTMODIFIED AS userlastmodified, 
+			LASTMODIFIEDDATE AS lastmodifieddate, 
+			DATEINSTALLED AS dateinstalled, 
+			LEASE AS lease, 
+			LEASEEXPIRES AS leaseexpires, 
+			SUPPORTPHONE AS supportphone, 
+			MAINTCONTRACT AS maintcontract, 
+			MAINTCONTRACTEXPIRES AS maintcontractexpires, 
+			DISPLAYCATEGORY AS displaycategory, 
+			NOTIFYCATEGORY AS notifycategory, 
+			POLLERCATEGORY AS pollercategory, 
+			THRESHOLDCATEGORY AS thresholdcategory, 
+			COMMENT AS comment, 
+			MANAGEDOBJECTINSTANCE AS managedobjectinstance, 
+			MANAGEDOBJECTTYPE AS managedobjecttype, 
+			USERNAME AS username, 
+			PASSWORD AS password, 
+			ENABLE AS enable, 
+			AUTOENABLE AS autoenable, 
+			CONNECTION AS connection, 
+			CPU AS cpu, 
+			RAM AS ram, 
+			STORAGECTRL AS storagectrl, 
+			HDD1 AS hdd1, 
+			HDD2 AS hdd2, 
+			HDD3 AS hdd3, 
+			HDD4 AS hdd4, 
+			HDD5 AS hdd5, 
+			HDD6 AS hdd6, 
+			NUMPOWERSUPPLIES AS numpowersupplies, 
+			INPUTPOWER AS inputpower, 
+			ADDITIONALHARDWARE AS additionalhardware, 
+			ADMIN AS admin, 
+			SNMPCOMMUNITY AS snmpcommunity, 
+			RACKUNITHEIGHT  AS rackunitheight
+		FROM 
+			ASSETS ASS
+		INNER JOIN 
+			NODE ND ON ND.NODEID = ASS.NODEID
+  		WHERE 
+  			CATEGORY =#category#;
+		
+	</select>
+</sqlMap>
+	

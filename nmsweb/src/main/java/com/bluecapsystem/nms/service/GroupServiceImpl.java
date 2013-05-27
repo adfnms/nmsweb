@@ -183,6 +183,25 @@ public class GroupServiceImpl extends BaseService implements GroupService
 		}
 	}
 
+
+	@Override
+	public boolean getMenuId(String groupNm, List<MenuGroupTbl> menuIds) {
+		
+		boolean ret = false;
+		
+		
+		ret = groupDao.getMenuId(groupNm, menuIds);
+		
+		//System.out.println("--------------refMenuList----SystemService----------"+refMenuList);
+		if(ret == false)
+		{
+			logger.error("fail of get menu Id");
+		}
+		
+		return ret;		
+		
+	}
+
 	
 
 }

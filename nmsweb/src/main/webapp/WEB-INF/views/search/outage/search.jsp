@@ -127,7 +127,7 @@
 				</div>
 				<div class="row-fluid">
 					<div class="span12">
-						<table class="table table-striped" id="outageListTable">
+						<table class="table table-striped table-condensed" id="outageListTable">
 							<tr>
 								<th>ID</th>
 								<th>인터페이스</th>

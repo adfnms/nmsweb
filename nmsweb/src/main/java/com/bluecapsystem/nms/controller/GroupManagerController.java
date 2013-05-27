@@ -44,32 +44,28 @@ public class GroupManagerController  extends BaseController {
 		
 		return model;
 	}
-	@RequestMapping(value = "/admin/groupMng/modifyGroup", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/groupMng/modifyGroup")
 	public ModelAndView modifyGroup(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
-			@RequestParam(value = "sysId", required = false) String sysId,
+			//@RequestParam(value = "sysId", required = false) String sysId,
 			@RequestParam(value = "name", required = false)String name) 
 	{
 		boolean isSuccess = false;
 		String errorMessage = "";
-		System.out.println("---------------name--------------"+name);
 		
 		
 		ModelAndView model =  new ModelAndView();
-		List<MenuTbl> menuItems = new ArrayList<MenuTbl>();
-		if(groupService.getMenuList(sysId, menuItems) == false)
+		//List<MenuTbl> menuItems = new ArrayList<MenuTbl>();
+		///if(groupService.getMenuList(sysId, menuItems) == false)
 		{
 			errorMessage = "메뉴 목록 조회 실패";
 		}
 		
-		/*System.out.println(menuItems.get(0).getMenuId());
-		System.out.println(menuItems.get(0).getMenuLev());
-		System.out.println(menuItems.get(0).getMenuOrd());
-		System.out.println(menuItems.get(0).getUpperMenuId());*/
-		
-		model.addObject("menuItems", menuItems);
+	//	model.addObject("menuItems", menuItems);
+		model.addObject("isSuccess", isSuccess);
+		model.addObject("errorMessage", errorMessage);
+		//model.setViewName("jsonView");
 		
 		isSuccess = true;
-		
 		
 		
 		
@@ -80,6 +76,76 @@ public class GroupManagerController  extends BaseController {
 	}
 	
 	
+	//메뉴트리 갖고오기
+	@RequestMapping(value = "/admin/groupMng/getMenuTree")
+	public ModelAndView getMenuTree(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
+			@RequestParam(value = "sysId", required = false) String sysId,
+			@RequestParam(value = "name", required = false)String name) 
+	{
+		boolean isSuccess = false;
+		String errorMessage = "";
+		
+		
+		ModelAndView model =  new ModelAndView();
+		List<MenuTbl> menuItems = new ArrayList<MenuTbl>();
+		if(groupService.getMenuList(sysId, menuItems) == false)
+		{
+			errorMessage = "메뉴 목록 조회 실패";
+		}
+		
+		model.addObject("menuItems", menuItems);
+		
+		model.setViewName("jsonView");
+		
+		isSuccess = true;
+		
+		
+		model.addObject("isSuccess", isSuccess);
+		model.addObject("errorMessage", errorMessage);
+		//model.addObject("name",name);
+		//model.setViewName("/admin/groupMng/modifyGroup");
+		
+		return model;
+	}
+	
+	
+	
+	@RequestMapping(value = "/admin/groupMng/selectMeunId")
+	public ModelAndView modifyGroup(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
+			@RequestParam(value = "groupNm", required = false)String groupNm,
+			@ModelAttribute("MenuGroupTbl") MenuGroupTbl menuGroupTbl) 
+	{
+		boolean isSuccess = false;
+		String errorMessage = "";
+		
+		ModelAndView model =  new ModelAndView();
+		List<MenuGroupTbl> menuIds = new ArrayList<MenuGroupTbl>();
+		if(groupService.getMenuId(groupNm, menuIds) == false)
+		{
+			errorMessage = "메뉴Id SELECT 실패";
+		}
+		
+		System.out.println("---------------------------------------");
+		for( int i=0 ; i < menuIds.size(); i++)
+    	{
+			System.out.println(menuIds.get(i).getMenuId());
+    	}
+		System.out.println("---------------------------------------");
+		
+		
+		model.addObject("menuItems", menuIds);
+		
+		
+		isSuccess = true;
+		
+		
+		model.addObject("isSuccess", isSuccess);
+		model.addObject("errorMessage", errorMessage);
+		model.setViewName("jsonView");
+		
+		return model;
+	}
+	
 	
 	
 	
@@ -89,8 +155,6 @@ public class GroupManagerController  extends BaseController {
 			@RequestParam(value = "comments", required = false)String comments,
 			@ModelAttribute("GroupTbl") GroupTbl groupTbl) 
 	{
-		System.out.println("---------------groupName--------------"+groupName);
-		System.out.println("---------------comments--------------"+comments);
 		ModelAndView model =  new ModelAndView();
 		
 		try{
@@ -120,7 +184,6 @@ public class GroupManagerController  extends BaseController {
 			@RequestParam(value = "groupName", required = false)String groupName,
 			@ModelAttribute("GroupTbl") GroupTbl groupTbl) 
 	{
-		System.out.println("---------------groupName--------------"+groupName);
 		ModelAndView model =  new ModelAndView();
 		
 		try{
@@ -224,8 +287,6 @@ public class GroupManagerController  extends BaseController {
 		boolean isSuccess = false;
 		String errorMessage = "";
 		
-		System.out.println("---------------groupName--------------"+groupName);
-		System.out.println("---------------menuId--------------"+menuId);
 		ModelAndView model =  new ModelAndView();
 		
 		

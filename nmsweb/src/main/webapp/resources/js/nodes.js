@@ -27,6 +27,7 @@ function getNodeTotalList(callback, data) {
 		}
 	});
 }
+
 function getNodeListSideBar(callback, data) {
 
 	$.ajax({
@@ -861,3 +862,60 @@ function getInterfaceInfoBox(jsonObj){
 	
 	return str;
 }
+
+
+/** 서비스 리스트를 <option> 테그 str로 바꿔줌
+ * @param jsonObj
+ * @returns {String}
+ */
+function getSearchSelectJsonObj(jsonObj) {
+
+	var node= jsonObj["node"];
+
+	var optionNodeIdStr = "";
+	if (node.length > 1) {
+		optionNodeIdStr += "<option value=''>선택</option>";
+		for ( var i in node) {
+			optionNodeIdStr += "<option value='"+node[i]["@id"]+"'>"
+					+ node[i]["@id"] + "</option>";
+		}
+
+	} else {
+		optionNodeIdStr += "<option value=''>선택</option>";
+		optionNodeIdStr += "<option value='"+node["@id"]+"'>"
+				+ node["@id"] + "</option>";
+
+	}
+
+	return optionNodeIdStr;
+	
+}
+
+/** 서비스 리스트를 <option> 테그 str로 바꿔줌
+ * @param jsonObj
+ * @returns {String}
+ */
+function getSearchSelectNodeJsonObj(jsonObj) {
+
+	var node= jsonObj["node"];
+
+	var optionlabelStr = "";
+	if (node.length > 1) {
+		optionlabelStr += "<option value=''>선택</option>";
+		for ( var i in node) {
+			optionlabelStr += "<option value='"+node[i]["@label"]+"'>"
+					+ node[i]["@label"] + "</option>";
+		}
+
+	} else {
+		optionlabelStr += "<option value=''>선택</option>";
+		optionlabelStr += "<option value='"+node["@label"]+"'>"
+				+ node["@label"] + "</option>";
+
+	}
+
+	return optionlabelStr;
+	
+}
+
+

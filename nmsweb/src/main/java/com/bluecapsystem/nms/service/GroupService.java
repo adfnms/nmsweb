@@ -10,7 +10,8 @@ import com.bluecapsystem.nms.dto.UserTbl;
 public interface GroupService {	
 	//Menu Tree
 	boolean getMenuList(String sysId, List<MenuTbl> refMenuList);
-	
+	//Menu Tree
+		boolean getMenuId(String groupNm, List<MenuGroupTbl> menuIds);
 	/**
 	 * 권한 리스트 
 	 * @param authTbl

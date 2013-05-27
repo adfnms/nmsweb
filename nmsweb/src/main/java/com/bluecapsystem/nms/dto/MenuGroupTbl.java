@@ -18,7 +18,7 @@ public class MenuGroupTbl {
 	{
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append("GroupTbl[");
+		sb.append("MenuGroupTbl[");
 		
 		sb.append(String.format("menuId:%s,", getMenuId()));
 		sb.append(String.format("groupNm:%s,", getGroupNm()));

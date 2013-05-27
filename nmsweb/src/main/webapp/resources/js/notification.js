@@ -556,9 +556,9 @@ function userNotiListjsonObj(jsonObj) {
 			str += "	<td class=\"span2\">";										
 			str +=  new Date(userObj[i]["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
 			str += "	</td>";														
-			str += "	<td class=\"span1\" ><a href='/"+version+"/search/node/interfaceDesc.do?nodeId="+userObj[i]["nodeid"]+"&intf="+nullCheckJsonObject(userObj[i]["notifications"],"interfaceid")+"'>";
-			str += nullCheckJsonObject(userObj[i]["notifications"],"interfaceid");	//interface
-			str += "	</a></td>";	
+		//	str += "	<td class=\"span1\" ><a href='/"+version+"/search/node/interfaceDesc.do?nodeId="+userObj[i]["nodeid"]+"&intf="+nullCheckJsonObject(userObj[i]["notifications"],"interfaceid")+"'>";
+		//	str += nullCheckJsonObject(userObj[i]["notifications"],"interfaceid");	//interface
+		//	str += "	</a></td>";	
 			str += "	<td class=\"span6\" >";
 			str += userObj[i]["textmsg"];											//textmsg
 			str += "	</td>";
@@ -567,20 +567,21 @@ function userNotiListjsonObj(jsonObj) {
 		
 	} else {
 		str += "<tr>";
-		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";		//Id
-		str += userObj[0]["notifyid"];
-		str += "	</td>";
-		str += "	<td>";																			//condition
-		str += userObj[0]["notifyid"];
-		str += "	</td>";
-		str += "	<td>";																			//notification Time
-		str += userObj[0]["pagetime"];
-		str += "	</td>";																			//interface
-		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";
-		str += userObj[0]["interfaceid"];
-		str += "	</td>";																			//log
-		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";
-		str += userObj[0]["textmsg"];
+		str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj["notifyid"]+"&eventId="+userObj["eventid"]+"'>";										
+		str += userObj["notifyid"];											//notifyid
+		str += "	</a></td>";
+		str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj["eventid"]+"'>";										
+		str += userObj["eventid"];											//eventid
+		str += "	</a></td>";
+		str += "<th class='"+stat.toLowerCase()+"'>" + stat + "</th>";			//condition
+		str += "	<td class=\"span2\">";										
+		str +=  new Date(userObj["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
+		str += "	</td>";														
+	//	str += "	<td class=\"span1\" ><a href='/"+version+"/search/node/interfaceDesc.do?nodeId="+userObj[i]["nodeid"]+"&intf="+nullCheckJsonObject(userObj[i]["notifications"],"interfaceid")+"'>";
+	//	str += nullCheckJsonObject(userObj[i]["notifications"],"interfaceid");	//interface
+	//	str += "	</a></td>";	
+		str += "	<td class=\"span6\" >";
+		str += userObj["textmsg"];											//textmsg
 		str += "	</td>";
 		str += "</tr>";
 	
@@ -638,9 +639,9 @@ function totalNotiListjsonObj(jsonObj) {
 			str += "	<td class=\"span2\">";										
 			str +=  new Date(userObj[i]["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
 			str += "	</td>";														
-			str += "	<td class=\"span1\" ><a href='/"+version+"/search/node/interfaceDesc.do?nodeId="+userObj[i]["nodeid"]+"&intf="+nullCheckJsonObject(userObj[i]["notifications"],"interfaceid")+"'>";
-			str += nullCheckJsonObject(userObj[i]["notifications"],"interfaceid");	//interface
-			str += "	</a></td>";	
+		//	str += "	<td class=\"span1\" ><a href='/"+version+"/search/node/interfaceDesc.do?nodeId="+userObj[i]["nodeid"]+"&intf="+nullCheckJsonObject(userObj[i]["notifications"],"interfaceid")+"'>";
+		//	str += nullCheckJsonObject(userObj[i]["notifications"],"interfaceid");	//interface
+		//	str += "	</a></td>";	
 			str += "	<td class=\"span6\" >";
 			str += userObj[i]["textmsg"];											//textmsg
 			str += "	</td>";
@@ -651,20 +652,21 @@ function totalNotiListjsonObj(jsonObj) {
 	}else{
 		str += "<tr>";
 		
-		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";		//Id
-		str += userObj[0]["notifyid"];
-		str += "	</td>";
-		str += "	<td>";																			//condition
-		str += userObj[0]["notifyid"];
-		str += "	</td>";
-		str += "	<td>";																			//notification Time
-		str += userObj[0]["pagetime"];
-		str += "	</td>";																			//interface
-		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";
-		str += userObj[0]["interfaceid"];
-		str += "	</td>";																			//log
-		str += "	<td onclick=\"javascript:getUserDetail('"+userObj[0]["notifyid"]+"');\">";
-		str += userObj[0]["textmsg"];
+		str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj["notifyid"]+"&eventId="+userObj["eventid"]+"'>";										
+		str += userObj["notifyid"];											//notifyid
+		str += "	</a></td>";
+		str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj["eventid"]+"'>";										
+		str += userObj["eventid"];											//eventid
+		str += "	</a></td>";
+		str += "<th class='"+stat.toLowerCase()+"'>" + stat + "</th>";			//condition
+		str += "	<td class=\"span2\">";										
+		str +=  new Date(userObj["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
+		str += "	</td>";														
+	//	str += "	<td class=\"span1\" ><a href='/"+version+"/search/node/interfaceDesc.do?nodeId="+userObj[i]["nodeid"]+"&intf="+nullCheckJsonObject(userObj[i]["notifications"],"interfaceid")+"'>";
+	//	str += nullCheckJsonObject(userObj[i]["notifications"],"interfaceid");	//interface
+	//	str += "	</a></td>";	
+		str += "	<td class=\"span6\" >";
+		str += userObj["textmsg"];											//textmsg
 		str += "	</td>";
 		
 		str += "</tr>";

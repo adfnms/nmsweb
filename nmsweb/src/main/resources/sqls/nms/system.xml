@@ -29,6 +29,15 @@
 			MENU_LEV, UPPER_MENU_ID, MENU_ORD
 	</select>
 
+	<select id="getMenuId" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.MenuGroupTbl">
+		select 
+			MENU_ID AS menuId
+		from 
+			MENU_GROUP_TBL 
+		where  
+			GROUP_NM = #groupNm#
+		
+	</select>
 	
 	<select id="showMenu" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.UserTbl">
 

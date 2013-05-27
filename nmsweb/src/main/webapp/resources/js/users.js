@@ -175,12 +175,12 @@ function userListStr(jsonObj ,groupNm){
 			
 			str += "<tr>";
 			if(groupNm == "Admin"){
-			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
+			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\"><a>";
 			str += userObj[i]["user-id"];
-			str += "	</td>";
-			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\">";
+			str += "	</a></td>";
+			str += "	<td onclick=\"javascript:getUserDetail('"+userObj[i]["user-id"]+"');\"><a>";
 			str += userObj[i]["full-name"];
-			str += "	</td>";
+			str += "	</a></td>";
 			str += "	<td>";
 			str += userObj[i]["user-comments"];
 			str += "	</td>";

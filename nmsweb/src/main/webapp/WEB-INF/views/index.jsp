@@ -23,8 +23,26 @@
 		getServiceList(addServiceList);
 
 		getTotalIndexInfo(addIndexInfo, null);
+		
+		/*노드 정보 갖고오기  */
+		getNodeTotalList(searchNodeLists, "orderBy=id&limit=0");
 	});
 
+	
+	function searchNodeLists(jsonObj) {
+		$('#id').empty();
+		$('#label').empty();
+
+		var str = getSearchSelectJsonObj(jsonObj);
+		var strNode = getSearchSelectNodeJsonObj(jsonObj);
+		
+		$('#id').append(str);
+		$('#label').append(strNode);
+	}
+
+	
+	
+	
 	//서비스 리스트 가져오기
 	function addServiceList(jsonObj) {
 
@@ -44,7 +62,7 @@
 		// 가용률
 		var str = "";
 		str += '<table class="table table-striped">';
-		str += '	<colgroup><col class="span6" /><col class="span3" /><col class="span3" /></colgroup>';
+		//str += '	<colgroup><col class="span6" /><col class="span3" /><col class="span3" /></colgroup>';
 		str += '	<tr><th>카테고리</th><th>중단</th><th></th><th>이용률</th></tr>';
 
 		for ( var i in categoryObj) {
@@ -74,10 +92,10 @@
 			var serviceCount = categoryObj[i]["serviceTotalCount"];
 
 			str += '	<tr>';
-			str += '		<td><a href="<c:url value="/category/nodeList?cateNm=" />'+categoryObj[i]["name"]+'">' + categoryObj[i]["name"] + '</a></td>';
-			str += '		<td class="'+statusCount+'">' + outageCount + ' of ' + serviceCount + '</td>';
+			str += '		<td style="width: 178px;"><a href="<c:url value="/category/nodeList?cateNm=" />'+categoryObj[i]["name"]+'">' + categoryObj[i]["name"] + '</a></td>';
+			str += '		<td class="'+statusCount+'" style=" width: 110px;">' + outageCount + ' of ' + serviceCount + '</td>';
 			str += '	<td style="width: 1px;";></td>';
-			str += '		<th class="'+status+'">' + avail + '%</th>';
+			str += '		<th class="'+status+'" style="width: 122px;">' + avail + '%</th>';
 			str += '	</tr>';
 
 			totalAvail += parseInt(avail);
@@ -109,7 +127,7 @@
 		// 전체 가용률
 		var tstr = "";
 		tstr += '<table class="table table-striped">';
-		tstr += '	<colgroup><col class="span6" /><col class="span3" /><col class="span3" /></colgroup>';
+		//tstr += '	<colgroup><col class="span6" /><col class="span3" /><col class="span3" /></colgroup>';
 		tstr += '	<tr><th>전체</th><th>중단</th><th></th><th>이용률</th></tr>';
 		tstr += '	<tr><td>전체 가용률</td>';
 		tstr += '	<td class="'+statusTotal+'">' + outageTotalCount + ' of ' + serviceTotalCount
@@ -173,7 +191,7 @@
 							<div class="row-fluid">
 								<div class="span12">
 									<div class="well well-small" id="categoryInfo"></div>
-									<div class="well well-small" id="totalCategoryInfo"></div>
+									<div class="well well-small" id="totalCategoryInfo" style ="height: 99px;"></div>
 								</div>
 							</div>
 						</div>
@@ -223,17 +241,21 @@
 									<form action="<c:url value="/search/node.do" />">
 										<div class="well well-small">
 											<fieldset>
-												<label for="id" class="span6">노드 ID</label><input
-													type="text" id="id" name="id" class="span6">
+												<label for="id" class="span6">노드 ID</label>
+												<select class="span6" id="id" name="id">
+													<option value="">선택</option>
+												</select>
 											</fieldset>
 											<fieldset>
-												<label for="label" class="span6">노드명</label><input
-													type="text" id="label" name="label" class="span6">
+												<label for="label" class="span6">노드명</label>
+												<!-- <input type="text" id="label" name="label" class="span6"> -->
+												<select class="span6" id="label" name="label">
+													<option value="">선택</option>
+												</select>
 											</fieldset>
 											<fieldset>
 												<div class="span6"></div>
-												<input type="submit" class="btn btn-primary span6"
-													title="Quick Search" value="검색">
+												<input type="submit" class="btn btn-primary span6" title="Quick Search" value="검색">
 											</fieldset>
 										</div>
 									</form>
@@ -253,8 +275,8 @@
 									<form action="<c:url value="/search/node.do" />">
 										<div class="well well-small">
 											<fieldset>
-												<label for="serviceId" class="span6">서비스</label> <select
-													class="span6" id="serviceId" name="serviceId">
+												<label for="serviceId" class="span6">서비스</label>
+												<select class="span6" id="serviceId" name="serviceId">
 													<option value="">선택</option>
 												</select>
 											</fieldset>

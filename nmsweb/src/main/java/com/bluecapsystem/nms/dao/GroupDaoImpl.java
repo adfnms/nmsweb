@@ -37,10 +37,6 @@ public class GroupDaoImpl extends BaseDao implements GroupDao
 		
 		params.put("sysId", sysId);
 		
-		//logger.debug(String.format("sqlMapId : %s, sysId: %s", sqlMapId, sysId));
-		
-		System.out.println("--------------refMenuList----SystemDaoImpl----------"+refMenuList);
-		
 		try
 		{
 			menuList = (List<MenuTbl>) super.getSqlMapClientTemplate().queryForList(sqlMapId, params);
@@ -54,6 +50,38 @@ public class GroupDaoImpl extends BaseDao implements GroupDao
 			if(menuList != null)
 			{
 				refMenuList.addAll(menuList);
+			}
+			//logger.info(String.format("sqlMapId : %s, sysId: %s, ret : %b", sqlMapId, sysId, ret));
+		}
+		return ret;
+	}
+	
+	
+	
+	@Override
+	public boolean getMenuId(String groupNm, List<MenuGroupTbl> menuIds) {
+		
+		boolean ret = false;
+		String sqlMapId = "com.bluecapsystem.nms.system.getMenuId";
+		
+		Map<String, Object>	params 		= new HashMap<String,Object>();
+		List<MenuGroupTbl> 		menuId 	= null;
+		
+		params.put("groupNm", groupNm);
+		
+		try
+		{
+			menuId = (List<MenuGroupTbl>) super.getSqlMapClientTemplate().queryForList(sqlMapId, params);
+			ret = true;
+		}catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+			ret = false;
+		}finally
+		{
+			if(menuId != null)
+			{
+				menuIds.addAll(menuId);
 			}
 			//logger.info(String.format("sqlMapId : %s, sysId: %s, ret : %b", sqlMapId, sysId, ret));
 		}
@@ -123,6 +151,9 @@ public class GroupDaoImpl extends BaseDao implements GroupDao
 		}
 		return true;
 	}
+
+
+	
 
 	
 	

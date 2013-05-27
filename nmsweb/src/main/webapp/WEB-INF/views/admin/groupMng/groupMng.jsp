@@ -55,13 +55,13 @@
 	
 	function getGroupInfo(obj){
 		
-		$("#groupFrm").find('[name=name]:input').val(obj);
+	 	$("#groupFrm").find('[name=name]:input').val(obj);
 		
 		var frm = document.getElementById("groupFrm");
 		
 		frm.action = "/v1/admin/groupMng/modifyGroup.do";
 		
-		frm.submit();
+		frm.submit(); 
 		
 	}
 	

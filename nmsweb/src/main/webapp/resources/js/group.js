@@ -4,7 +4,6 @@ function groupStr (name,comments,user){
  		var str ="{\"group\":[{\"name\":\""+name+"\",\"comments\":\""+comments+"\"," +
  				"\"user\":\""+user+"\"}]}";
  		
- 		console.log(str);
  		return str;
  	}	
 
@@ -151,10 +150,9 @@ function groupMemberSelectStr(jsonObj){
 	var name = jsonObj["name"];
 	var comments = jsonObj["comments"];
 	var user = jsonObj["user"];
-	console.log(jsonObj);
-	console.log("groupMemberSelectStr name : "+name);
-	console.log("groupMemberSelectStr comments : "+comments);
-	console.log("groupMemberSelectStr user : "+user);
+//	console.log("groupMemberSelectStr name : "+name);
+//	console.log("groupMemberSelectStr comments : "+comments);
+//	console.log("groupMemberSelectStr user : "+user);
 	
 	var selectStr = "";
 	

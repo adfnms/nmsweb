@@ -42,6 +42,15 @@
 		console.log(jsonObj);
 		$('#nodeListTable').empty();
 
+		/* $('#id').empty();
+		$('#label').empty();
+
+		var str = getSearchSelectJsonObj(jsonObj);
+		var strNode = getSearchSelectNodeJsonObj(jsonObj);
+		
+		$('#id').append(str);
+		$('#label').append(strNode); */
+		
 		$.ajax({
 			type : 'get',
 			url : '<c:url value="/menu/showMenu.do" />',
@@ -58,6 +67,7 @@
 	       		}
 				var str = getTabletagToSearchJsonObj(jsonObj,groupName);
 				$('#nodeListTable').append(str);
+				
 			}
 		});   	
 		
@@ -184,11 +194,13 @@
 									<label class="span2 control-label" for="label">노드명</label>
 									<div class="span4 controls">
 										<input type="text" id="label" class="span12" name="label"
-											value="${nodeLabel}" />
+											value="${nodeLabel}" /> 
+											
 									</div>
 									<label class="span2 control-label" for="id">노드 ID</label>
 									<div class="span3 controls">
-										<input type="text" id="id" class="span12" name="id" value="${nodeId}" />
+										 <input type="text" id="id" class="span12" name="id" value="${nodeId}" /> 
+										
 									</div>
 									<div class="span1">
 										<button type="button" class="btn btn-primary span12" title="검색"

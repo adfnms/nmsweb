@@ -153,7 +153,7 @@ var encodeTime = encodeURI(time);
 								<th class="span1"><h4>EventId</h4></th>
 								<th class="span1"><h4>Status</h4></th>
 								<th class="span2"><h4>PageTime</h4></th>
-								<th class="span1"><h4>Interface</h4></th>
+								<!-- <th class="span1"><h4>Interface</h4></th> -->
 								<th class="span6"><h4>Message</h4></th>
 							</tr>
 						</table>
@@ -176,7 +176,7 @@ var encodeTime = encodeURI(time);
 								<th class="span1"><h4>EventId</h4></th>
 								<th class="span1"><h4>Status</h4></th>
 								<th class="span2"><h4>PageTime</h4></th>
-								<th class="span1"><h4>Interface</h4></th>
+								<!-- <th class="span1"><h4>Interface</h4></th> -->
 								<th class="span6"><h4>Message</h4></th>
 							</tr>
 						</table>
