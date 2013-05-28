@@ -56,6 +56,64 @@ public class AssetsDaoImpl extends BaseDao implements AssetsDao
 	}
 
 
+	@Override
+	public boolean getAssetInfo(Integer nodeId, List<AssetsTbl> AssetInfo) {
+		boolean ret = false;
+		
+		
+		String sqlMapId = "com.bluecapsystem.nms.assets.getAssetsInfo";
+		
+		Map<String, Object>	params 		= new HashMap<String,Object>();
+		List<AssetsTbl> 		CatagoryLists 	= null;
+		System.out.println("---------AssetsDao------"+nodeId);
+		String nodeid= Integer.toString(nodeId); 
+		params.put("nodeid", nodeid);
+		System.out.println("---------AssetsDao-params-----"+nodeid);
+		try
+		{
+			CatagoryLists = (List<AssetsTbl>) super.getSqlMapClientTemplate().queryForList(sqlMapId, params);
+			ret = true;
+		}catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+			ret = false;
+		}finally
+		{
+			if(CatagoryLists != null)
+			{
+				AssetInfo.addAll(CatagoryLists);
+			}
+		}
+		return ret;
+	}
+
+
+	/*@Override
+	public boolean getAllAssetList(List<AssetsTbl> CatagoryList) {
+		boolean ret = false;
+		String sqlMapId = "com.bluecapsystem.nms.assets.getAllAssetList";
+		
+		List<AssetsTbl> CatagoryLists 	= null;
+		
+		try
+		{
+			CatagoryLists = (List<AssetsTbl>) super.getSqlMapClientTemplate().queryForList(sqlMapId);
+			ret = true;
+		}catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+			ret = false;
+		}finally
+		{
+			if(CatagoryLists != null)
+			{
+				CatagoryList.addAll(CatagoryLists);
+			}
+		}
+		return ret;
+	}*/
+
+
 
 	
 

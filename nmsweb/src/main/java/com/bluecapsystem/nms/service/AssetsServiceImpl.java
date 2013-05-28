@@ -21,10 +21,8 @@ public class AssetsServiceImpl extends BaseService implements AssetsService
 	public boolean getSearchAssets(String category, List<AssetsTbl> CatagoryList) {
 		boolean ret = false;
 		
-		
 		ret = assetsDao.getSearchAssets(category, CatagoryList);
 		
-		//System.out.println("--------------refMenuList----SystemService----------"+refMenuList);
 		if(ret == false)
 		{
 			logger.error("fail of get menu Id");
@@ -32,5 +30,34 @@ public class AssetsServiceImpl extends BaseService implements AssetsService
 		
 		return ret;
 	}
+
+	@Override
+	public boolean getAssetInfo(Integer nodeId, List<AssetsTbl> AssetInfo) {
+		boolean ret = false;
+		System.out.println("---------AssetsService------"+nodeId);
+		ret = assetsDao.getAssetInfo(nodeId, AssetInfo);
+		
+		if(ret == false)
+		{
+			logger.error("fail of get menu Id");
+		}
+		
+		return ret;
+	}
+
+	/*@Override
+	public boolean getAllAssetList(List<AssetsTbl> CatagoryList) {
+		
+		boolean ret = false;
+		
+		ret = assetsDao.getAllAssetList(CatagoryList);
+		
+		if(ret == false)
+		{
+			logger.error("fail of get menu Id");
+		}
+		
+		return ret;
+	}*/
 
 }

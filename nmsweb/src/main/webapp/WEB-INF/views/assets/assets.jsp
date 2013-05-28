@@ -26,31 +26,11 @@ try{
 <script src="<c:url value="/resources/js/users.js" />"></script>
 <script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/assets.js" />"></script>
 <script type="text/javascript">
 	
 	
-	function checkUserId(userId){
-		
-		$.ajax({
-			type:'post',
-		 	url:'<c:url value="/admin/userMng/checkUserId.do"/>',
-			data:'user-Id='+userId,
-			dataType:'json',
-			error:function(res){
-				
-				alert("서비스 실패");
-					
-	        },
-	        success: function(res){
-	        	if(res.result == false){
-	        		alert(res.message);
-	        		
-		   		}else{
- 			//------------성공 내용 추가-------------
-		   		}
-			}		
-		});
-	}
+	
 </script>
 </head>
 
@@ -96,9 +76,9 @@ try{
 												<option value="Unspecified">Unspecified</option>
 												<option value="Infrastructure">Infrastructure</option>
 												<option value="Server">Server</option>
-												<option value="desktop">desktop</option>
+												<option value="Desktop">Desktop</option>
 												<option value="Loptop">Loptop</option>
-												<option value="printer">printer</option>
+												<option value="Printer">Printer</option>
 												<option value="Telephony">Telephony</option>
 												<option value="Other">Other</option>
 											</select>
@@ -112,7 +92,8 @@ try{
 									<div class="span12">
 									</div>
 									<div class="span12">
-										<a><label class="text-center span5 control-label">All nodes with asset info</label></a>
+										<a href="<c:url value="/assets/searchAssets.do" />"><label class="text-center span5 control-label">All nodes with asset info</label></a>
+										<!-- <a  title="" href="javascript:searchAssets()"><label class="text-center span5 control-label">All nodes with asset info</label></a> -->
 									</div>
 								</div>
 							</table>

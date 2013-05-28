@@ -23,23 +23,10 @@
 	
 	//callback 함수 jsonObj를 이용 파싱 후 append
 	function searchAssetsList(jsonObj) {
-		
-		 var str = assetsListStr(jsonObj);
-			
-		 $('#userTable').append(str);
-		// $('#nodeListTable').empty();
-		
-				/* for(var i = 0; i < jsonObj.userList.length; i++)
-	       		{
-	        		var	groupName= jsonObj.userList[i].groupNm;
-	       		}
-				var str = getTabletagToSearchJsonObj(jsonObj,groupName); */
-				
-				//$('#nodeListTable').append(str);
-		
-		   	 
-		
-		
+		var str = "<tr><th>ASSETS</th><th>ASSET LINK</th><th>NODE LINK</th></tr>";
+		 str += assetsListStr(jsonObj);
+		 $('#assetsListTable').empty();
+		 $('#assetsListTable').append(str);
 	}
 	
 	
@@ -76,7 +63,13 @@
 			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12">
-						<table class="table table-striped" id="assetsListTable"></table>
+						<table class="table table-striped" id="assetsListTable">
+							<tr>
+								<th>ASSETS</th>
+								<th>ASSET LINK</th>
+								<th>NODE LINK</th>
+							</tr>
+						</table>
 					</div>
 				</div>
 			</div>

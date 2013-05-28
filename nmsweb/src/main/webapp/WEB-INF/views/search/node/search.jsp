@@ -39,7 +39,6 @@
 
 	//callback 함수 jsonObj를 이용 파싱 후 append
 	function addNodeLists(jsonObj) {
-		console.log(jsonObj);
 		$('#nodeListTable').empty();
 
 		/* $('#id').empty();

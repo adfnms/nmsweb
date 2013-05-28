@@ -48,9 +48,11 @@ public class AssetsController
 	}
 	
 	@RequestMapping(value = "/assets/modifyAssets", method = RequestMethod.GET)
-	public ModelAndView modifyAssets(HttpServletRequest request, HttpServletResponse response)
+	public ModelAndView modifyAssets(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "nodeId", required = false)String nodeId)
 	{
 		ModelAndView model = new ModelAndView();
+		model.addObject("nodeId", nodeId);
 		model.setViewName("/assets/modifyAssets");
 		return model;
 	}
@@ -60,8 +62,6 @@ public class AssetsController
 	public ModelAndView getSearchAssets(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "category", required = false)String category)
 	{
-		
-		System.out.println("-------category-----"+category);
 		
 		boolean isSuccess = false;
 		String errorMessage = "";
@@ -84,8 +84,32 @@ public class AssetsController
 		return model;
 	}
 	
-
 	
+	
+	@RequestMapping(value = "/assets/getAssetInfo", method = RequestMethod.GET)
+	public ModelAndView getAssetInfo(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "nodeId", required = false) Integer nodeId)
+	{
+		System.out.println("---------AssetsController------"+nodeId);
+		boolean isSuccess = false;
+		String errorMessage = "";
+		
+		ModelAndView model =  new ModelAndView();
+		
+		List<AssetsTbl> AssetInfo = new ArrayList<AssetsTbl>();
+		if(assetsService.getAssetInfo(nodeId, AssetInfo) == false)
+		{
+			errorMessage = "Catagory 검색 실패";
+		}
+		
+		model.addObject("AssetInfo", AssetInfo);
+		
+		isSuccess = true;
+		model.addObject("isSuccess", isSuccess);
+		model.addObject("errorMessage", errorMessage);
+		model.setViewName("jsonView");
+		return model;
+	}
 	
 	
 	
