@@ -138,7 +138,6 @@
 function saveMenuItems()
 {
 	var checkItemId = g_menuItems.getAllChecked();
-	//alert(checkItemId);
 	var checkItemIds = checkItemId.split(',');
 	
 	$("#SaveMenuItemsFrm").children().remove();

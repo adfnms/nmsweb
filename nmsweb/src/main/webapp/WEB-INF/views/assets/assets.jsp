@@ -30,11 +30,31 @@ try{
 <script type="text/javascript">
 	
 	
+function searchField(){
+	
+	var fieldText = $("#fieldFrm input[name=field]").val();
+	var fieldSelect = $("#fieldFrm select[name=fieldSelect]").val();
+	
+	$('#searchFieldFrm input[name=fieldName]').val((fieldSelect));
+	
+	$('#searchFieldFrm input[name=fieldValue]').val(fieldText);
+	
+var frm = document.getElementById("searchFieldFrm");
+	
+	frm.action = "/v1/assets/searchField.do";
+   
+	frm.submit();
+}	
+	
 	
 </script>
 </head>
 
 <body>
+<form id="searchFieldFrm" name = "searchFieldFrm">
+	<input type="hidden" name="fieldName" value=""  protect="true" />
+	<input type="hidden" name="fieldValue" value=""  protect="true" />
+</form>
 
 	<div class="container">
 
@@ -67,11 +87,10 @@ try{
 						<form id="userInfoFrm" name = "userInfoFrm" action="<c:url value="/assets/searchAssets.do" />">
 							<input type="hidden" name="regrId" value="<%= userId %>"  protect="true" />
 							<input type="hidden" name="modrId" value="<%= userId %>"  protect="true" />
-							<table class="table table-striped table-hover table-condensed table-stacked" id="recodTable" >
 								<div class="row-fluid">
 									<div class="span12" style="margin-top: 15px; margin-bottom: -20px;">
 										<label class="text-center span5 control-label">ASSETS in Category</label>
-										<div class="span4 controls" style ="margin-right: 16px;">
+										<div class="span4 controls" style ="margin-right: 13px;">
 											<select class="span12"    id="category"   name="category"> 
 												<option value="Unspecified">Unspecified</option>
 												<option value="Infrastructure">Infrastructure</option>
@@ -84,19 +103,89 @@ try{
 											</select>
 										</div>
 										<div class="span2 controls">
-											<!-- <a type="button" class="btn" title="" href="javascript:searchAssets()">Search</a> -->
 											<input type="submit" class="btn" title="Quick Search" value="Search">
-											<%-- <a type="button" class="btn" title="" href="<c:url value="/assets/searchAssets.do" />">Search</a> --%>
 										</div>
 									</div>
-									<div class="span12">
+									<!-- <div class="span12"></div> -->
+								</div>
+						</form>
+						<form id="fieldFrm" name = "fieldFrm">
+							<div class="row-fluid" style ="margin-left: 15px;">
+								<div class="span12" style="margin-top: 5px; margin-bottom: -14px;">
+									<!-- <label class="text-center span1 control-label">field</label> -->
+									<div class="span4 controls" style ="margin-right: 22px;">
+										<select class="span12"    id="fieldSelect"   name="fieldSelect"> 
+											<option value="">Field Search</option>
+											<option value="address1">Address 1</option>
+											<option value="address2">Address 2</option>
+											<option value="assetnumber">Asset Number</option>
+											<option value="building">Building</option>
+											<option value="circuitid">Circuit ID</option>
+											<option value="city">City</option>
+											<option value="comment">Comments</option>
+											<option value="dateinstalled">Date Installed</option>
+											<option value="department">Department</option>
+											<option value="description">Description</option>
+											<option value="displaycategory">Display Category</option>
+											<option value="division">Division</option>
+											<option value="floor">Floor</option>
+											<option value="lease">Lease</option>
+											<option value="leaseexpires">Lease Expires</option>
+											<option value="maintcontractexpires">Contract Expires</option>
+											<option value="maintcontract">Maint Contract Number</option>
+											<option value="supportphone">Maint Phone</option>
+											<option value="manufacturer">Manufacturer</option>
+											<option value="modelnumber">Model Number</option>
+											<option value="notifycategory">Notification Category</option>
+											<option value="operatingsystem">Operating System</option>
+											<option value="port">Port</option>
+											<option value="pollercategory">Poller Category</option>
+											<option value="rack">Rack</option>
+											<option value="region">Region</option>
+											<option value="room">Room</option>
+											<option value="serialnumberther">Serial Number</option>
+											<option value="slot">Slot</option>
+											<option value="state">State</option>
+											<option value="thresholdcategory">Threshold Category</option>
+											<option value="userlastmodified">User Last Modified</option>
+											<option value="vendor">Vendor</option>
+											<option value="vendorassetnumber">Vendor Asset Number</option>
+											<option value="vendorfax">Vendor Fax</option>
+											<option value="vendorphone">Vendor Phone</option>
+											<option value="zip">ZIP Code</option>
+											<option value="username">Username</option>
+											<option value="password">Password</option>
+											<option value="enable">Enable Password</option>
+											<option value="connection">Connection type</option>
+											<option value="AutoEnable">Auto Enable</option>
+											<option value="cpu">CPU</option>
+											<option value="ram">RAM</option>
+											<option value="storagectrl">Storage Controller</option>
+											<option value="hdd1">HDD 1</option>
+											<option value="hdd1">HDD 2</option>
+											<option value="hdd1">HDD 3</option>
+											<option value="hdd1">HDD 4</option>
+											<option value="hdd1">HDD 5</option>
+											<option value="hdd1">HDD 6</option>
+											<option value="numpowersupplies">Number of power supplies</option>
+											<option value="inputpower">Inputpower</option>
+											<option value="additionalhardware">Additional hardware</option>
+											<option value="admin">Admin</option>
+											<option value="snmpcommunity">SNMP community</option>
+											<option value="rackunitheight">Rack unit height</option>
+										</select>
 									</div>
-									<div class="span12">
-										<a href="<c:url value="/assets/searchAssets.do" />"><label class="text-center span5 control-label">All nodes with asset info</label></a>
-										<!-- <a  title="" href="javascript:searchAssets()"><label class="text-center span5 control-label">All nodes with asset info</label></a> -->
+									<div class="span4 controls">
+										<input class="span12" type="text"  id="field" name="field" value="">
+									</div>
+									<div class="span2 controls" style="margin-left: 24px;">
+										<a type="button" class="btn" title="" href="javascript:searchField()">Search</a>
 									</div>
 								</div>
-							</table>
+								<div class="span12" style ="margin-top: 33px; margin-left: -13px;">
+									<a href="<c:url value="/assets/searchAssets.do" />"><label class="text-center span5 control-label">All nodes with asset info</label></a>
+								</div>
+							</div>
 						</form>
 					</div>
 				</div>

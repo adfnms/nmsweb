@@ -37,21 +37,7 @@ public class UserSettingController
 		String Id =(String) session.getAttribute(Define.USER_ID_KEY);
 		ModelAndView model = new ModelAndView();
 		
-		
-		
-		/*if(myNotification != null){
-			System.out.println("----------------------------");
-			System.out.println(myNotification);
-			System.out.println("----------------------------");
-		}else{
-			System.out.println("----------------------------");
-			System.out.println(totalNotification);
-			System.out.println("----------------------------");
-		}*/
-		
-		
 		try{
-			
 			
 		}catch (Exception e) {
 			
@@ -120,8 +106,6 @@ public class UserSettingController
 	{
 		ModelAndView model = new ModelAndView();
 
-		System.out.println(name);
-		
 		model.addObject("name",name);
 		model.setViewName("/admin/userSetting/modifyNotification");
 		return model;

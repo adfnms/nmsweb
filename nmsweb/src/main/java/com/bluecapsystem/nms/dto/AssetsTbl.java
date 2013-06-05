@@ -8,9 +8,9 @@ public class AssetsTbl {
 
 	private Integer id;
 	private Integer nodeid;	
-	private String nodeLabel;
-	private String category;
-	private String manufacturer;
+	private String 	nodeLabel;
+	private String 	category;
+	private String 	manufacturer;
 	private String	vendor;
 	private String	modelnumber;
 	private String	serialnumber;

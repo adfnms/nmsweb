@@ -6,15 +6,19 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bluecapsystem.nms.define.Define;
 import com.bluecapsystem.nms.dto.AssetsTbl;
+import com.bluecapsystem.nms.dto.UserTbl;
 import com.bluecapsystem.nms.service.AssetsService;
 
 
@@ -46,13 +50,28 @@ public class AssetsController
 		model.setViewName("/assets/searchAssets");
 		return model;
 	}
+	@RequestMapping(value = "/assets/searchField", method = RequestMethod.GET)
+	public ModelAndView searchField(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "fieldName", required = false)String fieldName,
+			@RequestParam(value = "fieldValue", required = false)String fieldValue)
+	{
+		
+		ModelAndView model = new ModelAndView();
+		model.addObject("fieldName", fieldName);
+		model.addObject("fieldValue", fieldValue);
+		model.setViewName("/assets/searchField");
+		return model;
+	}
 	
 	@RequestMapping(value = "/assets/modifyAssets", method = RequestMethod.GET)
 	public ModelAndView modifyAssets(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(value = "nodeId", required = false)String nodeId)
+			@RequestParam(value = "nodeId", required = false)String nodeId,
+			@RequestParam(value = "nodeLabel", required = false)String nodeLabel)
 	{
+		
 		ModelAndView model = new ModelAndView();
 		model.addObject("nodeId", nodeId);
+		model.addObject("nodeLabel", nodeLabel);
 		model.setViewName("/assets/modifyAssets");
 		return model;
 	}
@@ -90,10 +109,9 @@ public class AssetsController
 	public ModelAndView getAssetInfo(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "nodeId", required = false) Integer nodeId)
 	{
-		System.out.println("---------AssetsController------"+nodeId);
 		boolean isSuccess = false;
 		String errorMessage = "";
-		
+		String nodeLavel = "";
 		ModelAndView model =  new ModelAndView();
 		
 		List<AssetsTbl> AssetInfo = new ArrayList<AssetsTbl>();
@@ -103,7 +121,7 @@ public class AssetsController
 		}
 		
 		model.addObject("AssetInfo", AssetInfo);
-		
+		model.addObject("nodeLavel", nodeLavel);
 		isSuccess = true;
 		model.addObject("isSuccess", isSuccess);
 		model.addObject("errorMessage", errorMessage);
@@ -112,8 +130,50 @@ public class AssetsController
 	}
 	
 	
+	@RequestMapping(value = "/assets/regAssets")
+	public ModelAndView regAssets(HttpServletRequest request, HttpServletResponse response,HttpSession session,
+			@ModelAttribute("AssetsTbl") AssetsTbl assetsTbl)
+	{
+		ModelAndView model =  new ModelAndView();
+		try{
+			String Id =(String) session.getAttribute(Define.USER_ID_KEY);
+			
+			assetsTbl.setUserlastmodified(Id);
+			
+			
+			if(assetsService.modifyToAssets(assetsTbl)==false){
+			}
+			
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		model.setViewName("/admin/userMng/userMng");
+		return model;
+	}
 	
-
-
+	@RequestMapping(value = "/assets/fieldSearch")
+	public ModelAndView fieldSearch(HttpServletRequest request, HttpServletResponse response,HttpSession session,
+			@ModelAttribute("AssetsTbl") AssetsTbl assetsTbl)
+	{
+		
+		boolean isSuccess = false;
+		String errorMessage = "";
+		
+		ModelAndView model =  new ModelAndView();
+		List<AssetsTbl> fieldInfo = new ArrayList<AssetsTbl>();
+		if(assetsService.fieldSearch(assetsTbl, fieldInfo)==false){
+				errorMessage = "Catagory 검색 실패";
+			
+			isSuccess = true;
+		}
+		
+		model.addObject("fieldData", fieldInfo);
+		model.addObject("isSuccess", isSuccess);
+		model.addObject("errorMessage", errorMessage);
+		model.setViewName("jsonView");
+		
+		return model;
 	
+	}
 }

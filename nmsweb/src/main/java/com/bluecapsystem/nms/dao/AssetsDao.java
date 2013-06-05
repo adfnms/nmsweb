@@ -9,6 +9,8 @@ public interface AssetsDao
 	
 	boolean getSearchAssets(String category, List<AssetsTbl> CatagoryList);
 	boolean getAssetInfo(Integer nodeId, List<AssetsTbl> AssetInfo);
+	void modifyToAssets(AssetsTbl assetsTbl);
+	boolean fieldSearch(AssetsTbl assetsTbl, List<AssetsTbl> fieldInfo);
 	
-	//boolean getAllAssetList(List<AssetsTbl> CatagoryList);
+	//boolean fieldSearch(List<AssetsTbl> assetsTbl);
 }

@@ -34,7 +34,6 @@ public class AssetsServiceImpl extends BaseService implements AssetsService
 	@Override
 	public boolean getAssetInfo(Integer nodeId, List<AssetsTbl> AssetInfo) {
 		boolean ret = false;
-		System.out.println("---------AssetsService------"+nodeId);
 		ret = assetsDao.getAssetInfo(nodeId, AssetInfo);
 		
 		if(ret == false)
@@ -42,6 +41,45 @@ public class AssetsServiceImpl extends BaseService implements AssetsService
 			logger.error("fail of get menu Id");
 		}
 		
+		return ret;
+	}
+
+	@Override
+	public boolean modifyToAssets(AssetsTbl assetsTbl) {
+		boolean ret = false;
+		try
+		{
+			assetsDao.modifyToAssets(assetsTbl);
+			
+			ret = true;
+			
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			ret = false;
+		}finally
+		{
+			
+		}
+		return ret;
+	}
+
+	@Override
+	public boolean fieldSearch(AssetsTbl assetsTbl, List<AssetsTbl>  fieldInfo) {
+		boolean ret = false;
+		try
+		{
+			assetsDao.fieldSearch(assetsTbl, fieldInfo);
+			ret = true;
+			
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			ret = false;
+		}finally
+		{
+			
+		}
 		return ret;
 	}
 

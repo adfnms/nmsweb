@@ -76,89 +76,182 @@
 		INNER JOIN 
 			NODE ND ON ND.NODEID = ASS.NODEID
 		
-			<isNotEmpty property="category" prepend="WHERE">
+			<!-- <isNotEmpty property="category" prepend="WHERE">
 				CATEGORY =#category#;
+			</isNotEmpty> -->
+		
+		
+		
+		<dynamic prepend="WHERE">
+         	
+			<isNotEmpty property="category" prepend="AND">
+					CATEGORY =#category#
 			</isNotEmpty>
+			<isNotEmpty property="nodeid" prepend="AND">
+					ASS.NODEID = $nodeid$
+			</isNotEmpty>
+			
+			<isNotEmpty property="hdd1" prepend="AND">
+					HDD1 =#hdd1#
+			</isNotEmpty>
+			
+			
+			
+         </dynamic>
 		
 		
 	</select>
 	
-		<select id="getAssetsInfo" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.AssetsTbl">
+	
+	<select id="fieldSearch" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.AssetsTbl">
 		select 
 			ID 						AS	 id,
 			ASS.NODEID 				AS	 nodeid, 
 			NODELABEL 				AS	 nodeLabel,
-			CATEGORY 				AS	 category, 
-			MANUFACTURER 			AS	 manufacturer, 
-			VENDOR 					AS	 vendor, 
-			MODELNUMBER 			AS	 modelnumber, 
-			SERIALNUMBER 			AS	 serialnumber, 
-			DESCRIPTION 			AS	 description, 
-			CIRCUITID 				AS	 circuitid, 
-			ASSETNUMBER 			AS	 assetnumber, 
-			ASS.OPERATINGSYSTEM 	AS	 operatingsystem, 
-			RACK 					AS	 rack, 
-			SLOT 					AS	 slot, 
-			PORT 					AS	 port, 
-			REGION 					AS	 region, 
-			DIVISION 				AS	 division, 
-			DEPARTMENT 				AS	 department, 
-			ADDRESS1 				AS	 address1, 
-			ADDRESS2 				AS	 address2, 
-			CITY 					AS	 city, 
-			STATE 					AS	 state, 
-			ZIP 					AS	 zip, 
-			BUILDING				AS	 building, 
-			FLOOR					AS	 floor, 
-			ROOM 					AS	 room, 
-			VENDORPHONE 			AS	 vendorphone, 
-			VENDORFAX 				AS	 vendorfax, 
-			VENDORASSETNUMBER 		AS	 vendorassetnumber, 
-			USERLASTMODIFIED 		AS	 userlastmodified, 
-			LASTMODIFIEDDATE 		AS	 lastmodifieddate, 
-			DATEINSTALLED 			AS	 dateinstalled, 
-			LEASE 					AS	 lease, 
-			LEASEEXPIRES 			AS	 leaseexpires, 
-			SUPPORTPHONE 			AS	 supportphone, 
-			MAINTCONTRACT 			AS	 maintcontract, 
-			MAINTCONTRACTEXPIRES 	AS	 maintcontractexpires, 
-			DISPLAYCATEGORY 		AS	 displaycategory, 
-			NOTIFYCATEGORY 			AS	 notifycategory, 
-			POLLERCATEGORY 			AS	 pollercategory, 
-			THRESHOLDCATEGORY		AS	 thresholdcategory, 
-			COMMENT 				AS	 comment, 
-			MANAGEDOBJECTINSTANCE 	AS	 managedobjectinstance, 
-			MANAGEDOBJECTTYPE 		AS	 managedobjecttype, 
-			USERNAME 				AS	 username, 
-			PASSWORD 				AS	 password, 
-			ENABLE 					AS	 enable, 
-			AUTOENABLE				AS	 autoenable, 
-			CONNECTION 				AS	 connection, 
-			CPU 					AS	 cpu, 
-			RAM 					AS	 ram, 
-			STORAGECTRL 			AS	 storagectrl, 
-			HDD1 					AS	 hdd1, 
-			HDD2 					AS	 hdd2, 
-			HDD3 					AS	 hdd3, 
-			HDD4 					AS	 hdd4, 
-			HDD5 					AS	 hdd5, 
-			HDD6 					AS	 hdd6, 
-			NUMPOWERSUPPLIES 		AS	 numpowersupplies, 
-			INPUTPOWER 				AS	 inputpower, 
-			ADDITIONALHARDWARE 		AS	 additionalhardware, 
-			ADMIN 					AS	 admin, 
-			SNMPCOMMUNITY 			AS	 snmpcommunity, 
-			RACKUNITHEIGHT  		AS	 rackunitheight
+			CATEGORY 				AS	 category
+			
 		FROM 
 			ASSETS ASS
 		INNER JOIN 
 			NODE ND ON ND.NODEID = ASS.NODEID
 		
-		WHERE 
-			ASS.NODEID = $nodeid$
-				
-		
-		
+		 <dynamic prepend="WHERE">
+			
+			
+			<isNotEmpty property="assetsTbl" prepend="OR">	COMMENT 				=#assetsTbl#	</isNotEmpty>
+			<isNotEmpty property="assetsTbl" prepend="OR">	DESCRIPTION 			=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	CIRCUITID 				=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ASSETNUMBER 			=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	DIVISION 				=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	DEPARTMENT 				=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ADDRESS1 				=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ADDRESS2 				=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	CITY 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	BUILDING				=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	FLOOR					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	DATEINSTALLED 			=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	DISPLAYCATEGORY 		=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	MANUFACTURER 			=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	SUPPORTPHONE 			=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	LEASE 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	LEASEEXPIRES 			=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	MAINTCONTRACT 			=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	MAINTCONTRACTEXPIRES 	=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	MODELNUMBER 			=#assetsTbl#	</isNotEmpty>
+			<isNotEmpty property="assetsTbl" prepend="OR">	NOTIFYCATEGORY 			=#assetsTbl#	</isNotEmpty>
+			<isNotEmpty property="assetsTbl" prepend="OR">	ASS.OPERATINGSYSTEM 		=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	PORT 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	POLLERCATEGORY 			=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	RACK 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	REGION 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ROOM 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	SERIALNUMBER 			=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	SLOT 					=#assetsTbl#	</isNotEmpty>
+			<isNotEmpty property="assetsTbl" prepend="OR">	STATE 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	THRESHOLDCATEGORY		=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	USERLASTMODIFIED 		=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	VENDOR 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	VENDORPHONE 			=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	VENDORFAX 				=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	VENDORASSETNUMBER 		=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ZIP 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	USERNAME 				=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	PASSWORD 				=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ENABLE 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	AUTOENABLE				=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	CONNECTION 				=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	CPU 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	RAM 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	STORAGECTRL 			=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	HDD1 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	HDD2 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	HDD3 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	HDD4 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	HDD5 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	HDD6 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	NUMPOWERSUPPLIES 		=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	INPUTPOWER 				=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ADDITIONALHARDWARE 		=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ADMIN 					=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	SNMPCOMMUNITY 			=#assetsTbl#	</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	RACKUNITHEIGHT  		=#assetsTbl#	</isNotEmpty>
+			
+         </dynamic> 
 	</select>
+	
+	
+	<update id="modifyToAssets"  parameterClass="com.bluecapsystem.nms.dto.AssetsTbl">
+    	UPDATE ASSETS 
+     	
+     	SET 
+			
+			NODEID 					=#nodeid#, 
+			CATEGORY 				=#category#, 
+			MANUFACTURER 			=#manufacturer#, 
+			VENDOR 					=#vendor#, 
+			MODELNUMBER 			=#modelnumber#, 
+			SERIALNUMBER 			=#serialnumber#, 
+			DESCRIPTION 			=#description#, 
+			CIRCUITID 				=#circuitid#, 
+			ASSETNUMBER 			=#assetnumber#, 
+			OPERATINGSYSTEM 		=#operatingsystem#, 
+			RACK 					=#rack#, 
+			SLOT 					=#slot#, 
+			PORT 					=#port#, 
+			REGION 					=#region#, 
+			DIVISION 				=#division#, 
+			DEPARTMENT 				=#department#, 
+			ADDRESS1 				=#address1#, 
+			ADDRESS2 				=#address2#, 
+			CITY 					=#city#, 
+			STATE 					=#state#, 
+			ZIP 					=#zip#, 
+			BUILDING				=#building#, 
+			FLOOR					=#floor#, 
+			ROOM 					=#room#, 
+			VENDORPHONE 			=#vendorphone#, 
+			VENDORFAX 				=#vendorfax#, 
+			VENDORASSETNUMBER 		=#vendorassetnumber#, 
+			USERLASTMODIFIED 		=#userlastmodified#, 
+			LASTMODIFIEDDATE		=date(now()), 
+			DATEINSTALLED 			=#dateinstalled#, 
+			LEASE 					=#lease#, 
+			LEASEEXPIRES 			=#leaseexpires#, 
+			SUPPORTPHONE 			=#supportphone#, 
+			MAINTCONTRACT 			=#maintcontract#, 
+			MAINTCONTRACTEXPIRES 	=#maintcontractexpires#, 
+			DISPLAYCATEGORY 		=#displaycategory#, 
+			NOTIFYCATEGORY 			=#notifycategory#, 
+			POLLERCATEGORY 			=#pollercategory#, 
+			THRESHOLDCATEGORY		=#thresholdcategory#, 
+			COMMENT 				=#comment#, 
+			MANAGEDOBJECTINSTANCE 	=#managedobjectinstance#, 
+			MANAGEDOBJECTTYPE 		=#managedobjecttype#, 
+			USERNAME 				=#username#, 
+			PASSWORD 				=#password#, 
+			ENABLE 					=#enable#, 
+			AUTOENABLE				=#autoenable#, 
+			CONNECTION 				=#connection#, 
+			CPU 					=#cpu#, 
+			RAM 					=#ram#, 
+			STORAGECTRL 			=#storagectrl#, 
+			HDD1 					=#hdd1#, 
+			HDD2 					=#hdd2#, 
+			HDD3 					=#hdd3#, 
+			HDD4 					=#hdd4#, 
+			HDD5 					=#hdd5#, 
+			HDD6 					=#hdd6#, 
+			NUMPOWERSUPPLIES 		=#numpowersupplies#, 
+			INPUTPOWER 				=#inputpower#, 
+			ADDITIONALHARDWARE 		=#additionalhardware#, 
+			ADMIN 					=#admin#, 
+			SNMPCOMMUNITY 			=#snmpcommunity#, 
+			RACKUNITHEIGHT  		=#rackunitheight#
+			
+   			WHERE 
+   				NODEID = #nodeid#
+    </update>  
+	
+	
 </sqlMap>
 	

@@ -17,15 +17,15 @@
 	$(document).ready(function() {
 		
 		/* ASSETS 데이터를 검색해서 가져온다 */
-		getSearchAssetsList(searchAssetsList, "${category}");
-		
+		getFieldSearchAssets(FieldListStr, "${fieldName}","${fieldValue}");
 	
 	});
 	
 	//callback 함수 jsonObj를 이용 파싱 후 append
-	function searchAssetsList(jsonObj) {
+	function FieldListStr(jsonObj) {
+	
 		var str = "<tr><th>ASSETS</th><th>ASSET LINK</th><th>NODE LINK</th></tr>";
-		str += assetsListStr(jsonObj);
+		str += FieldStr(jsonObj);
 		 $('#assetsListTable').empty();
 		 $('#assetsListTable').append(str);
 		 
