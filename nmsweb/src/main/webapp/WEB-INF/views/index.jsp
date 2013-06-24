@@ -52,7 +52,7 @@
 	}
 
 	function addIndexInfo(jsonObj) {
-		
+		console.log(jsonObj);
 		var categoryObj = jsonObj["CategoryInfo"];
 
 		var totalAvail = 0;
@@ -81,11 +81,13 @@
 				var status = "critical";
 			} 
 			
-			if(outageCount == 0){
+		/* 	 if(outageCount == 0){
 				var statusCount = "normal";
+				alert("normal"+outageCount);
 			}else{
 				var statusCount = "critical";
-			} 
+				alert("critical"+outageCount);
+			}  */
 			
 			var avail = Number(categoryObj[i]["availabili"]).toFixed(2);
 			var outageCount = categoryObj[i]["outageTotalCount"];
@@ -93,7 +95,7 @@
 
 			str += '	<tr>';
 			str += '		<td style="width: 178px;"><a href="<c:url value="/category/nodeList?cateNm=" />'+categoryObj[i]["name"]+'">' + categoryObj[i]["name"] + '</a></td>';
-			str += '		<td class="'+statusCount+'" style=" width: 110px;">' + outageCount + ' of ' + serviceCount + '</td>';
+			str += '		<td class="" style=" width: 110px;">' + outageCount + ' of ' + serviceCount + '</td>';
 			str += '	<td style="width: 1px;";></td>';
 			str += '		<th class="'+status+'" style="width: 122px;">' + avail + '%</th>';
 			str += '	</tr>';
@@ -108,20 +110,26 @@
 		$('#categoryInfo').append(str);
 		
 		if(outageTotalCount == 0){
+			
 			var statusTotal = "normal";
+			
 		}else{
 			var statusTotal = "critical";
 		} 
 		
-		if(Number(categoryObj[i]["availabili"]).toFixed(2) >= 100){
+		if((totalAvail / categoryObj.length).toFixed(2) >= 100){
 			var statustotalAvail = "normal";
-		}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 90 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 99){
+			alert("normal");
+		}else if ((totalAvail / categoryObj.length).toFixed(2) >= 90 && (totalAvail / categoryObj.length).toFixed(2) <= 99){
 			var statustotalAvail = "warning";
-		}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 80 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 89){
+			alert("warning");
+		}else if ((totalAvail / categoryObj.length).toFixed(2) >= 80 && (totalAvail / categoryObj.length).toFixed(2) <= 89){
 			var statustotalAvail = "minor";
-		}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 70 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 79){
+			alert("minor");
+		}else if ((totalAvail / categoryObj.length).toFixed(2) >= 70 && (totalAvail / categoryObj.length).toFixed(2) <= 79){
 			var statustotalAvail = "major";
-		}else if (Number(categoryObj[i]["availabili"]).toFixed(2) <= 69){
+			alert("major");
+		}else if ((totalAvail / categoryObj.length).toFixed(2) <= 69){
 			var statustotalAvail = "critical";
 		} 
 		// 전체 가용률
@@ -161,7 +169,8 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
-					<li><a href="<c:url value='/index.do'/>">Home</a></li>
+					<li><a href="<c:url value='/index.do'/>">Home</a><span class="divider">/</span></li>
+					<li><a href="/v1/surveillance.do">surveillance</a> <span class="divider">/</span></li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />

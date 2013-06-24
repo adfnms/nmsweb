@@ -198,30 +198,7 @@ public class AssetsDaoImpl extends BaseDao implements AssetsDao
 	
 
 
-	/*@Override
-	public boolean fieldSearch(List<AssetsTbl> CatagoryList) {
-		boolean ret = false;
-		String sqlMapId = "com.bluecapsystem.nms.assets.getAllAssetList";
-		
-		List<AssetsTbl> CatagoryLists 	= null;
-		
-		try
-		{
-			CatagoryLists = (List<AssetsTbl>) super.getSqlMapClientTemplate().queryForList(sqlMapId);
-			ret = true;
-		}catch(Exception ex)
-		{
-			logger.error(ex.getMessage());
-			ret = false;
-		}finally
-		{
-			if(CatagoryLists != null)
-			{
-				CatagoryList.addAll(CatagoryLists);
-			}
-		}
-		return ret;
-	}*/
+
 
 
 
