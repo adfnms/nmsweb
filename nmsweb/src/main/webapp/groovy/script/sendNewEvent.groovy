@@ -14,6 +14,7 @@ class sendEvent {
 //        println " Let's print Asterik"
 
       Socket socket = new Socket("192.168.0.23", 5817);
+//    Socket socket = new Socket("127.0.0.1", 5817);
       socket.outputStream.withWriter { out ->
 //              System.out.withWriter { out ->
       

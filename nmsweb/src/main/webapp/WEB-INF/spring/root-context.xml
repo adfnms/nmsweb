@@ -7,8 +7,7 @@
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
-	<util:properties id="config"
-		location="WEB-INF/properties/config.properties" />
+	<util:properties id="config" location="WEB-INF/properties/config.properties" />
 
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
