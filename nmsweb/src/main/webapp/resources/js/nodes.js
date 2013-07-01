@@ -578,7 +578,6 @@ function getTabletagToCategoryJsonObj(jsonObj) {
 }
 
 function getTabletagToSearchJsonObj(jsonObj, auth){
-	
 	var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
 	var str = "";
 

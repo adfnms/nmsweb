@@ -35,7 +35,7 @@
 		
 		$('#nodeListTable').empty();
 
-		var str = getTabletagToSearchJsonObj(jsonObj,"Y");
+		var str = getTabletagToSearchJsonObj(jsonObj,"Admin");
 		
 		$('#nodeListTable').append(str);
 		

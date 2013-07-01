@@ -130,8 +130,8 @@
 	}
 	
 	 function regGroupTbl(groupName,comments){
-		 alert("groupName : "+groupName);
-		 alert("comments : "+comments);
+		// alert("groupName : "+groupName);
+		// alert("comments : "+comments);
 		
 	      $.ajax({
 			type : 'get',

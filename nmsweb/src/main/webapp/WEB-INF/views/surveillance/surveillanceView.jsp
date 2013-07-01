@@ -42,7 +42,11 @@ function getCategoryHorTypesIndex(nodeItem)
 {
 	for(var i = 0; i < g_categoryHorTypes.length; i++)
 	{
-		if(nodeItem.name == g_categoryHorTypes[i])
+		
+		console.log("g_categoryHorTypes :"+g_categoryHorTypes[i]+" == HorcategoryName :"+nodeItem);
+		
+		
+		if(nodeItem == g_categoryHorTypes[i])
 		{
 			return i;
 		}
@@ -52,9 +56,11 @@ function getCategoryHorTypesIndex(nodeItem)
 
 function getCategoryVertTypesIndex(nodeItem)
 {
+	console.log("VertcategoryName :"+nodeItem);
 	for(var i = 0; i < g_categoryVertTypes.length; i++)
 	{
-		if(nodeItem.name == g_categoryVertTypes[i])
+		console.log("g_categoryVertTypes :"+g_categoryVertTypes[i]+" == VertcategoryName :"+nodeItem);
+		if(nodeItem== g_categoryVertTypes[i])
 		{
 			return i;
 		}
@@ -107,14 +113,15 @@ function getCountNodes(hIdx, vIdx)
 					alert('노드 리스트 가져오기 서비스 실패');
 				},
 				success : function(data) {
-					console.log(data);
+					console.log(data);////////////console/////////////
 		
  					if( data.nodeId.length >0) {
 				//	alert(data.nodeId.length);
 						for ( var i = 0; i < data.nodeId.length; i++) 
 						{
 							nodeid=data.nodeId[i];
-							console.log(nodeid["nodeid"]);
+							
+							console.log(" nodeid : "+nodeid["nodeid"]);////////////console/////////////
 							
 							g_nodes[i] = new Array();
 							var nodeIdx = 0;
@@ -126,18 +133,19 @@ function getCountNodes(hIdx, vIdx)
 								error : function(data) {},
 								success : function(data) 
 								{
-									console.log(data);
+									console.log(data);////////////console/////////////
 									
 									for(var j = 0; j < data.category.length; j++)
 									{
 										categoryName=data.category[j];
-										console.log(categoryName["@name"]);
+										console.log("Get CategoryName in nodeId : "+categoryName["@name"]);////////////console/////////////
 										
 										var idx = -1;
 										
-										var vIdx =  getCategoryVertTypesIndex(nodeid["nodeid"]);
+										var vIdx =  getCategoryVertTypesIndex(categoryName["@name"]);
+										console.log("vIdx : "+vIdx);
 										var hIdx = getCategoryHorTypesIndex(categoryName["@name"]);
-										
+										console.log("hIdx : "+hIdx);
 										
 										if(vIdx >= 0)
 										{

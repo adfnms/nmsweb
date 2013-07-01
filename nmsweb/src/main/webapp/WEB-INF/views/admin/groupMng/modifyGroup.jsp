@@ -209,7 +209,7 @@ function saveMenuItems()
 			       			
 			       			for(var i = 0; i < res.menuItems.length; i++)
 				        	{
-				        		alert("res.menuItems[i].menuId : "+res.menuItems[i].menuId);
+				        		//alert("res.menuItems[i].menuId : "+res.menuItems[i].menuId);
 				        		
 				        		g_menuItems.setCheck(res.menuItems[i].menuId,true);
 				        	}	
