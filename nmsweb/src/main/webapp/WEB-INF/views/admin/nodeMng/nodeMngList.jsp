@@ -12,6 +12,7 @@
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <script type="text/javascript">
 	
 	var pageNum = 1;
@@ -86,7 +87,7 @@
 				</div>
 				<div class="row-fluid">
 					<div class="span12">
-						<table class="table table-striped" id="nodeListTable"></table>
+						<table class="table table-striped table-hover" id="nodeListTable"></table>
 					</div>
 				</div>
 				<div class="row-fluid">

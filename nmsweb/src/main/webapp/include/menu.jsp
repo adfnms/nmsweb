@@ -106,7 +106,7 @@ function logOut(){
 				<li class="dropdown">
 					<a id="3" class="dropdown-toggle muted" data-toggle="dropdown" href="<c:url value="/monitoring/nodelist.do" />" style="width: 120px; display:none;"><h4>모니터링<b class="caret"></b> </h4></a>
 					<ul class="dropdown-menu">
-						<li id="31" style="display:none;"><a href="#">지도보기</a></li>
+						<!-- <li id="31" style="display:none;"><a href="#">지도보기</a></li> -->
 						<li id="32" style="display:none;"><a href="<c:url value="/monitoring/nodelist.do" />">노드목록</a></li>
 					</ul>
 				</li>

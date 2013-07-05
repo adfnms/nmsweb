@@ -98,7 +98,8 @@
 				$.ajax({
 					
 					type : 'delete',
-					url : 'http://localhost:8080/v1/users/'+userId,
+					//url : 'http://localhost:8080/v1/users/'+userId,
+					url : '<c:url value="/users"/>/'+userId,
 					contentType : 'application/json',
 					dataType:'json',
 					error : function(data) {

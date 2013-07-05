@@ -421,34 +421,34 @@ input[name^="paint-"] + label {
 #graph-rainbow:checked + label {
 	box-shadow: 0 0 0 2px rgba(255,255,255,0.7), 1px 1px 3px rgba(0,0,0,0.3);
 }
-.critical-graph .bar-inner,
-.critical-graph .bar-inner:before { background-color: rgba(245, 78, 78, .6); }
-.critical-graph .bar-inner:after { background-color: rgba(245, 78, 78, .4); }
+.critical-graph .bar-inner, /*빨간색 */
+.critical-graph .bar-inner:before { background-color: rgba(221, 81, 76, .8); }
+.critical-graph .bar-inner:after { background-color: rgba(221, 81, 76, .6); }
 
-.major-graph .bar-inner,
-.major-graph .bar-inner:before { background-color: rgba(252, 103, 28, .6); }
-.major-graph .bar-inner:after { background-color: rgba(252, 103, 28, .4); }
+.major-graph .bar-inner,/* 주황색 */
+.major-graph .bar-inner:before { background-color: rgba(252, 103, 28, .8); }
+.major-graph .bar-inner:after { background-color: rgba(252, 103, 28, .6); }
 
-.minor-graph .bar-inner,
-.minor-graph .bar-inner:before { background-color: rgba(252, 237, 28, .6); }
-.minor-graph .bar-inner:after { background-color: rgba(252, 237, 28, .4); }
+.indeterminate-graph .bar-inner,/* 노란색 */
+.indeterminate-graph .bar-inner:before { background-color: rgba(250, 167, 50, .8); }
+.indeterminate-graph .bar-inner:after { background-color: rgba(250, 167, 50, .6); }
 
 
-.warning-graph .bar-inner,
-.warning-graph .bar-inner:before { background-color: rgba(5, 213, 255, .6); }
-.warning-graph .bar-inner:after { background-color: rgba(5, 213, 255, .4); }
+.warning-graph .bar-inner,/* 파란색 */
+.warning-graph .bar-inner:before { background-color: rgba(14, 144, 210, .8); }
+.warning-graph .bar-inner:after { background-color: rgba(14, 144, 210, .6); }
 
-.normal-graph .bar-inner,
-.normal-graph .bar-inner:before { background-color: rgba(13, 117, 13, .6); }
-.normal-graph .bar-inner:after { background-color: rgba(13, 117, 13, .4); }
+.normal-graph .bar-inner,/*녹색  */
+.normal-graph .bar-inner:before { background-color: rgba(94, 185, 94, .8 ); }
+.normal-graph .bar-inner:after { background-color: rgba(94, 185, 94, .6); }
 
-.cleared-graph .bar-inner,
-.cleared-graph .bar-inner:before { background-color: rgba(133, 133, 133, .6); }
-.cleared-graph .bar-inner:after { background-color: rgba(133, 133, 133, .4); }
+.cleared-graph .bar-inner,/* 회색 */
+.cleared-graph .bar-inner:before { background-color: rgba(133, 133, 133, .8); }
+.cleared-graph .bar-inner:after { background-color: rgba(133, 133, 133, .6); }
 
-.indeterminate-graph .bar-inner,
-.indeterminate-graph .bar-inner:before { background-color:  rgba(112, 209, 244, .6); }
-.indeterminate-graph .bar-inner:after { background-color: rgba(112, 209, 244, .4); }
+.minor-graph .bar-inner,/* 하늘색 */
+.minor-graph .bar-inner:before { background-color:  rgba(75, 177, 207, .8); }
+.minor-graph .bar-inner:after { background-color: rgba(75, 177, 207, .6); }
 
 /****************
  * SIZE BUTTONS  *

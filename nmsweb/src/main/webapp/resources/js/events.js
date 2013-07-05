@@ -120,13 +120,40 @@ function getTabletagToEventJsonObj(jsonObj){
 		if (jsonObj["@count"] > 1) {
 
 			for ( var i in events) {
+				
+				if(events[i]["@severity"]=="CRITICAL"){
+					 statusProgress = "progress-danger";
+				}
+				else if(events[i]["@severity"]=="MAJOR"){
+					 statusProgress = "progress-caution";						
+				}
+				else if(events[i]["@severity"]=="MINOR"){
+					 statusProgress = "progress-warning";
+				}
+				else if(events[i]["@severity"]=="WARNING"){
+					 statusProgress = "progress-gray";
+				}
+				else if(events[i]["@severity"]=="NORMAL"){
+					 statusProgress = "progress-info";
+				}
+				else if(events[i]["@severity"]=="CLEARED"){
+					 statusProgress = "progress";
+				}
+				else if(events[i]["@severity"]=="INDETERMINATE"){
+					 statusProgress = "progress-success";
+				}
+				
 				str += "<tr>";
 				str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+"'>" + events[i]["@id"]
 						+ "</a></td>";
 				str += "<td>"
 						+ new Date(events[i]["createTime"])
 								.format('yy-MM-dd hh:mm:ss') + "</td>";
-				str += "<th class='"+events[i]["@severity"].toLowerCase()+"'>" + events[i]["@severity"] + "</th>";
+				
+				//str += "<th class='"+events[i]["@severity"].toLowerCase()+"'>" + events[i]["@severity"] + "</th>";
+				str += '		<td class=""><div class="progress progress-striped active '+statusProgress+'  " style="margin-bottom: 0px;width: 130px; ">';
+				str += '		<div class="bar" style="width:100%">' +events[i]["@severity"]+ '</div>';
+				str += '		</div></td>';
 				str += "<td>" + events[i]["logMessage"].replace(/<p>|<\/p>/gi,'') + "</td>";
 				str += "</tr>";
 			}

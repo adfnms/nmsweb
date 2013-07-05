@@ -9,7 +9,7 @@
 <html lang="ko">
 <head>
 <jsp:include page="/include/header.jsp">
-	<jsp:param value="노드관리" name="title" />
+	<jsp:param value="Index" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/outages.js" />"></script>
@@ -26,16 +26,24 @@
 		
 		/*노드 정보 갖고오기  */
 		getNodeTotalList(searchNodeLists, "orderBy=id&limit=0");
+		
+		
+		
+		
 	});
 
 	
 	function searchNodeLists(jsonObj) {
 		$('#id').empty();
 		$('#label').empty();
-
+		$('#indexNodeList').empty();
+		
+console.log(jsonObj);
 		var str = getSearchSelectJsonObj(jsonObj);
 		var strNode = getSearchSelectNodeJsonObj(jsonObj);
+		var str = getNodelistJsonObj(jsonObj);
 		
+		$('#indexNodeList').append(str);
 		$('#id').append(str);
 		$('#label').append(strNode);
 	}
@@ -61,26 +69,59 @@
 
 		// 가용률
 		var str = "";
-		str += '<table class="table table-striped">';
+		str += '<table class="table table-striped table-hover">';
 		//str += '	<colgroup><col class="span6" /><col class="span3" /><col class="span3" /></colgroup>';
-		str += '	<tr><th>카테고리</th><th>중단</th><th></th><th>이용률</th></tr>';
+		str += '	<tr><th>카테고리</th><th>중단 서비스</th><th>서비스 Availability</th></tr>';
 
 		for ( var i in categoryObj) {
 			//var status = Number(categoryObj[i]["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical";
 			
 			
 			if(Number(categoryObj[i]["availabili"]).toFixed(2) >= 100){
-				var status = "normal";
+				var status = "progress-success";
+				//var classStatus ="success";
+				var availwidth = Number(categoryObj[i]["availabili"]).toFixed(2) ;
 			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 90 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 99){
-				var status = "warning";
+				var status = "progress";
+				var availwidth = Number(categoryObj[i]["availabili"]).toFixed(2) ;
+				//var classStatus ="success";
+				var classStatus ="";
 			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 80 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 89){
-				var status = "minor";
+				var status = "progress-info";
+				//var classStatus ="info";
+				var availwidth = Number(categoryObj[i]["availabili"]).toFixed(2) ;
 			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 70 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 79){
-				var status = "major";
-			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) <= 69){
-				var status = "critical";
-			} 
+				var status = "progress-warning";
+				//var classStatus ="warning";
+				var availwidth = Number(categoryObj[i]["availabili"]).toFixed(2) ;
+			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) <= 69 && Number(categoryObj[i]["availabili"]).toFixed(2) > 0.00){
+				var status = "progress-danger";
+				//var classStatus ="error";
+				var availwidth = Number(categoryObj[i]["availabili"]).toFixed(2) ;
+				
+				var errorStr = "";
+				errorStr += '	<div class="alert alert-error">';
+				errorStr += '	<button type="button" class="close" data-dismiss="alert">&times;</button>';
+				errorStr += '         <span class="label label-important">Warning!</span>&nbsp;&nbsp;<strong>'+categoryObj[i]["name"]+' </strong>서버의 가용률이<strong> '+availwidth+'%</strong>입니다.  ';
+				errorStr += '        </div>';
+				
+				$('#categoryInfo').append(errorStr);
 			
+			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) == 0.00){
+				var status = "progress-danger";
+				var availwidth ="18";
+				
+				var errorStr = "";
+				errorStr += '	<div class="alert alert-error">';
+				errorStr += '	<button type="button" class="close" data-dismiss="alert">&times;</button>';
+				errorStr += '         <span class="label label-important">Warning!</span>&nbsp;&nbsp;<strong>'+categoryObj[i]["name"]+' </strong>서버의 가용률이<strong> '+Number(categoryObj[i]["availabili"]).toFixed(2)+'%</strong>입니다.  ';
+				errorStr += '        </div>';
+				
+				$('#categoryInfo').append(errorStr);
+				//var classStatus ="error";
+			}  
+			
+			//alert("availabili : "+Number(categoryObj[i]["availabili"]).toFixed(2)+"%  status : "+status);
 		/* 	 if(outageCount == 0){
 				var statusCount = "normal";
 				alert("normal"+outageCount);
@@ -89,20 +130,24 @@
 				alert("critical"+outageCount);
 			}  */
 			
-			var avail = Number(categoryObj[i]["availabili"]).toFixed(2);
+			var avail = Number(categoryObj[i]["availabili"]).toFixed(2) ;
+			
 			var outageCount = categoryObj[i]["outageTotalCount"];
 			var serviceCount = categoryObj[i]["serviceTotalCount"];
 
-			str += '	<tr>';
-			str += '		<td style="width: 178px;"><a href="<c:url value="/category/nodeList?cateNm=" />'+categoryObj[i]["name"]+'">' + categoryObj[i]["name"] + '</a></td>';
-			str += '		<td class="" style=" width: 110px;">' + outageCount + ' of ' + serviceCount + '</td>';
-			str += '	<td style="width: 1px;";></td>';
-			str += '		<th class="'+status+'" style="width: 122px;">' + avail + '%</th>';
+			
+			
+			str += '	<tr class='+classStatus+' id="errorstr">';
+			str += '		<th><a href="<c:url value="/category/nodeList?cateNm=" />'+categoryObj[i]["name"]+'">' + categoryObj[i]["name"] + '</a></th>';
+			str += '		<th class="text-error">&nbsp;&nbsp;&nbsp;&nbsp;' + outageCount + ' of ' + serviceCount + '</th>';
+			str += '		<td class=""><div class="progress progress-striped active '+status+' " style="margin-bottom: 0px;width: 202px; ">';
+			str += '		<div class="bar" style="width:' + availwidth + '%">' + avail + '%</div>';
+			str += '		</div></td>';
 			str += '	</tr>';
-
 			totalAvail += parseInt(avail);
 			outageTotalCount += parseInt(outageCount);
 			serviceTotalCount += parseInt(serviceCount);
+			
 		}
 
 		str += '</table>';
@@ -111,38 +156,50 @@
 		
 		if(outageTotalCount == 0){
 			
-			var statusTotal = "normal";
+			var statusTotal = "success";
 			
 		}else{
-			var statusTotal = "critical";
+			var statusTotal = "error";
 		} 
 		
 		if((totalAvail / categoryObj.length).toFixed(2) >= 100){
-			var statustotalAvail = "normal";
-			alert("normal");
+			var statustotalAvail = "progress-success";
 		}else if ((totalAvail / categoryObj.length).toFixed(2) >= 90 && (totalAvail / categoryObj.length).toFixed(2) <= 99){
-			var statustotalAvail = "warning";
-			alert("warning");
+			var statustotalAvail = "progress";
 		}else if ((totalAvail / categoryObj.length).toFixed(2) >= 80 && (totalAvail / categoryObj.length).toFixed(2) <= 89){
-			var statustotalAvail = "minor";
-			alert("minor");
+			var statustotalAvail = "progress-info";
 		}else if ((totalAvail / categoryObj.length).toFixed(2) >= 70 && (totalAvail / categoryObj.length).toFixed(2) <= 79){
-			var statustotalAvail = "major";
-			alert("major");
-		}else if ((totalAvail / categoryObj.length).toFixed(2) <= 69){
-			var statustotalAvail = "critical";
-		} 
+			var statustotalAvail = "progress-warning";
+		}else if ((totalAvail / categoryObj.length).toFixed(2) <= 69 && (totalAvail / categoryObj.length).toFixed(2) > 0.00){
+			var statustotalAvail = "progress-danger";
+			
+			
+		} else if ((totalAvail / categoryObj.length).toFixed(2)== 0.00){
+			var statustotalAvail = "progress-danger";
+			var availwidth ="18";
+			
+			
+			//var classStatus ="error";
+		}
+		
+		
+		
+		
+		
 		// 전체 가용률
 		var tstr = "";
-		tstr += '<table class="table table-striped">';
+		tstr += '<table class="table table-striped table-hover">';
 		//tstr += '	<colgroup><col class="span6" /><col class="span3" /><col class="span3" /></colgroup>';
-		tstr += '	<tr><th>전체</th><th>중단</th><th></th><th>이용률</th></tr>';
-		tstr += '	<tr><td>전체 가용률</td>';
-		tstr += '	<td class="'+statusTotal+'">' + outageTotalCount + ' of ' + serviceTotalCount
-				+ '</td>';
-		tstr += '	<td style="width: 1px;";></td>';
-		tstr += '	<td class="'+statustotalAvail+'">' + (totalAvail / categoryObj.length).toFixed(2)
-				+ '%</td>';
+		tstr += '	<tr><th>전체 중단 서비스 </th><th class="text-error">' + outageTotalCount + ' of ' + serviceTotalCount +'</th></tr>';
+		tstr += '	<tr class="'+statusTotal+'">';
+		tstr += '	<th>전체 이용률 </th>';
+		tstr += '		<td class=""><div class="progress progress-striped active '+statustotalAvail+' " style="margin-bottom: 0px;width: 317px; ">';
+		
+		tstr += '		<div class="bar" style="width:' + (totalAvail / categoryObj.length).toFixed(2) + '%">' + (totalAvail / categoryObj.length).toFixed(2) + '%</div>';
+		
+		tstr += '		</div></td>';
+		//tstr += '	<td class="'+statustotalAvail+'">' + (totalAvail / categoryObj.length).toFixed(2)
+//				+ '%</td>';
 		tstr += '	</tr></table>';
 
 		$('#totalCategoryInfo').append(tstr);
@@ -156,7 +213,7 @@
 			var current = new Date();
 			var lastTime = dateDiff(lostTime, current);
 
-			$('#outageInfo').append("<a href='<c:url value='/search/outage/outageDesc?outageId=' />"+outageObj[i]["outageid"]+"'>" + outageObj[i]["ipaddr"] + "</a> ("+ lastTime + ")<br/>");
+			$('#outageInfo').append("<strong><a class=text-error href='<c:url value='/search/outage/outageDesc?outageId=' />"+outageObj[i]["outageid"]+"'>" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>");
 		}
 		
 	}
@@ -188,6 +245,32 @@
 							<div class="well well-small">
 								<div class="row-fluid">
 									<div class="span12" id="outageInfo"></div>
+								</div>
+							</div>
+							<div class="progress progress-success progress-striped active" style="margin-bottom: 9px;">
+								<div class="bar" style="width: 100%">100%</div>
+							</div>
+							<div class="progress progress-striped active" style="margin-bottom: 9px;">
+								<div class="bar" style="width: 90%">90%~99%</div>
+							</div>
+							<div class="progress progress-striped progress-info active" style="margin-bottom: 9px;">
+								<div class="bar" style="width: 80%">80%~89%</div>
+							</div>
+							
+							<div class="progress progress-warning progress-striped active" style="margin-bottom: 9px;">
+								<div class="bar" style="width: 70%">70%~79%</div>
+							</div>
+							<div class="progress progress-danger progress-striped active">
+								<div class="bar" style="width: 60%">0%~69%</div>
+							</div>
+							<div class="row-fluid">
+								<div class="span12">
+									<h4>노드&nbsp;목록</h4>
+								</div>
+							</div>
+							<div class="well well-small">
+								<div class="row-fluid">
+									<div class="span12" id="indexNodeList"></div>
 								</div>
 							</div>
 						</div>

@@ -60,10 +60,10 @@
 		<div class="row-fluid">
 			<div class="span12 well well-small">
 				<div class="row-fluid">
-					<div class="span9">
+					<div class="span3">
 						<h4 id="nodeLabel">이벤트&nbsp;정보</h4>
 					</div>
-					<div class="span3">
+					<div class="span9">
 						<jsp:include page="/include/statsBar.jsp" />
 					</div>
 				</div>

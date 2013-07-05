@@ -222,8 +222,8 @@ function getEventUei(callback){
 	
 }
 function getPathList(callback){
-	//console.log('http://192.168.0.5:8081/' + version + '/notifications/destinationPaths');
-	//console.log('http://localhost:8080/' + version + '/notifications/destinationPaths');
+	console.log('http://192.168.0.23:8080/' + version + '/notifications/destinationPaths');
+	console.log('http://localhost:8080/' + version + '/notifications/destinationPaths');
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/notifications/destinationPaths',
@@ -247,8 +247,8 @@ function getPathList(callback){
 }
 
 function getAddedNoti(callback){
-	//console.log('http://192.168.0.5:8081/' + version + '/notifications/destinationPaths');
-	//console.log('http://localhost:8080/' + version + '/notifications/destinationPaths');
+	console.log('http://192.168.0.23:8080/' + version + '/notifications/destinationPaths');
+	console.log('http://localhost:8080/' + version + '/notifications/destinationPaths');
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/notifications/eventNotifications',
@@ -525,6 +525,7 @@ function userNotiListjsonObj(jsonObj) {
 			/************************Get @severity  from event****************************/
 			var eventId = userObj[i]["eventid"];
 			
+			var statusProgress = "";
 			var stat = "";
 			$.ajax({
 				type : 'get',
@@ -539,11 +540,33 @@ function userNotiListjsonObj(jsonObj) {
 				},
 				success : function(data) {
 					stat = data["event"]["@severity"];
+					
+					if(stat=="CRITICAL"){
+						 statusProgress = "progress-danger";
+					}
+					else if(stat=="MAJOR"){
+						 statusProgress = "progress-danger";						
+					}
+					else if(stat=="MINOR"){
+						 statusProgress = "progress-warning";
+					}
+					else if(stat=="WARNING"){
+						 statusProgress = "progress-caution";
+					}
+					else if(stat=="NORMAL"){
+						 statusProgress = "progress-info";
+					}
+					else if(stat=="CLEARED"){
+						 statusProgress = "progress";
+					}
+					else if(stat=="INDETERMINATE"){
+						 statusProgress = "progress-success";
+					}
 				}
+				
 			});
 			
 			/************************Get @severity  from event****************************/
-			
 			
 			str += "<tr>";
 			str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";										
@@ -552,7 +575,10 @@ function userNotiListjsonObj(jsonObj) {
 			str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj[i]["eventid"]+"'>";										
 			str += userObj[i]["eventid"];											//eventid
 			str += "	</a></td>";
-			str += "<th class='"+stat.toLowerCase()+"'>" + stat + "</th>";			//condition
+		//	str += "<th class='"+statusProgress.toLowerCase()+"'>" + stat + "</th>";			//condition
+			str += '		<th class=""><div class="progress progress-striped active  '+statusProgress+' " style="margin-bottom: 0px;width: 130px; ">';
+			str += '		<div class="bar" style="width:100%">' + stat + '</div>';
+			str += '		</div></td>';
 			str += "	<td class=\"span2\">";										
 			str +=  new Date(userObj[i]["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
 			str += "	</td>";														
@@ -565,6 +591,7 @@ function userNotiListjsonObj(jsonObj) {
 			str += "</tr>";
 			}
 		
+		
 	} else {
 		str += "<tr>";
 		str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj["notifyid"]+"&eventId="+userObj["eventid"]+"'>";										
@@ -573,7 +600,10 @@ function userNotiListjsonObj(jsonObj) {
 		str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj["eventid"]+"'>";										
 		str += userObj["eventid"];											//eventid
 		str += "	</a></td>";
-		str += "<th class='"+stat.toLowerCase()+"'>" + stat + "</th>";			//condition
+		//str += "<th class='"+stat.toLowerCase()+"'>" + stat + "</th>";			//condition
+		str += '		<th class=""><div class="progress progress-striped active  '+statusProgress+' " style="margin-bottom: 0px;width: 130px; ">';
+		str += '		<div class="bar" style="width:100%">' + stat + '</div>';
+		str += '		</div></td>';
 		str += "	<td class=\"span2\">";										
 		str +=  new Date(userObj["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
 		str += "	</td>";														
@@ -605,7 +635,7 @@ function totalNotiListjsonObj(jsonObj) {
 		for ( var i in userObj) {
 			
 			var eventId = userObj[i]["eventid"];
-			
+			var statusProgress = "";
 			var stat = "";
 			$.ajax({
 				type : 'get',
@@ -621,7 +651,27 @@ function totalNotiListjsonObj(jsonObj) {
 				},
 				success : function(data) {
 					stat = data["event"]["@severity"];
-					
+					if(stat=="CRITICAL"){
+						 statusProgress = "progress-danger";
+					}
+					else if(stat=="MAJOR"){
+						 statusProgress = "progress-caution";						
+					}
+					else if(stat=="MINOR"){
+						 statusProgress = "progress-warning";
+					}
+					else if(stat=="WARNING"){
+						 statusProgress = "progress-gray";
+					}
+					else if(stat=="NORMAL"){
+						 statusProgress = "progress-info";
+					}
+					else if(stat=="CLEARED"){
+						 statusProgress = "progress";
+					}
+					else if(stat=="INDETERMINATE"){
+						 statusProgress = "progress-success";
+					}
 				}
 
 			});
@@ -635,7 +685,10 @@ function totalNotiListjsonObj(jsonObj) {
 			str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj[i]["eventid"]+"'>";										
 			str += userObj[i]["eventid"];											//eventid
 			str += "	</a></td>";
-			str += "<th class='"+stat.toLowerCase()+"'>" + stat + "</th>";			//condition
+			//str += "<th class='"+stat.toLowerCase()+"'>" + stat + "</th>";			//condition
+			str += '		<td class=""><div class="progress progress-striped active  '+statusProgress+' " style="margin-bottom: 0px;width: 130px; ">';
+			str += '		<div class="bar" style="width:100%">' + stat + '</div>';
+			str += '		</div></td>';
 			str += "	<td class=\"span2\">";										
 			str +=  new Date(userObj[i]["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
 			str += "	</td>";														
@@ -658,7 +711,10 @@ function totalNotiListjsonObj(jsonObj) {
 		str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj["eventid"]+"'>";										
 		str += userObj["eventid"];											//eventid
 		str += "	</a></td>";
-		str += "<th class='"+stat.toLowerCase()+"'>" + stat + "</th>";			//condition
+		//str += "<th class='"+stat.toLowerCase()+"'>" + stat + "</th>";			//condition
+		str += '		<th class=""><div class="progress progress-striped active  '+statusProgress+' " style="margin-bottom: 0px;width: 130px; ">';
+		str += '		<div class="bar" style="width:100%">' + stat + '</div>';
+		str += '		</div></td>';
 		str += "	<td class=\"span2\">";										
 		str +=  new Date(userObj["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
 		str += "	</td>";														

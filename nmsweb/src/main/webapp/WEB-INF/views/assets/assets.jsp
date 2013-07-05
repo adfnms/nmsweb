@@ -194,8 +194,10 @@ var frm = document.getElementById("searchFieldFrm");
 			<!-- tree -->
 			 <div class="span6 well ">
 			 <div class="span12 well well-small">
-		 		<div class="span12 text-center">
-					<h4 id="nodeLabel">Assets in category, select the desired category, and click [Search] to retrieve a list of all assets associated with that category. And for a complete list of nodes, whether or not they have associated asset numbers, simply click on the List all nodes with asset information link.</h4>
+		 		<div class="span12">
+					<h4 id="nodeLabel">Assets in category는&nbsp;원하는&nbsp;카테고리를&nbsp;선택하고&nbsp;&nbsp;[Search]을&nbsp;클릭합니다.</h4>
+					<h4 id="nodeLabel">또는&nbsp;해당&nbsp;범주와&nbsp;관련된&nbsp;모든&nbsp;Assets의&nbsp;목록을&nbsp;검색하려면&nbsp;Field Search의&nbsp;원하&nbsp;항목을&nbsp;선택하여&nbsp;[Search]을&nbsp;클릭합니다.</h4>
+				
 				</div>
 			</div>
 		      </div>  

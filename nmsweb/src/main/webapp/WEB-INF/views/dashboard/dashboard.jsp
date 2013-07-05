@@ -243,14 +243,19 @@
 				<div class="row-fluid">
 					<div class="span12">
 						<h4 id="nodeLabel">데쉬보드</h4>
+						<div class="progress" style="margin-bottom: 7px;">
+							<div class="bar bar-success " style="width: 30%">100%</div>
+							<div class="bar " style="width: 25%">99%~90%</div>
+							<div class="bar bar-info" style="width: 20%">89%~80%</div>
+							<div class="bar bar-warning" style="width: 15%">79%~70%</div>
+							<div class="bar bar-danger" style="width: 10%">69%~0%</div> 
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row-fluid">
-			<div class="row-fluid">
-				<h5>그래프</h5>
-			</div>
+		
 			<div class="row-fluid">
 				<div class="span12 well well-small">
 					<jsp:include page="/include/graph.jsp" />

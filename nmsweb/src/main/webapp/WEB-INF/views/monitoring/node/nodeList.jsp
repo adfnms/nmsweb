@@ -12,6 +12,7 @@
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		
@@ -113,7 +114,7 @@
 			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12">
-						<table class="table table-striped" id="nodeListTable"></table>
+						<table class="table table-striped table-hover" id="nodeListTable"></table>
 					</div>
 				</div>
 			</div>

@@ -15,6 +15,7 @@
 <script src="<c:url value="/resources/js/users.js" />"></script>
 <script src="<c:url value="/resources/js/notification.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 
 
 <script type="text/javascript">
@@ -140,8 +141,8 @@ var encodeTime = encodeURI(time);
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="span1 text-error"><h4 style="margin-left: 15px;">${userId}</h4></div>
-					<div class="span8"><h4 style="margin-left: -10px;"> was notified</h4></div>
-					<div class="span3" style="margin-top: 6px;"><jsp:include page="/include/statsBar.jsp" /></div>
+					<div class="span3"><h4 style="margin-left: -10px;"> was notified</h4></div>
+					<div class="span8" style="margin-top: 6px;"><jsp:include page="/include/statsBar.jsp" /></div>
 				</div>
 			</div>
 			<div class="row-fluid">

@@ -59,7 +59,6 @@
 		
 		loadMenuItems();
 		
-		//console.log("------------menuItems----------"+menuItems);
 		
 	}
 
@@ -78,7 +77,6 @@
 		        },
 		        success:function(res){
 		        	console.log(res);
-		        
 		        	//g_menuItems.setCheck(res.menuItems.menuId,false);
 		         if(res.isSuccess == true){
 		       			
