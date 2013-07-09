@@ -15,9 +15,11 @@
 <script src="<c:url value="/resources/js/outages.js" />"></script>
 <script src="<c:url value="/resources/js/events.js" />"></script>
 <script src="<c:url value="/resources/js/service.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-
+		
+		/*인터페이스 정보*/
 		getInterfaceInfo(addInterface, "${nodeId}", "${intf}");
 		
 		/* Recent Outages */
@@ -35,7 +37,7 @@
 	function addInterface(jsonObj) {
 		
 		var str = getInterfaceInfoBox(jsonObj);
-		$('#interfaceDiv').append(str);
+		$('#rightDiv').append(str);
 		
 	}
 	/*//Interface Callback */
@@ -111,12 +113,7 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span4" id="leftDiv">
-				<div class="row-fluid">
-					<h5>일반</h5>
-				</div>
-				<div class="row-fluid">
-					<div class="span12 well well-small" id="interfaceDiv"></div>
-				</div>
+				
 				<div class="row-fluid">
 					<h5>가용성</h5>
 				</div>
@@ -126,7 +123,11 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="span8" id="rightDiv">
+			<div class="row-fluid">
+					<h5>인터페이스&nbsp;정보</h5>
+				</div>
 				<table>
 				
 				</table>

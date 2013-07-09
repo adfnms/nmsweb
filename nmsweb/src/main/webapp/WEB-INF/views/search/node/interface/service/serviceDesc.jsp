@@ -15,6 +15,7 @@
 <script src="<c:url value="/resources/js/outages.js" />"></script>
 <script src="<c:url value="/resources/js/events.js" />"></script>
 <script src="<c:url value="/resources/js/service.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 

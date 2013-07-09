@@ -239,15 +239,15 @@ console.log(jsonObj);
 						<div class="span3">
 							<div class="row-fluid">
 								<div class="span12">
-									<h4>중단&nbsp;목록</h4>
-								</div>
+									<h4>장애&nbsp;목록</h4>
+								</div> 
 							</div>
 							<div class="well well-small">
 								<div class="row-fluid">
 									<div class="span12" id="outageInfo"></div>
 								</div>
-							</div>
-							<div class="progress progress-success progress-striped active" style="margin-bottom: 9px;">
+							</div> 
+						<!-- 	<div class="progress progress-success progress-striped active" style="margin-bottom: 9px;">
 								<div class="bar" style="width: 100%">100%</div>
 							</div>
 							<div class="progress progress-striped active" style="margin-bottom: 9px;">
@@ -262,15 +262,18 @@ console.log(jsonObj);
 							</div>
 							<div class="progress progress-danger progress-striped active">
 								<div class="bar" style="width: 60%">0%~69%</div>
-							</div>
+							</div> -->
 							<div class="row-fluid">
 								<div class="span12">
-									<h4>노드&nbsp;목록</h4>
+									<h4>알림&nbsp;정보</h4>
 								</div>
 							</div>
 							<div class="well well-small">
 								<div class="row-fluid">
-									<div class="span12" id="indexNodeList"></div>
+									<div class="span12">
+										나의 알림 <a class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/setting.do?myNotification=My" />">확인</a><br />
+										 모든 알림<a class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/setting.do?totalNotification=Total" />">확인</a><br />
+									</div>
 								</div>
 							</div>
 						</div>
@@ -288,47 +291,28 @@ console.log(jsonObj);
 							</div>
 						</div>
 						<div class="span3">
+							
 							<div class="row-fluid">
-								<div class="span12">
-									<h4>알림&nbsp;정보</h4>
+								<div class="span9">
+									<h4>감시&nbsp;대상&nbsp;목록</h4>
+								</div>
+								<div class="span3" style="margin-top: 7px;">
+									<a  class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/setting.do?myNotification=My" />">[More]</a>
 								</div>
 							</div>
-							<div class="well well-small">
+							<div class="well well-small" style ="height:452px;">
 								<div class="row-fluid">
-									<div class="span12">
-										나의 알림(2,314) <a href="<c:url value="/admin/setting.do?myNotification=My" />">[확인]</a><br /> 모든 알림(2,314) <a
-											href="<c:url value="/admin/setting.do?totalNotification=Total" />">[확인]</a><br />
-									</div>
+									<div class="span12" id="indexNodeList"></div>
 								</div>
 							</div>
-							<!-- 							<div class="row-fluid"> -->
-							<!-- 								<div class="span12"> -->
-							<!-- 									<h4>그래프&nbsp;검색</h4> -->
-							<!-- 								</div> -->
-							<!-- 							</div> -->
-							<!-- 							<div class="well well-small"> -->
-							<!-- 								<div class="row-fluid"> -->
-							<!-- 									<div class="span12"> -->
-							<!-- 										<form> -->
-							<!-- 											<fieldset> -->
-							<!-- 												<label for="">사용자 그래프</label><input type="text" class="span12"> -->
-							<!-- 											</fieldset> -->
-							<!-- 											<fieldset> -->
-							<!-- 												<label for="">자원 그래프</label><input type="text"  class="span12"> -->
-							<!-- 											</fieldset> -->
-							<!-- 											<fieldset> -->
-							<!-- 												<button type="button" class="btn btn-primary span12" title="Quick Search" onclick="#">검색</button> -->
-							<!-- 											</fieldset> -->
-							<!-- 										</form> -->
-							<!-- 									</div> -->
-							<!-- 								</div> -->
-							<!-- 							</div> -->
-							<div class="row-fluid">
+							
+							
+							<!-- <div class="row-fluid">
 								<div class="span12">
 									<h4>Quick&nbsp;Search</h4>
 								</div>
-							</div>
-							<div class="row-fluid">
+							</div> -->
+							<%-- <div class="row-fluid">
 								<div class="span12">
 									<form action="<c:url value="/search/node.do" />">
 										<div class="well well-small">
@@ -380,7 +364,7 @@ console.log(jsonObj);
 										</div>
 									</form>
 								</div>
-							</div>
+							</div> --%>
 						</div>
 					</div>
 				</div>

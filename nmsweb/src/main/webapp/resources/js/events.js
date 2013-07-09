@@ -105,9 +105,9 @@ function getTabletagToEventJsonObj(jsonObj){
 	if (jsonObj["@count"] > 0) {
 			
 		str = "	<div class='row-fluid'>"
-				+ "		<h5>이벤트&nbsp;목록&nbsp;["
+				/*+ "		<h5>이벤트&nbsp;목록&nbsp;["
 				+ jsonObj["@count"]
-				+ "]</h5>"
+				+ "]</h5>"*/
 				+ "	</div>"
 				+ "	<div class='row-fluid'>"
 				+ "		<div class='span12 well well-small'>"

@@ -54,7 +54,7 @@ function getNodeListSideBar(callback, data) {
  * @param data
  */
 function getInterfaceInfo(callback, nodeId, ipAddress) {
-
+	
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/nodes/'+nodeId+'/ipinterfaces/'+ipAddress,
@@ -547,7 +547,7 @@ function manageSnmpService(nodeId, ifIndex, collect){
  * @param jsonObj
  *            jsonObj["categories"]
  */
-function getTabletagToCategoryJsonObj(jsonObj) {
+/*function getTabletagToCategoryJsonObj(jsonObj) {
 	
 	var categories = jsonObj;
 	var str = "";
@@ -575,7 +575,7 @@ function getTabletagToCategoryJsonObj(jsonObj) {
 	}
 	
 	return str;
-}
+}*/
 
 function getTabletagToSearchJsonObj(jsonObj, auth){
 	var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
@@ -832,32 +832,34 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 function getInterfaceInfoBox(jsonObj){
 	var nodeObj = getSpecificNode(null, jsonObj["nodeId"]);
 
-	var str = 	"<table class='table table-striped'>"+
-				"<tr>"+
-				"	<th>노드</th>"+
-				"	<td>"+
-				'		<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+jsonObj["nodeId"]+'">'
-						+nodeObj["@label"]+
-				'		</a>'+
-				"</td>"+
-				"</tr>"+
-				"<tr>"+
-				"	<th>폴링 상태</th>"+
-				"	<td>"+statsToStringFromStatoCode(jsonObj["@isManaged"])+"</td>"+
-				"</tr>"+
-//				"<tr>"+
-//				"	<th>폴링 페키지</th>"+
-//				"	<td>??????????????????</td>"+
-//				"</tr>"+
-//				"<tr>"+
-//				"	<th>Interface Index</th>"+
-//				"	<td>??????????????????</td>"+
-//				"</tr>"+
-				"<tr>"+
-				"	<th>Last Service Scan</th>"+
-				"	<td>"+new Date(jsonObj["lastCapsdPoll"]).format('yy-MM-dd hh:mm:ss')+"</td>"+
-				"</tr>"+
-				"</table>";	
+	var str = 	"<div class='row-fluid'>"+
+					"<table class='table table-striped well well-small'>"+
+					"<tr>"+
+					"	<th>노드</th>"+
+					"	<td>"+
+					'		<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+jsonObj["nodeId"]+'">'
+							+nodeObj["@label"]+
+					'		</a>'+
+					"</td>"+
+					"</tr>"+
+					"<tr>"+
+					"	<th>폴링 상태</th>"+
+					"	<td>"+statsToStringFromStatoCode(jsonObj["@isManaged"])+"</td>"+
+					"</tr>"+
+	//				"<tr>"+
+	//				"	<th>폴링 페키지</th>"+
+	//				"	<td>??????????????????</td>"+
+	//				"</tr>"+
+	//				"<tr>"+
+	//				"	<th>Interface Index</th>"+
+	//				"	<td>??????????????????</td>"+
+	//				"</tr>"+
+					"<tr>"+
+					"	<th>Last Service Scan</th>"+
+					"	<td>"+new Date(jsonObj["lastCapsdPoll"]).format('yy-MM-dd hh:mm:ss')+"</td>"+
+					"</tr>"+
+					"</table>";	
+					"</div>";	
 	
 	return str;
 }

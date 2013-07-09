@@ -15,6 +15,7 @@
 <script src="<c:url value="/resources/js/outages.js" />"></script>
 <script src="<c:url value="/resources/js/events.js" />"></script>
 <script src="<c:url value="/resources/js/service.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		
@@ -39,26 +40,27 @@
 	function addNodeDesc(jsonObj) {
 
 		$('#nodeLabel').append("[ " + jsonObj["@label"] + " ]");
-
+	
 		/* Surveillance Category Memberships */
-		addCategories(jsonObj["categories"]);
+		//addCategories(jsonObj["categories"]);
 
 	}
 
 	/* Surveillance Category Memberships Callback*/
-	function addCategories(jsonObj) {
+	/*감시 카테고리 회원*/
+	/* function addCategories(jsonObj) {
 
 		var str = getTabletagToCategoryJsonObj(jsonObj);
 		$('#rightDiv').append(str);
 
-	}
+	} */
 	/*//Surveillance Category MembershipsCallback */
 
 	/* Recent Outages Callback */
 	function addOutages(jsonObj) {
 
 		var str = getTabletagToOutageJsonObj(jsonObj,"${nodeId}");
-		$('#rightDiv').append(str);
+		$('#rightUnderDiv').append(str);
 
 	}
 	/*//Recent Outages */
@@ -67,7 +69,7 @@
 	function addEvents(jsonObj) {
 
 		var str = getTabletagToEventJsonObj(jsonObj);
-		$('#rightDiv').append(str);
+		$('#rightUnderDiv2').append(str);
 
 	}
 	/*//Recent Events Callback*/
@@ -96,29 +98,46 @@
 					
 					//인터페이스 가용성
 					var interfaceAvail = Number(getInterfaceAvailability("${nodeId}", ipAddrs)).toFixed(3)+"%";
-					var headStr = '<h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>';
-					
+					/* var headStr = '<h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>'; */
+					var headStr = '<h5><a href="javascript:InterfaceInfo(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>';
 					//서비스 가용성
 					var serviceAvailSte = getTabletagToAvailJsonObj("${nodeId}", ipAddrs);
-					
+					getInterfaceInfo(addInterfaceInfo,"${nodeId}", ipAddrs);
+					$('#interInfo').append("[ " +  ipAddrs + " ]");
 					str += headStr+serviceAvailSte;
 					
+				
 				}
 			}else{
 				var ipAddrs =jsonObj["ipInterface"]["ipAddress"];
 				
 				//인터페이스 가용성
  				var interfaceAvail = Number(getInterfaceAvailability("${nodeId}", ipAddrs)).toFixed(3)+"%";
- 				var headStr = '<h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>';
-				
-				//서비스 가용성
+ 				/* var headStr = '<h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>'; */
+ 				var headStr = '<h5><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne"  onclick=\"show();\">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>';
+ 				
+ 				//서비스 가용성
 				var serviceAvailSte = getTabletagToAvailJsonObj("${nodeId}", ipAddrs);
-				
+				getInterfaceInfo(addInterfaceInfo,"${nodeId}", ipAddrs);
+				$('#interInfo').append("[ " +  ipAddrs + " ]");
 				str += headStr+serviceAvailSte;
 			}
 		}
 		
 		$("#leftDiv").append(str);
+	}
+	
+function show(){
+	
+	$('#accordion2').show();
+}
+
+	
+function addInterfaceInfo(jsonObj) {
+		
+		var str = getInterfaceInfoBox(jsonObj);
+		$('#collapsible').append(str);
+		
 	}
 
 	function addServiceAvailability(jsonObj, nodeId, ipAddress, interfaceAvail){
@@ -151,7 +170,7 @@
 						class="divider">/</span></li>
 					<li><a href="<c:url value="/search/node.do" />" >노드검색</a>
 						<span class="divider">/</span></li>
-					<li class="active">노드</li>
+					<li class="active">노드정보</li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
@@ -177,10 +196,30 @@
 					<div class="span12 well well-small" id="leftDiv"></div>
 				</div>
 			</div>
-			<div class="span8" id="rightDiv"></div>
+			
+			<div class="span8" id="rightDiv">
+				<div class="accordion" id="accordion2" style="display:none">
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="interInfo">
+							      인터페이스 정보
+							</a>
+						</div>
+						<div id="collapseOne" class="accordion-body collapse">
+						<!-- <div id="collapseOne" class="accordion-body collapse in"> 내용 펼쳐저서 보임 -->
+							<div class="accordion-inner" id="collapsible">
+							</div>
+						</div>
+					</div>
+				</div>
+              </div>
+              <div class="span8" id="rightUnderDiv"></div>
+              <div class="span12" id="rightUnderDiv2" style="margin-left: -25px;"></div>
 		</div>
 
 	</div>
+	
+	
 	<hr>
 	<!-- /container -->
 </body>

@@ -66,7 +66,7 @@ function sidebarInfo(jsonObj) {
 
 <div class="well affix hidden-phone" id="sideBar">
 	<ul class="nav nav-list">
-		<li class="nav-header"><h5>중단&nbsp;노드</h5></li>
+		<li class="nav-header"><h5>장애&nbsp;목록</h5></li>
 		<li class="nav-header" id="sideBarOutageList"></li>
 	</ul>
 </div>
