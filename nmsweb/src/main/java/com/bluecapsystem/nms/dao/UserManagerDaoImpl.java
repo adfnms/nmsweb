@@ -66,7 +66,7 @@ public class UserManagerDaoImpl extends BaseDao implements UserManagerDao{
 	public void deleteToDb(UserTbl userTbl) {
 		try{
 
-			super.getSqlMapClientTemplate().update("com.bluecapsystem.nms.userManager.deleteToDb", userTbl);
+			super.getSqlMapClientTemplate().delete("com.bluecapsystem.nms.userManager.deleteToDb", userTbl);
 			
 			
 		}catch(Exception ex){

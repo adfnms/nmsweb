@@ -329,7 +329,7 @@ public class UserManagerController extends BaseController{
 			userTbl.setUserId(userId);
 			userTbl.setModrId(Id);
 		    userTbl.setRegrId(Id);
-			userTbl.setUseYn("N");
+			//userTbl.setUseYn("N");
 			
 			if(userManagerService.deleteToDb(userTbl)==false){
 				logger.error("USER INFO DELETE TO DATABASE ERROR");

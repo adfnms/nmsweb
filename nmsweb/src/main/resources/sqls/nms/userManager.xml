@@ -36,16 +36,10 @@
     </update> 
  
 	 <!-- User Info Delete -->   
-     <update id="deleteToDb" parameterClass="com.bluecapsystem.nms.dto.UserTbl">
-    	UPDATE USER_TBL
-    	
-    	SET 
-    	mod_dt		=date(now()), 
-    	modrid		=#modrId#, 
-    	use_yn		=#useYn#
-    	
+     <delete id="deleteToDb" parameterClass="com.bluecapsystem.nms.dto.UserTbl">
+    	DELETE FROM USER_TBL
     	WHERE user_id=#userId#
-    </update>
+    </delete>
     
     <select id="selectToDb" resultClass="com.bluecapsystem.nms.dto.UserTbl">
 		SELECT now() as nowDate;
