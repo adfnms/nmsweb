@@ -222,7 +222,7 @@ function getEventUei(callback){
 	
 }
 function getPathList(callback){
-	console.log('http://192.168.0.23:8080/' + version + '/notifications/destinationPaths');
+	console.log('http://192.168.0.37:8080/' + version + '/notifications/destinationPaths');
 	console.log('http://localhost:8080/' + version + '/notifications/destinationPaths');
 	$.ajax({
 		type : 'get',
@@ -247,7 +247,7 @@ function getPathList(callback){
 }
 
 function getAddedNoti(callback){
-	console.log('http://192.168.0.23:8080/' + version + '/notifications/destinationPaths');
+	console.log('http://192.168.0.37:8080/' + version + '/notifications/destinationPaths');
 	console.log('http://localhost:8080/' + version + '/notifications/destinationPaths');
 	$.ajax({
 		type : 'get',
@@ -545,13 +545,13 @@ function userNotiListjsonObj(jsonObj) {
 						 statusProgress = "progress-danger";
 					}
 					else if(stat=="MAJOR"){
-						 statusProgress = "progress-danger";						
+						 statusProgress = "progress-caution";						
 					}
 					else if(stat=="MINOR"){
 						 statusProgress = "progress-warning";
 					}
 					else if(stat=="WARNING"){
-						 statusProgress = "progress-caution";
+						 statusProgress = "progress-gray";
 					}
 					else if(stat=="NORMAL"){
 						 statusProgress = "progress-info";
@@ -569,26 +569,43 @@ function userNotiListjsonObj(jsonObj) {
 			/************************Get @severity  from event****************************/
 			
 			str += "<tr>";
-			str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";										
+			//str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";
+		//	str += "	<td class=\"span1\"><a href='javascript:goNotiInfo("+userObj[i]["notifyid"]+","+userObj[i]["eventid"]+")'>";
+			str += "	<td class=\"span1\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\"  href=\"#"+userObj[i]["notifyid"]+"\" onclick=\"showNotiInfoDiv("+userObj[i]["notifyid"]+","+userObj[i]["eventid"]+");\">";
 			str += userObj[i]["notifyid"];											//notifyid
 			str += "	</a></td>";
-			str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj[i]["eventid"]+"'>";										
+		//str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj[i]["eventid"]+"'>";										
+			str += "	<td class=\"span1\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\"  href=\"#"+userObj[i]["notifyid"]+"\" onclick=\"showEventInfoDiv("+userObj[i]["notifyid"]+","+userObj[i]["eventid"]+");\">";	
 			str += userObj[i]["eventid"];											//eventid
 			str += "	</a></td>";
-		//	str += "<th class='"+statusProgress.toLowerCase()+"'>" + stat + "</th>";			//condition
 			str += '		<th class=""><div class="progress progress-striped active  '+statusProgress+' " style="margin-bottom: 0px;width: 130px; ">';
 			str += '		<div class="bar" style="width:100%">' + stat + '</div>';
 			str += '		</div></td>';
 			str += "	<td class=\"span2\">";										
 			str +=  new Date(userObj[i]["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
 			str += "	</td>";														
-		//	str += "	<td class=\"span1\" ><a href='/"+version+"/search/node/interfaceDesc.do?nodeId="+userObj[i]["nodeid"]+"&intf="+nullCheckJsonObject(userObj[i]["notifications"],"interfaceid")+"'>";
-		//	str += nullCheckJsonObject(userObj[i]["notifications"],"interfaceid");	//interface
-		//	str += "	</a></td>";	
 			str += "	<td class=\"span6\" >";
 			str += userObj[i]["textmsg"];											//textmsg
 			str += "	</td>";
 			str += "</tr>";
+			
+			str += "<tr><td colspan=\"5\">";
+			str += "	<div class=\"accordion-group\">";
+		//	str += "		<div class=\"accordion-heading\" style=\"height: 32px;\">";
+		//	str += "			<h5><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#"+userObj[i]["notifyid"]+"\"  href=\"#"+userObj[i]["notifyid"]+"\" id= StepOne>";
+		//	str += "				Configuration&nbsp;Categories</a></h5>";
+		//	str += "		</div>";
+			str += "		<div id=\""+userObj[i]["notifyid"]+"\" class=\"accordion-body collapse \">";
+			str += "			<div class=\"accordion-inner\">";
+			//str += "				<div class=\"span12 well well-small\">";
+			str += "					<div class=\"row-fluid\">";
+			str += "						</div>";
+			str += "					</div>";
+			//str += "				</div>";
+			str += "			</div>";
+			str += "		</div>";
+			str += "	</div>";
+			str += "</td></tr>";
 			}
 		
 		
@@ -679,10 +696,12 @@ function totalNotiListjsonObj(jsonObj) {
 			
 			str += "<tr>";
 			
-			str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";										
+			//str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";
+			str += "	<td class=\"span1\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\"  href=\"#total"+userObj[i]["notifyid"]+"\" onclick=\"showTotalNotiInfoDiv("+userObj[i]["notifyid"]+","+userObj[i]["eventid"]+");\">";
 			str += userObj[i]["notifyid"];											//notifyid
 			str += "	</a></td>";
-			str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj[i]["eventid"]+"'>";										
+			//str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj[i]["eventid"]+"'>";	
+			str += "	<td class=\"span1\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\"  href=\"#total"+userObj[i]["notifyid"]+"\" onclick=\"showTotalEventInfoDiv("+userObj[i]["notifyid"]+","+userObj[i]["eventid"]+");\">";
 			str += userObj[i]["eventid"];											//eventid
 			str += "	</a></td>";
 			//str += "<th class='"+stat.toLowerCase()+"'>" + stat + "</th>";			//condition
@@ -700,6 +719,19 @@ function totalNotiListjsonObj(jsonObj) {
 			str += "	</td>";
 			
 			str += "</tr>";
+			
+			str += "<tr><td colspan=\"5\">";
+			str += "	<div class=\"accordion-group\">";
+			str += "		<div id=\"total"+userObj[i]["notifyid"]+"\" class=\"accordion-body collapse \">";
+			str += "			<div class=\"accordion-inner\">";
+			str += "					<div class=\"row-fluid\">";
+			str += "						</div>";
+			str += "					</div>";
+			str += "			</div>";
+			str += "		</div>";
+			str += "	</div>";
+			str += "</td></tr>";
+			
 		}
 		
 	}else{
@@ -736,12 +768,12 @@ function notifiInfo(jsonObj){
 	
 	
 	
-	var notifiInfoStr = '<div class="row-fluid">'+
+	/*var notifiInfoStr = '<div class="row-fluid">'+
 						'	<div class="span12">'+
 						'		<h5>공지&nbsp;상세&nbsp;정보</h5>'+
 						'	</div>'+
-						'</div>'+
-						'<div class="row-fluid">'+
+						'</div>'+*/
+var notifiInfoStr ='<div class="row-fluid">'+
 						'	<div class="span12 well well-small">'+
 						'	<table class="table table-striped">'+
 						'		<tr>'+
@@ -798,7 +830,9 @@ function notifiInfo(jsonObj){
 function destiInfo(jsonObj){
 	
 	var str = "";
-
+	
+	console.log("-----------destiInfo---------");	
+	console.log(jsonObj);
 	var destinationObj = jsonObj["destinations"]["destination"]; 
 	
 	 if(destinationObj.length > 1){
@@ -964,9 +998,12 @@ function getFailJsonObj(){
 function addNotiStr(jsonObj){
 	
 	var str = "";
+
+	// 이부분을 바궈볼게요
 	
-	 if(jsonObj.length > 1){
+	if(jsonObj.length > 1){
 	
+		
 		for ( var i in  jsonObj){
 			
 			
@@ -974,6 +1011,9 @@ function addNotiStr(jsonObj){
 			str += "	<td class=\"span1 text-error\">";										
 			str += "<strong>&nbsp;"+jsonObj[i]["status"];												//event-label
 			str += "	<strong></td>";
+			
+			//여기까지
+			
 			str += "	<td class=\"span3\">";
 			str += "&nbsp;"+jsonObj[i]["name"];												//event-label
 			str += "	</td>";

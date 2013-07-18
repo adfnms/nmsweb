@@ -13,11 +13,12 @@
 </jsp:include>
 <script src="<c:url value="/resources/js/events.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		
 		var data = "id=${eventId}";
-		getTotalEvenstList(addEventInfo,data)
+		getTotalEvenstList(addEventInfo,data);
 
 	});
 	

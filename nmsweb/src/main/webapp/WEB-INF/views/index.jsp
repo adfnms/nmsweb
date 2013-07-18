@@ -21,7 +21,8 @@
 
 		//서비스 option 가져오기
 		getServiceList(addServiceList);
-
+		
+		/* 24시간 가용률, 카테고리 정보*/
 		getTotalIndexInfo(addIndexInfo, null);
 		
 		/*노드 정보 갖고오기  */
@@ -32,24 +33,20 @@
 		
 	});
 
-	
+	/* 감시대상목록 */
 	function searchNodeLists(jsonObj) {
 		$('#id').empty();
 		$('#label').empty();
 		$('#indexNodeList').empty();
 		
-console.log(jsonObj);
-		var str = getSearchSelectJsonObj(jsonObj);
 		var strNode = getSearchSelectNodeJsonObj(jsonObj);
 		var str = getNodelistJsonObj(jsonObj);
+		
 		
 		$('#indexNodeList').append(str);
 		$('#id').append(str);
 		$('#label').append(strNode);
 	}
-
-	
-	
 	
 	//서비스 리스트 가져오기
 	function addServiceList(jsonObj) {
@@ -58,7 +55,7 @@ console.log(jsonObj);
 		$('#serviceId').append(optionStr);
 
 	}
-
+	/* 24시간 가용률 , 카테고리 정보 */
 	function addIndexInfo(jsonObj) {
 		console.log(jsonObj);
 		var categoryObj = jsonObj["CategoryInfo"];
@@ -67,8 +64,21 @@ console.log(jsonObj);
 		var outageTotalCount = 0;
 		var serviceTotalCount = 0;
 
+		var ULobj = $("<ul></ul>");
+		var TRobj = $("<tr></tr>");
+		var TABLEobj =$("<table></table>");
+		var THobj = $("<th></th>");
+		var TDobj = $("<td></td>");
+		var Aobj = $("<a></a>");
+		var LIobj = $("<li></li>");
+		var H5obj = $("<h5></h5>");
+		var STRONGobj = $("<strong></strong>");
+		
 		// 가용률
-		var str = "";
+		
+		
+		
+		 var str = "";
 		str += '<table class="table table-striped table-hover">';
 		//str += '	<colgroup><col class="span6" /><col class="span3" /><col class="span3" /></colgroup>';
 		str += '	<tr><th>카테고리</th><th>중단 서비스</th><th>서비스 Availability</th></tr>';
@@ -110,7 +120,6 @@ console.log(jsonObj);
 			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) == 0.00){
 				var status = "progress-danger";
 				var availwidth ="18";
-				
 				var errorStr = "";
 				errorStr += '	<div class="alert alert-error">';
 				errorStr += '	<button type="button" class="close" data-dismiss="alert">&times;</button>';
@@ -118,24 +127,11 @@ console.log(jsonObj);
 				errorStr += '        </div>';
 				
 				$('#categoryInfo').append(errorStr);
-				//var classStatus ="error";
 			}  
 			
-			//alert("availabili : "+Number(categoryObj[i]["availabili"]).toFixed(2)+"%  status : "+status);
-		/* 	 if(outageCount == 0){
-				var statusCount = "normal";
-				alert("normal"+outageCount);
-			}else{
-				var statusCount = "critical";
-				alert("critical"+outageCount);
-			}  */
-			
 			var avail = Number(categoryObj[i]["availabili"]).toFixed(2) ;
-			
 			var outageCount = categoryObj[i]["outageTotalCount"];
 			var serviceCount = categoryObj[i]["serviceTotalCount"];
-
-			
 			
 			str += '	<tr class='+classStatus+' id="errorstr">';
 			str += '		<th><a href="<c:url value="/category/nodeList?cateNm=" />'+categoryObj[i]["name"]+'">' + categoryObj[i]["name"] + '</a></th>';
@@ -147,15 +143,11 @@ console.log(jsonObj);
 			totalAvail += parseInt(avail);
 			outageTotalCount += parseInt(outageCount);
 			serviceTotalCount += parseInt(serviceCount);
-			
 		}
-
 		str += '</table>';
-
-		$('#categoryInfo').append(str);
 		
+		$('#categoryInfo').append(str);
 		if(outageTotalCount == 0){
-			
 			var statusTotal = "success";
 			
 		}else{
@@ -172,21 +164,14 @@ console.log(jsonObj);
 			var statustotalAvail = "progress-warning";
 		}else if ((totalAvail / categoryObj.length).toFixed(2) <= 69 && (totalAvail / categoryObj.length).toFixed(2) > 0.00){
 			var statustotalAvail = "progress-danger";
-			
-			
 		} else if ((totalAvail / categoryObj.length).toFixed(2)== 0.00){
 			var statustotalAvail = "progress-danger";
 			var availwidth ="18";
-			
-			
 			//var classStatus ="error";
 		}
 		
-		
-		
-		
-		
 		// 전체 가용률
+		
 		var tstr = "";
 		tstr += '<table class="table table-striped table-hover">';
 		//tstr += '	<colgroup><col class="span6" /><col class="span3" /><col class="span3" /></colgroup>';
@@ -199,12 +184,12 @@ console.log(jsonObj);
 		
 		tstr += '		</div></td>';
 		//tstr += '	<td class="'+statustotalAvail+'">' + (totalAvail / categoryObj.length).toFixed(2)
-//				+ '%</td>';
+		//		+ 	'%</td>';
 		tstr += '	</tr></table>';
 
-		$('#totalCategoryInfo').append(tstr);
+		$('#totalCategoryInfo').append(tstr); 
 
-		//중단 목록
+		//GET 장애 목록
 		var outageObj = jsonObj["Outages"];
 
 		for ( var i in outageObj) {
@@ -212,11 +197,36 @@ console.log(jsonObj);
 			var lostTime = new Date(outageObj[i]["iflostservice"]);
 			var current = new Date();
 			var lastTime = dateDiff(lostTime, current);
-
-			$('#outageInfo').append("<strong><a class=text-error href='<c:url value='/search/outage/outageDesc?outageId=' />"+outageObj[i]["outageid"]+"'>" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>");
+			
+		/* $('#outageInfo').append("<strong><a class=text-error href='<c:url value='/search/outage/outageDesc?outageId=' />"+outageObj[i]["outageid"]+"'>" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>"); */
+			$('#outageInfo').append("<strong><a class=text-error data-toggle=modal href='#myModal' onclick=\"javascript:outagePop('"+outageObj[i]["outageid"]+","+outageObj[i]["ipaddr"]+"');\">" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>");
 		}
-		
+	}//******//24시간 가용률 , 카테고리 정보 ****************/
+	
+	
+	/* 장애 정보 POPUP창 */
+	/* 장애 목록 클릭시 실행 */
+	function outagePop(obj){
+		var object = obj.split(',');
+		for(var i = 0 ; i < object.length; i++)
+		{
+			var outageid= object[0];
+			var ipaddr= object[1];
+		}
+		var data = "id="+outageid;
+		getTotalOutagesList(addOutageInfo, data,ipaddr);
 	}
+	
+	/* outage Info Callback */
+	function addOutageInfo(jsonObj,ipaddr){
+		$('#outageInfoDiv').empty();
+		var outageInfoStr = getOutageInfoBox(jsonObj);
+		$('#outageInfoDiv').append(outageInfoStr);
+	
+		$("#myModalLabel").html(ipaddr+"&nbsp;장애&nbsp;정보");
+	}
+	/*//outage Info Callback */
+	/*// 장애 정보 POPUP창 */
 </script>
 </head>
 
@@ -227,7 +237,7 @@ console.log(jsonObj);
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value='/index.do'/>">Home</a><span class="divider">/</span></li>
-					<li><a href="/v1/surveillance.do">surveillance</a> <span class="divider">/</span></li>
+				<!-- 	<li><a href="/v1/surveillance.do">surveillance</a> <span class="divider">/</span></li> -->
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
@@ -247,22 +257,6 @@ console.log(jsonObj);
 									<div class="span12" id="outageInfo"></div>
 								</div>
 							</div> 
-						<!-- 	<div class="progress progress-success progress-striped active" style="margin-bottom: 9px;">
-								<div class="bar" style="width: 100%">100%</div>
-							</div>
-							<div class="progress progress-striped active" style="margin-bottom: 9px;">
-								<div class="bar" style="width: 90%">90%~99%</div>
-							</div>
-							<div class="progress progress-striped progress-info active" style="margin-bottom: 9px;">
-								<div class="bar" style="width: 80%">80%~89%</div>
-							</div>
-							
-							<div class="progress progress-warning progress-striped active" style="margin-bottom: 9px;">
-								<div class="bar" style="width: 70%">70%~79%</div>
-							</div>
-							<div class="progress progress-danger progress-striped active">
-								<div class="bar" style="width: 60%">0%~69%</div>
-							</div> -->
 							<div class="row-fluid">
 								<div class="span12">
 									<h4>알림&nbsp;정보</h4>
@@ -271,8 +265,8 @@ console.log(jsonObj);
 							<div class="well well-small">
 								<div class="row-fluid">
 									<div class="span12">
-										나의 알림 <a class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/setting.do?myNotification=My" />">확인</a><br />
-										 모든 알림<a class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/setting.do?totalNotification=Total" />">확인</a><br />
+										나의 알림 <a  style="margin-left: 16px;" class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/setting.do?myNotification=My" />">확인</a><br />
+										 모든 알림<a style="margin-left: 20px;"  class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/setting.do?totalNotification=Total" />">확인</a><br />
 									</div>
 								</div>
 							</div>
@@ -291,13 +285,12 @@ console.log(jsonObj);
 							</div>
 						</div>
 						<div class="span3">
-							
 							<div class="row-fluid">
 								<div class="span9">
 									<h4>감시&nbsp;대상&nbsp;목록</h4>
 								</div>
 								<div class="span3" style="margin-top: 7px;">
-									<a  class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/setting.do?myNotification=My" />">[More]</a>
+									<a  class="btn btn-mini btn-primary" type="button" href="<c:url value="/monitoring/nodelist.do" />">[More]</a>
 								</div>
 							</div>
 							<div class="well well-small" style ="height:452px;">
@@ -305,66 +298,6 @@ console.log(jsonObj);
 									<div class="span12" id="indexNodeList"></div>
 								</div>
 							</div>
-							
-							
-							<!-- <div class="row-fluid">
-								<div class="span12">
-									<h4>Quick&nbsp;Search</h4>
-								</div>
-							</div> -->
-							<%-- <div class="row-fluid">
-								<div class="span12">
-									<form action="<c:url value="/search/node.do" />">
-										<div class="well well-small">
-											<fieldset>
-												<label for="id" class="span6">노드 ID</label>
-												<select class="span6" id="id" name="id">
-													<option value="">선택</option>
-												</select>
-											</fieldset>
-											<fieldset>
-												<label for="label" class="span6">노드명</label>
-												<!-- <input type="text" id="label" name="label" class="span6"> -->
-												<select class="span6" id="label" name="label">
-													<option value="">선택</option>
-												</select>
-											</fieldset>
-											<fieldset>
-												<div class="span6"></div>
-												<input type="submit" class="btn btn-primary span6" title="Quick Search" value="검색">
-											</fieldset>
-										</div>
-									</form>
-									<form action="<c:url value="/search/node.do" />">
-										<div class="well well-small">
-											<fieldset>
-												<label for="ipAddress" class="span6">TCP/IP</label><input
-													type="text" name="ipAddress" id="ipAddress" class="span6">
-											</fieldset>
-											<fieldset>
-												<div class="span6"></div>
-												<input type="submit" class="btn btn-primary span6"
-													title="Quick Search" value="검색">
-											</fieldset>
-										</div>
-									</form>
-									<form action="<c:url value="/search/node.do" />">
-										<div class="well well-small">
-											<fieldset>
-												<label for="serviceId" class="span6">서비스</label>
-												<select class="span6" id="serviceId" name="serviceId">
-													<option value="">선택</option>
-												</select>
-											</fieldset>
-											<fieldset>
-												<div class="span6"></div>
-												<input type="submit" class="btn btn-primary span6"
-													title="Quick Search" value="검색">
-											</fieldset>
-										</div>
-									</form>
-								</div>
-							</div> --%>
 						</div>
 					</div>
 				</div>
@@ -374,4 +307,17 @@ console.log(jsonObj);
 	</div>
 	<!-- /container -->
 </body>
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1144px; left:36%">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel" >장애정보</h3>
+	</div>
+	<div class="modal-body" style="width: 1099px;">
+		<div class="row-fluid" id="outageInfoDiv"></div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
 </html>

@@ -34,6 +34,9 @@
 		/* Interface Availability */
 		getInterfacesFromNodeId(addInterfaceAvailability, "${nodeId}");
 		
+	
+		
+		
 	});
 
 	/* Node base info Callback */
@@ -69,7 +72,7 @@
 	function addEvents(jsonObj) {
 
 		var str = getTabletagToEventJsonObj(jsonObj);
-		$('#rightUnderDiv2').append(str);
+		$('#rightUnderDiv').append(str);
 
 	}
 	/*//Recent Events Callback*/
@@ -86,7 +89,7 @@
 	}
 
 	function addInterfaceAvailability(jsonObj){
-		
+		var strAv ="";
 		var str ="";
 		
 		if(jsonObj["@count"] > 0){
@@ -98,8 +101,8 @@
 					
 					//인터페이스 가용성
 					var interfaceAvail = Number(getInterfaceAvailability("${nodeId}", ipAddrs)).toFixed(3)+"%";
-					/* var headStr = '<h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>'; */
-					var headStr = '<h5><a href="javascript:InterfaceInfo(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>';
+					 var headStr = '<h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>'; 
+					//var headStr = '<h5><a href="javascript:InterfaceInfo(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>';
 					//서비스 가용성
 					var serviceAvailSte = getTabletagToAvailJsonObj("${nodeId}", ipAddrs);
 					getInterfaceInfo(addInterfaceInfo,"${nodeId}", ipAddrs);
@@ -113,18 +116,20 @@
 				
 				//인터페이스 가용성
  				var interfaceAvail = Number(getInterfaceAvailability("${nodeId}", ipAddrs)).toFixed(3)+"%";
- 				/* var headStr = '<h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>'; */
- 				var headStr = '<h5><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne"  onclick=\"show();\">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>';
+ 				var headStr = '<h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>'; 
+ 				//var headStr = '<h5><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne"  onclick=\"show();\">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>';
  				
  				//서비스 가용성
 				var serviceAvailSte = getTabletagToAvailJsonObj("${nodeId}", ipAddrs);
 				getInterfaceInfo(addInterfaceInfo,"${nodeId}", ipAddrs);
 				$('#interInfo').append("[ " +  ipAddrs + " ]");
-				str += headStr+serviceAvailSte;
+				str += headStr;
+				
+				strAv += serviceAvailSte;
 			}
 		}
-		
 		$("#leftDiv").append(str);
+		$("#leftUnderDiv").append(strAv);
 	}
 	
 function show(){
@@ -155,6 +160,48 @@ function addInterfaceInfo(jsonObj) {
 	
 	/*//Availability Callback*/
 	
+	
+	function goInterfaceDescPage(nodeId,intf){
+	
+	//location.href ="/"+version+"/search/node/interfaceDesc.do?nodeId="+nodeId+"&intf="+intf;
+	/* Recent Outages */
+	getOutagesForInterface(addOutagesForInterface, nodeId, intf,"5");
+
+	/* Recent Events */
+	getEventsForInterface(addEventsForInterface,nodeId, intf,"5");
+	
+}
+	
+		/* Recent Outages Callback*/
+	function addOutagesForInterface(jsonObj ,nodeId) {
+		$('#rightUnderDiv').empty();
+		var str = getTabletagToInterfaceOutageJsonObj(jsonObj,nodeId);
+		$('#rightUnderDiv').append(str);
+
+	}
+	/*//Recent Outages Callback */
+	
+	/* Recent Events Callback */
+	function addEventsForInterface(jsonObj) {
+		$('#rightUnderDiv2').empty();
+		var str = getTabletagToInterfaceEventJsonObj(jsonObj);
+		$('#rightUnderDiv2').append(str);
+
+	}
+	/*//Recent Events Callback */
+	
+function 	goServiceDiv(nodeId,intf){
+		
+		/* Recent Outages */
+		getOutagesForInterface(addOutagesForInterface, nodeId, intf,"5");
+
+		/* Recent Events */
+		getEventsForInterface(addEventsForInterface,nodeId, intf,"5");
+		
+	}
+	
+	
+	
 </script>
 </head>
 
@@ -179,7 +226,7 @@ function addInterfaceInfo(jsonObj) {
 			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span3">
-						<h4 id="nodeLabel">노드정보</h4>
+						<h5 id="nodeLabel">노드정보</h5>
 					</div>
 					<div class="span9">
 						<jsp:include page="/include/statsBar.jsp" />
@@ -189,15 +236,28 @@ function addInterfaceInfo(jsonObj) {
 		</div>​
 		<div class="row-fluid">
 			<div class="span4">
+				<div class="row-fluid" style="margin-top: -10px;">
+					<h5 class="span12 well well-small" id="availNode"></h5>
+				</div>
 				<div class="row-fluid">
-					<h5 id="availNode"></h5>
+					<h5>인터페이스</h5>
 				</div>
 				<div class="row-fluid">
 					<div class="span12 well well-small" id="leftDiv"></div>
 				</div>
+				<div class="row-fluid">
+					<div class="span12 well well-small" id="collapsible"></div>
+				</div>
+				
+				<div class="row-fluid">
+					<h5>서비스&nbsp;목록</h5>
+				</div>
+				<div class="row-fluid">
+					<div class="span12 well well-small" id="leftUnderDiv" style="margin-left: 0px;"></div>
+				</div>
 			</div>
 			
-			<div class="span8" id="rightDiv">
+			<!-- <div class="span8" id="rightDiv">
 				<div class="accordion" id="accordion2" style="display:none">
 					<div class="accordion-group">
 						<div class="accordion-heading">
@@ -206,15 +266,15 @@ function addInterfaceInfo(jsonObj) {
 							</a>
 						</div>
 						<div id="collapseOne" class="accordion-body collapse">
-						<!-- <div id="collapseOne" class="accordion-body collapse in"> 내용 펼쳐저서 보임 -->
-							<div class="accordion-inner" id="collapsible">
+						<div id="collapseOne" class="accordion-body collapse in"> 내용 펼쳐저서 보임
+							<div class="accordion-inner" id="">
 							</div>
 						</div>
 					</div>
 				</div>
-              </div>
+              </div> -->
               <div class="span8" id="rightUnderDiv"></div>
-              <div class="span12" id="rightUnderDiv2" style="margin-left: -25px;"></div>
+                <div class="span8" id="rightUnderDiv2"></div>
 		</div>
 
 	</div>

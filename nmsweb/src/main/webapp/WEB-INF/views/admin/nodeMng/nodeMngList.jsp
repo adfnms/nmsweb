@@ -26,7 +26,7 @@
 		
 	});
 	
-	//callback 함수 jsonObj를 이용 파싱 후 append
+	//getNodeTotalList callback 함수 
 	function addNodeLists(jsonObj) {
 		
 		//총 갯수를 입력해준다.

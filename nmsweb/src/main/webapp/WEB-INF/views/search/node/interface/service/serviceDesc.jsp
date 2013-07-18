@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%-- <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -26,14 +26,14 @@
 		getEventsForInterface(addEvents, "${nodeId}", "${intf}","5");
 		
 		/* ServiceInfo */
-		getServiceInfo(addServiceInfo, "${nodeId}", "${intf}","${serviceNm}");
+		//getServiceInfo(addServiceInfo, "${nodeId}", "${intf}","${serviceNm}");
 		
 	});
 	
 	/* Recent Outages Callback*/
 	function addOutages(jsonObj) {
 
-		var str = getTabletagToOutageJsonObj(jsonObj,"${nodeId}");
+		var str = getTabletagToServiceOutageJsonObj(jsonObj,"${nodeId}");
 		$('#rightDiv').append(str);
 
 	}
@@ -42,20 +42,20 @@
 	/* Recent Events Callback */
 	function addEvents(jsonObj) {
 
-		var str = getTabletagToEventJsonObj(jsonObj);
+		var str = getTabletagToServiceEventJsonObj(jsonObj);
 		$('#rightDiv').append(str);
 
 	}
 	/*//Recent Events Callback */
 	
 	/* ServiceInfo Callback */
-	function addServiceInfo(jsonObj, nodeId, ipAddress, serviceNm){
+	/* function addServiceInfo(jsonObj, nodeId, ipAddress, serviceNm){
 		
 		var serviceInfoStr = getServiceInfoBox(jsonObj, nodeId, ipAddress, serviceNm);
 								
 		$('#leftDiv').append(serviceInfoStr);
 		
-	}
+	} */
 	/*//ServiceInfo Callback */
 </script>
 </head>
@@ -80,18 +80,21 @@
 		<div class="row-fluid">
 			<div class="span12 well well-small">
 				<div class="row-fluid">
-					<div class="span3">
+					<div class="span2" style="margin-top: 11px;">
 						<h4 id="nodeLabel">서비스&nbsp;정보</h4>
 					</div>
-					<div class="span9">
+					<div class="span1">
+						<h3 id="" style="margin-left: -47px;">${serviceNm}</h3>
+					</div>
+					<div class="span9" style="margin-top: 20px;"> 
 						<jsp:include page="/include/statsBar.jsp" />
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row-fluid">
-			<div class="span4" id="leftDiv"></div>
-			<div class="span8" id="rightDiv"></div>
+			<!-- <div class="span4" id="leftDiv"></div> -->
+			<div class="span12" id="rightDiv"></div>
 		</div>
 
 	</div>
@@ -99,3 +102,4 @@
 	<!-- /container -->
 </body>
 </html>
+ --%>

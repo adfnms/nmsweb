@@ -13,6 +13,7 @@
 </jsp:include>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script src="<c:url value="/resources/js/service.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		
@@ -31,25 +32,14 @@
 			/* 모든 데이터를 id로 정렬하여 가져온다 */
 			getNodeTotalList(addNodeLists, "orderBy=id&limit=0");	
 		}
-
 		/* Service list */
 		getServiceList(addServiceList);
-
 	});
 
 	//callback 함수 jsonObj를 이용 파싱 후 append
 	function addNodeLists(jsonObj) {
 		$('#nodeListTable').empty();
 
-		/* $('#id').empty();
-		$('#label').empty();
-
-		var str = getSearchSelectJsonObj(jsonObj);
-		var strNode = getSearchSelectNodeJsonObj(jsonObj);
-		
-		$('#id').append(str);
-		$('#label').append(strNode); */
-		
 		$.ajax({
 			type : 'get',
 			url : '<c:url value="/menu/showMenu.do" />',
@@ -66,17 +56,22 @@
 	       		}
 				var str = getTabletagToSearchJsonObj(jsonObj,groupName);
 				$('#nodeListTable').append(str);
-				
 			}
 		});   	
-		
-		
-		
-		
-
 	}
 	
+	/* service search button */
+	function schNodeFromService() {
+
+		var serviceId = $('#searchNodeFrm select[name=serviceId]').val();
+		//제공서비스 검색기능
+		searchNodeFromServiceId(addNodeserviceLists, serviceId);
+		
+	}
+	/*//service search button */
+	
 	//callback 함수 jsonObj를 이용 파싱 후 append
+	
 	function addNodeserviceLists(jsonObj) {
 		console.log("2 : search.jsp");
 		console.log(jsonObj);
@@ -100,14 +95,7 @@
 				$('#nodeListTable').append(str);
 			}
 		});   	
-		
-		
-		
-		
-
 	}
-	
-
 	
 	/* Service list Callback */
 	function addServiceList(jsonObj) {
@@ -121,10 +109,10 @@
 		if(setOption != null || setOption != ""){
 			$('#serviceId option[value='+setOption+']').attr("selected", "selected");
 		} 
-		
-
 	}
 	/*//Service list Callback*/
+	
+
 	
 	/* nodeNm & nodeId button */
 	function schNodeFromNameId() {
@@ -141,15 +129,7 @@
 	}
 	/*//nodeNm & nodeId button */
 	
-	/* service search button */
-	function schNodeFromService() {
 
-		var serviceId = $('#searchNodeFrm select[name=serviceId]').val();
-		//제공서비스 검색기능
-		searchNodeFromServiceId(addNodeserviceLists, serviceId);
-		
-	}
-	/*//service search button */
 	
 	/* ipAddress search button */
 	function schNodeFromIpAddress() {

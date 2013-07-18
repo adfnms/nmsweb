@@ -19,17 +19,17 @@
     
     <!--User Info Modify-->
 	<update id="modifyToDb" parameterClass="com.bluecapsystem.nms.dto.UserTbl">
+    	
     	UPDATE USER_TBL  
     	 
      	SET 
 			
 				user_id		=#userId#, 
 				user_nm		=#userNm#, 
-				regrid		=#regrId#, 
+				regrid			=#regrId#, 
 				reg_dt		=date(now()), 
 				modrid		=#modrId#, 
-				mod_dt		=date(now()), 
-				use_yn		=#useYn#
+				mod_dt		=date(now()) 
 			
    			WHERE 
    				user_id=#userId#

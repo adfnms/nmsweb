@@ -9,7 +9,7 @@ function groupStr (name,comments,user){
 
 
 function getGroupDeteil(callback , name){
-	console.log('http://192.168.0.23:8080/' + version + '/groups/?'+name);
+	console.log('http://192.168.0.37:8080/' + version + '/groups/?'+name);
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/groups/'+name,

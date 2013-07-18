@@ -71,8 +71,9 @@ public class UserSettingController
 	public ModelAndView getNotificationInfo(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "notifyid", required = false)String notifyid,
 			@RequestParam(value = "eventId", required = false)String eventId)
+	
 	{
-		
+	
 		ModelAndView model = new ModelAndView();
 		
 		model.addObject("notifyid",notifyid);

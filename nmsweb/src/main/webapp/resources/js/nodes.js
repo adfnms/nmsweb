@@ -316,9 +316,7 @@ function goNodeManagePage(nodeId){
 /**
  * 
  */
-function goInterfaceDescPage(nodeId,intf){
-	location.href ="/"+version+"/search/node/interfaceDesc.do?nodeId="+nodeId+"&intf="+intf;
-}
+
 
 
 /** get Bode Availability
@@ -386,6 +384,8 @@ function getInterfaceAvailability(nodeId, ipAddress){
  */
 function deleteNode(nodeId){
 	
+	alert("nodeId"+nodeId);
+	
 	if (nodeId == "") {
 		alert("노드 ID가 없습니다.");
 		return;
@@ -399,7 +399,7 @@ function deleteNode(nodeId){
 		dataType : 'json',
 		contentType : 'application/json',
 		error : function(data) {
-			alert("[" + nodeId + '] 노드 삭제 실패');
+			alert("Id [" + nodeId + '] 노드 삭제 실패');
 		},
 		success : function(data) {
 			location.reload();
@@ -500,6 +500,7 @@ function manageService(nodeId, ipAddress, serviceName, status){
 		data: 'status='+status,
 		async: false,
 		error : function(data) {
+			console.log(url);
 			alert("[" + serviceName + '] 서비스 관리 실패');
 			_return = false;
 		},
@@ -528,7 +529,7 @@ function manageSnmpService(nodeId, ifIndex, collect){
 		data: 'collect='+collect,
 		async: false,
 		error : function(data) {
-			alert("[" + collect + '] SNMP 서비스 관리 실패');
+			alert("노드아이디 : "+nodeId+", [" + collect + '] SNMP 서비스 관리 실패');
 			_return = false;
 		},
 		success : function(data) {
@@ -685,38 +686,69 @@ if (jsonObj["nodes"] == null || jsonObj["nodes"] ==""){
 	}
 	return str;
 }
-/******************************************************************************************************************************/
-
+/*****************************노드리스트*************************************/
+/*index.do page의 감시대상목록*/
 function getNodelistJsonObj(jsonObj){
 	
 	var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
-	var str = "";
-
+	//var str = "";
+	var ULobj = $("<ul></ul>");
+	var TRobj = $("<tr></tr>");
+	var TDobj = $("<td></td>");
+	var Aobj = $("<a></a>");
+	var LIobj = $("<li></li>");
+	var H5obj = $("<h5></h5>");
+	
 	if (jsonObj["node"] == null || jsonObj["node"] ==""){
 		
-		str += "<li>";
+		ULobj.append(
+			LIobj.clone().append(
+				Aobj.clone().text("노드 목록이 없습니다.")			
+			)
+		);
+		/*str += "<li>";
 		str += "<a href=\"\">노드 목록이 없습니다!</a>";
-		str += "</li>";
+		str += "</li>";*/
 		
 	}else if (jsonObj["@totalCount"] == 1 || jsonObj["@count"] == 1) {
 		
 		
-		str += "<li><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+ "'><h5>"
+		ULobj.append(
+			LIobj.clone().append(
+				Aobj.clone().attr("herf","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+"").append(
+					H5obj.clone().text( nodeObj["@label"])
+				)
+			)
+		);
+		/*str += "<li><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+ "'><h5>"
 				+ nodeObj["@label"]
-				+ "</h5></a></li>";
-		
-		
+				+ "</h5></a></li>";*/
 	}else if (jsonObj["@totalCount"] > 1 || jsonObj["@count"] > 1) {
 			
 			for ( var i in nodeObj) {
-				str += "<li><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+ "'><h5>"
-						+ nodeObj[i]["@label"]
-						+ "</h5></a></li>";
+				
+				ULobj.append(
+					LIobj.clone().append(
+						Aobj.clone().attr("href","/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+ "").append(
+							H5obj.clone().text( nodeObj[i]["@label"])
+						)
+					)
+				);
+				
+			/*str += "<li><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+ "'><h5>"
+					+ nodeObj[i]["@label"]
+					+ "</h5></a></li>";*/
 			}
 		} 
-	return str;
+	
+	//return str;
+	return ULobj;
 }
-/****************************************************************test**************************************************************/
+/*****************************//*감시대상목록*노드리스트****************************************/
+
+
+
+
 
 
 /** 이벤트 정보를 table 테그 Str로 만들어준다. 
@@ -800,7 +832,8 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 				}
 				
 				str += '<tr>';
-				str += '	<td><a href="/'+version+'/search/service/serviceDesc?nodeId='+nodeId+'&intf='+ipAddress+'&serviceNm='+serviceObj[i]["serviceType"]["name"]+'">';
+				//str += '	<td><a href="/'+version+'/search/service/serviceDesc?nodeId='+nodeId+'&intf='+ipAddress+'&serviceNm='+serviceObj[i]["serviceType"]["name"]+'">';
+				str += '	<td><a href="javascript:goServiceDiv( \''+nodeId+'\', \''+ipAddress+'\')">';
 				str += serviceObj[i]["serviceType"]["name"];
 				str += '	</a></td>';
 				str += '	<td>';
@@ -868,7 +901,7 @@ function getInterfaceInfoBox(jsonObj){
 /** 서비스 리스트를 <option> 테그 str로 바꿔줌
  * @param jsonObj
  * @returns {String}
- */
+ *//*
 function getSearchSelectJsonObj(jsonObj) {
 
 	var node= jsonObj["node"];
@@ -890,7 +923,7 @@ function getSearchSelectJsonObj(jsonObj) {
 
 	return optionNodeIdStr;
 	
-}
+}*/
 
 /** 서비스 리스트를 <option> 테그 str로 바꿔줌
  * @param jsonObj

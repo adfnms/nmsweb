@@ -31,9 +31,9 @@ try{
 	$(document).ready(function() {
 		
 	/* Get the notification specified by the certain ID */
-		
+		/*공지상세정보-Notification Time,Node,Interface*/
 	getNotificaitionDetail(notificaitionInfo, "${notifyid}");
-		
+		/*공지상세정보 -Uei,numericMessage,TextMessage*/
 	getdestinationDetail(destinationInfo, "${notifyid}");
 	});
 	/*//********Get the notification specified by the certain ID  */

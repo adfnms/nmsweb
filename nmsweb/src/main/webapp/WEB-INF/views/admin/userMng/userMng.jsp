@@ -122,12 +122,13 @@
 	}
 	
 	function deleteToDb(userId){
-		//var userId = $("#userInfoFrm input[name=user-id]").val();
 		
 		var frm = document.getElementById("userIdModiFrm");
 		
+		var data = $("#userIdModiFrm").serialize();
 		
-		//frm.action = '<c:url value="/admin/userMng/modifyToDb.do"/>';
+		alert(data);
+		
 		frm.action = "/v1/admin/userMng/deleteToDb.do";
 	    frm.submit();
 	}

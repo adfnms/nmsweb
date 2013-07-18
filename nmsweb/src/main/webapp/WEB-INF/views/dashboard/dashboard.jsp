@@ -29,28 +29,29 @@
 		
 	});
 
+	var index = 0;
+	function chkstats(){
+		
+		grapHide(index+1);
+		index++;
+		if( index == 7){
+			eventListAct();
+			index = 0;
+		}
+	
+		setTimeout(chkstats, 3000);
+	}
+	
+	/* 그래프에 필요한 카테고리 목록 */
 	function initDashboard(jsonObj){
-
+		
 		var categoryObj = jsonObj["CategoryInfo"];
 		
+		console.log("-----initDashboard----");
+		console.log(categoryObj);
 		for ( var i in categoryObj) {
-			
 			var cateIdx = getCategorieIdx(categoryObj[i]["name"]);
-			
 			 //var status = Number(categoryObj[i]["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical"; 
-			
-			/* if(Number(categoryObj["availabili"]).toFixed(2) >= 100){
-				var status = "normal";
-			}else if (Number(categoryObj["availabili"]).toFixed(2) >= 90 && Number(categoryObj["availabili"]).toFixed(2) <= 99){
-				var status = "warning";
-			}else if (Number(categoryObj["availabili"]).toFixed(2) >= 80 && Number(categoryObj["availabili"]).toFixed(2) <= 89){
-				var status = "minor";
-			}else if (Number(categoryObj["availabili"]).toFixed(2) >= 80 && Number(categoryObj["availabili"]).toFixed(2) <= 79){
-				var status = "major";
-			}else if (Number(categoryObj["availabili"]).toFixed(2) <= 69){
-				var status = "critical";
-			} */
- 			
 			$('.graph-container>li:nth-child('+cateIdx+') span div').html(" ["+Number(categoryObj[i]["availabili"]).toFixed(2)+"%]");
 			$('.graph-container>li:nth-child('+cateIdx+')').attr("class",status+"-graph");
 			$('.graph-container>li:nth-child('+cateIdx+') .bar-inner').css("height",Number(categoryObj[i]["availabili"]).toFixed(2)+"%").css("bottom", "0");
@@ -60,34 +61,107 @@
 		setTimeout(chkstats, 2000);
 	}
 	
-	
-	var index = 0;
-	function chkstats(){
+	/* 그래프를 0%만들고 json데이터를 호출한다. */
+	function grapHide(idx){
 		
-		grapHide(index+1);
-		index++;
-		
-		if( index == 7){
-			eventListAct();
-			index = 0;
-		}
-	
-		setTimeout(chkstats, 3000);
+		$('.graph-container>li:nth-child('+idx+') .bar-inner').css("height","");
+		var categoriNm = getCategorieName(idx);
+		setTimeout(getCategoryToName, 800, grapShow, categoriNm, idx);
 	}
+	/*//그래프를 0%만들고 json데이터를 호출한다. */
+	
+	/* 그래프를 그려준다. */
+	function grapShow(jsonObj, idx){
+		
+		var categoryObj = jsonObj["CategoryInfo"];
+		
+		/* var status = Number(categoryObj["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical"; */
+		
+		if(Number(categoryObj["availabili"]).toFixed(2) >= 100){
+			var status = "normal";
+		}else if (Number(categoryObj["availabili"]).toFixed(2) >= 90 && Number(categoryObj["availabili"]).toFixed(2) <= 99){
+			var status = "warning";
+		}else if (Number(categoryObj["availabili"]).toFixed(2) >= 80 && Number(categoryObj["availabili"]).toFixed(2) <= 89){
+			var status = "minor";
+		}else if (Number(categoryObj["availabili"]).toFixed(2) >= 70 && Number(categoryObj["availabili"]).toFixed(2) <= 79){
+			var status = "major";
+		}else if (Number(categoryObj["availabili"]).toFixed(2) <= 69){
+			var status = "critical";
+		}
+		
+		$('.graph-container>li:nth-child('+idx+') span div').html(" ["+Number(categoryObj["availabili"]).toFixed(2)+"%]");
+		$('.graph-container>li:nth-child('+idx+')').attr("class",status+"-graph");
+		$('.graph-container>li:nth-child('+idx+') .bar-inner').css("height",Number(categoryObj["availabili"]).toFixed(2)+"%").css("bottom", "0");
+		
+		addOutage(jsonObj);
+	}
+	/*//그래프를 그려준다. */
 	
 	/*이벤트 목록  */
 	function eventListAct(){
 		
 		var data = "==6";
  		getTotalEvenstListForDashboard(addEvents,data,"10");
-		
 	}
+	
+	/* outage append ,중단 서비스 목록*/
+	function addOutage(jsonObj){
+		//중단 목록
+		console.log("------------addOutage-중단서비스목록-------------");
+		console.log(jsonObj);
+		
+		var outageObj = jsonObj["Outages"];
+		$('#outageDiv').empty();
+		for ( var i in outageObj) {
+			
+			var lostTime = new Date(outageObj[i]["iflostservice"]);
+			var current = new Date();
+			var lastTime = dateDiff(lostTime, current);
+			var sec = getSecDateDiff(lostTime, current);
+			var statu = sec <= 86400 ? "critical" : "major";
+			var str= "";
+			
+			str += "<li id='outage_"+outageObj[i]["outageid"]+"'>";
+			str += "	<table>";
+			str += "		<tr>";
+			str += "			<td style='text-align:center;'>";
+			str += "				<img src='<c:url value="/resources/images/" />"+statu+".png' style='width:110px; height:60px;'/>";
+			str += "			</td>";
+			str += "		</tr>";
+			str += "		<tr class='"+statu+"'>";
+			str += "			<td style='text-align:center;'>";
+			str +=					outageObj[i]["ipaddr"];
+			str += "			</td>";
+			str += "		<tr>";
+			str += "			<td style='text-align:center;'>";
+			str += "				<a href=\"javascript:includeOut('"+outageObj[i]["outageid"]+"');\">";
+			str += "					["+lastTime+"]";
+			str += "				</a>";
+			str += "			</td>";
+			str += "		</tr>";
+			str += "	</table>";
+			str += "</li>";
+			
+			if(sec <= 86400){
+				$('#outageDiv').prepend($(str)).fadeIn('slow');
+			}else{
+				$('#outageDiv').append($(str)).fadeIn('slow');
+			}
+		}
+	}
+	/*//outage append ,중단 서비스 목록*/
+	
+	
 	/*이벤트 목록  */
 	/* Evnet Callback */
 	function addEvents(jsonObj){
 		var str = "";
 		var events = jsonObj["event"];
 		str = "	<div class='row-fluid'>"
+			+ "			<div class='row-fluid'>"
+			+ "				<div class='span3'>"
+			+ "				</div>"
+			+ "		</div>"
 			+ "		<h5>이벤트&nbsp;목록&nbsp;["
 			+ events.length
 			+ "]</h5>"
@@ -141,95 +215,11 @@
 	}
 	/*//includeOut outage */
 	
-	/* 그래프를 0%만들고 json데이터를 호출한다. */
-	function grapHide(idx){
-		
-		$('.graph-container>li:nth-child('+idx+') .bar-inner').css("height","");
-		var categoriNm = getCategorieName(idx);
-		setTimeout(getCategoryToName, 800, grapShow, categoriNm, idx);
-	}
-	/*//그래프를 0%만들고 json데이터를 호출한다. */
-	
-	/* 그래프를 그려준다. */
-	function grapShow(jsonObj, idx){
-		
-		var categoryObj = jsonObj["CategoryInfo"];
-		
-		/* var status = Number(categoryObj["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical"; */
-		
-		if(Number(categoryObj["availabili"]).toFixed(2) >= 100){
-			var status = "normal";
-		}else if (Number(categoryObj["availabili"]).toFixed(2) >= 90 && Number(categoryObj["availabili"]).toFixed(2) <= 99){
-			var status = "warning";
-		}else if (Number(categoryObj["availabili"]).toFixed(2) >= 80 && Number(categoryObj["availabili"]).toFixed(2) <= 89){
-			var status = "minor";
-		}else if (Number(categoryObj["availabili"]).toFixed(2) >= 70 && Number(categoryObj["availabili"]).toFixed(2) <= 79){
-			var status = "major";
-		}else if (Number(categoryObj["availabili"]).toFixed(2) <= 69){
-			var status = "critical";
-		}
-		
-		
-		$('.graph-container>li:nth-child('+idx+') span div').html(" ["+Number(categoryObj["availabili"]).toFixed(2)+"%]");
-		$('.graph-container>li:nth-child('+idx+')').attr("class",status+"-graph");
-		$('.graph-container>li:nth-child('+idx+') .bar-inner').css("height",Number(categoryObj["availabili"]).toFixed(2)+"%").css("bottom", "0");
-		
-		addOutage(jsonObj);
-	}
-	/*//그래프를 그려준다. */
-	
-	/* outage append */
-	function addOutage(jsonObj){
-		//중단 목록
-		var outageObj = jsonObj["Outages"];
-		$('#outageDiv').empty();
-		for ( var i in outageObj) {
-			
-			var lostTime = new Date(outageObj[i]["iflostservice"]);
-			var current = new Date();
-			var lastTime = dateDiff(lostTime, current);
-			var sec = getSecDateDiff(lostTime, current);
-			var statu = sec <= 86400 ? "critical" : "major";
-			var str= "";
-			
-			str += "<li id='outage_"+outageObj[i]["outageid"]+"'>";
-			str += "	<table>";
-			str += "		<tr>";
-			str += "			<td style='text-align:center;'>";
-			str += "				<img src='<c:url value="/resources/images/" />"+statu+".png' style='width:110px; height:60px;'/>";
-			str += "			</td>";
-			str += "		</tr>";
-			str += "		<tr class='"+statu+"'>";
-			str += "			<td style='text-align:center;'>";
-			str +=					outageObj[i]["ipaddr"];
-			str += "			</td>";
-			str += "		<tr>";
-			str += "			<td style='text-align:center;'>";
-			str += "				<a href=\"javascript:includeOut('"+outageObj[i]["outageid"]+"');\">";
-			str += "					["+lastTime+"]";
-			str += "				</a>";
-			str += "			</td>";
-			str += "		</tr>";
-			str += "	</table>";
-			str += "</li>";
-			
-			if(sec <= 86400){
-				$('#outageDiv').prepend($(str)).fadeIn('slow');
-			}else{
-				$('#outageDiv').append($(str)).fadeIn('slow');
-			}
-		}
-	}
-	/*//outage append */
-	
 </script>
 </head>
-
 <body>
 	<div class="container">
-
 		<jsp:include page="/include/menu.jsp" />
-
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
@@ -255,7 +245,6 @@
 			</div>
 		</div>
 		<div class="row-fluid">
-		
 			<div class="row-fluid">
 				<div class="span12 well well-small">
 					<jsp:include page="/include/graph.jsp" />

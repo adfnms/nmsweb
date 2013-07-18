@@ -70,9 +70,11 @@ public class AssetsController
 	{
 		
 		ModelAndView model = new ModelAndView();
+		
 		model.addObject("nodeId", nodeId);
 		model.addObject("nodeLabel", nodeLabel);
-		model.setViewName("/assets/modifyAssets");
+		model.setViewName("/admin/nodeMng/nodeMng");
+		/*model.setViewName("/assets/modifyAssets"); */ /*해당페이지 나중에 삭제*/
 		return model;
 	}
 	

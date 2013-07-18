@@ -3,7 +3,7 @@
  * 
  * @param callback
  */
-function getTotalOutagesList(callback, data) {
+function getTotalOutagesList(callback, data,ipaddr,nodeId) {
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/outages',
@@ -16,7 +16,7 @@ function getTotalOutagesList(callback, data) {
 		success : function(data) {
 			// 콜백함수
 			if (typeof callback == "function") {
-				callback(data);
+				callback(data,ipaddr,nodeId);
 			}
 		}
 	});
@@ -78,7 +78,7 @@ function getOutagesForInterface(callback, nodeId, ipAddress, recentCount) {
 			+ "' AND this_.ipaddr = '" + ipAddress + "'");
 	var filter = "&orderBy=ifLostService&order=desc&limit=" + recentCount;
 
-	getTotalOutagesList(callback, query + filter);
+	getTotalOutagesList(callback, query + filter,nodeId);
 }
 
 
@@ -211,22 +211,179 @@ function getTabletagToOutageJsonObj(jsonObj) {
 
 	}
 	return str;
-}
+}function getTabletagToInterfaceOutageJsonObj(jsonObj) {
+	
+	var outages = jsonObj["outage"];
 
+	var str = "";
+
+	if (jsonObj["@count"] > 0) {
+
+		str = "	<div class='row-fluid'>"
+				+ "		<h5>인터페이스&nbsp;중단&nbsp;목록&nbsp;["
+				+ jsonObj["@count"]
+				+ "]</h5>"
+				+ "	</div>"
+				+ "	<div class='row-fluid'>"
+				+ "		<div class='span12 well well-small'>"
+				+ "<table class='table table-striped'>"
+				+ "<tr><th>인터페이스</th><th>서비스</th><th>중단 시간</th><th>회복 시간</th><th>ID</th></tr>";
+		if (jsonObj["@count"] > 1) {
+
+			for ( var i in outages) {
+
+				str += "<tr>";
+				str += "<td><a href='/" + version
+						+ "/search/node/interfaceDesc.do?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"]
+						+ "&intf=" + outages[i]["ipAddress"] + "'>"
+						+ outages[i]["ipAddress"] + "</a></td>";
+				str += "<td><a href='/"
+						+ version
+						+ "/search/service/serviceDesc?nodeId="
+						+ outages[i]["serviceLostEvent"]["nodeId"]
+						+ "&intf="
+						+ outages[i]["ipAddress"]
+						+ "&serviceNm="
+						+ nullCheckJsonObject(
+								outages[i]["serviceLostEvent"]["serviceType"],
+								"name")
+						+ "'>"
+						+ nullCheckJsonObject(
+								outages[i]["serviceLostEvent"]["serviceType"],
+								"name") + "</a></td>";
+				str += "<td class=\"text-error\">"
+						+ new Date(nullCheckJsonObject(
+								outages[i]["serviceLostEvent"], "time"))
+								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				str += "<td class=\"text-success\">"
+						+ new Date(nullCheckJsonObject(
+								outages[i]["serviceRegainedEvent"], "time"))
+								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				str += "<td><a href='/" + version
+						+ "/search/outage/outageDesc?outageId="
+						+ outages[i]["@id"] + "'>" + outages[i]["@id"]
+						+ "</a></td>";
+				str += "</tr>";
+			}
+
+		} else {
+			str += "<tr>";
+			str += "<td><a href='#'>" + outages["ipAddress"] + "</a></td>";
+			str += "<td><a href='#'>"
+					+ nullCheckJsonObject(
+							outages["serviceLostEvent"]["serviceType"], "name")
+					+ "</a></td>";
+			str += "<td>"
+					+ new Date(nullCheckJsonObject(outages["serviceLostEvent"],
+							"time")).format('yy-MM-dd hh:mm:ss') + "</td>";
+			str += "<td>"
+					+ new Date(nullCheckJsonObject(
+							outages["serviceRegainedEvent"], "time"))
+							.format('yy-MM-dd hh:mm:ss') + "</td>";
+			str += "<td><a href='#'>" + outages["@id"] + "</a></td>";
+			str += "</tr>";
+		}
+
+		str += "</table></div>";
+
+	}
+	return str;
+}
+function getTabletagToServiceOutageJsonObj(jsonObj) {
+	
+	var outages = jsonObj["outage"];
+
+	var str = "";
+
+	if (jsonObj["@count"] > 0) {
+
+		str = "	<div class='row-fluid'>"
+				+ "		<h5>서비스&nbsp;중단&nbsp;목록&nbsp;["
+				+ jsonObj["@count"]
+				+ "]</h5>"
+				+ "	</div>"
+				+ "	<div class='row-fluid'>"
+				+ "		<div class='span12 well well-small'>"
+				+ "<table class='table table-striped'>"
+				+ "<tr><th>인터페이스</th><th>서비스</th><th>중단 시간</th><th>회복 시간</th><th>ID</th></tr>";
+		if (jsonObj["@count"] > 1) {
+
+			for ( var i in outages) {
+
+				str += "<tr>";
+				str += "<td><a href='/" + version
+						+ "/search/node/interfaceDesc.do?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"]
+						+ "&intf=" + outages[i]["ipAddress"] + "'>"
+						+ outages[i]["ipAddress"] + "</a></td>";
+				str += "<td><a href='/"
+						+ version
+						+ "/search/service/serviceDesc?nodeId="
+						+ outages[i]["serviceLostEvent"]["nodeId"]
+						+ "&intf="
+						+ outages[i]["ipAddress"]
+						+ "&serviceNm="
+						+ nullCheckJsonObject(
+								outages[i]["serviceLostEvent"]["serviceType"],
+								"name")
+						+ "'>"
+						+ nullCheckJsonObject(
+								outages[i]["serviceLostEvent"]["serviceType"],
+								"name") + "</a></td>";
+				str += "<td class=\"text-error\">"
+						+ new Date(nullCheckJsonObject(
+								outages[i]["serviceLostEvent"], "time"))
+								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				str += "<td class=\"text-success\">"
+						+ new Date(nullCheckJsonObject(
+								outages[i]["serviceRegainedEvent"], "time"))
+								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				str += "<td><a href='/" + version
+						+ "/search/outage/outageDesc?outageId="
+						+ outages[i]["@id"] + "'>" + outages[i]["@id"]
+						+ "</a></td>";
+				str += "</tr>";
+			}
+
+		} else {
+			str += "<tr>";
+			str += "<td><a href='#'>" + outages["ipAddress"] + "</a></td>";
+			str += "<td><a href='#'>"
+					+ nullCheckJsonObject(
+							outages["serviceLostEvent"]["serviceType"], "name")
+					+ "</a></td>";
+			str += "<td>"
+					+ new Date(nullCheckJsonObject(outages["serviceLostEvent"],
+							"time")).format('yy-MM-dd hh:mm:ss') + "</td>";
+			str += "<td>"
+					+ new Date(nullCheckJsonObject(
+							outages["serviceRegainedEvent"], "time"))
+							.format('yy-MM-dd hh:mm:ss') + "</td>";
+			str += "<td><a href='#'>" + outages["@id"] + "</a></td>";
+			str += "</tr>";
+		}
+
+		str += "</table></div>";
+
+	}
+	return str;
+}
 /**
  * Outage 정보를 Str테그로 만들어준다.
  * 
  * @param jsonObj
  */
 function getOutageInfoBox(jsonObj) {
-
+	
+	console.log("-----------getOutageInfoBox-----------");	
+	console.log(jsonObj);
+	
 	var outageObj = jsonObj["outage"];
 
 	var outageInfoStr = '<div class="row-fluid">' + '	<h5>중단['
 			+ outageObj["@id"]
 			+ ']</h5>'
 			+ '</div>'
-			+ '<div class="row-fluid">'
+			+ '<div class="row-fluid" style="width: 1113px;">'
 			+ '	<div class="span12 well well-small">'
 			+ '		<table class="table table-striped">'
 			+ '			<tr>'
@@ -256,45 +413,33 @@ function getOutageInfoBox(jsonObj) {
 			+ '			</tr>'
 			+ '			<tr>'
 			+ '				<th>인터페이스</th>'
-			+ '				<td><a href="/'
-			+ version
-			+ '/search/node/interfaceDesc.do?nodeId='
-			+ outageObj["serviceLostEvent"]["nodeId"]
-			+ '&intf='
-			+ outageObj["ipAddress"]
-			+ '">'
-			+ outageObj["ipAddress"]
-			+ '</a></td>'
-			+ '				<th>회복 시간</th>'
 			+ '				<td>'
-			//+ outageObj["serviceRegainedEvent"]["time"]
+			
+			
+		
+			+ outageObj["ipAddress"]
 			+ '</td>'
-			+ '				<th>회복 이벤트</th>'
-			+ '				<td><a href="/'
-			+ version
-			+ '/search/event/eventDesc.do?eventId='
-			//+ outageObj["serviceRegainedEvent"]["@id"]
-			+ '">'
-			//+ outageObj["serviceRegainedEvent"]["@id"]
-			+ '</a></td>'
-			+ '			</tr>'
-			+ '			<tr>'
+			+ '				<th>호스트</th>'
+			+ '				<td>'
+			+ outageObj["serviceLostEvent"]["host"]
+			+ '</td>'
 			+ '				<th>서비스</th>'
 			+ '				<td>'
-			+ '					<a href="/'
-			+ version
-			+ '/search/service/serviceDesc?nodeId='
-			+ outageObj["serviceLostEvent"]["nodeId"]
-			+ '&intf='
-			+ outageObj["ipAddress"]
-			+ '&serviceNm='
+			+ outageObj["serviceLostEvent"]["serviceType"]["name"]
+			+ '</td>'
+			+ '			</tr>'
+			+ '			<tr>'
+			+ '				<th>메세지 로그</th>'
+			+ '				<td colspan="5">'
+				+outageObj["serviceLostEvent"]["logMessage"]
 			//+ nullCheckJsonObject(
-			//		outageObj["serviceRegainedEvent"]["serviceType"], "name")
-			+ '">'
-			//+ nullCheckJsonObject(
-			//		outageObj["serviceRegainedEvent"]["serviceType"], "name")
-			+ '					</a>' + '				</td>' + '				<td colspan="4"></td>'
-			+ '			</tr>' + '		</table>' + '	</div>' + '</div>';
+			//	+outageObj["serviceLostEvent"]["logMessage"]
+			+ '				</td>' 
+			+ '				<td colspan="4"></td>'
+			+ '			</tr>' 
+			+ '		</table>' 
+			+ '	</div>' 
+			+ '</div>';
 
 	return outageInfoStr;
 }

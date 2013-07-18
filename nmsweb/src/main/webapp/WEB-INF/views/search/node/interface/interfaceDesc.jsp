@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%-- <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -29,7 +29,7 @@
 		getEventsForInterface(addEvents, "${nodeId}", "${intf}","5");
 		
 		/* Interface Availability */
-		addAvailability("${nodeId}","${intf}");
+		//addAvailability("${nodeId}","${intf}");
 		
 	});
 	
@@ -45,7 +45,7 @@
 	/* Recent Outages Callback*/
 	function addOutages(jsonObj) {
 
-		var str = getTabletagToOutageJsonObj(jsonObj,"${nodeId}");
+		var str = getTabletagToInterfaceOutageJsonObj(jsonObj,"${nodeId}");
 		$('#rightDiv').append(str);
 
 	}
@@ -54,7 +54,7 @@
 	/* Recent Events Callback */
 	function addEvents(jsonObj) {
 
-		var str = getTabletagToEventJsonObj(jsonObj);
+		var str = getTabletagToInterfaceEventJsonObj(jsonObj);
 		$('#rightDiv').append(str);
 
 	}
@@ -112,7 +112,7 @@
 			</div>
 		</div>
 		<div class="row-fluid">
-			<div class="span4" id="leftDiv">
+			<!-- <div class="span4" id="leftDiv">
 				
 				<div class="row-fluid">
 					<h5>가용성</h5>
@@ -122,11 +122,11 @@
 						<table class="table table-striped" id="availDiv"></table>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			
-			<div class="span8" id="rightDiv">
+			<div class="span12" id="rightDiv">
 			<div class="row-fluid">
-					<h5>인터페이스&nbsp;정보</h5>
+					<h5>${intf}&nbsp;인터페이스&nbsp;정보</h5>
 				</div>
 				<table>
 				
@@ -139,3 +139,4 @@
 	<!-- /container -->
 </body>
 </html>
+ --%>

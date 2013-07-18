@@ -106,6 +106,10 @@
 	
 	
 	function getAssetInfo(callback,nodeId) {
+		
+		console.log("---------getAssetInfo----------");
+		console.log(nodeId);
+		
 		$.ajax({
 			type : 'get',
 			url : '/' + version + '/assets/getAssetInfo',

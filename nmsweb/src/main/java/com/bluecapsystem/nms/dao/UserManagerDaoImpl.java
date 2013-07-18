@@ -49,7 +49,8 @@ public class UserManagerDaoImpl extends BaseDao implements UserManagerDao{
 	public void modifyToDb(UserTbl userTbl) {
 
 		try{
-			
+			System.out.println("-------------UserManagerDaoImpl------------------"+userTbl.getUserNm());
+			System.out.println("-------------UserManagerDaoImpl------------------"+userTbl.getUserId());
 			super.getSqlMapClientTemplate().update("com.bluecapsystem.nms.userManager.modifyToDb", userTbl);
 			
 		}catch(Exception ex){

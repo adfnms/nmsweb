@@ -16,7 +16,7 @@
 <script src="<c:url value="/resources/js/notification.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script src="<c:url value="/resources/js/category.js" />"></script>
-
+<script src="<c:url value="/resources/js/events.js" />"></script>
 
 <script type="text/javascript">
 var limit =5;
@@ -116,6 +116,97 @@ var encodeTime = encodeURI(time);
 		
 				
 	} */
+	
+	/*NotiId클릭시 하단에 정보보여주기*/
+	function showNotiInfoDiv(notiId,eventId){
+		
+		/*공지상세정보-Notification Time,Node,Interface*/
+		getNotificaitionDetail(notificaitionInfo, notiId);
+		
+		/*공지상세정보 -Uei,numericMessage,TextMessage*/
+		//getdestinationDetail(destinationInfo, notiId);
+		
+		/*컨트롤러 주소*/
+		/* location.href ="/"+version+"/admin/setting/notificationDetali.do?notifyid="+notiId+"&eventId="+eventId; */
+		
+	}
+	function notificaitionInfo(jsonObj) {
+		
+		console.log("---------notificaitionInfo------------");
+		console.log(jsonObj);
+		
+		
+		var notiId=jsonObj["@id"];
+		$("#"+notiId).empty();
+		var notifiInfoStr = notifiInfo(jsonObj);
+		$("#"+notiId).append(notifiInfoStr);
+	}
+	function showEventInfoDiv(notiId,eventId){
+		var data = "id="+eventId;
+		getTotalEvenstList(addEventInfo,data,notiId);
+	}
+	/* Event Info */
+	function addEventInfo(jsonObj,notiId){
+		console.log("---------addEventInfo------------");
+		console.log(jsonObj);
+		
+		$("#"+notiId).empty();
+		//Event Info
+		var eventInfoStr = 	getEventinfoBox(jsonObj);
+		$("#"+notiId).append(eventInfoStr);
+		
+		//Event Log
+		var eventLogStr = 	getEventLogBox(jsonObj);
+		$("#"+notiId).append(eventLogStr);
+	
+		//Event Desc
+		var eventDescStr = 	getEventDescBox(jsonObj);
+		$("#"+notiId).append(eventDescStr);
+	}
+	/*//Event Info */
+	
+	
+	function showTotalNotiInfoDiv(notiId,eventId){
+		getNotificaitionDetail(totalNotificaitionInfo, notiId);
+	}
+	function totalNotificaitionInfo(jsonObj) {
+		
+		console.log("---------totalNotificaitionInfo------------");
+		console.log(jsonObj);
+		
+		
+		var notiId=jsonObj["@id"];
+		$("#total"+notiId).empty();
+		var notifiInfoStr = notifiInfo(jsonObj);
+		$("#total"+notiId).append(notifiInfoStr);
+	}
+	
+	function showTotalEventInfoDiv(notiId,eventId){
+		
+		var data = "id="+eventId;
+		getTotalEvenstList(addTotalEventInfo,data,notiId);
+	}
+	
+	/* Event Info */
+	function addTotalEventInfo(jsonObj,notiId){
+		console.log("---------addTotalEventInfo------------");
+		console.log(jsonObj);
+		
+		$("#total"+notiId).empty();
+		//Event Info
+		var eventInfoStr = 	getEventinfoBox(jsonObj);
+		$("#total"+notiId).append(eventInfoStr);
+		
+		//Event Log
+		var eventLogStr = 	getEventLogBox(jsonObj);
+		$("#total"+notiId).append(eventLogStr);
+	
+		//Event Desc
+		var eventDescStr = 	getEventDescBox(jsonObj);
+		$("#total"+notiId).append(eventDescStr);
+	}
+	/*//Event Info */
+	
 </script>
 </head>
 

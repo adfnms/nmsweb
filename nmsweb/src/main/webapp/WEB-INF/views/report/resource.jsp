@@ -20,12 +20,8 @@
 		
 	});
 	
-	
 	//자원별 노드목록
 	function addGraphsList(jsonObj){
-		
-		//var jsonObj = '{"total":"27","records":[{"id":"node[129]","value":"Node:61.78.35.200","type":"Node"},{"id":"node[145]","value":"Node:192.168.0.17","type":"Node"},{"id":"node[142]","value":"Node:SEC001599771AE7.local","type":"Node"},{"id":"node[138]","value":"Node:192.168.1.101","type":"Node"},{"id":"node[140]","value":"Node:KTH-pc.local","type":"Node"},{"id":"node[162]","value":"Node:192.168.0.75","type":"Node"},{"id":"node[155]","value":"Node:SEC0015997417A9.local","type":"Node"},{"id":"node[160]","value":"Node:192.168.0.22","type":"Node"},{"id":"node[126]","value":"Node:192.168.0.4","type":"Node"},{"id":"node[135]","value":"Node:192.168.0.200","type":"Node"},{"id":"node[139]","value":"Node:192.168.0.14","type":"Node"},{"id":"node[146]","value":"Node:192.168.0.29","type":"Node"},{"id":"node[104]","value":"Node:NewNode","type":"Node"},{"id":"node[165]","value":"Node:192.168.0.77","type":"Node"},{"id":"node[157]","value":"Node:192.168.0.28","type":"Node"},{"id":"node[109]","value":"Node:192.168.1.254","type":"Node"},{"id":"node[136]","value":"Node:192.168.0.1","type":"Node"},{"id":"node[97]","value":"Node::label","type":"Node"},{"id":"node[23]","value":"Node:192.168.0.25","type":"Node"},{"id":"node[167]","value":"Node:zzzzzzz","type":"Node"},{"id":"node[158]","value":"Node:192.168.0.30","type":"Node"},{"id":"node[124]","value":"Node:debianOPENNMS.local","type":"Node"},{"id":"node[141]","value":"Node:192.168.0.20","type":"Node"},{"id":"node[113]","value":"Node:127.0.0.3","type":"Node"},{"id":"node[144]","value":"Node:192.168.0.10","type":"Node"},{"id":"node[9]","value":"Node:test_Test","type":"Node"},{"id":"node[170]","value":"Node:kamynote.local","type":"Node"}]}';
-		//jsonObj = JSON.parse(jsonObj);
 
 		var recordObj = jsonObj["records"];
 		
@@ -61,8 +57,8 @@
 		
 		var graphObj = getGraphInfoToNodeId(id);
 		
-		//var jsonObj = '{"total":"3","records":[{"id":"node[129].nodeSnmp[]","value":"Node-levelPerformanceData","type":"SNMPNodeData"},{"id":"node[129].interfaceSnmp[Embedded_Ethernet_Controller__10_100_Mbps__v1_0__UTP_RJ_45__connector_A1__100_full_duplex-001599771ae7]","value":"EmbeddedEthernetController,10/100Mbps,v1.0,UTPRJ-45,connectorA1,100fullduplex(192.168.0.27,100Mbps)","type":"SNMPInterfaceData"},{"id":"node[129].responseTime[192.168.0.23]","value":"192.168.0.23","type":"ResponseTime"}]}';
-		//graphObj = JSON.parse(jsonObj);
+		/* var jsonObj = '{"total":"3","records":[{"id":"node[129].nodeSnmp[]","value":"Node-levelPerformanceData","type":"SNMPNodeData"},{"id":"node[129].interfaceSnmp[Embedded_Ethernet_Controller__10_100_Mbps__v1_0__UTP_RJ_45__connector_A1__100_full_duplex-001599771ae7]","value":"EmbeddedEthernetController,10/100Mbps,v1.0,UTPRJ-45,connectorA1,100fullduplex(192.168.0.27,100Mbps)","type":"SNMPInterfaceData"},{"id":"node[129].responseTime[192.168.0.37]","value":"192.168.0.37","type":"ResponseTime"}]}';
+		graphObj = JSON.parse(jsonObj); */
 		
 		console.log(graphObj);
 		
@@ -95,7 +91,6 @@
 		var beforeOneDay=yesterday(); //하루전
 		$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeOneDay+"</h5></div>");
 		
-		
 		$('#trHide').hide();
 		$('#recodInfoTable').empty();
 		$('#recodInfoTable').append(str);
@@ -107,8 +102,8 @@
 			var valsp=val.split(",");
 			var val = valsp[0];
 			var resource = valsp[1];
-			
 			var dayString="day";
+			
 			$("select[name=rtstatus] option[value="+dayString+"]").attr("selected",true);
 			var beforeOneDay=yesterday(); //하루전
 			$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeOneDay+"</h5></div>");
@@ -119,46 +114,36 @@
 			var graphUrlObj = getGraphUrls(val);
 		
 			$('#graphValueFrm input[name=graphValue]').val(val);
-	
-			var str = "";
-
-			if(graphUrlObj.length == 0){
 			
+			var str = "";
+			
+			if(graphUrlObj.length == 0){
+				
 				var str = "";
 			
 			str += "<h1  class=\"text-error text-center\">NO DATA</h1>";
 				$('#grephDiv').empty();
 				$('#grephDiv').append(str);
 			}else{
-			
 				for(var i in graphUrlObj){
-				//alert(graphUrlObj[i]);
-		
 				str += "<img src='"+graphUrlObj[i]+"'/>";
 			}
-		
 		$('#grephDiv').empty();
 		$('#grephDiv').append(str);
 		}
-		
 	}
 	
 	function relativeTimeFormChange() {
 
 		for (i = 0; i < document.reltimeform.rtstatus.length; i++) {
             if (document.reltimeform.rtstatus[i].selected) {
-                var value = document.reltimeform.rtstatus[i].value;
-               /*value	=	day,
-							week,
-							month,
-							year
-               */
+               
+            	var value = document.reltimeform.rtstatus[i].value;
                 var beforeOneDay=yesterday(); //하루전
                 var beforeWeek=beforeOneWeek(); //일주일전
         		var beforeMonth=beforeOneMonth(); //한달전
         		var beforeyear=beforeOneyear(); //일년전
                
-             
         		if(value=="day"){
         			//alert(beforeOneDay);
         			$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeOneDay+"</h5></div>");
@@ -172,7 +157,6 @@
         			// alert(beforeyear);
         			 $("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeyear+"</h5></div>");
         		}
-               
                goRelativeTime(value);
             }
         }
@@ -183,20 +167,13 @@
 		 var str = "";
 		 
 		 if(graphUrlObj.length == 0){
-			 
-			 var str = "";
-				
-				str += "<h1  class=\"text-error text-center\">NO DATA</h1>";
+				var str = "";
+					str += "<h1  class=\"text-error text-center\">NO DATA</h1>";
 			 
 		 }else{
-		 
-		 
-		 for(var i in graphUrlObj){
-				//alert(graphUrlObj[i]);
-			
-				str += "<img src='"+graphUrlObj[i]+"'/>";
-			}
-			
+			 for(var i in graphUrlObj){
+					str += "<img src='"+graphUrlObj[i]+"'/>";
+				}
 			$('#grephDiv').empty();
 			$('#grephDiv').append(str);
 			
@@ -265,9 +242,6 @@
 					<h4 id="nodeLabel">Node&nbsp;노드</h4>
 				</div>
 				<div class="row-fluid text-center" id="nodeInfo">
-					<!-- <div class="span6" ></div> -->
-					<!-- <div class="span12 " id="nodeInfo"><h5></h5></div> -->
-					<!-- <div class="span6" ></div> -->
 				</div>
 				<div class="span12 text-center" style="margin-left: 0px;">
 					<h4 id="nodeLabel">선택한&nbsp;Resource</h4>

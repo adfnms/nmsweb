@@ -21,7 +21,7 @@
 		
 	});
 	
-	//callback 함수 jsonObj를 이용 파싱 후 append
+	//callback 함수 jsonObj를 이용 파싱 후 append 노드목록
 	function addNodeLists(jsonObj) {
 		$('#nodeListTable').empty();
 		
@@ -44,13 +44,7 @@
 				$('#nodeListTable').append(str);
 			}
 		});   	
-		
-		
 	}
-	
-	
-	
-	
 </script>
 </head>
 
@@ -75,38 +69,6 @@
 							<h4>노드&nbsp;목록</h4>
 						</div>
 					</div>
-					<%-- <div class="row-fluid">
-						<div class="span12">
-							<div class="row-fluid">
-								<table class="span12">
-									<colgroup><col width="14%"/><col width="14%"/><col width="14%"/><col width="14%"/><col width="14%"/><col width="14%"/><col width="14%"/></colgroup>
-									<tr>
-										<td>
-											<div class="bs-docs critical"><h3>Critical</h3></div>
-										</td>
-										<td>
-											<div class="bs-docs major"><h3>Major</h3></div>
-										</td>
-										<td>
-											<div class="bs-docs minor"><h3>Minor</h3></div>
-										</td>
-										<td>
-											<div class="bs-docs warning"><h3>Warning</h3></div>
-										</td>
-										<td>
-											<div class="bs-docs normal"><h3>Normal</h3></div>
-										</td>
-										<td>
-											<div class="bs-docs cleared"><h3>Cleared</h3></div>
-										</td>
-										<td>
-											<div class="bs-docs indeterminate"><h3>Indeterminate</h3></div>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-					</div> --%>
 				</div>
 			</div>
 		</form>

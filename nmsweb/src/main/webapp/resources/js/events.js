@@ -2,7 +2,7 @@
  * @param callback
  * @param data
  */
-function getTotalEvenstList(callback,data) {
+function getTotalEvenstList(callback,data,notiId) {
 
 	$.ajax({
 		type : 'get',
@@ -16,7 +16,7 @@ function getTotalEvenstList(callback,data) {
 		success : function(data) {
 			// 콜백함수
 			if (typeof callback == "function") {
-				callback(data);
+				callback(data,notiId);
 			}
 		}
 	});
@@ -105,9 +105,9 @@ function getTabletagToEventJsonObj(jsonObj){
 	if (jsonObj["@count"] > 0) {
 			
 		str = "	<div class='row-fluid'>"
-				/*+ "		<h5>이벤트&nbsp;목록&nbsp;["
+				+ "		<h5>이벤트&nbsp;목록&nbsp;["
 				+ jsonObj["@count"]
-				+ "]</h5>"*/
+				+ "]</h5>"
 				+ "	</div>"
 				+ "	<div class='row-fluid'>"
 				+ "		<div class='span12 well well-small'>"
@@ -175,19 +175,172 @@ function getTabletagToEventJsonObj(jsonObj){
 
 	return str;
 }
+function getTabletagToInterfaceEventJsonObj(jsonObj){
+	
+	var events = jsonObj["event"];
+	var str = "";
+	if (jsonObj["@count"] > 0) {
+			
+		str = "	<div class='row-fluid'>"
+				+ "		<h5>인터페이스&nbsp;이벤트&nbsp;목록&nbsp;["
+				+ jsonObj["@count"]
+				+ "]</h5>"
+				+ "	</div>"
+				+ "	<div class='row-fluid'>"
+				+ "		<div class='span12 well well-small'>"
+				+ "		<table class='table'>"
+				+ "			<colgroup><col width='13%'/><col  width='15%'/><col  width='15%'/><col  width='62%'/></colgroup>"		
+				+ "			<thead><tr><th>이벤트ID</th><th>시간</th><th>상태</th><th class='span4'>메세지</th></tr></thead>"
+				+ "		</table><div id='outageScrollDiv'><table class='table'>	"
+				+ "			<colgroup><col width='10%'/><col  width='15%'/><col  width='15%'/><col  width='62%'/></colgroup>"
+				+ "			<tbody>";
+		if (jsonObj["@count"] > 1) {
 
+			for ( var i in events) {
+				
+				if(events[i]["@severity"]=="CRITICAL"){
+					 statusProgress = "progress-danger";
+				}
+				else if(events[i]["@severity"]=="MAJOR"){
+					 statusProgress = "progress-caution";						
+				}
+				else if(events[i]["@severity"]=="MINOR"){
+					 statusProgress = "progress-warning";
+				}
+				else if(events[i]["@severity"]=="WARNING"){
+					 statusProgress = "progress-gray";
+				}
+				else if(events[i]["@severity"]=="NORMAL"){
+					 statusProgress = "progress-info";
+				}
+				else if(events[i]["@severity"]=="CLEARED"){
+					 statusProgress = "progress";
+				}
+				else if(events[i]["@severity"]=="INDETERMINATE"){
+					 statusProgress = "progress-success";
+				}
+				
+				str += "<tr>";
+				str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+"'>" + events[i]["@id"]
+						+ "</a></td>";
+				str += "<td>"
+						+ new Date(events[i]["createTime"])
+								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				
+				//str += "<th class='"+events[i]["@severity"].toLowerCase()+"'>" + events[i]["@severity"] + "</th>";
+				str += '		<td class=""><div class="progress progress-striped active '+statusProgress+'  " style="margin-bottom: 0px;width: 130px; ">';
+				str += '		<div class="bar" style="width:100%">' +events[i]["@severity"]+ '</div>';
+				str += '		</div></td>';
+				str += "<td>" + events[i]["logMessage"].replace(/<p>|<\/p>/gi,'') + "</td>";
+				str += "</tr>";
+			}
+
+		} else {
+			str += "<tr>";
+			str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"'>" + events["@id"] + "</a></td>";
+			str += "<td>"
+					+ new Date(events["createTime"])
+							.format('yy-MM-dd hh:mm:ss') + "</td>";
+			str += "<th class='"+events["@severity"].toLowerCase()+"'>" + events["@severity"] + "</th>";
+			str += "<td>" + events["logMessage"].replace(/<p>|<\/p>/gi,'') + "</td>";
+			str += "</tr>";
+		}
+
+		
+		str += "</tbody></table></div></div>";
+	}
+
+	return str;
+}
+function getTabletagToServiceEventJsonObj(jsonObj){
+	
+	var events = jsonObj["event"];
+	var str = "";
+	if (jsonObj["@count"] > 0) {
+			
+		str = "	<div class='row-fluid'>"
+				+ "		<h5>서비스&nbsp;이벤트&nbsp;목록&nbsp;["
+				+ jsonObj["@count"]
+				+ "]</h5>"
+				+ "	</div>"
+				+ "	<div class='row-fluid'>"
+				+ "		<div class='span12 well well-small'>"
+				+ "		<table class='table'>"
+				+ "			<colgroup><col width='13%'/><col  width='15%'/><col  width='15%'/><col  width='62%'/></colgroup>"		
+				+ "			<thead><tr><th>이벤트ID</th><th>시간</th><th>상태</th><th class='span4'>메세지</th></tr></thead>"
+				+ "		</table><div id='outageScrollDiv'><table class='table'>	"
+				+ "			<colgroup><col width='15%'/><col  width='25%'/><col  width='15%'/><col  width='45%'/></colgroup>"
+				+ "			<tbody>";
+		if (jsonObj["@count"] > 1) {
+
+			for ( var i in events) {
+				
+				if(events[i]["@severity"]=="CRITICAL"){
+					 statusProgress = "progress-danger";
+				}
+				else if(events[i]["@severity"]=="MAJOR"){
+					 statusProgress = "progress-caution";						
+				}
+				else if(events[i]["@severity"]=="MINOR"){
+					 statusProgress = "progress-warning";
+				}
+				else if(events[i]["@severity"]=="WARNING"){
+					 statusProgress = "progress-gray";
+				}
+				else if(events[i]["@severity"]=="NORMAL"){
+					 statusProgress = "progress-info";
+				}
+				else if(events[i]["@severity"]=="CLEARED"){
+					 statusProgress = "progress";
+				}
+				else if(events[i]["@severity"]=="INDETERMINATE"){
+					 statusProgress = "progress-success";
+				}
+				
+				str += "<tr>";
+				str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+"'>" + events[i]["@id"]
+						+ "</a></td>";
+				str += "<td>"
+						+ new Date(events[i]["createTime"])
+								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				
+				//str += "<th class='"+events[i]["@severity"].toLowerCase()+"'>" + events[i]["@severity"] + "</th>";
+				str += '		<td class=""><div class="progress progress-striped active '+statusProgress+'  " style="margin-bottom: 0px;width: 130px; ">';
+				str += '		<div class="bar" style="width:100%">' +events[i]["@severity"]+ '</div>';
+				str += '		</div></td>';
+				str += "<td>" + events[i]["logMessage"].replace(/<p>|<\/p>/gi,'') + "</td>";
+				str += "</tr>";
+			}
+
+		} else {
+			str += "<tr>";
+			str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"'>" + events["@id"] + "</a></td>";
+			str += "<td>"
+					+ new Date(events["createTime"])
+							.format('yy-MM-dd hh:mm:ss') + "</td>";
+			str += "<th class='"+events["@severity"].toLowerCase()+"'>" + events["@severity"] + "</th>";
+			str += "<td>" + events["logMessage"].replace(/<p>|<\/p>/gi,'') + "</td>";
+			str += "</tr>";
+		}
+
+		
+		str += "</tbody></table></div></div>";
+	}
+
+	return str;
+}
 /** 이벤트 정보를 div 형태로 만들어줌 
  * @param jsonObj
  */
 function getEventinfoBox(jsonObj){
 	//console.log(jsonObj);
 	small= jsonObj["event"]["@severity"].toLowerCase();
-	var eventInfoStr = 	'<div class="row-fluid">'+
+	/*var eventInfoStr = 	'<div class="row-fluid">'+
 						'	<div class="span12">'+
 						'		<h5>이벤트&nbsp;['+jsonObj["event"]["@id"]+']</h5>'+
 						'	</div>'+
-						'</div>'+
-						'<div class="row-fluid">'+
+						'</div>'+*/
+	var eventInfoStr =	'<div class="row-fluid">'+
 						'	<div class="span12 well well-small">'+
 						'	<table class="table table-striped">'+
 						'		<tr>'+

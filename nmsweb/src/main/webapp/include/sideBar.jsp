@@ -28,19 +28,15 @@ function addNodeListsSideBar(jsonObj) {
 	
 	$('#sideBarNodeList').empty();
 	
-	
 			var str = getNodelistJsonObj(jsonObj);
-			
 			$('#sideBarNodeList').append(str);
-	
-	
 }
 
 function sidebarInfo(jsonObj) {
-	
+	console.log("-----------sidebarInfo---------------");
 	console.log(jsonObj);
-	
 	//중단 목록
+	var str = "";
 	var sideOutageObj = jsonObj["Outages"];
 
 	for ( var i in sideOutageObj) {
@@ -49,27 +45,68 @@ function sidebarInfo(jsonObj) {
 		var current = new Date();
 		var lastTime = dateDiff(lostTime, current);
 		
-		$('#sideBarOutageList').append("<h5><a class=text-error href='<c:url value='/search/outage/outageDesc?outageId=' />"+sideOutageObj[i]["outageid"]+"'>" + sideOutageObj[i]["ipaddr"] + "</a> ("+ lastTime + ")<br/></h5>");
+		var ULobj = $("<ul></ul>");
+		var TRobj = $("<tr></tr>");
+		var TABLEobj =$("<table></table>");
+		var THobj = $("<th></th>");
+		var TDobj = $("<td></td>");
+		var Aobj = $("<a></a>");
+		var LIobj = $("<li></li>");
+		var H5obj = $("<h5></h5>");
+		var STRONGobj = $("<strong></strong>");
+		
+		//$('#sideBarOutageList').append("<h5><a class=text-error href='/" + version + "/search/outage/outageDesc.do?outageId="+ sideOutageObj[i]["outageid"]+ "'>" + sideOutageObj[i]["ipaddr"] + "</a> ("+ lastTime + ")<br/></h5>");
+		 
+		$('#sideBarOutageList').append(
+			H5obj.clone().append( 
+				STRONGobj.clone().append(
+						Aobj.clone().attr("href","#myModalSide").attr("class","text-error").attr("data-toggle","modal").attr("onclick","javascript:outageSideBarPop("+sideOutageObj[i]["outageid"]+")").text(sideOutageObj[i]["ipaddr"]),
+						Aobj.clone().attr("href","/"+version + "/search/outage/outageDesc.do?outageId="+ sideOutageObj[i]["outageid"]+"").text(" ("+lastTime+")")
+				)
+			)
+		);	 
+	
 	}
 }
 
+function outageSideBarPop(outageid){
+	
+	alert("outageid : "+outageid);
+	var data = "id="+outageid;
+	getTotalOutagesList(addOutageSideInfo, data);
+}
+/* outageSideBarPop Callback */
+function addOutageSideInfo(jsonObj){
+	
+	$('#outageInfoDivSide').empty();
+	var outageInfoStr = getOutageInfoBox(jsonObj);
+	$('#outageInfoDivSide').append(outageInfoStr);
 
+	//$("#myModalLabel").html(ipaddr+"&nbsp;장애&nbsp;정보");
+}
+/*//outage Info Callback */
+/*// 장애 정보 POPUP창 */
 
 </script>
-
-<!-- <div class="well affix hidden-phone" id="sideBar">
-	<ul class="nav nav-list">
-		<li class="nav-header"><h5>노드&nbsp;리스트</h5></li>
-		<li class="nav-header" id="sideBarNodeList"></li>
-	</ul>
-</div> -->
-
 <div class="well affix hidden-phone" id="sideBar">
 	<ul class="nav nav-list">
 		<li class="nav-header"><h5>장애&nbsp;목록</h5></li>
 		<li class="nav-header" id="sideBarOutageList"></li>
 	</ul>
 </div>
-
+<html>
+<!-- Modal -->
+<div id="myModalSide" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="position:absolute;width: 1144px; left:36%">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabelSide" >장애정보</h3>
+  </div>
+  <div class="modal-body" style="width: 1099px;">
+    <div class="row-fluid" id="outageInfoDivSide"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
 <!--/.well -->
-
+</html>

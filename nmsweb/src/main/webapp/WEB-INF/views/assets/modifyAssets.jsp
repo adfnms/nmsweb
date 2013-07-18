@@ -27,6 +27,7 @@ try{
 <script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script src="<c:url value="/resources/js/assets.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <%-- <script  src="<c:url value="/dhtmlx/dhtmlx.js"/>"></script>
 <link rel="STYLESHEET" type="text/css" href="<c:url value="/dhtmlx/dhtmlx.css"/>">
 <script src="<c:url value="/dhtmlx/dhtmlxCalendar/codebase/dhtmlxcalendar.js" />"></script> --%>
@@ -86,8 +87,8 @@ $(function() {
 	
 //callback 함수 jsonObj를 이용 파싱 후 append
 function assetInfo(jsonObj) {
+	console.log("----------assetInfo----------");
 	console.log(jsonObj);
-	
 	/* Configuration Categories */
 	$('#assetsInfoFrm input[name=displaycategory]').val(jsonObj.AssetInfo[0].displaycategory);
 	$('#assetsInfoFrm input[name=notifycategory]').val(jsonObj.AssetInfo[0].notifycategory);

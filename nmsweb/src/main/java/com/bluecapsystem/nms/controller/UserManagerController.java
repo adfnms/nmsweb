@@ -280,6 +280,8 @@ public class UserManagerController extends BaseController{
 	 */
 	@RequestMapping(value = "/admin/userMng/modifyToDb")
 	public ModelAndView modifyToDb(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			@RequestParam(value = "user-id", required = false)String userId,
+			@RequestParam(value = "full-name", required = false)String userNm,
 			@ModelAttribute("UserTbl") UserTbl userTbl)
 	{
 		
@@ -287,9 +289,18 @@ public class UserManagerController extends BaseController{
 		try{
 			String Id =(String) session.getAttribute(Define.USER_ID_KEY);
 			
+			
+			
+			System.out.println(".............................................................");
+			System.out.println(".....................user-id..."+userId+".......................");
+			System.out.println("........................"+Id+".............................");
+			System.out.println("............................"+userNm+".................................");
+			
+			userTbl.setUserId(userId);
 			userTbl.setModrId(Id);
 		    userTbl.setRegrId(Id);
 			userTbl.setUseYn("Y");
+			userTbl.setUserNm(userNm);
 			
 			if(userManagerService.modifyToDb(userTbl)==false){
 				logger.error("USER INFO MODIFY TO DATABASE ERROR");
@@ -300,7 +311,6 @@ public class UserManagerController extends BaseController{
 			e.printStackTrace();
 		}
 		model.setViewName("/admin/userMng/userMng");
-		//odel.setViewName("jsonView");
 		return model;
 	}
 	
@@ -316,7 +326,7 @@ public class UserManagerController extends BaseController{
 	 * @param userTbl
 	 * @return
 	 */
-	@RequestMapping(value = "/admin/userMng/deleteToDb", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/userMng/deleteToDb")
 	public ModelAndView deleteToDb(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
 			@RequestParam(value = "user-id", required = false)String userId,
 			@ModelAttribute("UserTbl") UserTbl userTbl)
@@ -325,12 +335,14 @@ public class UserManagerController extends BaseController{
 		try{
 			String Id =(String) session.getAttribute(Define.USER_ID_KEY);
 			
-			
+			System.out.println(".............................................................");
+			System.out.println(".....................user-id..."+userId+".......................");
+			System.out.println("........................"+Id+".............................");
+			System.out.println(".............................................................");
+				
 			userTbl.setUserId(userId);
-			userTbl.setModrId(Id);
-		    userTbl.setRegrId(Id);
-			//userTbl.setUseYn("N");
 			
+		    
 			if(userManagerService.deleteToDb(userTbl)==false){
 				logger.error("USER INFO DELETE TO DATABASE ERROR");
 			}
@@ -345,7 +357,36 @@ public class UserManagerController extends BaseController{
 		return model;
 	}
 	
-	
+	@RequestMapping(value = "/admin/userMng/delete")
+	public ModelAndView delete(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
+			@RequestParam(value = "user-id", required = false)String userId,
+			@ModelAttribute("UserTbl") UserTbl userTbl)
+	{
+		ModelAndView model = new ModelAndView();
+		try{
+			String Id =(String) session.getAttribute(Define.USER_ID_KEY);
+			
+			System.out.println(".............................................................");
+			System.out.println(".....................user-id..."+userId+".......................");
+			System.out.println("........................"+Id+".............................");
+			System.out.println(".............................................................");
+				
+			userTbl.setUserId(userId);
+			
+		    
+			if(userManagerService.deleteToDb(userTbl)==false){
+				logger.error("USER INFO DELETE TO DATABASE ERROR");
+			}
+			
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		model.setViewName("/admin/userMng/userMng");
+		
+		
+		return model;
+	}
 	
 	
 	

@@ -30,6 +30,7 @@ try{
 <script src="<c:url value="/resources/js/notification.js" />"></script>
 <script src="<c:url value="/resources/js/group.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <script type="text/javascript">
 
 $(document).ready(function() {
@@ -499,18 +500,18 @@ function setDestination(obj){
 			  <div class="accordion-group">
 			    <div class="accordion-heading">
 			      	<div class="row-fluid"> 
-			      		<div class="span11">
+			      		<div class="span12">
 				      		<h3>
 						      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepOne" id=StepOne >
 						        1단계&nbsp;&nbsp;<span class="label label-important">이벤트 선택</span></a>
 					      	</h3>
 				      	</div> 
-						<div class="span1"  style="margin-left: 4px; margin-top: 9px;">
+						<!-- <div class="span1"  style="margin-left: 4px; margin-top: 9px;">
 							<h3> 
 								<a type="button" class="btn accordion-toggle" data-toggle="collapse" style="width: 44px;" data-parent="#accordion2" title=""  href="#eventStepTwo" id=StepOne>next</a>
-								<!-- <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepTwo" id=StepOne >[next]</a> -->
+								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepTwo" id=StepOne >[next]</a>
 							</h3>
-						</div>
+						</div> -->
 					</div>
 			    </div>
 			    <div id="eventStepOne" class="accordion-body collapse in">
@@ -542,19 +543,19 @@ function setDestination(obj){
 			  <div class="accordion-group">
 			    <div class="accordion-heading">
 			    	<div class="row-fluid"> 
-					    <div class="span11">
+					    <div class="span12">
 						    <h3>
-								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepTwo">
+								<a class="accordion-toggle" data-toggle="collapse" data-parent="" href="#eventStepTwo">
 						        	2단계&nbsp;&nbsp;<span class="label label-important">공지 메시지 정의</span>
 								</a>
 							</h3>
 					    </div>
-					    <div class="span1"  style="margin-left: 4px; margin-top: 9px;">
+					    <!-- <div class="span1"  style="margin-left: 4px; margin-top: 9px;">
 							<h3> 
 								<a type="button" class="btn accordion-toggle" data-toggle="collapse" style="width: 44px;" data-parent="#accordion2" title=""  href="#eventStepOne" id=StepOne>before</a>
-								<!-- <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepOne" id=StepOne >[before]</a> -->
+								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepOne" id=StepOne >[before]</a>
 							</h3>
-						</div>
+						</div> -->
 					</div>	
 			    </div>
 			    <div id="eventStepTwo" class="accordion-body collapse">

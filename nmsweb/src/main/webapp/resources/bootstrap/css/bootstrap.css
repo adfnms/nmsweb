@@ -6210,21 +6210,24 @@ a.badge:focus {
 .major{/*주황색  */
 	background-image: -webkit-linear-gradient(top, #FF7012, #FF7012) !important;
 }
-.warning{/*하늘색  */
-	background-image: -webkit-linear-gradient(top, #4BB1CF, #4BB1CF) !important;
-}
-.normal{/*녹색  */
-	background-image: -webkit-linear-gradient(top, #5EB95E, #5EB95E) !important;
-}
 .minor{/*노란색  */
 	background-image: -webkit-linear-gradient(top, #FFBB00, #FFBB00) !important;
 }
-.cleared{/*회색  */
+.warning{/*회색  */
 	background-image: -webkit-linear-gradient(top, #C0BEBF, #C0BEBF) !important;
 }
-.indeterminate{/* 비둘기색 */
-	background-image: -webkit-linear-gradient(top, #ADD9E6, #ADD9E6) !important;
+.normal{/*하늘색  */
+	background-image: -webkit-linear-gradient(top, #4BB1CF, #4BB1CF) !important;
 }
+.indeterminate{/*파란색 */
+	background-image: -webkit-linear-gradient(top, #0E90D2, #0E90D2) !important;
+}
+.indeterminate{/*녹색  */
+	background-image: -webkit-linear-gradient(top, #5EB95E, #5EB95E) !important;
+}
+
+
+
 
 .bs-docs {
 text-align:center;

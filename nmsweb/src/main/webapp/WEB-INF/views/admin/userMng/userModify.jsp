@@ -28,6 +28,7 @@ try{
 <script src="<c:url value="/resources/js/users.js" />"></script>
 <script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <script type="text/javascript">
 	
 	
@@ -64,10 +65,17 @@ try{
 	function modifyToDb(userId){
 		
 		var frm = document.getElementById("userInfoFrm");
+		
+		
+		var data = $("#userInfoFrm").serialize();
+		
+		alert(data);
+		
+		frm.action = "/v1/admin/userMng/modifyToDb.do";
 		//frm.action = "<c:url value="/admin/userMng/modifyToDb.do"/>";
-		frm.action = "/admin/userMng/modifyToDb.do";
-	    frm.submit();
-	    $(location).attr('href', "/v1/admin/userMng.do");
+		frm.submit();
+	    
+	   // $(location).attr('href', "/v1/admin/userMng.do");
 		
 	}
 	
@@ -82,7 +90,7 @@ try{
 				$.ajax({
 					
 					type : 'delete',
-					url : 'http://localhost:8080/v1/users/'+userId,
+					url : '<c:url value="/users"/>/'+userId,
 					contentType : 'application/json',
 					dataType:'json',
 					error : function(data) {
@@ -104,16 +112,17 @@ try{
 	
 	function deleteToDb(userId){
 		
+		var frm = document.getElementById("userIdModiFrm");
 		
-		var frm = document.getElementById("userInfoFrm");
 		
+		var data = $("#userIdModiFrm").serialize();
 		
-		//frm.action = '<c:url value="/admin/userMng/modifyToDb.do"/>';
+		alert(data);
+		
 		frm.action = "/v1/admin/userMng/deleteToDb.do";
 	   
 		frm.submit();
 		
-		$(location).attr('href', "/v1/admin/userMng.do");
 	}
 	
 	
@@ -148,6 +157,10 @@ try{
 						</h4>
 					</div>
 				</div>
+				<form  id="userIdModiFrm" name="userIdModiFrm">
+					<input type="hidden" id ="user-id" name="user-id" value="${Id}" />
+				</form>
+				
 				<form id="userInfoFrm" name = "userInfoFrm">
 				<input type="hidden" name="regrId" value="<%= userId %>"  protect="true" />
 				<input type="hidden" name="modrId" value="<%= userId %>"  protect="true" />

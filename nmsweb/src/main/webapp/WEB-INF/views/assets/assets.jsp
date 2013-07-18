@@ -27,26 +27,40 @@ try{
 <script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script src="<c:url value="/resources/js/assets.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <script type="text/javascript">
 	
+
+
+	/*	Asset 카테고리 검색 */
+function searchCategory(){
 	
+	var category = $("#userInfoFrm select[name=category]").val();
+	getSearchAssetsList(searchAssetsList, category);
+	
+}
+//getSearchAssetsList callback 함수
+function searchAssetsList(jsonObj) {
+	var str = "<tr><th>ASSETS</th><th>ASSET LINK</th><th>NODE LINK</th></tr>";
+	str += assetsListStr(jsonObj);
+	 $('#assetsListTable').empty();
+	 $('#assetsListTable').append(str);
+}
+/* 필드리스트 검색  */
 function searchField(){
 	
 	var fieldText = $("#fieldFrm input[name=field]").val();
 	var fieldSelect = $("#fieldFrm select[name=fieldSelect]").val();
-	
-	$('#searchFieldFrm input[name=fieldName]').val((fieldSelect));
-	
-	$('#searchFieldFrm input[name=fieldValue]').val(fieldText);
-	
-var frm = document.getElementById("searchFieldFrm");
-	
-	frm.action = "/v1/assets/searchField.do";
-   
-	frm.submit();
+	getFieldSearchAssets(FieldListStr,fieldSelect,fieldText);
 }	
+//getFieldSearchAssets callback 함수
+function FieldListStr(jsonObj) {
 	
-	
+	var str = "<tr><th>ASSETS</th><th>ASSET LINK</th><th>NODE LINK</th></tr>";
+	str += FieldStr(jsonObj);
+	 $('#assetsListTable').empty();
+	 $('#assetsListTable').append(str);
+}	
 </script>
 </head>
 
@@ -84,7 +98,7 @@ var frm = document.getElementById("searchFieldFrm");
 				
 				<div class="row-fluid" >
 					<div class="span12 text-center" id="recodDiv">
-						<form id="userInfoFrm" name = "userInfoFrm" action="<c:url value="/assets/searchAssets.do" />">
+						<form id="userInfoFrm" name = "userInfoFrm" <%-- action="<c:url value="/assets/searchAssets.do" />" --%>>
 							<input type="hidden" name="regrId" value="<%= userId %>"  protect="true" />
 							<input type="hidden" name="modrId" value="<%= userId %>"  protect="true" />
 								<div class="row-fluid">
@@ -103,10 +117,10 @@ var frm = document.getElementById("searchFieldFrm");
 											</select>
 										</div>
 										<div class="span2 controls">
-											<input type="submit" class="btn" title="Quick Search" value="Search">
+											<!-- <input type="submit" class="btn" title="Quick Search" value="Search"> -->
+											<a type="button" class="btn" title="" href="javascript:searchCategory()">Search</a>
 										</div>
 									</div>
-									<!-- <div class="span12"></div> -->
 								</div>
 						</form>
 						<form id="fieldFrm" name = "fieldFrm">
@@ -206,7 +220,21 @@ var frm = document.getElementById("searchFieldFrm");
 			
 			
 			</div>
-		
+			<div class="row-fluid">
+				<div class="span12 well well-small">
+					<div class="row-fluid">
+						<div class="span12">
+							<table class="table table-striped" id="assetsListTable">
+								<tr>
+									<th>ASSETS</th>
+									<th>ASSET LINK</th>
+									<th>NODE LINK</th>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
 		
 	</div>
 	<!-- /container -->

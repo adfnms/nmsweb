@@ -3,7 +3,6 @@
  * @param data
  */
 function getTotalIndexInfo(callback, data){
-	
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/dashboard/Category',
