@@ -175,7 +175,7 @@
 		var tstr = "";
 		tstr += '<table class="table table-striped table-hover">';
 		//tstr += '	<colgroup><col class="span6" /><col class="span3" /><col class="span3" /></colgroup>';
-		tstr += '	<tr><th>전체 중단 서비스 </th><th class="text-error">' + outageTotalCount + ' of ' + serviceTotalCount +'</th></tr>';
+		tstr += '	<tr><th>전체 장애 서비스 </th><th class="text-error">' + outageTotalCount + ' of ' + serviceTotalCount +'</th></tr>';
 		tstr += '	<tr class="'+statusTotal+'">';
 		tstr += '	<th>전체 이용률 </th>';
 		tstr += '		<td class=""><div class="progress progress-striped active '+statustotalAvail+' " style="margin-bottom: 0px;width: 317px; ">';
