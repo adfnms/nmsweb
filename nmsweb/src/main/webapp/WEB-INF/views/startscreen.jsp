@@ -47,14 +47,14 @@
 		if(outageTotalCount == 0){
 			
 			var statusTotal = "success";
-			$('#smile').append("<a  href = '<c:url value="/index.do" />'><img style='margin-left: -150px;margin-top: 100px;' src='<c:url value="/resources/images/" />smilie.jpg' /></a>");
+			$('#smile').append("<a  href = '<c:url value="/index.do" />'><img src='<c:url value="/resources/images/" />smilie.jpg' /></a>");
 			setTimeout(refresh, 10000);
 			
 		}else{
 			
 			var statusTotal = "error";
-			$('#smile').append("<a  href = '<c:url value="/index.do" />'><img style='margin-left: -150px;margin-top: 100px;' src='<c:url value="/resources/images/" />angry.jpg' /></a>");
-			setTimeout(refresh, 10000);
+			$('#smile').append("<a  href = '<c:url value="/index.do" />'><img src='<c:url value="/resources/images/" />angry.jpg' /></a>");
+			//setTimeout(refresh, 10000);
 		} 
 		
 		
@@ -87,8 +87,8 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<div class="row-fluid">
-					<div class="span12" id= smile>
-						<div class="span6">
+					<div class="span12">
+						<div  id= smile  style='text-align:center;'>
 						
 						</div>
 					</div>

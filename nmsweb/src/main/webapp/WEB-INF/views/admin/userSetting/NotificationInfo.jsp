@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%-- <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -75,7 +75,7 @@ try{
 					<li class="active">공지 상세 정보</li>
 				</ul>
 			</div>
-			<%-- <jsp:include page="/include/sideBar.jsp" /> --%>
+			<jsp:include page="/include/sideBar.jsp" />
 		</div>
 		<div class="row-fluid">
 			<div class="alert alert-info">
@@ -113,3 +113,4 @@ try{
 	<!-- /container -->
 </body>
 </html>
+ --%>

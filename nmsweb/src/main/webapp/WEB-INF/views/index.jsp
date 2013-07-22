@@ -199,22 +199,22 @@
 			var lastTime = dateDiff(lostTime, current);
 			
 		/* $('#outageInfo').append("<strong><a class=text-error href='<c:url value='/search/outage/outageDesc?outageId=' />"+outageObj[i]["outageid"]+"'>" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>"); */
-			$('#outageInfo').append("<strong><a class=text-error data-toggle=modal href='#myModal' onclick=\"javascript:outagePop('"+outageObj[i]["outageid"]+","+outageObj[i]["ipaddr"]+"');\">" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>");
+			$('#outageInfo').append("<strong><a class=text-error data-toggle=modal href='#myModal' onclick=\"javascript:outagePop('"+outageObj[i]["outageid"]+"','"+outageObj[i]["ipaddr"]+"');\">" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>");
 		}
 	}//******//24시간 가용률 , 카테고리 정보 ****************/
 	
 	
 	/* 장애 정보 POPUP창 */
 	/* 장애 목록 클릭시 실행 */
-	function outagePop(obj){
-		var object = obj.split(',');
-		for(var i = 0 ; i < object.length; i++)
-		{
-			var outageid= object[0];
-			var ipaddr= object[1];
-		}
-		var data = "id="+outageid;
-		getTotalOutagesList(addOutageInfo, data,ipaddr);
+	function outagePop(outageId, ipAdress){
+		
+		var data = "id="+outageId;
+		getTotalOutagesList(addOutageInfo, data,ipAdress);
+		
+		/*
+		lfet = ( 화면 넓이 - 팝업 길이 ) / 2; 
+		*/
+		
 	}
 	
 	/* outage Info Callback */
@@ -265,8 +265,8 @@
 							<div class="well well-small">
 								<div class="row-fluid">
 									<div class="span12">
-										나의 알림 <a  style="margin-left: 16px;" class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/setting.do?myNotification=My" />">확인</a><br />
-										 모든 알림<a style="margin-left: 20px;"  class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/setting.do?totalNotification=Total" />">확인</a><br />
+										나의 알림 <a  style="margin-left: 16px;" class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/notimng/mynoti.do" />">확인</a><br />
+										 모든 알림<a style="margin-left: 20px;"  class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/notimng/allnoti.do" />">확인</a><br />
 									</div>
 								</div>
 							</div>
@@ -308,7 +308,7 @@
 	<!-- /container -->
 </body>
 <!-- Modal -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1144px; left:36%">
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1144px; left:36%;">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		<h3 id="myModalLabel" >장애정보</h3>

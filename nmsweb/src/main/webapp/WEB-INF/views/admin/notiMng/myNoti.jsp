@@ -19,7 +19,7 @@
 <script src="<c:url value="/resources/js/events.js" />"></script>
 
 <script type="text/javascript">
-var limit =5;
+var limit =15;
 var offset = 0;
 //var pageNum = 1;
 var time = new Date().format("yyyy-MM-dd hh:mm:ss");
@@ -28,22 +28,9 @@ var time = new Date().format("yyyy-MM-dd hh:mm:ss");
 var encodeTime = encodeURI(time);
 	$(document).ready(function() {
 		
-		/*--------------------시간함수----------------------*/
-		
-		
-		/*-------------------- //시간함수----------------------*/
-		
 		/*Your outstanding notices*/
 		//getUserNotiList(userNotificationList, "${userId}", encodeTime, "5" );
 		getUserNotiList(userNotificationList, "${userId}", encodeTime, "limit="+limit+"&offset="+offset );
-		/*All outstanding notices*/
-		getTotalNotiList(totalNotificationList, encodeTime,  "limit="+limit+"&offset="+offset);
-		
-		/* All acknowledged notices*/
-		//getAllAcknowledged(allAcknowledgedList, encodeTime, "5");
-		
-		
-		
 		
 	});
 	
@@ -82,52 +69,19 @@ var encodeTime = encodeURI(time);
 			var str = getFailJsonObj();
 			$('#userTable').append(str);
 		} */
-		
 
 	}
 	/*//My Notification Callback*/
 
 	
 	
-	/* total Notification Callback */
-	  function totalNotificationList(jsonObj) {
-		
-		 
-		 
-		  var str = totalNotiListjsonObj(jsonObj);
-		  
-		  $('#totalTable').append(str);
-		  
-		  var userObj = jsonObj["notifications"];
-			
-		//var	totalLength = userObj.length;
-		  
-		 // getPagingHtml($('#pagingDiv'), "goSearchPageing",totalLength, pageNum, "10", "10" );
-	}  
-	/*//total Notification Callback*/
-	//페이징 처리 스크립트
-	/* function goSearchPageing(pageNm){
-		
-		pageNum = pageNm;
-		
-		offset = (parseInt(pageNm)-1) * limit;
-		
-		getTotalNotiList(totalNotificationList, encodeTime,  "limit="+limit+"&offset="+offset);
-		
-				
-	} */
+
 	
 	/*NotiId클릭시 하단에 정보보여주기*/
 	function showNotiInfoDiv(notiId,eventId){
 		
 		/*공지상세정보-Notification Time,Node,Interface*/
 		getNotificaitionDetail(notificaitionInfo, notiId);
-		
-		/*공지상세정보 -Uei,numericMessage,TextMessage*/
-		//getdestinationDetail(destinationInfo, notiId);
-		
-		/*컨트롤러 주소*/
-		/* location.href ="/"+version+"/admin/setting/notificationDetali.do?notifyid="+notiId+"&eventId="+eventId; */
 		
 	}
 	function notificaitionInfo(jsonObj) {
@@ -222,8 +176,9 @@ var encodeTime = encodeURI(time);
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
-					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
-					<li><a href="/v1/admin/setting.do">사용자 설정</a></li>
+					<li>알림<span class="divider">/</span></li>
+					<li><a href="/v1/admin/notimng/allnoti.do">모든 알림 보기</a><span class="divider">/</span></li>
+					<li>나의 알림 보기</li>
 				</ul>
 			</div>
 				<jsp:include page="/include/sideBar.jsp" />
@@ -252,33 +207,6 @@ var encodeTime = encodeURI(time);
 					</div>
 				</div>
 			</div>
-			<div class="row-fluid">
-				<div class="span12">
-					<div class="span1 text-error"><h4 style="margin-left: 15px;">All</h4></div>
-					<div class="span8"><h4 style="margin-left: -43px;"> outstanding notices</h4></div>
-					<div class="span3"></div>
-				</div>
-			</div>
-			<div class="row-fluid">
-				<div class="span12 well well-small">
-					<div class="row-fluid">
-						<table class="table table-striped table-condensed" id="totalTable">
-							<tr>
-								<th class="span1"><h4>ID</h4></th>
-								<th class="span1"><h4>EventId</h4></th>
-								<th class="span1"><h4>Status</h4></th>
-								<th class="span2"><h4>PageTime</h4></th>
-								<!-- <th class="span1"><h4>Interface</h4></th> -->
-								<th class="span6"><h4>Message</h4></th>
-							</tr>
-						</table>
-					</div>
-				</div>
-				<div class="row-fluid">
-					<div class="span12" id="pagingDiv"></div>
-				</div>
-			</div>
-			
 		</div>
 		<div class="row-fluid">
 				<div class="span12">
@@ -289,9 +217,6 @@ var encodeTime = encodeURI(time);
 				</div>
 			</div>
 		</div>
-		
-		
-	
 	<!-- /container -->
 </body>
 </html>

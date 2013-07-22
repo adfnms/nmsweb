@@ -150,7 +150,7 @@ public class AssetsController
 		catch (Exception e){
 			e.printStackTrace();
 		}
-		model.setViewName("/admin/userMng/userMng");
+		model.setViewName("/admin/node");
 		return model;
 	}
 	

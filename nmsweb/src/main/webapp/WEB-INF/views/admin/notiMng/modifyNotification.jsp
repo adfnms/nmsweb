@@ -47,17 +47,27 @@ $(document).ready(function() {
 	/* GET list of the initial agent(destination) accept to notification */
 	getPathList(getPathsName);
 	
+	/* Method to accept notification*/
+	/* /v1/notifications/commands */
+	 //getAllCommends(getCommends); 
+	
 });
+
+function getCommends(jsonObj) {
+
+	console.log(jsonObj);
+	 str = getCommendsJsonObj(jsonObj);
+}
+
 
 /* GETConfirm kind of registered all event Callback */
 function getEvent(jsonObj) {
 
-		var str = getEventJsonObj(jsonObj);
-		$('#userTable').append(str);
-
+		 str = getEventJsonObj(jsonObj);
+		 
+		//$("#eventListTable").append(str);
 	}
 /* // GETConfirm kind of registered all event Callback */
-
 
 function setDestination(obj){
 	
@@ -71,7 +81,7 @@ function setDestination(obj){
 		$("#destinationFrm").find('[name=uei]:input').val(uei);
 		$("#destinationFrm").find('[name=noticeQueue]:input').val(name);
 		
-		$("#StepOne").html("1단계&nbsp;&nbsp;<span class=\"label label-important\">이벤트 선택</span>&nbsp;&nbsp;&nbsp;"+name);
+		$("#changeOne").html("&nbsp;&nbsp;<span class=\"label label-important\">변경&nbsp;uei</span>&nbsp;&nbsp;&nbsp;"+name);
 	} 
 }
 
@@ -80,9 +90,9 @@ function setDestination(obj){
  * 사용자 리스트 전체가져오기
  */
  	function callbackUseList(jsonObj) {
-		var str =userNameStr(jsonObj);
-		
-		$("#userListTable").append(str);
+ 		
+	var str =userNameStr(jsonObj);
+		$("#userTable").append(str);
 	} 
 	
 /**
@@ -95,7 +105,7 @@ function setDestination(obj){
 		$("#groupTable").append(str);
 	} 	
 	
-/**
+/**  메세지  
  * Get a list of Paths
  * Paths 리스트 전체가져오기
  */
@@ -105,55 +115,12 @@ function setDestination(obj){
 		
 		$("#PathsTable").append(str);
 		$("#destinationPath").append(selectStr);
+		
+		modifyNoti( modiNoti ,"${name}");
 	}
  	
- 	/*get form[#destinationFrm] object*/
- 	function regNotification(){
- 		
- 		var uei = $("#destinationFrm input[name=uei]").val();						//0.이벤트
- 		var noticeQueue = $("#destinationFrm input[name=noticeQueue]").val();		//1.이벤트 라벨
- 		var name = $("#destiFrm input[name=name]").val();							//2.메세지명
- 		
- 		 if($("#destiFrm input[name=name]").val() == "")
- 	  	{
- 	  		alert('메시지 명을 입력해주세요!');
- 	  		
- 	  		return false;
- 	  	}
- 		
- 		
- 		var description = $("#destiFrm input[name=description]").val();				//3.설명
- 		var subject = $("#destiFrm input[name=subject]").val();						//4.메일제목
- 		var numericMessage = $("#destiFrm textarea[name=numericMessage]").val();	//5.요약메세지
- 		var textMessage = $("#destiFrm textarea[name=textMessage]").val();			//6.rule
- 		var destinationPath = $("#destiFrm select").val();							//7.목적지
- 		var status = $("#destiFrm input[name=status]").val();						//8.상태
- 		var rule = $("#destiFrm input[name=rule]").val();							//9.메세지
- 		
- 		
- 		
- 		
- 	var str=requestBodyStr ( uei,name,description,subject,numericMessage,textMessage,destinationPath,status,rule,noticeQueue);
- 		
-	 	 $.ajax({
-			
-			type : 'post',
-			url : '/' + version + '/notifications/eventNotifications',
-			contentType : 'application/json',
-			data : str,
-			error : function() {
-				alert('공지 등록 실패');
-			},
-			success : function(data) {
-				
-			}
-		}); 
- 	
- 	}
-
-	/* Destination Path 목적지 등록 */
+ 	/* Destination Path 목적지 등록 */
  	function pathRegister(){
- 		
  		
  		//var destiName = ('${name}');
  		//var roleName = $("#destiFrm select[name=status]").val();
@@ -190,13 +157,7 @@ function setDestination(obj){
  		var roleAutoNotify =("");
  		var roleCommand = ("");
  		var roleInterval =("");
- 		
- 		
- 		
- 		
- 		
- 		
- 		
+
  		str	=	getPathName(name,initialDelay,userInterval,userName,userAutoNotify,userCommand,
  							groupInterval,groupName,groupAutoNotify,groupCommand,
  							roleInterval,roleName,roleAutoNotify,roleCommand,
@@ -204,11 +165,7 @@ function setDestination(obj){
  		
  		registerSetPathAjax();
  		
- 		
  	}
-
- 	
- 	
  	
 	function destinationGroup(GroupNm){
 		/*Set Destination Target*/
@@ -225,7 +182,6 @@ function setDestination(obj){
 	
  	function destinationPathInfo(userid){
  		
- 		
  		//alert("destinationPathInfo : "+userid);
  		$("#userTr").html("<th class=\"span3 control-label text-success\">selected :"+userid+"</th>");
  		
@@ -240,12 +196,12 @@ function setDestination(obj){
  		//$("#emailTableDiv").html("<label class=\"span3 control-label\">e-mail Targets :</label><div class=\"span9 controls\" > <h4 style= \"margin-top: 0px;\" class=\"text-success\">"+email+"</h4> <input type=\"hidden\" id=\"\"  name=\"\" class=\"span12\" value=\""+email+"\"></div>");
  		
  		$("#emailTableDiv").html("<h4 style= \"margin-top: 0px; margin-left: 12px;\" class=\"text-success\">"+email+"</h4>");
- 		$("#emailSelect").html("<label class=\"span5 control-label  text-success\"><h4>"+email+"</h4></label>");
+ 		$("#emailSelect").html("<label class=\"span6 control-label  text-success\"><h4>"+email+"</h4></label>");
  	
  	}
  	
  	/*get form[#destinationFrm] object*/
- 	function modiNotification(){
+ 	function regNotification(){
  		
  		var uei = $("#destinationFrm input[name=uei]").val();						//0.이벤트
  		var noticeQueue = $("#destinationFrm input[name=noticeQueue]").val();		//1.이벤트 라벨
@@ -257,17 +213,6 @@ function setDestination(obj){
  		var destinationPath = $("#destiFrm select").val();							//7.목적지
  		var status = $("#destiFrm input[name=status]").val();						//8.상태
  		var rule = $("#destiFrm input[name=rule]").val();							//9.메세지
- 		
- 		/* alert("---------uei----------------"+uei);
- 		alert("---------noticeQueue----------------"+noticeQueue);
- 		alert("---------name----------------"+name);
- 		alert("---------description----------------"+description);
- 		alert("---------subject----------------"+subject);
- 		alert("---------numericMessage----------------"+numericMessage);
- 		alert("---------textMessage----------------"+textMessage);
- 		alert("---------destinationPath----------------"+destinationPath);
- 		alert("---------status----------------"+status);
- 		alert("---------rule----------------"+rule); */
  		
  	 str=requestBodyStr ( uei,name,description,subject,numericMessage,textMessage,destinationPath,status,rule,noticeQueue);
  		
@@ -459,15 +404,12 @@ function setDestination(obj){
 		$("#groupSelect").html("<label class=\"span5 control-label  text-success\"><h4></h4></label>");
 		$("#emailTableDiv").html("<h4 style= \"margin-top: 0px; margin-left: 12px;\" class=\"text-success\"></h4>");
  		$("#emailSelect").html("<label class=\"span5 control-label  text-success\"><h4></h4></label>");
-		$('#pathRegister').show();
+ 		$('#pathModify').hide();
+ 		
+ 		$('#pathRegister').show();
  		$('#modiPathName').hide();
  		$('#regPathName').show();
  	}
- 	
- 	
- 	
-
- 	
 </script>
 </head>
 
@@ -479,17 +421,22 @@ function setDestination(obj){
 		
 		<!-- Example row of columns -->
 		<form action="" id="destinationFrm" name="destinationFrm">	
-			<input type="hidden" id="noticeQueue" name="noticeQueue" value="" />			<!--uei 이름 -->
-			<input type="hidden" id="uei" name="uei" value="" />							<!-- uei -->
+			<input type="hidden" id="noticeQueue" name="noticeQueue" value="" />			
+			<input type="hidden" id="uei" name="uei" value="" />							
+		</form>
+		<form action="" id="PathFrm" name="PathFrm">	
+			<input type="hidden" id="userName" name="userName" value="" />	
+			<input type="hidden" id="initialDelay" name="initialDelay" value="" />			
+			<input type="hidden" id="groupName" name="groupName" value="" />
 		</form>
 		
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
-					<li><a href="/v1/admin/setting.do">사용자 설정</a> <span class="divider">/</span></li>
-					<li><a href="/v1/admin/setting/configureNotification.do">공지 설정</a> <span class="divider">/</span></li>
-					<li class="active">공지추가</li>
+					<li>알림<span class="divider">/</span></li>
+					<li><a href="/v1/admin/notimng/configureNotification.do">알림 설정</a> <span class="divider">/</span></li>
+					<li class="active">알림 수정</li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
@@ -499,20 +446,18 @@ function setDestination(obj){
 			<div class="accordion" id="accordion2">
 			  <div class="accordion-group">
 			    <div class="accordion-heading">
-			      	<div class="row-fluid"> 
-			      		<div class="span12">
-				      		<h3>
-						      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepOne" id=StepOne >
-						        1단계&nbsp;&nbsp;<span class="label label-important">이벤트 선택</span></a>
+					<div class="row-fluid">
+						<div class="span12"> 
+						    <h3>
+						      <a class="accordion-toggle muted" data-toggle="collapse" data-parent="" href="#eventStepOne" id=StepOne >
+						        &nbsp;&nbsp;<span class="label label-important">기존&nbsp;uei</span>
+						      </a>
+						       <a class="accordion-toggle text-warning" data-toggle="collapse" data-parent="#accordion2" href="#eventStepOne" id=changeOne >
+						        &nbsp;&nbsp;<span class="label label-important">변경&nbsp;uei</span>
+						      </a>
 					      	</h3>
-				      	</div> 
-						<!-- <div class="span1"  style="margin-left: 4px; margin-top: 9px;">
-							<h3> 
-								<a type="button" class="btn accordion-toggle" data-toggle="collapse" style="width: 44px;" data-parent="#accordion2" title=""  href="#eventStepTwo" id=StepOne>next</a>
-								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepTwo" id=StepOne >[next]</a>
-							</h3>
-						</div> -->
-					</div>
+						</div>
+			      	</div>
 			    </div>
 			    <div id="eventStepOne" class="accordion-body collapse in">
 			      <div class="accordion-inner">
@@ -541,22 +486,17 @@ function setDestination(obj){
 			    </div>
 			  </div>
 			  <div class="accordion-group">
-			    <div class="accordion-heading">
-			    	<div class="row-fluid"> 
-					    <div class="span12">
-						    <h3>
-								<a class="accordion-toggle" data-toggle="collapse" data-parent="" href="#eventStepTwo">
-						        	2단계&nbsp;&nbsp;<span class="label label-important">공지 메시지 정의</span>
-								</a>
-							</h3>
-					    </div>
-					    <!-- <div class="span1"  style="margin-left: 4px; margin-top: 9px;">
-							<h3> 
-								<a type="button" class="btn accordion-toggle" data-toggle="collapse" style="width: 44px;" data-parent="#accordion2" title=""  href="#eventStepOne" id=StepOne>before</a>
-								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#eventStepOne" id=StepOne >[before]</a>
-							</h3>
-						</div> -->
-					</div>	
+			    <div class="row-fluid accordion-heading ">
+					<div class="accordion-toggle muted span12" data-toggle="collapse" data-parent="#accordion2" href="#eventStepTwo" >
+						<div class="row-fluid" class="span12"> 
+				      		<div class="span12" >
+					      		<h3>
+							      <a class="accordion-toggle" data-toggle="collapse" data-parent="" style="margin-left: -20px;" href="#eventStepOne" id=StepTwo >
+							        1단계&nbsp;&nbsp;<span class="label label-important">이벤트 선택</span></a>
+						      	</h3>
+					      	</div> 
+						</div>
+					</div>
 			    </div>
 			    <div id="eventStepTwo" class="accordion-body collapse">
 			      <div class="accordion-inner">
@@ -566,7 +506,7 @@ function setDestination(obj){
 								<div class="span12">
 									<label class="span2 control-label muted">메시지 명</label>
 									<div class="span10 controls" >
-										<input  type="text"   id="name"   name="name" class="span11"   placeholder=""> 
+										<input  type="text"   id="name"   name="name" class="span11"  readonly  placeholder=""> 
 									</div>
 								</div>
 							</div>
@@ -630,9 +570,13 @@ function setDestination(obj){
 								</div>
 							</div>
 						</form>
+						
 					</div>
+					
 			      </div>
+			     
 			    </div>
+			     
 			  </div>
 			</div>
 			<div class="row-fluid">
@@ -684,7 +628,7 @@ function setDestination(obj){
 								</colgroup>
 								<thead>
 									<tr>
-										<th><h4>Existing Paths</h4></th>
+										<th>Existing Paths</th>
 										<th>&nbsp;</th>
 										<th>&nbsp;</th>
 									</tr>
@@ -782,7 +726,7 @@ function setDestination(obj){
 			  <!-- --------------------------목적지 설정 3단계 popup--------------------- -->
 			  <div class="accordion-group">
 			    <div class="accordion-heading">
-				    <h4>
+				     <h4>
 					     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo">
 					      Destination&nbsp;Name&nbsp;&nbsp;<span class="label label-info">Destination info</span>
 					     </a>
@@ -833,6 +777,21 @@ function setDestination(obj){
 									</div>
 								</div>
 							</div>
+							
+							<!-- <div class="row-fluid">
+								<div class="span12" id="emailTableDiv">
+									<label class="span3 control-label">email Targets :</label>
+									<div class="span9 controls" ><h4 style= "margin-top: 0px;"></h4>
+										<input type="hidden" id=""  name="" class="span12"   placeholder="">
+									</div>
+								</div>
+								<div class="span12" id="emailTableDiv">
+									<div class="span9 controls" ><h4 style= "margin-top: 0px;"></h4></div>
+								</div>
+							</div> -->
+							
+							<!-- test -->
+							
 							<div class="row-fluid span12" style="width: 509px;">
 								<div class="span3">
 									<label class="control-label">User Targets  :</label>
@@ -953,7 +912,7 @@ function setDestination(obj){
 
 			<div class="accordion-group">
 			    <div class="accordion-heading">
-			    <h4>
+			   <h4>
 			      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseFour">
 			        Destination&nbsp;Setting&nbsp;&nbsp;<span class="label label-info">Setting</span>
 			      </a></h4>
@@ -1014,6 +973,32 @@ function setDestination(obj){
 									<option value="auto">auto</option>
 								</select>
 							</div>
+							<!-- <div class="row-fluid span12" style="width: 509px;">
+								<div class="span5" id ="roleSelect">
+									<label class="span5 control-label">ROLE</label>
+								</div>
+								<div class="span5">
+									<select style ="margin-left: -17px; width: 221px;" id="roleCommand" name="roleCommand">
+										<option value="javaPagerEmail">javaPagerEmail</option>
+										<option value="javaEmail">javaEmail</option>
+										<option value="textPage">textPage</option>
+										<option value="numericPage">numericPage</option>
+										<option value="xmppMessage">xmppMessage</option>
+										<option value="xmppGroupMessage">xmppGroupMessage</option>
+										<option value="ircCat">ircCat</option>
+										<option value="callWorkPhone">callWorkPhone</option>
+										<option value="callHomePhone">callHomePhone</option>
+										<option value="microblogUpdate">microblogUpdate</option>
+										<option value="microblogReply">microblogReply</option>
+										<option value="microblogDM">microblogDM</option>
+									</select>
+								</div>
+								<select style =" width: 65px; margin-left: 14px;" id="roleAutoNotify" name="roleAutoNotify">
+									<option>on</option>
+									<option>off</option>
+									<option>auto</option>
+								</select>
+							</div> -->
 							<div class="row-fluid span12" style="width: 509px;">
 								<div class="span6" id ="emailSelect">
 									<label class="span6 control-label">E-MAIL</label>
@@ -1087,10 +1072,10 @@ function setDestination(obj){
  <div id="popupRegMethod" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="myModalLabel">입력방법</h3>
+		<h3 id="myModalLabel">수정&nbsp;방법</h3>
 	</div>
 	<div class="modal-body" style="max-height: 800px;">
-		<p>
+		<p>알아서 수정 잘해봥!
 		
 		
 		</p>

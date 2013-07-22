@@ -132,10 +132,21 @@ function logOut(){
 				<li class="dropdown">
 					<a id="7" class="dropdown-toggle muted" data-toggle="dropdown" href="#" style="width: 140px; display:none;"><h4>운영관리<b class="caret"></b></h4> </a>
 					<ul class="dropdown-menu">
-						<li id="71" style="display:none;"><a tabindex="-1" href="<c:url value="/admin/node.do" />">노드관리</a></li>
-						<li id="72" style="display:none;"><a tabindex="-1" href="<c:url value="/admin/groupMng.do" />">그룹관리</a></li>
+						<li id="71" style="display:none;"><a tabindex="-1" href="<c:url value="/admin/node.do" />">노드 관리</a></li>
+						<li id="72" style="display:none;"><a tabindex="-1" href="<c:url value="/admin/groupMng.do" />">그룹 관리</a></li>
 						<li id="73" style="display:none;"><a tabindex="-1" href="<c:url value="/admin/userMng.do" />">사용자 관리</a></li>
-						<li id="74" style="display:none;"><a tabindex="-1" href="<c:url value="/admin/setting.do" />">사용자 설정</a></li>
+						<li id="74" class="dropdown-submenu" style="display:none;"><a tabindex="-1" href="">알&nbsp;&nbsp;림</a>
+							<ul class="dropdown-menu">
+							<li><a tabindex="-1" href="<c:url value="/admin/notimng/configureNotification.do" />">알림 설정</a></li>
+								<li class="dropdown-submenu" ><a tabindex="-1" href="#">알림 보기</a>
+									<ul class="dropdown-menu">
+										<li ><a tabindex="-1" href="<c:url value="/admin/notimng/allnoti.do" />">모든 알림</a></li>
+										<li><a tabindex="-1" href="<c:url value="/admin/notimng/mynoti.do" />">나의 알림</a></li>
+									</ul>
+								</li>
+								
+							</ul>
+						</li>
 					</ul>
 				</li>
 			</ul>

@@ -95,7 +95,7 @@
 	}
 	
 	function modifyNotification(name){
-		location.href ="/"+version+"/admin/setting/modifyNotification.do?name="+name;
+		location.href ="/"+version+"/admin/notimng/modifyNotification.do?name="+name;
 	} 
 	
 </script>
@@ -113,8 +113,8 @@
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">Home</a> <span class="divider">/</span></li>
 					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
-					<li><a href="/v1/admin/setting.do">사용자 설정</a><span class="divider">/</span></li>
-					<li class="active">공지 설정</li>
+					<li>알림<span class="divider">/</span></li>
+					<li class="active">알림설정</li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
@@ -146,7 +146,7 @@
 				<div class="span12">
 				<div class="span11"></div>
 					<div class="span1"  style="margin-left: -20px; margin-top: -5px;">
-						<a type="button" style="width: 77px;" class="btn btn-primary" title="" href="/v1/admin/setting/addEvent.do">+ 공지 추가</a>
+						<a type="button" style="width: 77px;" class="btn btn-primary" title="" href="/v1/admin/notimng/addEvent.do">+ 공지 추가</a>
 					</div>
 				</div>
 				

@@ -28,11 +28,11 @@ public class UserSettingController
 	
 	private static final Logger logger = LoggerFactory.getLogger(loginController.class);
 	
-	@RequestMapping(value = "/admin/setting")
-	public ModelAndView setting(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-			@RequestParam(value = "user-id", required = false)String userId,
-			@RequestParam(value = "myNotification", required = false)String myNotification,
-			@RequestParam(value = "totalNotification", required = false)String totalNotification)
+	@RequestMapping(value = "/admin/notimng/mynoti")
+	public ModelAndView showMyNoti(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			@RequestParam(value = "user-id", required = false)String userId)
+			//@RequestParam(value = "myNotification", required = false)String myNotification,
+			//@RequestParam(value = "totalNotification", required = false)String totalNotification,
 	{
 		String Id =(String) session.getAttribute(Define.USER_ID_KEY);
 		ModelAndView model = new ModelAndView();
@@ -45,27 +45,46 @@ public class UserSettingController
 			e.printStackTrace();
 		}
 		model.addObject("userId",Id);
-		model.addObject("totalNotification",totalNotification);
-		model.addObject("myNotification",myNotification);
-		model.setViewName("/admin/userSetting/userSetting");
+		//model.addObject("totalNotification",totalNotification);
+		//model.addObject("myNotification",myNotification);
+		//model.setViewName("/admin/userSetting/userSetting");
+		model.setViewName("/admin/notiMng/myNoti");
+		return model;
+	}
+	@RequestMapping(value = "/admin/notimng/allnoti")
+	public ModelAndView showAllNoti(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			@RequestParam(value = "user-id", required = false)String userId)
+	{
+		String Id =(String) session.getAttribute(Define.USER_ID_KEY);
+		ModelAndView model = new ModelAndView();
+		
+		try{
+			
+		}catch (Exception e) {
+			
+			logger.info("regToDb date false");
+			e.printStackTrace();
+		}
+		model.addObject("userId",Id);
+		model.setViewName("/admin/notiMng/allNoti");
 		return model;
 	}
 	
-	@RequestMapping(value = "/admin/setting/addEvent")
+	@RequestMapping(value = "/admin/notimng/addEvent")
 	public ModelAndView addEvent(HttpServletRequest request, HttpServletResponse response)
 	{
 		ModelAndView model = new ModelAndView();
-		model.setViewName("/admin/userSetting/userAddEvent");
+		model.setViewName("/admin/notiMng/userAddEvent");
 		return model;
 	}
 	
-	@RequestMapping(value = "/admin/setting/addMessage")
+/*	@RequestMapping(value = "/admin/setting/addMessage")
 	public ModelAndView addMessage(HttpServletRequest request, HttpServletResponse response)
 	{
 		ModelAndView model = new ModelAndView();
 		model.setViewName("/admin/userSetting/userAddMessage");
 		return model;
-	}
+	}*/
 	
 	@RequestMapping(value = "/admin/setting/notificationDetali")
 	public ModelAndView getNotificationInfo(HttpServletRequest request, HttpServletResponse response,
@@ -93,22 +112,22 @@ public class UserSettingController
 		model.setViewName("/admin/userSetting/outage");
 		return model;
 	}
-	@RequestMapping(value = "/admin/setting/configureNotification")
+	@RequestMapping(value = "/admin/notimng/configureNotification")
 	public ModelAndView configureNotification(HttpServletRequest request, HttpServletResponse response)
 	{
 		ModelAndView model = new ModelAndView();
-		model.setViewName("/admin/userSetting/configureNotification");
+		model.setViewName("/admin/notiMng/configureNotification");
 		return model;
 	}
 	
-	@RequestMapping(value = "/admin/setting/modifyNotification")
+	@RequestMapping(value = "/admin/notimng/modifyNotification")
 	public ModelAndView modifyNotification(HttpServletRequest request, HttpServletResponse response,
 	@RequestParam(value = "name", required = false)String name)
 	{
 		ModelAndView model = new ModelAndView();
 
 		model.addObject("name",name);
-		model.setViewName("/admin/userSetting/modifyNotification");
+		model.setViewName("/admin/notiMng/modifyNotification");
 		return model;
 	}
 	
