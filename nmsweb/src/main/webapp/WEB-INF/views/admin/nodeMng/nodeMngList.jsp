@@ -78,7 +78,7 @@
 			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span10">
-						<h4 id="nodeCount">노드f&nbsp;목록&nbsp;[0]</h4>
+						<h4 id="nodeCount">노드&nbsp;목록&nbsp;[0]</h4>
 					</div>
 					<div class="span2">
 						<button type="button" class="btn btn-primary span12" title="노드 추가"
