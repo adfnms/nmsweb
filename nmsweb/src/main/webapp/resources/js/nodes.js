@@ -582,6 +582,32 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 	var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
 	var str = "";
 
+	var TRobj = $("<tr></tr>");
+	var TDobj = $("<td></td>");
+	var H4obj = $("<h4></h4>");
+	var Aobj = $("<a></a>");
+	var BUTTONobj = $("<button></button>");
+	
+	
+	/*TRobj.append(
+		TDobj.clone().append(
+			H4obj.clone().text("id")	
+		),
+		TDobj.clone().append(
+				H4obj.clone().text("node")	
+		),
+		TDobj.clone().append(
+				H4obj.clone().text("Node Create Time")	
+		),
+		TDobj.clone().append(
+				H4obj.clone().text("")	
+		),
+		TDobj.clone().append(
+				H4obj.clone().text("")	
+		)
+	);*/
+	
+	
 	str += "<tr>";
 	str += "<td><h4>id</h4></td>";
 	str += "<td><h4>Node</h4></td>";
@@ -637,8 +663,8 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 		} 
 
 	
-	
-	return str;
+	return TRobj;
+	//return str;
 }
 /******************************************************************************************************************************/
 function getSearchNodeserviceJsonObj(jsonObj, auth){
