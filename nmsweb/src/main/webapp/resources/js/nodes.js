@@ -20,6 +20,8 @@ function getNodeTotalList(callback, data) {
 			alert('모든 노드정보 가져오기 실패');
 		},
 		success : function(data) {
+			console.log("testlog1");
+			console.log(data);
 			// 콜백함수
 			if (typeof callback == "function") {
 				callback(data);
@@ -191,6 +193,7 @@ function searchNodeFromServiceId(callback, serviceId) {
 			
 			data = JSON.stringify(data).replaceAll('"nodeid"', '"@id"');
 			data = data.replaceAll('"nodelabel"', '"@label"');
+			//data = JSON.stringify(data).replaceAll('"createTime"', '"@time"');
 			data = JSON.parse(data);
 
 			// 콜백함수
@@ -581,51 +584,80 @@ function manageSnmpService(nodeId, ifIndex, collect){
 function getTabletagToSearchJsonObj(jsonObj, auth){
 	var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
 	var str = "";
-
+	
+	var TBODYobj = $("<tbody></tbody>");
 	var TRobj = $("<tr></tr>");
 	var TDobj = $("<td></td>");
 	var H4obj = $("<h4></h4>");
 	var Aobj = $("<a></a>");
 	var BUTTONobj = $("<button></button>");
 	
-	
-	/*TRobj.append(
-		TDobj.clone().append(
-			H4obj.clone().text("id")	
-		),
-		TDobj.clone().append(
+	TBODYobj.append(	
+		TRobj.clone().append(
+			TDobj.clone().append(
+				H4obj.clone().text("id")	
+			),
+			TDobj.clone().append(
 				H4obj.clone().text("node")	
-		),
-		TDobj.clone().append(
+			),
+			TDobj.clone().append(
 				H4obj.clone().text("Node Create Time")	
-		),
-		TDobj.clone().append(
+			),
+			TDobj.clone().append(
 				H4obj.clone().text("")	
-		),
-		TDobj.clone().append(
+			),
+			TDobj.clone().append(
 				H4obj.clone().text("")	
+			)
 		)
-	);*/
+	);
 	
-	
-	str += "<tr>";
-	str += "<td><h4>id</h4></td>";
-	str += "<td><h4>Node</h4></td>";
-	str += "<td><h4>Node Create Time</h4></td>";
-	str += "<td><h4>&nbsp;</h4></td>";
-	str += "<td><h4>&nbsp;</h4></td>";
-	str += "</tr>";
+		/*str += "<tr>";
+		str += "<td><h4>id</h4></td>";
+		str += "<td><h4>Node</h4></td>";
+		str += "<td><h4>Node Create Time</h4></td>";
+		str += "<td><h4>&nbsp;</h4></td>";
+		str += "<td><h4>&nbsp;</h4></td>";
+		str += "</tr>";*/
 	
 	if (jsonObj["node"] == null || jsonObj["node"] ==""){
+		TBODYobj.append(	
+				TRobj.append().text("노드 목록이 없습니다!")
+			);
 		
-		str += "<tr>";
+		/*str += "<tr>";
 		str += "<td>노드 목록이 없습니다!</td>";
-		str += "</tr>";
-		
+		str += "</tr>";*/		
+	
 	}else if (jsonObj["@totalCount"] == 1 || jsonObj["@count"] == 1) {
+		if(auth!="Admin"){
+			TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.clone().append().text("1"),
+					TDobj.clone().append(
+						Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+"").append().text(nodeObj["@label"])),
+					TDobj.clone().append().text(new Date(nodeObj["createTime"]).format('yy-MM-dd hh:mm:ss')),
+					TDobj.clone().append(),
+					TDobj.clone().append()
+				)
+			);
+		}else if(auth=="Admin"){
+			TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.clone().append().text("1"),
+					TDobj.clone().append(
+						Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+"").append().text(nodeObj["@label"])),
+					TDobj.clone().append().text(new Date(nodeObj["createTime"]).format('yy-MM-dd hh:mm:ss')),				
+					TDobj.clone().append(
+						BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","javascript:goNodeManagePage("+nodeObj["@id"]+")").text("관리")),
+					TDobj.clone().append(
+						BUTTONobj.clone().attr("type","button").attr("class","btn btn-danger").attr("onclick","javascript:deleteNode("+nodeObj["@id"]+")").text("삭제")
+					)
+				)				
+			);		
+		}
 		
-		
-		str += "<tr>";
+		/*str += "<tr>";
 		str += "<td>1</td>";
 		str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+ "'>"
 				+ nodeObj["@label"]+"&nbsp;[&nbsp;"+nodeObj["@id"]+"&nbsp;]"
@@ -637,50 +669,108 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 			str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj["@id"]+'\');">관리</button></td>';
 			str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj["@id"]+'\');">삭제</button></td>';
 		}
-		str += "</tr>";
-		
+		str += "</tr>";*/
 		
 	}else if (jsonObj["@totalCount"] > 1 || jsonObj["@count"] > 1) {
-			
-			for ( var i in nodeObj) {
-				str += "<tr>";
-				str += "<td>"
-						+ "[&nbsp;"+nodeObj[i]["@id"]+"&nbsp;]"
-						+ "</td>";
-				str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+ "'>"
-						+ nodeObj[i]["@label"]
-						+ "</a></td>";
-				str += "<td>"
-						+  new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss')
-						+ "</td>";
-				if(auth == "Admin"){
-					str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj[i]["@id"]+'\');">관리</button></td>';
-					str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj[i]["@id"]+'\');">삭제</button></td>';
-				}
-				str += "</tr>";
+		if(auth!="Admin"){
+			for (var i in nodeObj) {
+				TBODYobj.append(
+					TRobj.clone().append(
+						TDobj.clone().append().text(nodeObj[i]["@id"]),
+						TDobj.clone().append(
+							Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+"").append().text(nodeObj[i]["@label"])),
+						TDobj.clone().append().text(new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss')),
+						TDobj.clone().append(),
+						TDobj.clone().append()
+					)
+				);
 			}
-			
-		} 
-
+		}else if(auth=="Admin"){
+			for (var i in nodeObj) {
+				TBODYobj.append(
+					TRobj.clone().append(
+						TDobj.clone().append().text(nodeObj[i]["@id"]),
+						TDobj.clone().append(
+							Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+"").append().text(nodeObj[i]["@label"])),
+						TDobj.clone().append().text(new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss') + '                 '),				
+						TDobj.clone().append(
+							BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","javascript:goNodeManagePage("+nodeObj[i]["@id"]+")").text("관리")),
+						TDobj.clone().append(
+							BUTTONobj.clone().attr("type","button").attr("class","btn btn-danger").attr("onclick","javascript:deleteNode("+nodeObj[i]["@id"]+")").text("삭제")
+						)
+					)				
+				);		
+			}
+		}
+	}	
 	
-	return TRobj;
+	/*for (var i in nodeObj) {
+		str += "<tr>";
+		str += "<td>"
+				+ "[&nbsp;"+nodeObj[i]["@id"]+"&nbsp;]"
+				+ "</td>";
+		str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+ "'>"
+				+ nodeObj[i]["@label"]
+				+ "</a></td>";
+		str += "<td>"
+				+  new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss')
+				+ "</td>";
+		if(auth == "Admin"){
+			str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj[i]["@id"]+'\');">관리</button></td>';
+			str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj[i]["@id"]+'\');">삭제</button></td>';
+		}
+		str += "</tr>";
+	}*/
+	
+	return TBODYobj;
 	//return str;
 }
 /******************************************************************************************************************************/
 function getSearchNodeserviceJsonObj(jsonObj, auth){
-	
 	var nodeObj = jsonObj["nodes"] != null ? jsonObj["nodes"] : jsonObj["nodes"];
 	var str = "";
-	console.log(nodeObj);
+	
+	var TBODYobj = $("<tbody></tbody>");
+	var TRobj = $("<tr></tr>");
+	var TDobj = $("<td></td>");
+	var Aobj = $("<a></a>");
+	var BUTTONobj = $("<button></button>");
 	
 if (jsonObj["nodes"] == null || jsonObj["nodes"] ==""){
-		
-		str += "<tr>";
+	TBODYobj.append(	
+		TRobj.append().text("노드 목록이 없습니다!")
+	);
+		/*str += "<tr>";
 		str += "<td>노드 목록이 없습니다!</td>";
-		str += "</tr>";
+		str += "</tr>";*/
 		
 	}else if (nodeObj.length == 1) {
-		str += "<tr>";
+		if(auth!="Admin"){
+			TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.clone().append().text("1"),
+					TDobj.clone().append(
+						Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[0]["@id"]+"").append().text(nodeObj[0]["@label"] + ' [ ' + nodeObj[0]["@id"] + " ]")),
+					TDobj.clone().append(),
+					TDobj.clone().append()
+				)
+			);
+		}else if(auth=="Admin"){
+			TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.clone().append().text("1"),
+					TDobj.clone().append(
+						Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[0]["@id"]+"").append().text(nodeObj[0]["@label"] + ' [ ' + nodeObj[0]["@id"] + ' ]')),				
+					TDobj.clone().append(
+						BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","javascript:goNodeManagePage("+nodeObj[0]["@id"]+")").text("관리")),
+					TDobj.clone().append(
+						BUTTONobj.clone().attr("type","button").attr("class","btn btn-danger").attr("onclick","javascript:deleteNode("+nodeObj[0]["@id"]+")").text("삭제")
+					)
+				)				
+			);		
+		}
+		
+		/*str += "<tr>";
 		str += "<td>1</td>";
 		str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj[0]["@id"]+ "'>"
 				+ nodeObj[0]["@label"]+"&nbsp;[&nbsp;"+nodeObj[0]["@id"]+"&nbsp;]"
@@ -690,11 +780,48 @@ if (jsonObj["nodes"] == null || jsonObj["nodes"] ==""){
 			str += '<td><button type="button" class="btn btn-info" title="관리" onclick="javascript:goNodeManagePage(\''+nodeObj[0]["@id"]+'\');">관리</button></td>';
 			str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj[0]["@id"]+'\');">삭제</button></td>';
 		}
-		str += "</tr>";
-		
+		str += "</tr>";*/
 		
 	}else if (nodeObj.length > 1) {
-		for ( var i in nodeObj) {
+		if(auth!="Admin"){
+			for (var i in nodeObj) {
+				TBODYobj.append(
+					TRobj.clone().append(
+						TDobj.clone().append().text(nodeObj[i]["@id"]/*2. "[&nbsp;"+nodeObj[i]["@id"]+"&nbsp;]"*/),
+						TDobj.clone().append(
+							Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+"").append().text(nodeObj[i]["@label"])),
+						TDobj.clone().append().text(new Date(jsonObj["nodes"][i]["@id"]).format('yy-MM-dd hh:mm:ss')),
+						TDobj.clone().append(),
+						TDobj.clone().append()
+					)
+				);
+			}
+		}else if(auth=="Admin"){
+			
+			console.log("----uhuuhuhkhuk-----------------------------");
+			console.log(nodeObj);
+			console.log("----5768768768767----------------------");
+			console.log(nodeObj["createTime"]);
+			
+			
+			for (var i in nodeObj) {
+				TBODYobj.append(
+					TRobj.clone().append(
+						TDobj.clone().append().text(nodeObj[i]["@id"]/*+'[ '+nodeObj[i]["@id"]+' ]'*/),
+						TDobj.clone().append(
+							Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+"").append().text(nodeObj[i]["@label"])),
+						TDobj.clone().append().text(new Date(jsonObj["nodes"][i]["@id"]).format('yy-MM-dd hh:mm:ss')),
+						TDobj.clone().attr("width","50").attr("height","20").append(
+							BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","javascript:goNodeManagePage("+nodeObj[i]["@id"]+")").text("관리")),
+						TDobj.clone().attr("width","50").append(
+							BUTTONobj.clone().attr("type","button").attr("class","btn btn-danger").attr("onclick","javascript:deleteNode("+nodeObj[i]["@id"]+")").text("삭제")
+						)
+					)				
+				);		
+			}
+		}
+		
+		/*for (var i in nodeObj) {
 			str += "<tr>";
 			str += "<td>"
 					+ "[&nbsp;"+nodeObj[i]["@id"]+"&nbsp;]"
@@ -708,9 +835,12 @@ if (jsonObj["nodes"] == null || jsonObj["nodes"] ==""){
 				str += '<td><button type="button" class="btn btn-danger" title="삭제" onclick="javascript:deleteNode(\''+nodeObj[i]["@id"]+'\');">삭제</button></td>';
 			}
 			str += "</tr>";
-		}
+		}*/
+		
 	}
-	return str;
+	
+	return TBODYobj;
+	//return str;
 }
 /*****************************노드리스트*************************************/
 /*index.do page의 감시대상목록*/

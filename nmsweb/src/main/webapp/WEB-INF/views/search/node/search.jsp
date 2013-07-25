@@ -54,7 +54,7 @@
 	       		{
 	        		var	groupName= data.userList[i].groupNm;
 	       		}
-				var str = getTabletagToSearchJsonObj(jsonObj,groupName);
+				var str = getTabletagToSearchJsonObj(jsonObj, groupName);
 				$('#nodeListTable').append(str);
 			}
 		});   	
@@ -91,8 +91,10 @@
 	       		{
 	        		var	groupName= data.userList[i].groupNm;
 	       		}
-				var str = getSearchNodeserviceJsonObj(jsonObj,groupName);
+				var str = getSearchNodeserviceJsonObj(jsonObj, groupName);
+	       		
 				$('#nodeListTable').append(str);
+	       		
 			}
 		});   	
 	}
@@ -152,7 +154,7 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
-					<li><a href="<c:url value="/index.do" />" />Home</a> <span class="divider">/</span></li>
+					<li><a href="<c:url value="/index.do" />">Home</a> <span class="divider">/</span></li>
 					<li class="active">노드검색</li>
 				</ul>
 			</div>
