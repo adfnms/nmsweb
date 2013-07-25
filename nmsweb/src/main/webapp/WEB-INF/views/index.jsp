@@ -64,12 +64,15 @@
 		var outageTotalCount = 0;
 		var serviceTotalCount = 0;
 
+		var DIVobj =$("<div></div>");
 		var ULobj = $("<ul></ul>");
 		var TRobj = $("<tr></tr>");
 		var TABLEobj =$("<table></table>");
 		var THobj = $("<th></th>");
 		var TDobj = $("<td></td>");
 		var Aobj = $("<a></a>");
+		var SPANobj = $("<span></span>");
+		var BUTTONobj = $("<button></button>");
 		var LIobj = $("<li></li>");
 		var H5obj = $("<h5></h5>");
 		var STRONGobj = $("<strong></strong>");
@@ -110,23 +113,44 @@
 				var availwidth = Number(categoryObj[i]["availabili"]).toFixed(2) ;
 				
 				var errorStr = "";
-				errorStr += '	<div class="alert alert-error">';
+				
+				Divobj.attr("class","alert alert-arror").append(
+						BUTTONobj.clone().attr("type","button").attr("class","close").attr("data-dismiss","alert").text("&times"),
+						SPANobj.clone().attr("class","label label-important").text("Warning!"),
+						STRONGobj.clone().text(categoryObj[i]["name"])
+				
+				);
+				
+				$('#categoryInfo').append(Divobj);
+				
+				/* errorStr += '	<div class="alert alert-error">';
 				errorStr += '	<button type="button" class="close" data-dismiss="alert">&times;</button>';
 				errorStr += '         <span class="label label-important">Warning!</span>&nbsp;&nbsp;<strong>'+categoryObj[i]["name"]+' </strong>서버의 가용률이<strong> '+availwidth+'%</strong>입니다.  ';
 				errorStr += '        </div>';
 				
-				$('#categoryInfo').append(errorStr);
+				$('#categoryInfo').append(errorStr); */
 			
 			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) == 0.00){
 				var status = "progress-danger";
 				var availwidth ="18";
 				var errorStr = "";
+				
+				/* DIVobj.attr("class","alert alert-arror").append(
+						BUTTONobj.clone().attr("type","button").attr("class","close").attr("data-dismiss","alert").text('&times'),
+						SPANobj.clone().attr("class","label label-important").text("Warning!"),
+						STRONGobj.clone().text(categoryObj[i]["name"]),
+						STRONGobj.clone().text(Number(categoryObj[i]["availabili"]).toFixed(2)+"%")
+				);
+				
+				$('#categoryInfo').append(DIVobj); */
+				
+				
 				errorStr += '	<div class="alert alert-error">';
 				errorStr += '	<button type="button" class="close" data-dismiss="alert">&times;</button>';
 				errorStr += '         <span class="label label-important">Warning!</span>&nbsp;&nbsp;<strong>'+categoryObj[i]["name"]+' </strong>서버의 가용률이<strong> '+Number(categoryObj[i]["availabili"]).toFixed(2)+'%</strong>입니다.  ';
 				errorStr += '        </div>';
 				
-				$('#categoryInfo').append(errorStr);
+				$('#categoryInfo').append(errorStr); 
 			}  
 			
 			var avail = Number(categoryObj[i]["availabili"]).toFixed(2) ;
@@ -147,6 +171,8 @@
 		str += '</table>';
 		
 		$('#categoryInfo').append(str);
+		
+		// 전체 가용률  statusbar
 		if(outageTotalCount == 0){
 			var statusTotal = "success";
 			
@@ -211,8 +237,16 @@
 		var data = "id="+outageId;
 		getTotalOutagesList(addOutageInfo, data,ipAdress);
 		
+		//var modalWidth = "1144";
+		//var conWidth = $("modal").width();
+		console.log("-----outagePop---------");
+		console.log($(document).width());
+		console.log();
+		//var	marginleft  = ( ($(document).width() -modalWidth) /2 );
+		//$("#myModal").css("margin-left",marginleft);
 		/*
-		lfet = ( 화면 넓이 - 팝업 길이 ) / 2; 
+		left = ( screen.width - 팝업 길이 ) / 2; 
+		$("#sideBarOutageList").css("left",-14);
 		*/
 		
 	}
@@ -227,6 +261,8 @@
 	}
 	/*//outage Info Callback */
 	/*// 장애 정보 POPUP창 */
+	
+	
 </script>
 </head>
 
@@ -308,12 +344,12 @@
 	<!-- /container -->
 </body>
 <!-- Modal -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1144px; left:36%;">
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		<h3 id="myModalLabel" >장애정보</h3>
 	</div>
-	<div class="modal-body" style="width: 1099px;">
+	<div class="modal-body">
 		<div class="row-fluid" id="outageInfoDiv"></div>
 	</div>
 	<div class="modal-footer">

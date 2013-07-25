@@ -383,7 +383,7 @@ function getOutageInfoBox(jsonObj) {
 			+ outageObj["@id"]
 			+ ']</h5>'
 			+ '</div>'
-			+ '<div class="row-fluid" style="width: 1113px;">'
+			+ '<div class="row-fluid">'
 			+ '	<div class="span12 well well-small">'
 			+ '		<table class="table table-striped">'
 			+ '			<tr>'
@@ -402,7 +402,9 @@ function getOutageInfoBox(jsonObj) {
 			+ new Date(outageObj["serviceLostEvent"]["time"])
 					.format('yy-MM-dd hh:mm:ss')
 			+ '</td>'
-			+ '				<th>중단 이벤트</th>'
+			+ '			</tr>'
+			+ '			<tr>'
+			+ '				<th>이벤트</th>'
 			+ '				<td><a href="/'
 			+ version
 			+ '/search/event/eventDesc.do?eventId='
@@ -410,16 +412,14 @@ function getOutageInfoBox(jsonObj) {
 			+ '">'
 			+ outageObj["serviceLostEvent"]["@id"]
 			+ '</a></td>'
-			+ '			</tr>'
-			+ '			<tr>'
+			
 			+ '				<th>인터페이스</th>'
 			+ '				<td>'
-			
-			
-		
 			+ outageObj["ipAddress"]
 			+ '</td>'
-			+ '				<th>호스트</th>'
+			+ '			</tr>'
+			+ '			<tr>'
+			+ '				<th style ="width: 82px;";>호스트</th>'
 			+ '				<td>'
 			+ outageObj["serviceLostEvent"]["host"]
 			+ '</td>'

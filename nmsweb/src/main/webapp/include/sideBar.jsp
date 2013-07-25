@@ -71,7 +71,6 @@ function sidebarInfo(jsonObj) {
 
 function outageSideBarPop(outageid){
 	
-	alert("outageid : "+outageid);
 	var data = "id="+outageid;
 	getTotalOutagesList(addOutageSideInfo, data);
 }
@@ -96,12 +95,12 @@ function addOutageSideInfo(jsonObj){
 </div>
 <html>
 <!-- Modal -->
-<div id="myModalSide" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="position:absolute;width: 1144px; left:36%">
+<div id="myModalSide" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabelSide" >장애정보</h3>
   </div>
-  <div class="modal-body" style="width: 1099px;">
+  <div class="modal-body" >
     <div class="row-fluid" id="outageInfoDivSide"></div>
   </div>
   <div class="modal-footer">
