@@ -618,7 +618,7 @@ public class DashBoardService {
 		
 		  String result2 = result.toString();
 		if (result2.contains("\"Outages\":]")) {
-			result2 = result2.replace("\"Outages\":]", "\"Outages\":\"null\"]");
+			result2 = result2.replace("\"Outages\":]", "\"Outages\":\"null\"");
 		}
 
 		return result2;
