@@ -102,6 +102,21 @@ function getTabletagToEventJsonObj(jsonObj){
 	
 	var events = jsonObj["event"];
 	var str = "";
+	/*********************************************/
+	
+	var MainDIVObj = $("<div></div>");
+	var DIVobj = $("<div></div>");
+	var TABLEobj = $("<table></table>");
+	var TRobj = $("<tr></tr>");
+	var TDobj = $("<td></td>");
+	var THobj = $("<th></th>");
+	var COLGROUPobj = $("<colgroup></colgroup>");
+	var COLobj = $("<col></col>");
+	var H5obj = $("<h5></h5>");
+	var Aobj = $("<a></a>");
+	
+	
+	/*********************************************/
 	if (jsonObj["@count"] > 0) {
 			
 		str = "	<div class='row-fluid'>"
@@ -117,6 +132,27 @@ function getTabletagToEventJsonObj(jsonObj){
 				+ "		</table><div id='outageScrollDiv'><table class='table'>	"
 				+ "			<colgroup><col width='15%'/><col  width='25%'/><col  width='15%'/><col  width='45%'/></colgroup>"
 				+ "			<tbody>";
+		/*****************************************************************************************************************************************************************/
+		MainDIVObj.attr("class", "row-fluid").append(
+			H5obj.append().text("이벤트 목록" + "[" + jsonObj["@count"] + "]"),
+			DIVobj.clone().attr("class", "span12 well well-small").attr("style", "margin-left:0px").append(
+				TABLEobj.attr("class", "table").append(
+					COLGROUPobj.clone().append(
+						COLobj.clone().attr("width", "15%").append(),
+						COLobj.clone().attr("width", "25%").append(),
+						COLobj.clone().attr("width", "15%").append(),
+						COLobj.clone().attr("width", "45%").append()
+					),
+					TRobj.clone().append(
+						THobj.clone().append().text("이벤트ID"),
+						THobj.clone().append().text("시간"),
+						THobj.clone().append().text("상태"),
+						THobj.clone().append().text("메세지")
+					)
+				)
+			)
+		);
+		/*****************************************************************************************************************************************************************/
 		if (jsonObj["@count"] > 1) {
 
 			for ( var i in events) {
@@ -156,6 +192,28 @@ function getTabletagToEventJsonObj(jsonObj){
 				str += '		</div></td>';
 				str += "<td>" + events[i]["logMessage"].replace(/<p>|<\/p>/gi,'') + "</td>";
 				str += "</tr>";
+				/*****************************************************************************************************************************************************************/
+				TABLEobj.append(
+					COLGROUPobj.clone().append(
+						COLobj.clone().attr("width", "13%").append(),
+						COLobj.clone().attr("width", "15%").append(),
+						COLobj.clone().attr("width", "15%").append(),
+						COLobj.clone().attr("width", "62%").append()
+					),
+					TRobj.clone().append(
+						TDobj.clone().append(
+							Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+ "").append().text(events[i]["@id"])
+						),
+						TDobj.clone().append().text(new Date(events[i]["createTime"]).format('yy-MM-dd hh:mm:ss')),
+						TDobj.clone().attr("class", "").append(
+							DIVobj.clone().attr("class", "progress progress-striped active " + statusProgress +"").attr("style", "margin-bottom: 0px;width: 130px;").append(
+								DIVobj.clone().attr("class", "bar").attr("style", "width:100%;").append().text(events[i]["@severity"])
+							)	
+						),
+						TDobj.clone().append().text(events[i]["logMessage"].replace(/<p>|<\/p>/gi,''))
+					)
+				);
+				/*****************************************************************************************************************************************************************/
 			}
 
 		} else {
@@ -167,6 +225,24 @@ function getTabletagToEventJsonObj(jsonObj){
 			str += "<th class='"+events["@severity"].toLowerCase()+"'>" + events["@severity"] + "</th>";
 			str += "<td>" + events["logMessage"].replace(/<p>|<\/p>/gi,'') + "</td>";
 			str += "</tr>";
+			/*****************************************************************************************************************************************************************/
+			TABLEobj.append(
+				COLGROUPobj.clone().append(
+					COLobj.clone().attr("width", "13%").append(),
+					COLobj.clone().attr("width", "15%").append(),
+					COLobj.clone().attr("width", "15%").append(),
+					COLobj.clone().attr("width", "62%").append()
+				),	
+				TRobj.clone().append(
+					TDobj.clone().append(
+						Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"").append().text(events["@id"])
+					),
+					TDobj.clone().append().text(new Date(events["createTime"]).format('yy-MM-dd hh:mm:ss')),
+					THobj.clone().attr("class", ""+events["@severity"].toLowerCase()+"").append().text(events["@severity"]),
+					TDobj.clone().append().text(events["logMessage"].replace(/<p>|<\/p>/gi,''))
+				)
+			);
+			/*****************************************************************************************************************************************************************/
 		}
 
 		
@@ -174,14 +250,29 @@ function getTabletagToEventJsonObj(jsonObj){
 	}
 
 	return str;
+	/*************/
+	//return MainDIVObj;
+	/*************/
 }
 function getTabletagToInterfaceEventJsonObj(jsonObj){
 	
 	var events = jsonObj["event"];
-	var str = "";
+	//var str = "";
+	/*********************************************/
+	var DIVobj = $("<div></div>");
+	var TABLEobj = $("<table></table>");
+	var TRobj = $("<tr></tr>");
+	var TDobj = $("<td></td>");
+	var THobj = $("<th></th>");
+	var COLGROUPobj = $("<colgroup></colgroup>");
+	var COLobj = $("<col></col>");
+	var THEADobj = $("<thead></thead>");
+	var H5obj = $("<h5></h5>");
+	var Aobj = $("<a></a>");
+	/*********************************************/
 	if (jsonObj["@count"] > 0) {
 			
-		str = "	<div class='row-fluid'>"
+		/*str = "	<div class='row-fluid'>"
 				+ "		<h5>인터페이스&nbsp;이벤트&nbsp;목록&nbsp;["
 				+ jsonObj["@count"]
 				+ "]</h5>"
@@ -193,7 +284,30 @@ function getTabletagToInterfaceEventJsonObj(jsonObj){
 				+ "			<thead><tr><th>이벤트ID</th><th>시간</th><th>상태</th><th class='span4'>메세지</th></tr></thead>"
 				+ "		</table><div id='outageScrollDiv'><table class='table'>	"
 				+ "			<colgroup><col width='10%'/><col  width='15%'/><col  width='15%'/><col  width='62%'/></colgroup>"
-				+ "			<tbody>";
+				+ "			<tbody>";*/
+				/**********************************************************************************************************************************************************/
+				DIVobj.attr("class", "row-fluid").append(
+					H5obj.append().text("인터페이스 이벤트 목록" + "[" + jsonObj["@count"] + "]"),
+					DIVobj.clone().append(
+						TABLEobj.clone().attr("class", "table").append(
+							COLGROUPobj.clone().append(
+								COLobj.clone().attr("width", "13%").append(),
+								COLobj.clone().attr("width", "15%").append(),
+								COLobj.clone().attr("width", "15%").append(),
+								COLobj.clone().attr("width", "62%").append()
+							),
+							THEADobj.clone().append(	
+								TRobj.clone().append(
+									THobj.clone().append().text("이벤트ID"),
+									THobj.clone().append().text("시간"),
+									THobj.clone().append().text("상태"),
+									THobj.clone().append().text("메세지")
+								)
+							)
+						)
+					)
+				);
+				/**********************************************************************************************************************************************************/
 		if (jsonObj["@count"] > 1) {
 
 			for ( var i in events) {
@@ -220,7 +334,7 @@ function getTabletagToInterfaceEventJsonObj(jsonObj){
 					 statusProgress = "progress-success";
 				}
 				
-				str += "<tr>";
+				/*str += "<tr>";
 				str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+"'>" + events[i]["@id"]
 						+ "</a></td>";
 				str += "<td>"
@@ -232,33 +346,95 @@ function getTabletagToInterfaceEventJsonObj(jsonObj){
 				str += '		<div class="bar" style="width:100%">' +events[i]["@severity"]+ '</div>';
 				str += '		</div></td>';
 				str += "<td>" + events[i]["logMessage"].replace(/<p>|<\/p>/gi,'') + "</td>";
-				str += "</tr>";
+				str += "</tr>";*/
+				/**********************************************************************************************************************************************************/
+				DIVobj.attr("class", "span12 well well-small").attr("id", "outageScrollDiv").append(
+					TABLEobj.clone().attr("class", "table").append(
+						COLGROUPobj.clone().append(
+							COLobj.clone().attr("width", "13%").append(),
+							COLobj.clone().attr("width", "15%").append(),
+							COLobj.clone().attr("width", "15%").append(),
+							COLobj.clone().attr("width", "62%").append()
+						),
+						TRobj.clone().append(
+							TDobj.clone().append(
+								Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+ "").append().text(events[i]["@id"])
+							),
+							TDobj.clone().append().text(new Date(events[i]["createTime"]).format('yy-MM-dd hh:mm:ss')),
+							TDobj.clone().attr("class", "").append(
+								DIVobj.clone().attr("class", "progress progress-striped active"+statusProgress+"").attr("style", "margin-bottom: 0px;width: 130px;").append(
+									DIVobj.clone().attr("class", "bar").attr("style", "width:100%").append().text(events[i]["@severity"])
+								)	
+							),
+							TDobj.clone().append().text(events[i]["logMessage"].replace(/<p>|<\/p>/gi,''))
+						)
+					)
+				);
+				/**********************************************************************************************************************************************************/
 			}
 
 		} else {
-			str += "<tr>";
+			/*str += "<tr>";
 			str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"'>" + events["@id"] + "</a></td>";
 			str += "<td>"
 					+ new Date(events["createTime"])
 							.format('yy-MM-dd hh:mm:ss') + "</td>";
 			str += "<th class='"+events["@severity"].toLowerCase()+"'>" + events["@severity"] + "</th>";
 			str += "<td>" + events["logMessage"].replace(/<p>|<\/p>/gi,'') + "</td>";
-			str += "</tr>";
+			str += "</tr>";*/
+			/**********************************************************************************************************************************************************/
+			DIVobj.attr("class", "span12 well well-small").attr("id", "outageScrollDiv").append(
+				TABLEobj.clone().attr("class", "table").append(
+					COLGROUPobj.clone().append(
+						COLobj.clone().attr("width", "13%").append(),
+						COLobj.clone().attr("width", "15%").append(),
+						COLobj.clone().attr("width", "15%").append(),
+						COLobj.clone().attr("width", "62%").append()
+					),	
+					TRobj.clone().append(
+						TDobj.clone().append(
+							Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"").append().text(events["@id"])
+						),
+						TDobj.clone().append().text(new Date(events["createTime"]).format('yy-MM-dd hh:mm:ss')),
+						THobj.clone().attr("class", ""+events["@severity"].toLowerCase()+"").append().text(events["@severity"]),
+						TDobj.clone().append().text(events["logMessage"].replace(/<p>|<\/p>/gi,''))
+					)
+				)
+			);
+			/**********************************************************************************************************************************************************/
 		}
 
 		
-		str += "</tbody></table></div></div>";
+		//str += "</tbody></table></div></div>";
+		/*****************************************/
+		
+		/*****************************************/
 	}
 
-	return str;
+	//return str;
+	/***********/
+	return DIVobj;
+	/***********/
 }
 function getTabletagToServiceEventJsonObj(jsonObj){
 	
 	var events = jsonObj["event"];
-	var str = "";
+	//var str = "";
+	/*********************************************/
+	var DIVobj = $("<div></div>");
+	var TABLEobj = $("<table></table>");
+	var TRobj = $("<tr></tr>");
+	var TDobj = $("<td></td>");
+	var THobj = $("<th></th>");
+	var COLGROUPobj = $("<colgroup></colgroup>");
+	var COLobj = $("<col></col>");
+	var THEADobj = $("<thead></thead>");
+	var H5obj = $("<h5></h5>");
+	var Aobj = $("<a></a>");
+	/*********************************************/
 	if (jsonObj["@count"] > 0) {
 			
-		str = "	<div class='row-fluid'>"
+		/*str = "	<div class='row-fluid'>"
 				+ "		<h5>서비스&nbsp;이벤트&nbsp;목록&nbsp;["
 				+ jsonObj["@count"]
 				+ "]</h5>"
@@ -270,7 +446,30 @@ function getTabletagToServiceEventJsonObj(jsonObj){
 				+ "			<thead><tr><th>이벤트ID</th><th>시간</th><th>상태</th><th class='span4'>메세지</th></tr></thead>"
 				+ "		</table><div id='outageScrollDiv'><table class='table'>	"
 				+ "			<colgroup><col width='15%'/><col  width='25%'/><col  width='15%'/><col  width='45%'/></colgroup>"
-				+ "			<tbody>";
+				+ "			<tbody>";*/
+		/**********************************************************************************************************************************************************/
+		DIVobj.attr("class", "row-fluid").append(
+			H5obj.append().text("서비스 이벤트 목록" + "[" + jsonObj["@count"] + "]"),
+			DIVobj.clone().append(
+				TABLEobj.clone().attr("class", "table").append(
+					COLGROUPobj.clone().append(
+						COLobj.clone().attr("width", "13%").append(),
+						COLobj.clone().attr("width", "15%").append(),
+						COLobj.clone().attr("width", "15%").append(),
+						COLobj.clone().attr("width", "62%").append()
+					),
+					THEADobj.clone().append(	
+						TRobj.clone().append(
+							THobj.clone().append().text("이벤트ID"),
+							THobj.clone().append().text("시간"),
+							THobj.clone().append().text("상태"),
+							THobj.clone().append().text("메세지")
+						)
+					)
+				)
+			)
+		);
+		/**********************************************************************************************************************************************************/
 		if (jsonObj["@count"] > 1) {
 
 			for ( var i in events) {
@@ -297,7 +496,7 @@ function getTabletagToServiceEventJsonObj(jsonObj){
 					 statusProgress = "progress-success";
 				}
 				
-				str += "<tr>";
+				/*str += "<tr>";
 				str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+"'>" + events[i]["@id"]
 						+ "</a></td>";
 				str += "<td>"
@@ -309,25 +508,72 @@ function getTabletagToServiceEventJsonObj(jsonObj){
 				str += '		<div class="bar" style="width:100%">' +events[i]["@severity"]+ '</div>';
 				str += '		</div></td>';
 				str += "<td>" + events[i]["logMessage"].replace(/<p>|<\/p>/gi,'') + "</td>";
-				str += "</tr>";
+				str += "</tr>";*/
+				/**********************************************************************************************************************************************************/
+				DIVobj.attr("class", "span12 well well-small").attr("id", "outageScrollDiv").append(
+					TABLEobj.clone().attr("class", "table").append(
+						COLGROUPobj.clone().append(
+							COLobj.clone().attr("width", "15%").append(),
+							COLobj.clone().attr("width", "25%").append(),
+							COLobj.clone().attr("width", "15%").append(),
+							COLobj.clone().attr("width", "45%").append()
+						),
+						TRobj.clone().append(
+							TDobj.clone().append(
+								Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+ "").append().text(events[i]["@id"])
+							),
+							TDobj.clone().append().text(new Date(events[i]["createTime"]).format('yy-MM-dd hh:mm:ss')),
+							TDobj.clone().attr("class", "").append(
+								DIVobj.clone().attr("class", "progress progress-striped active"+statusProgress+"").attr("style", "margin-bottom: 0px;width: 130px;").append(
+									DIVobj.clone().attr("class", "bar").attr("style", "width:100%").append().text(events[i]["@severity"])
+								)	
+							),
+							TDobj.clone().append().text(events[i]["logMessage"].replace(/<p>|<\/p>/gi,''))
+						)
+					)
+				);
+				/**********************************************************************************************************************************************************/
 			}
 
 		} else {
-			str += "<tr>";
+			/*str += "<tr>";
 			str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"'>" + events["@id"] + "</a></td>";
 			str += "<td>"
 					+ new Date(events["createTime"])
 							.format('yy-MM-dd hh:mm:ss') + "</td>";
 			str += "<th class='"+events["@severity"].toLowerCase()+"'>" + events["@severity"] + "</th>";
 			str += "<td>" + events["logMessage"].replace(/<p>|<\/p>/gi,'') + "</td>";
-			str += "</tr>";
+			str += "</tr>";*/
+			/**********************************************************************************************************************************************************/
+			DIVobj.attr("class", "span12 well well-small").attr("id", "outageScrollDiv").append(
+				TABLEobj.clone().attr("class", "table").append(
+					COLGROUPobj.clone().append(
+						COLobj.clone().attr("width", "13%").append(),
+						COLobj.clone().attr("width", "15%").append(),
+						COLobj.clone().attr("width", "15%").append(),
+						COLobj.clone().attr("width", "62%").append()
+					),	
+					TRobj.clone().append(
+						TDobj.clone().append(
+							Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"").append().text(events["@id"])
+						),
+						TDobj.clone().append().text(new Date(events["createTime"]).format('yy-MM-dd hh:mm:ss')),
+						THobj.clone().attr("class", ""+events["@severity"].toLowerCase()+"").append().text(events["@severity"]),
+						TDobj.clone().append().text(events["logMessage"].replace(/<p>|<\/p>/gi,''))
+					)
+				)
+			);
+			/**********************************************************************************************************************************************************/
 		}
 
 		
-		str += "</tbody></table></div></div>";
+		//str += "</tbody></table></div></div>";
 	}
 
-	return str;
+	//return str;
+	/***********/
+	return DIVobj;
+	/***********/
 }
 /** 이벤트 정보를 div 형태로 만들어줌 
  * @param jsonObj

@@ -63,8 +63,8 @@
 	        success: function(res){
 	        	if(res.result == true){
 	        	
-	        		//document.location.href = '<c:url value="/index.do" />';
-	        		document.location.href = '<c:url value="/startscreen.do" />';
+	        		document.location.href = '<c:url value="/index.do" />';
+	        		//document.location.href = '<c:url value="/startscreen.do" />';
 		   		}
 			}		
 	});

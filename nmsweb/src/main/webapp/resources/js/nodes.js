@@ -603,10 +603,10 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 			TDobj.clone().append(
 				H4obj.clone().text("Node Create Time")	
 			),
-			TDobj.clone().append(
+			TDobj.clone().attr("class","span2").append(
 				H4obj.clone().text("")	
 			),
-			TDobj.clone().append(
+			TDobj.clone().attr("class","span2").append(
 				H4obj.clone().text("")	
 			)
 		)
@@ -622,8 +622,8 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 	
 	if (jsonObj["node"] == null || jsonObj["node"] ==""){
 		TBODYobj.append(	
-				TRobj.append().text("노드 목록이 없습니다!")
-			);
+			TRobj.append().text("노드 목록이 없습니다!")
+		);
 		
 		/*str += "<tr>";
 		str += "<td>노드 목록이 없습니다!</td>";
@@ -692,7 +692,7 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 						TDobj.clone().append().text(nodeObj[i]["@id"]),
 						TDobj.clone().append(
 							Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+"").append().text(nodeObj[i]["@label"])),
-						TDobj.clone().append().text(new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss') + '                 '),				
+						TDobj.clone().append().text(new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss')),				
 						TDobj.clone().append(
 							BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","javascript:goNodeManagePage("+nodeObj[i]["@id"]+")").text("관리")),
 						TDobj.clone().append(
@@ -734,11 +734,33 @@ function getSearchNodeserviceJsonObj(jsonObj, auth){
 	var TRobj = $("<tr></tr>");
 	var TDobj = $("<td></td>");
 	var Aobj = $("<a></a>");
+	var H4obj = $("<h4></h4>");
 	var BUTTONobj = $("<button></button>");
+	
+	
+	TBODYobj.append(	
+			TRobj.clone().append(
+				TDobj.clone().append(
+					H4obj.clone().text("id")	
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("node list")	
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("")	
+				),
+				TDobj.clone().attr("class","span2").append(
+					H4obj.clone().text("")	
+				),
+				TDobj.clone().attr("class","span2").append(
+					H4obj.clone().text("")	
+				)
+			)
+		);
 	
 if (jsonObj["nodes"] == null || jsonObj["nodes"] ==""){
 	TBODYobj.append(	
-		TRobj.append().text("노드 목록이 없습니다!")
+		TRobj.attr("class","span2").append().text("노드 목록이 없습니다!")
 	);
 		/*str += "<tr>";
 		str += "<td>노드 목록이 없습니다!</td>";
@@ -748,22 +770,28 @@ if (jsonObj["nodes"] == null || jsonObj["nodes"] ==""){
 		if(auth!="Admin"){
 			TBODYobj.append(
 				TRobj.clone().append(
-					TDobj.clone().append().text("1"),
 					TDobj.clone().append(
-						Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[0]["@id"]+"").append().text(nodeObj[0]["@label"] + ' [ ' + nodeObj[0]["@id"] + " ]")),
-					TDobj.clone().append(),
-					TDobj.clone().append()
+						Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[0]["@id"]+"").append().text(nodeObj[0]["@id"])),
+					TDobj.clone().append(
+						Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[0]["@id"]).append().text(nodeObj[0]["@label"])),
+					TDobj.clone().append(
+						H4obj.clone().text("")),
+					TDobj.clone().attr("class","span2").append(),
+					TDobj.clone().attr("class","span2").append()
 				)
 			);
 		}else if(auth=="Admin"){
 			TBODYobj.append(
 				TRobj.clone().append(
-					TDobj.clone().append().text("1"),
 					TDobj.clone().append(
-						Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[0]["@id"]+"").append().text(nodeObj[0]["@label"] + ' [ ' + nodeObj[0]["@id"] + ' ]')),				
+						Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[0]["@id"]+"").append().text(nodeObj[0]["@id"])),
 					TDobj.clone().append(
+						Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[0]["@id"]).append().text(nodeObj[0]["@label"])),	
+					TDobj.clone().append(
+						H4obj.clone().text("")),
+					TDobj.clone().attr("class","span2").append(
 						BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","javascript:goNodeManagePage("+nodeObj[0]["@id"]+")").text("관리")),
-					TDobj.clone().append(
+					TDobj.clone().attr("class","span2").append(
 						BUTTONobj.clone().attr("type","button").attr("class","btn btn-danger").attr("onclick","javascript:deleteNode("+nodeObj[0]["@id"]+")").text("삭제")
 					)
 				)				
@@ -787,33 +815,31 @@ if (jsonObj["nodes"] == null || jsonObj["nodes"] ==""){
 			for (var i in nodeObj) {
 				TBODYobj.append(
 					TRobj.clone().append(
-						TDobj.clone().append().text(nodeObj[i]["@id"]/*2. "[&nbsp;"+nodeObj[i]["@id"]+"&nbsp;]"*/),
+						TDobj.clone().append(
+							Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+"").append().text(nodeObj[i]["@id"])),
 						TDobj.clone().append(
 							Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+"").append().text(nodeObj[i]["@label"])),
-						TDobj.clone().append().text(new Date(jsonObj["nodes"][i]["@id"]).format('yy-MM-dd hh:mm:ss')),
-						TDobj.clone().append(),
-						TDobj.clone().append()
+						TDobj.clone().append(
+							H4obj.clone().text("")),
+						TDobj.clone().attr("class","span2").append(),
+						TDobj.clone().attr("class","span2").append()
 					)
 				);
 			}
 		}else if(auth=="Admin"){
 			
-			console.log("----uhuuhuhkhuk-----------------------------");
-			console.log(nodeObj);
-			console.log("----5768768768767----------------------");
-			console.log(nodeObj["createTime"]);
-			
-			
 			for (var i in nodeObj) {
 				TBODYobj.append(
 					TRobj.clone().append(
-						TDobj.clone().append().text(nodeObj[i]["@id"]/*+'[ '+nodeObj[i]["@id"]+' ]'*/),
+						TDobj.clone().append(
+							Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+"").append().text(nodeObj[i]["@id"])),
 						TDobj.clone().append(
 							Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+"").append().text(nodeObj[i]["@label"])),
-						TDobj.clone().append().text(new Date(jsonObj["nodes"][i]["@id"]).format('yy-MM-dd hh:mm:ss')),
-						TDobj.clone().attr("width","50").attr("height","20").append(
+						TDobj.clone().append(
+								H4obj.clone().text("")),
+						TDobj.clone().attr("class","span2").append(
 							BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","javascript:goNodeManagePage("+nodeObj[i]["@id"]+")").text("관리")),
-						TDobj.clone().attr("width","50").append(
+						TDobj.clone().attr("class","span2").append(
 							BUTTONobj.clone().attr("type","button").attr("class","btn btn-danger").attr("onclick","javascript:deleteNode("+nodeObj[i]["@id"]+")").text("삭제")
 						)
 					)				
@@ -912,9 +938,16 @@ function getNodelistJsonObj(jsonObj){
  */
 function getTabletagToAvailJsonObj(nodeId, ipAddress){
 	
-	var str = "";
+	//var str = "";
 	var jsonObj = null;
 	var AvailJsonObj = null;
+	
+	/***********************************/
+	var TABLEobj = $("<table></table>");
+	var TRobj = $("<tr></tr>");
+	var TDobj = $("<td></td>");
+	var Aobj = $("<a></a>");
+	/***********************************/
 	
 	$.ajax({
 		type : 'get',
@@ -938,6 +971,8 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 		
 		var serviceObj = jsonObj["service"];
 		var data = "";
+		
+		
 		
 		if (jsonObj["@count"] > 1) {
 
@@ -973,49 +1008,76 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 		if(AvailJsonObj == null){return false;}
 		var serviceObj = jsonObj["service"];
 		console.log(serviceObj);
-		str += '<table class="table table-striped">';
+		
+		/******************************************************/
+		//TABLEobj.attr("class", "table table-striped").append(
+		/******************************************************/
+		//str += '<table class="table table-striped">';
 
-		if (jsonObj["@count"] > 1) {
-
-			for ( var i in serviceObj) {
-				var serviceAvail = "";
-				
-				for(var j in AvailJsonObj["serviceAvailability"]){
-					if(AvailJsonObj["serviceAvailability"][j]["serviceId"] == serviceObj[i]["serviceType"]["@id"]){
-						serviceAvail = AvailJsonObj["serviceAvailability"][j]["avail"];
-						break;
+				if (jsonObj["@count"] > 1) {
+		
+					for ( var i in serviceObj) {
+						var serviceAvail = "";
+						
+						for(var j in AvailJsonObj["serviceAvailability"]){
+							if(AvailJsonObj["serviceAvailability"][j]["serviceId"] == serviceObj[i]["serviceType"]["@id"]){
+								serviceAvail = AvailJsonObj["serviceAvailability"][j]["avail"];
+								break;
+							}
+						}
+						/****************************************************************************************************************************************************************************************************/
+						TABLEobj.attr("class", "table table-striped").append(
+								TRobj.clone().append(
+									TDobj.clone().append(
+										Aobj.clone().attr("href", "javascript:goServiceDiv('"+nodeId+"', '"+ipAddress+"')").text(serviceObj[i]["serviceType"]["name"])
+									),
+									TDobj.clone().text(availToStringFromStatoCode(serviceObj[i]["@status"],Number(serviceAvail).toFixed(3)))
+								)
+						);
+						/****************************************************************************************************************************************************************************************************/
+						/*str += '<tr>';
+						//str += '	<td><a href="/'+version+'/search/service/serviceDesc?nodeId='+nodeId+'&intf='+ipAddress+'&serviceNm='+serviceObj[i]["serviceType"]["name"]+'">';
+						str += '	<td><a href="javascript:goServiceDiv( \''+nodeId+'\', \''+ipAddress+'\')">';
+						str += serviceObj[i]["serviceType"]["name"];
+						str += '	</a></td>';
+						str += '	<td>';
+						str += availToStringFromStatoCode(serviceObj[i]["@status"],Number(serviceAvail).toFixed(3));
+						str += '	</td>';
+						str += '</tr>';*/
 					}
+				} else {
+					/**********************************************************************************************************************************************************************************************/
+					TABLEobj.attr("class", "table table-striped").append(
+							TRobj.clone().append(
+								TDobj.clone().append(
+									Aobj.clone().attr("href","/"+version+"/search/service/serviceDesc?nodeId="+nodeId+'&intf='+ipAddress+'&serviceNm='+serviceObj["serviceType"]["name"]+"").text(serviceObj["serviceType"]["name"])
+								),
+								TDobj.clone().text(availToStringFromStatoCode(serviceObj["@status"],Number(serviceAvail).toFixed(3)))
+							)
+					);
+					/**********************************************************************************************************************************************************************************************/
+					/*str += '<tr>';
+					str += '	<td><a href="/'+version+'/search/service/serviceDesc?nodeId='+nodeId+'&intf='+ipAddress+'&serviceNm='+serviceObj["serviceType"]["name"]+'">';
+					str += serviceObj["serviceType"]["name"];
+					str += '	</a></td>';
+					str += '	<td>';
+					str += availToStringFromStatoCode(serviceObj["@status"],Number(serviceAvail).toFixed(3));
+					str += '	</td>';
+					str += '</tr>';*/
+					
 				}
 				
-				str += '<tr>';
-				//str += '	<td><a href="/'+version+'/search/service/serviceDesc?nodeId='+nodeId+'&intf='+ipAddress+'&serviceNm='+serviceObj[i]["serviceType"]["name"]+'">';
-				str += '	<td><a href="javascript:goServiceDiv( \''+nodeId+'\', \''+ipAddress+'\')">';
-				str += serviceObj[i]["serviceType"]["name"];
-				str += '	</a></td>';
-				str += '	<td>';
-				str += availToStringFromStatoCode(serviceObj[i]["@status"],Number(serviceAvail).toFixed(3));
-				str += '	</td>';
-				str += '</tr>';
-			}
-
-		} else {
-
-			str += '<tr>';
-			str += '	<td><a href="/'+version+'/search/service/serviceDesc?nodeId='+nodeId+'&intf='+ipAddress+'&serviceNm='+serviceObj["serviceType"]["name"]+'">';
-			str += serviceObj["serviceType"]["name"];
-			str += '	</a></td>';
-			str += '	<td>';
-			str += availToStringFromStatoCode(serviceObj["@status"],Number(serviceAvail).toFixed(3));
-			str += '	</td>';
-			str += '</tr>';
-
-		}
-
-		str += '</table>';
+		
+		/*******************/
+		
+		/*******************/
+		//str += '</table>';
 		
 	}
-
-	return str;
+	/**************/
+	return TABLEobj;
+	/**************/
+	//return str;
 }
 
 function getInterfaceInfoBox(jsonObj){

@@ -107,7 +107,9 @@
 					var serviceAvailSte = getTabletagToAvailJsonObj("${nodeId}", ipAddrs);
 					getInterfaceInfo(addInterfaceInfo,"${nodeId}", ipAddrs);
 					$('#interInfo').append("[ " +  ipAddrs + " ]");
-					str += headStr+serviceAvailSte;
+					str += headStr;
+					
+					strAv += serviceAvailSte;
 					
 				
 				}
@@ -125,7 +127,8 @@
 				$('#interInfo').append("[ " +  ipAddrs + " ]");
 				str += headStr;
 				
-				strAv += serviceAvailSte;
+				//strAv += serviceAvailSte;
+				strAv = serviceAvailSte;
 			}
 		}
 		$("#leftDiv").append(str);
@@ -162,9 +165,11 @@ function addInterfaceInfo(jsonObj) {
 	
 	
 	function goInterfaceDescPage(nodeId,intf){
-	
 	//location.href ="/"+version+"/search/node/interfaceDesc.do?nodeId="+nodeId+"&intf="+intf;
+	
+	
 	/* Recent Outages */
+	//====1========
 	getOutagesForInterface(addOutagesForInterface, nodeId, intf,"5");
 
 	/* Recent Events */
@@ -172,33 +177,55 @@ function addInterfaceInfo(jsonObj) {
 	
 }
 	
-		/* Recent Outages Callback*/
+		/* Recent Outages Callback For Interface*/
 	function addOutagesForInterface(jsonObj ,nodeId) {
-		$('#rightUnderDiv').empty();
+		//=====4========
+			$('#rightUnderDiv').empty();
 		var str = getTabletagToInterfaceOutageJsonObj(jsonObj,nodeId);
+		//=====5=========
 		$('#rightUnderDiv').append(str);
 
 	}
-	/*//Recent Outages Callback */
+	/*//Recent Outages Callback For Interface */
 	
-	/* Recent Events Callback */
+	/* Recent Events Callback ForInterface */
 	function addEventsForInterface(jsonObj) {
 		$('#rightUnderDiv2').empty();
 		var str = getTabletagToInterfaceEventJsonObj(jsonObj);
 		$('#rightUnderDiv2').append(str);
 
 	}
-	/*//Recent Events Callback */
+	/*//Recent Events Callback For Interface*/
 	
+
 function 	goServiceDiv(nodeId,intf){
 		
 		/* Recent Outages */
-		getOutagesForInterface(addOutagesForInterface, nodeId, intf,"5");
+		getOutagesForInterface(addOutagesForService, nodeId, intf,"5");
 
 		/* Recent Events */
-		getEventsForInterface(addEventsForInterface,nodeId, intf,"5");
+		getEventsForInterface(addEventsForService,nodeId, intf,"5");
 		
 	}
+
+	
+	/* Recent Outages Callback For Service*/
+function addOutagesForService(jsonObj ,nodeId) {
+	$('#rightUnderDiv').empty();
+	var str = getTabletagToServiceOutageJsonObj(jsonObj,nodeId);
+	$('#rightUnderDiv').append(str);
+
+}
+/*//Recent Outages Callback For Service*/
+
+/* Recent Events Callback For Service*/
+function addEventsForService(jsonObj) {
+	$('#rightUnderDiv2').empty();
+	var str = getTabletagToServiceEventJsonObj(jsonObj);
+	$('#rightUnderDiv2').append(str);
+
+}
+/*//Recent Events Callback For Service*/
 	
 	
 	
@@ -206,6 +233,7 @@ function 	goServiceDiv(nodeId,intf){
 </head>
 
 <body>
+
 	<div class="container">
 
 		<jsp:include page="/include/menu.jsp" />

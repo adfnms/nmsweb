@@ -17,6 +17,7 @@
 <script src="<c:url value="/resources/js/notification.js" />"></script>
 <script src="<c:url value="/resources/js/group.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		
@@ -53,7 +54,11 @@
 	
 	/*그룹 상세정보 갖고오기*/
 	
-	function getGroupInfo(obj){
+	function getGroupInfo(){
+		
+		alert("-----test----");
+		var obj = "Admin";
+		alert(obj);
 		
 	 	$("#groupFrm").find('[name=name]:input').val(obj);
 		
@@ -175,48 +180,7 @@
 	
 </script>
 </head>
-<!-- ====================================================================================================================================== -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var BODYobj = $("<body></body>");
-<!-- ========================================================================================================================================= -->
 <body>
 	<div class="container">
 
