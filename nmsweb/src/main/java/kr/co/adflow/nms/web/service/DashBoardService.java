@@ -615,8 +615,13 @@ public class DashBoardService {
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
+		
+		  String result2 = result.toString();
+		if (result2.contains("\"Outages\":],")) {
+			result2 = result2.replace("\"Outages\":],", "\"Outages\":\"null\",");
+		}
 
-		return result.toString();
+		return result2;
 
 	}
 
