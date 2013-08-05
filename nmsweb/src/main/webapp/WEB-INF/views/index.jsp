@@ -58,6 +58,7 @@
 	/* 24시간 가용률 , 카테고리 정보 */
 	function addIndexInfo(jsonObj) {
 		console.log(jsonObj);
+		
 		var categoryObj = jsonObj["CategoryInfo"];
 
 		var totalAvail = 0;

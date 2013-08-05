@@ -513,13 +513,15 @@ function userNotiListjsonObj(jsonObj) {
 		
 	var userObj = jsonObj["notifications"];
 	
+	console.log("------------userNotificationList----------");
+	console.log(jsonObj);
 	
-	
-	if(userObj.length > 1){
+	if(userObj.length >= 1){
 		
 		//for ( var i = 1; i < userObj.length; i++){
 		
 		for ( var i in  userObj){
+			
 			
 			
 			/************************Get @severity  from event****************************/
@@ -648,7 +650,7 @@ function totalNotiListjsonObj(jsonObj) {
 	
 	
 	var userObj = jsonObj["notifications"];
-	if(userObj.length >1){
+	if(userObj.length >=1){
 		for ( var i in userObj) {
 			
 			var eventId = userObj[i]["eventid"];

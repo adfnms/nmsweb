@@ -32,7 +32,8 @@ function menuManager(){
 			alert('사용자 그룹 menu리스트 서비스 실패');
 		},
 		success : function(data) {
-			///console.log(data);
+			console.log("사용자 그룹 menu리스트");
+			console.log(data);
 			
 			if(data.groupNm != "visitor"){
 				for(var i = 0; i < data.userList.length; i++)
@@ -40,7 +41,9 @@ function menuManager(){
 					menuId = data.userList[i].menuId; 
         			userId = data.userList[i].userId; 
         			userNm = data.userList[i].userNm; 
+        			
         			showMenu(menuId);
+        			
         			$("#logInDiv").html("<h4><a class=\"text-success\" href=\"<c:url value="/admin/userMng.do" />\">"+userNm+"</a>&nbsp;님</h4>");
 	       		}
 			}else{
@@ -71,7 +74,7 @@ function logOut(){
 	});
 }
 
-
+/* 메뉴아이디 갖고와서 그룹과 mapping 후 show()*/
  function showMenu(menuId){
 	var Id=new Array(menuId);
 	 for (i = 0; i < Id.length; i++) {

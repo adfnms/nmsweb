@@ -19,6 +19,7 @@
 <script src="<c:url value="/resources/selectbox/js/mySelect.class.js" />"></script>
 <script src="<c:url value="/resources/selectbox/js/myRoleSelect.class.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <!--dhtmlx-->
 <link rel="STYLESHEET" type="text/css" href="<c:url value="/dhtmlx/dhtmlx.css"/>">
 <script  src="<c:url value="/dhtmlx/dhtmlxGrid/codebase/dhtmlxcommon.js"/>"></script>

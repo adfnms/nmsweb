@@ -10,6 +10,11 @@ function getTotalIndexInfo(callback, data){
 		contentType : 'application/json',
 		data : data,
 		error : function(data) {
+			
+			
+			console.log(data);
+			
+			
 			alert('카테고리 리스트 가져오기 서비스 실패');
 		},
 		success : function(data) {
