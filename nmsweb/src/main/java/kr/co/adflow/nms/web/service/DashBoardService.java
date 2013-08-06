@@ -672,8 +672,13 @@ public class DashBoardService {
 			throw new HandleException(e);
 		}
 		
-	   
-		return result.toString();
+		String result2=result.toString();
+		
+		if(result2.contains("\"Outages\":]}")){
+			result2=result2.replace("\"Outages\":]}", "\"Outages\":{\"data\":\"null\"}}");
+		}
+		
+		return result2;
 
 	}
 
@@ -743,7 +748,7 @@ public class DashBoardService {
 		if (result2.contains("\"Detail\":],")) {
 			result2 = result2.replace("\"Detail\":],", "\"Detail\":\"null\",");
 		}
-		if(result2.contains("\"Outages\":]}"){
+		if(result2.contains("\"Outages\":]}")){
 			result2=result2.replace("\"Outages\":]}","\"Outages\":\"null\"]}");
 		}
 		return result2;

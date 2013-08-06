@@ -491,38 +491,18 @@ function assetInfo(jsonObj) {
 	
 	
 function modifyAssets(){
-alert("ok");
+
 	var frm = document.getElementById("assetsInfoFrm");
+	
+	var data = $("#assetsInfoFrm").serialize();
+	
+	alert(data);
 	
 	frm.action = "/v1/assets/regAssets.do";
    
 	frm.submit();
 	
 }	
-
-
-/* function regToDb(userId,fullName){
-	
-	
-	$.ajax({	
-		type:'post',
-	 	url:'<c:url value="/admin/userMng/regToDb.do"/>',
-		data:'user-Id='+userId+"&fullName="+fullName,
-		dataType:'json',
-		error:function(res){
-			
-			alert("DB 등록 실패");
-				
-        },
-        success: function(res){
-        	
-        	$(location).attr('href', "/v1/admin/userMng.do");
-		}		
-	});
-}	 */
-
-
-	
 	
 </script>
 </head>

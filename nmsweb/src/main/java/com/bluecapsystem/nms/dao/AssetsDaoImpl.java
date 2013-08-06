@@ -89,6 +89,12 @@ public class AssetsDaoImpl extends BaseDao implements AssetsDao
 	@Override
 	public void modifyToAssets(AssetsTbl assetsTbl) {
 		
+		/***************AssetsDaoImpl Test****************/
+		System.out.println("-------------Test------------");
+		System.out.println(assetsTbl.getHdd1());
+		System.out.println("--------------Test-----------");
+		/**********************************/
+		
 		try{
 			
 			super.getSqlMapClientTemplate().update("com.bluecapsystem.nms.assets.modifyToAssets", assetsTbl);

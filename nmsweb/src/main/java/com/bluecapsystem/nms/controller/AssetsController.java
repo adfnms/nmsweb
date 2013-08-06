@@ -142,9 +142,12 @@ public class AssetsController
 			
 			assetsTbl.setUserlastmodified(Id);
 			
+			
 			/***************Test****************/
 			System.out.println("-------------Test------------");
 			System.out.println(assetsTbl.getHdd1());
+			System.out.println(assetsTbl.getNodeid());
+			System.out.println(assetsTbl.getUserlastmodified());
 			System.out.println("--------------Test-----------");
 			/**********************************/
 			
@@ -155,7 +158,7 @@ public class AssetsController
 		catch (Exception e){
 			e.printStackTrace();
 		}
-		model.setViewName("/admin/node");
+		model.setViewName("/admin/nodeMng/nodeMngList");
 		return model;
 	}
 	
