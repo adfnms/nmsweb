@@ -96,6 +96,7 @@
 	} 
 	
 	function deleteGroup(name){
+		
 		alert(name);
 		
 		var option = confirm(" 삭제 하시겠습니까? ");

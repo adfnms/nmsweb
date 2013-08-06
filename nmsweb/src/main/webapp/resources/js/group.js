@@ -202,8 +202,6 @@ function groupMemberSelectStr(jsonObj){
 	if(user == undefined ){
 		
 		
-		selectStr += "<option value=\"\"></option>";
-		$("#groupMemberListSelect").append(selectStr);
 	}else{
 	
 		for ( var i=0 ; i<user.length ; i++){
