@@ -142,10 +142,15 @@ public class AssetsController
 			
 			assetsTbl.setUserlastmodified(Id);
 			
+			/***************Test****************/
+			System.out.println("-------------Test------------");
+			System.out.println(assetsTbl.getHdd1());
+			System.out.println("--------------Test-----------");
+			/**********************************/
 			
-			if(assetsService.modifyToAssets(assetsTbl)==false){
+			if(assetsService.modifyToAssets(assetsTbl) == false){
+				System.out.println("Assets 정보 입력 오류");
 			}
-			
 		}
 		catch (Exception e){
 			e.printStackTrace();

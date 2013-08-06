@@ -66,6 +66,8 @@
 			str += '	</tr>';
 			str += '</table>';
 			
+				$('#interfaceButton').hide();
+			
 			addServiceInfo("${nodeId}");
 			
 		}else{
@@ -88,6 +90,7 @@
 						str += '	</tr>';
 						str += '</table>';
 					
+						$('#interfaceButton').show();
 						/* service info */
 						getServiceFromNodeidIpaddress(addServiceInfo, "${nodeId}", interfaceObj[i]["ipAddress"]);
 					}
@@ -108,6 +111,7 @@
 					str += '	</tr>';
 					str += '</table>';
 				
+					$('#interfaceButton').show();
 					/* service info */
 					getServiceFromNodeidIpaddress(addServiceInfo, "${nodeId}", jsonObj["ipInterface"]["ipAddress"]);
 				}
@@ -130,21 +134,6 @@
 		
 		var str ="";
 		
-		alert(jsonObj);
-		
-		if(jsonObj["@count"] == 0){
-			
-			str = '<table class="table table-striped">';
-			str += '	<tr>';
-			str += '		<td class ="span4">';
-			str += '		</td>';
-			str += '		<td>';
-			str += '	<h4 class="text-error">  서비스 관리 대상이 없습니다.</h4>';
-			str += '		</td>';
-			str += '	</tr>';
-			str += '</table>';
-			
-		}else{
 			if(jsonObj["@count"] > 0){
 				if(jsonObj["@count"] > 1){
 					var serviceObj = jsonObj["service"];
@@ -164,7 +153,7 @@
 						str +=					serviceObj[i]["serviceType"]["name"];
 						str += '			</label>';
 						str += '		</td>';
-										
+						$('#serviceButton').show;
 					}
 
 					str += '	</tr>';
@@ -182,12 +171,26 @@
 					str += '		</td>';
 					str += '	</tr>';
 					str += '</table>';
-				
+					
+					$('#serviceButton').show;
 				}
 				
+			}else{
+				
+				str = '<table class="table table-striped">';
+				str += '	<tr>';
+				str += '		<td class ="span4">';
+				str += '		</td>';
+				str += '		<td>';
+				str += '	<h4 class="text-error">  서비스 관리 대상이 없습니다.</h4>';
+				str += '		</td>';
+				str += '	</tr>';
+				str += '</table>';
+				
+				$('#serviceButton').hide();
 			}
 			
-		}
+		
 		
 		
 
@@ -202,13 +205,16 @@
 	function addSnmpInterfaceInfo(jsonObj){
 		console.log("-------addSnmpInterfaceInfo--------");
 		console.log(jsonObj);
+		
 		var str = "";
+		
 		if(jsonObj["@count"] > 0){
 			
 			
 			str += '<table class="table table-striped">';
 			str += '<tr><th>nodeId</th><th>SNMP 종류</th><th>설명</th><th>수집 설정</th></tr>';
 			var snmpInterObj = jsonObj["snmpInterface"];
+			
 			if(jsonObj["@count"] > 1){
 			
 				for(var i in snmpInterObj)
@@ -397,11 +403,8 @@ function assetInfo(jsonObj) {
 	console.log(jsonObj);
 	
 	var assetInfo = jsonObj["AssetInfo"];
-	alert(assetInfo.length);
 	
 	if(assetInfo.length == 0){
-		
-		
 		
 	}else{
 	
@@ -488,7 +491,7 @@ function assetInfo(jsonObj) {
 	
 	
 function modifyAssets(){
-
+alert("ok");
 	var frm = document.getElementById("assetsInfoFrm");
 	
 	frm.action = "/v1/assets/regAssets.do";
@@ -496,8 +499,29 @@ function modifyAssets(){
 	frm.submit();
 	
 }	
+
+
+/* function regToDb(userId,fullName){
 	
 	
+	$.ajax({	
+		type:'post',
+	 	url:'<c:url value="/admin/userMng/regToDb.do"/>',
+		data:'user-Id='+userId+"&fullName="+fullName,
+		dataType:'json',
+		error:function(res){
+			
+			alert("DB 등록 실패");
+				
+        },
+        success: function(res){
+        	
+        	$(location).attr('href', "/v1/admin/userMng.do");
+		}		
+	});
+}	 */
+
+
 	
 	
 </script>
@@ -552,11 +576,11 @@ function modifyAssets(){
 								<h5><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2"  href="#INTERFACE" id= StepOne>인터페이스&nbsp;관리</a></h5>
 					    	</div>
 						    <div id="INTERFACE" class="accordion-body collapse in">
-								<div class="accordion-inner">
+								<div class="accordion-inner" >
 									<div class="well well-small">
 										<form class="form-inline" id="interfaceInfo">
 											<div class="span11"></div>
-											<button type="button" class="btn btn-primary" title="수정" onclick="javascript:interfaceManage();">수정</button>
+											<button id="interfaceButton" type="button" class="btn btn-primary" title="수정" onclick="javascript:interfaceManage();">수정</button>
 										</form>
 									</div>
 								</div>
@@ -571,7 +595,7 @@ function modifyAssets(){
 									<div class="well well-small">
 										<form class="form-inline" id="serviceInfo">
 											<div class="span11"></div>
-											<button type="button" class="btn btn-primary" title="수정" onclick="javascript:serviceManage();">수정</button>
+											<button id="serviceButton" type="button" class="btn btn-primary" title="수정" onclick="javascript:serviceManage();">수정</button>
 										</form>
 									</div>
 								</div>

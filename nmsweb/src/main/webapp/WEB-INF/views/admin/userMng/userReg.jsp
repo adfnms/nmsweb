@@ -26,6 +26,7 @@ try{
 <script src="<c:url value="/resources/js/users.js" />"></script>
 <script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/category.js" />"></script>
 <script type="text/javascript">
 	
 	// Reg User Info
@@ -101,7 +102,7 @@ try{
 	function regToDb(userId,fullName){
 		
 		
-		$.ajax({
+		$.ajax({	
 			type:'post',
 		 	url:'<c:url value="/admin/userMng/regToDb.do"/>',
 			data:'user-Id='+userId+"&fullName="+fullName,
@@ -115,7 +116,7 @@ try{
 	        	
 	        	$(location).attr('href', "/v1/admin/userMng.do");
 			}		
-	});
+		});
 	}	
 	
 </script>
