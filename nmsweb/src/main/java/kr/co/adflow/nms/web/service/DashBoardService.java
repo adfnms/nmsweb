@@ -743,7 +743,9 @@ public class DashBoardService {
 		if (result2.contains("\"Detail\":],")) {
 			result2 = result2.replace("\"Detail\":],", "\"Detail\":\"null\",");
 		}
-
+		if(result2.contains("\"Outages\":]}"){
+			result2=result2.replace("\"Outages\":]}","\"Outages\":\"null\"]}");
+		}
 		return result2;
 
 	}
