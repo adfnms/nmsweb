@@ -673,8 +673,19 @@ function getOutageInfoBox(jsonObj) {
 function getTabletagToOutageSearchJsonObj(jsonObj) {
 	var outages = jsonObj["outage"];
 	var str = "";
-	if (jsonObj["@count"] != "undefined" && jsonObj["@count"] != 0) {
-
+	if(jsonObj["@totalCount"] == 0){
+	 
+		str += "<tr>";
+		str += "<td></td>";
+		str += "<td></td>";
+		str += "<td></td>";
+		str += "<td><h4 class='text-error'>장애가 검색되지 않습니다.</h4></td>";
+		str += "</tr>";
+		
+		
+	
+	} else if (jsonObj["@count"] != "undefined" && jsonObj["@count"] != 0) {
+		
 		if (jsonObj["@count"] > 1) {
 
 			for ( var i in outages) {

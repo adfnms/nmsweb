@@ -22,10 +22,24 @@
 	
 	//자원별 노드목록
 	function addGraphsList(jsonObj){
-
+		console.log("------addGraphsList------");
+		console.log(jsonObj);
+		var str = "";
+		if(jsonObj["total"]==0){
+			
+			str += "<tr>";
+			str += "	<td style=\"text-align: center\">";
+			str += " 				노드리스트가 없습니다.";
+			str += "	</td>";
+			str += "</tr>";
+			
+			
+		}
+		
+		
 		var recordObj = jsonObj["records"];
 		
-		var str = "";
+		
 		var regExp = /[^0-9]/gi;
 		
 		for(var i in recordObj){

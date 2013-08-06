@@ -109,45 +109,71 @@
 		//중단 목록
 		console.log("------------addOutage-중단서비스목록-------------");
 		console.log(jsonObj);
-		
+		var str= "";
 		var outageObj = jsonObj["Outages"];
 		$('#outageDiv').empty();
-		for ( var i in outageObj) {
+		
+		console.log("----------outageDiv---------");
+		console.log(outageObj);
+		
+		if(outageObj == "null"){
 			
-			var lostTime = new Date(outageObj[i]["iflostservice"]);
-			var current = new Date();
-			var lastTime = dateDiff(lostTime, current);
-			var sec = getSecDateDiff(lostTime, current);
-			var statu = sec <= 86400 ? "critical" : "major";
-			var str= "";
-			
-			str += "<li id='outage_"+outageObj[i]["outageid"]+"'>";
+			str += "<li id='outage'>";
 			str += "	<table>";
 			str += "		<tr>";
-			str += "			<td style='text-align:center;'>";
-			str += "				<img src='<c:url value="/resources/images/" />"+statu+".png' style='width:110px; height:60px;'/>";
-			str += "			</td>";
-			str += "		</tr>";
-			str += "		<tr class='"+statu+"'>";
-			str += "			<td style='text-align:center;'>";
-			str +=					outageObj[i]["ipaddr"];
-			str += "			</td>";
-			str += "		<tr>";
-			str += "			<td style='text-align:center;'>";
-			str += "				<a href=\"javascript:includeOut('"+outageObj[i]["outageid"]+"');\">";
-			str += "					["+lastTime+"]";
-			str += "				</a>";
+			str += "			<td >";
+			str +="				<h4  class ='text-error'>";
+			str +="				현재 장애가 있는 서비스가 없습니다.";
+			str +="				</h4>";
 			str += "			</td>";
 			str += "		</tr>";
 			str += "	</table>";
 			str += "</li>";
+			$('#outageDiv').append($(str));
+			$("#outageDiv").css("margin-bottom",-7);
+		}else{
 			
-			if(sec <= 86400){
-				$('#outageDiv').prepend($(str)).fadeIn('slow');
-			}else{
-				$('#outageDiv').append($(str)).fadeIn('slow');
+			for ( var i in outageObj) {
+				
+				var lostTime = new Date(outageObj[i]["iflostservice"]);
+				var current = new Date();
+				var lastTime = dateDiff(lostTime, current);
+				var sec = getSecDateDiff(lostTime, current);
+				var statu = sec <= 86400 ? "critical" : "major";
+				
+				
+				str += "<li id='outage_"+outageObj[i]["outageid"]+"'>";
+				str += "	<table>";
+				str += "		<tr>";
+				str += "			<td style='text-align:center;'>";
+				str += "				<img src='<c:url value="/resources/images/" />"+statu+".png' style='width:110px; height:60px;'/>";
+				str += "			</td>";
+				str += "		</tr>";
+				str += "		<tr class='"+statu+"'>";
+				str += "			<td style='text-align:center;'>";
+				str +=					outageObj[i]["ipaddr"];
+				str += "			</td>";
+				str += "		<tr>";
+				str += "			<td style='text-align:center;'>";
+				str += "				<a href=\"javascript:includeOut('"+outageObj[i]["outageid"]+"');\">";
+				str += "					["+lastTime+"]";
+				str += "				</a>";
+				str += "			</td>";
+				str += "		</tr>";
+				str += "	</table>";
+				str += "</li>";
+				
+				if(sec <= 86400){
+					$('#outageDiv').prepend($(str)).fadeIn('slow');
+				}else{
+					$('#outageDiv').append($(str)).fadeIn('slow');
+				}
 			}
+			
 		}
+		
+		
+		
 	}
 	/*//outage append ,중단 서비스 목록*/
 	
@@ -253,10 +279,10 @@
 		</div>
 		<div class="row-fluid">
 			<div class="row-fluid">
-				<h5>중단&nbsp;서비스&nbsp;목록</h5>
+				<h5>장애&nbsp;서비스&nbsp;목록</h5>
 			</div>
 			<div class="row-fluid">
-				<div class="span12 well well-small">
+				<div class="span12 well well-small" style ="margin-bottom: -14px;">
 					<ul class="inline" id="outageDiv">
 					</ul>
 				</div>

@@ -33,40 +33,59 @@ function addNodeListsSideBar(jsonObj) {
 }
 
 function sidebarInfo(jsonObj) {
-	console.log("-----------sidebarInfo---------------");
+	console.log("-----------sidebar 장애목록---------------");
 	console.log(jsonObj);
 	//중단 목록
 	var str = "";
+	var ULobj = $("<ul></ul>");
+	var TRobj = $("<tr></tr>");
+	var TABLEobj =$("<table></table>");
+	var THobj = $("<th></th>");
+	var TDobj = $("<td></td>");
+	var Aobj = $("<a></a>");
+	var LIobj = $("<li></li>");
+	var H5obj = $("<h5></h5>");
+	var STRONGobj = $("<strong></strong>");
+	
 	var sideOutageObj = jsonObj["Outages"];
 
-	for ( var i in sideOutageObj) {
-
-		var lostTime = new Date(sideOutageObj[i]["iflostservice"]);
-		var current = new Date();
-		var lastTime = dateDiff(lostTime, current);
+	if(sideOutageObj=="null"){
 		
-		var ULobj = $("<ul></ul>");
-		var TRobj = $("<tr></tr>");
-		var TABLEobj =$("<table></table>");
-		var THobj = $("<th></th>");
-		var TDobj = $("<td></td>");
-		var Aobj = $("<a></a>");
-		var LIobj = $("<li></li>");
-		var H5obj = $("<h5></h5>");
-		var STRONGobj = $("<strong></strong>");
-		
-		//$('#sideBarOutageList').append("<h5><a class=text-error href='/" + version + "/search/outage/outageDesc.do?outageId="+ sideOutageObj[i]["outageid"]+ "'>" + sideOutageObj[i]["ipaddr"] + "</a> ("+ lastTime + ")<br/></h5>");
-		 
 		$('#sideBarOutageList').append(
-			H5obj.clone().append( 
-				STRONGobj.clone().append(
-						Aobj.clone().attr("href","#myModalSide").attr("class","text-error").attr("data-toggle","modal").attr("onclick","javascript:outageSideBarPop("+sideOutageObj[i]["outageid"]+")").text(sideOutageObj[i]["ipaddr"]),
-						Aobj.clone().attr("href","/"+version + "/search/outage/outageDesc.do?outageId="+ sideOutageObj[i]["outageid"]+"").text(" ("+lastTime+")")
+				H5obj.attr("class","text-error").append( 
+					STRONGobj.text("장애가 없습니다.")
+					)
+			);	
+		
+	}else{
+		
+		alert("not null");
+		for ( var i in sideOutageObj) {
+
+			var lostTime = new Date(sideOutageObj[i]["iflostservice"]);
+			var current = new Date();
+			var lastTime = dateDiff(lostTime, current);
+			
+			
+			
+			//$('#sideBarOutageList').append("<h5><a class=text-error href='/" + version + "/search/outage/outageDesc.do?outageId="+ sideOutageObj[i]["outageid"]+ "'>" + sideOutageObj[i]["ipaddr"] + "</a> ("+ lastTime + ")<br/></h5>");
+			 
+			$('#sideBarOutageList').append(
+				H5obj.clone().append( 
+					STRONGobj.clone().append(
+							Aobj.clone().attr("href","#myModalSide").attr("class","text-error").attr("data-toggle","modal").attr("onclick","javascript:outageSideBarPop("+sideOutageObj[i]["outageid"]+")").text(sideOutageObj[i]["ipaddr"]),
+							Aobj.clone().attr("href","/"+version + "/search/outage/outageDesc.do?outageId="+ sideOutageObj[i]["outageid"]+"").text(" ("+lastTime+")")
+					)
 				)
-			)
-		);	 
-	
+			);	 
+		
+		}
+		
 	}
+	
+	
+	
+	
 }
 
 function outageSideBarPop(outageid){

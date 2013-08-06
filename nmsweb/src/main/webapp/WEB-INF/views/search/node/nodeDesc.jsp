@@ -34,7 +34,7 @@
 		/* Interface Availability */
 		getInterfacesFromNodeId(addInterfaceAvailability, "${nodeId}");
 		
-	
+		
 		
 		
 	});
@@ -91,13 +91,21 @@
 	function addInterfaceAvailability(jsonObj){
 		var strAv ="";
 		var str ="";
+		var strcoll ="";
+		console.log("------인터페이스------");
+		console.log(jsonObj);
 		
 		if(jsonObj["@count"] > 0){
+			
+			
+			
 			if(jsonObj["@count"] > 1){
 				interfaceObj = jsonObj["ipInterface"];
+				var ipAddrs = interfaceAvail[i]["ipAddress"];
+			
 				for(var i in interfaceObj){
 					
-					var ipAddrs = interfaceAvail[i]["ipAddress"];
+					
 					
 					//인터페이스 가용성
 					var interfaceAvail = Number(getInterfaceAvailability("${nodeId}", ipAddrs)).toFixed(3)+"%";
@@ -130,7 +138,18 @@
 				//strAv += serviceAvailSte;
 				strAv = serviceAvailSte;
 			}
+		}else{
+			
+			var headStr = '<h5 class ="text-error">인터페이스가 없습니다.</h5>'; 
+			var interfaceAvailSte = '<h5 class ="text-error">제공되는 인터페이스 정보가 없습니다.</h5>'; 
+			var serviceAvailSte = '<h5 class ="text-error">서비스가 없습니다.</h5>'; 
+			
+			strcoll += interfaceAvailSte;
+			str += headStr;
+			strAv += serviceAvailSte;
+			
 		}
+		$('#collapsible').append(strcoll);
 		$("#leftDiv").append(str);
 		$("#leftUnderDiv").append(strAv);
 	}

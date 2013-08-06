@@ -60,7 +60,6 @@
 		console.log(jsonObj);
 		
 		var categoryObj = jsonObj["CategoryInfo"];
-
 		var totalAvail = 0;
 		var outageTotalCount = 0;
 		var serviceTotalCount = 0;
@@ -124,34 +123,32 @@
 				
 				$('#categoryInfo').append(Divobj);
 				
-				/* errorStr += '	<div class="alert alert-error">';
+				errorStr += '	<div class="alert alert-error">';
 				errorStr += '	<button type="button" class="close" data-dismiss="alert">&times;</button>';
 				errorStr += '         <span class="label label-important">Warning!</span>&nbsp;&nbsp;<strong>'+categoryObj[i]["name"]+' </strong>서버의 가용률이<strong> '+availwidth+'%</strong>입니다.  ';
 				errorStr += '        </div>';
 				
-				$('#categoryInfo').append(errorStr); */
+				$('#categoryInfo').append(errorStr);
 			
 			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) == 0.00){
 				var status = "progress-danger";
 				var availwidth ="18";
 				var errorStr = "";
 				
-				/* DIVobj.attr("class","alert alert-arror").append(
-						BUTTONobj.clone().attr("type","button").attr("class","close").attr("data-dismiss","alert").text('&times'),
-						SPANobj.clone().attr("class","label label-important").text("Warning!"),
-						STRONGobj.clone().text(categoryObj[i]["name"]),
-						STRONGobj.clone().text(Number(categoryObj[i]["availabili"]).toFixed(2)+"%")
-				);
+				if(categoryObj[i]["outageTotalCount"]==0 && categoryObj[i]["serviceTotalCount"] == 0){
+					var availwidth ="100";
+					var status = "progress-success";
+					var avail ="100";
+				}else{
+					errorStr += '	<div class="alert alert-error">';
+					errorStr += '	<button type="button" class="close" data-dismiss="alert">&times;</button>';
+					errorStr += '         <span class="label label-important">Warning!</span>&nbsp;&nbsp;<strong>'+categoryObj[i]["name"]+' </strong>서버의 가용률이<strong> '+Number(categoryObj[i]["availabili"]).toFixed(2)+'%</strong>입니다.  ';
+					errorStr += '        </div>'; 
+					
+					$('#categoryInfo').append(errorStr); 
+				}
+			
 				
-				$('#categoryInfo').append(DIVobj); */
-				
-				
-				errorStr += '	<div class="alert alert-error">';
-				errorStr += '	<button type="button" class="close" data-dismiss="alert">&times;</button>';
-				errorStr += '         <span class="label label-important">Warning!</span>&nbsp;&nbsp;<strong>'+categoryObj[i]["name"]+' </strong>서버의 가용률이<strong> '+Number(categoryObj[i]["availabili"]).toFixed(2)+'%</strong>입니다.  ';
-				errorStr += '        </div>';
-				
-				$('#categoryInfo').append(errorStr); 
 			}  
 			
 			var avail = Number(categoryObj[i]["availabili"]).toFixed(2) ;
@@ -181,6 +178,8 @@
 			var statusTotal = "error";
 		} 
 		
+		var totalAv = (totalAvail / categoryObj.length).toFixed(2);
+		
 		if((totalAvail / categoryObj.length).toFixed(2) >= 100){
 			var statustotalAvail = "progress-success";
 		}else if ((totalAvail / categoryObj.length).toFixed(2) >= 90 && (totalAvail / categoryObj.length).toFixed(2) <= 99){
@@ -194,7 +193,16 @@
 		} else if ((totalAvail / categoryObj.length).toFixed(2)== 0.00){
 			var statustotalAvail = "progress-danger";
 			var availwidth ="18";
-			//var classStatus ="error";
+			
+			
+			if(outageTotalCount == 0 && serviceTotalCount == 0){
+				var totalAv = 100;
+				var statustotalAvail = "progress-success";
+				
+			}
+			
+			
+			
 		}
 		
 		// 전체 가용률
@@ -207,7 +215,7 @@
 		tstr += '	<th>전체 이용률 </th>';
 		tstr += '		<td class=""><div class="progress progress-striped active '+statustotalAvail+' " style="margin-bottom: 0px;width: 317px; ">';
 		
-		tstr += '		<div class="bar" style="width:' + (totalAvail / categoryObj.length).toFixed(2) + '%">' + (totalAvail / categoryObj.length).toFixed(2) + '%</div>';
+		tstr += '		<div class="bar" style="width:' + totalAv + '%">' + (totalAvail / categoryObj.length).toFixed(2)  + '%</div>';
 		
 		tstr += '		</div></td>';
 		//tstr += '	<td class="'+statustotalAvail+'">' + (totalAvail / categoryObj.length).toFixed(2)
@@ -218,16 +226,34 @@
 
 		//GET 장애 목록
 		var outageObj = jsonObj["Outages"];
-
-		for ( var i in outageObj) {
-
-			var lostTime = new Date(outageObj[i]["iflostservice"]);
-			var current = new Date();
-			var lastTime = dateDiff(lostTime, current);
+		console.log("--------outageObj-------");
+		console.log(outageObj);
+		
+		if(outageObj == "null"){
 			
-		/* $('#outageInfo').append("<strong><a class=text-error href='<c:url value='/search/outage/outageDesc?outageId=' />"+outageObj[i]["outageid"]+"'>" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>"); */
-			$('#outageInfo').append("<strong><a class=text-error data-toggle=modal href='#myModal' onclick=\"javascript:outagePop('"+outageObj[i]["outageid"]+"','"+outageObj[i]["ipaddr"]+"');\">" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>");
+			$('#outageInfo').append("<strong class=text-error> 현재 장애 목록이 없습니다. </strong> ");
+			
+		}else{
+			
+			
+			for ( var i in outageObj) {
+
+				var lostTime = new Date(outageObj[i]["iflostservice"]);
+				var current = new Date();
+				var lastTime = dateDiff(lostTime, current);
+				
+			/* $('#outageInfo').append("<strong><a class=text-error href='<c:url value='/search/outage/outageDesc?outageId=' />"+outageObj[i]["outageid"]+"'>" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>"); */
+				$('#outageInfo').append("<strong><a class=text-error data-toggle=modal href='#myModal' onclick=\"javascript:outagePop('"+outageObj[i]["outageid"]+"','"+outageObj[i]["ipaddr"]+"');\">" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>");
+			}
 		}
+		
+		
+		
+		
+		
+		
+		
+		
 	}//******//24시간 가용률 , 카테고리 정보 ****************/
 	
 	

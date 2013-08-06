@@ -49,53 +49,75 @@
 	
 	/* Interface info (getInterfacesFromNodeId) Callback */
 	function addInterfaceInfo(jsonObj){
-
 		var str ="";
+		console.log("-----------addInterfaceInfo-----------");
+		console.log(jsonObj);
 		
-		if(jsonObj["@count"] > 0){
-			if(jsonObj["@count"] > 1){
-				var interfaceObj = jsonObj["ipInterface"];
-				for(var i in interfaceObj){
+		if(jsonObj["@count"] == 0){
+			
+
+			str = '<table class="table table-striped">';
+			str += '	<tr>';
+			str += '		<td class ="span5">';
+			str += '		</td>';
+			str += '		<td>';
+			str += '	<h4>	데이터가 없습니다.</h4>';
+			str += '		</td>';
+			str += '	</tr>';
+			str += '</table>';
+			
+			
+		}else{
+			if(jsonObj["@count"] > 0){
+				if(jsonObj["@count"] > 1){
+					var interfaceObj = jsonObj["ipInterface"];
+					for(var i in interfaceObj){
+						
+						str = '<table class="table table-striped">';
+						str += '	<tr>';
+						str += '		<td>';
+						str += 				interfaceObj[i]["ipAddress"];
+						str += '		</td>';
+						str += '		<td>';
+						str += '			<select name="'+interfaceObj[i]["ipAddress"]+'">';
+						str += '				<option value="M"'+interfaceObj[i]["@isManaged"] == "M" ? "selected" : "" +'>관리</option>';
+						str += '				<option value="F"'+interfaceObj[i]["@isManaged"] == "F" ? "selected" : "" +'>비관리</option>';
+						str += '			</select>';
+						str += '		</td>';
+						str += '	</tr>';
+						str += '</table>';
 					
+						/* service info */
+						getServiceFromNodeidIpaddress(addServiceInfo, "${nodeId}", interfaceObj[i]["ipAddress"]);
+					}
+						
+				}else{
+				
 					str = '<table class="table table-striped">';
 					str += '	<tr>';
 					str += '		<td>';
-					str += 				interfaceObj[i]["ipAddress"];
+					str += 				jsonObj["ipInterface"]["ipAddress"];
 					str += '		</td>';
 					str += '		<td>';
-					str += '			<select name="'+interfaceObj[i]["ipAddress"]+'">';
-					str += '				<option value="M"'+interfaceObj[i]["@isManaged"] == "M" ? "selected" : "" +'>관리</option>';
-					str += '				<option value="F"'+interfaceObj[i]["@isManaged"] == "F" ? "selected" : "" +'>비관리</option>';
+					str += '			<select name="'+jsonObj["ipInterface"]["ipAddress"]+'">';
+					str += '				<option value="M" '+ (jsonObj["ipInterface"]["@isManaged"] == "M" ? "selected" : "") +' >관리</option>';
+					str += '				<option value="F" '+ (jsonObj["ipInterface"]["@isManaged"] == "F" ? "selected" : "") +' >비관리</option>';
 					str += '			</select>';
 					str += '		</td>';
 					str += '	</tr>';
 					str += '</table>';
 				
 					/* service info */
-					getServiceFromNodeidIpaddress(addServiceInfo, "${nodeId}", interfaceObj[i]["ipAddress"]);
+					getServiceFromNodeidIpaddress(addServiceInfo, "${nodeId}", jsonObj["ipInterface"]["ipAddress"]);
 				}
-					
-			}else{
-			
-				str = '<table class="table table-striped">';
-				str += '	<tr>';
-				str += '		<td>';
-				str += 				jsonObj["ipInterface"]["ipAddress"];
-				str += '		</td>';
-				str += '		<td>';
-				str += '			<select name="'+jsonObj["ipInterface"]["ipAddress"]+'">';
-				str += '				<option value="M" '+ (jsonObj["ipInterface"]["@isManaged"] == "M" ? "selected" : "") +' >관리</option>';
-				str += '				<option value="F" '+ (jsonObj["ipInterface"]["@isManaged"] == "F" ? "selected" : "") +' >비관리</option>';
-				str += '			</select>';
-				str += '		</td>';
-				str += '	</tr>';
-				str += '</table>';
-			
-				/* service info */
-				getServiceFromNodeidIpaddress(addServiceInfo, "${nodeId}", jsonObj["ipInterface"]["ipAddress"]);
+				
 			}
 			
 		}
+
+	
+		
+
 		
 		$('#interfaceInfo').prepend(str);	
 			
@@ -350,80 +372,96 @@ $(function() {
 	
 //callback 함수 jsonObj를 이용 파싱 후 append
 function assetInfo(jsonObj) {
+	console.log("-----------assetInfo----------");
 	console.log(jsonObj);
 	
-	/* Configuration Categories */
-	$('#assetsInfoFrm input[name=displaycategory]').val(jsonObj.AssetInfo[0].displaycategory);
-	$('#assetsInfoFrm input[name=notifycategory]').val(jsonObj.AssetInfo[0].notifycategory);
-	$('#assetsInfoFrm input[name=pollercategory]').val(jsonObj.AssetInfo[0].pollercategory);
-	$('#assetsInfoFrm input[name=thresholdcategory]').val(jsonObj.AssetInfo[0].thresholdcategory);
+	var assetInfo = jsonObj["AssetInfo"];
+	alert(assetInfo.length);
 	
-	/* Identification */
-	$('#assetsInfoFrm input[name=description]').val(jsonObj.AssetInfo[0].description);
-	$("select[name=category] option[value="+jsonObj.AssetInfo[0].category+"]").attr("selected",true);
-	$('#assetsInfoFrm input[name=manufacturer]').val(jsonObj.AssetInfo[0].manufacturer);
-	$('#assetsInfoFrm input[name=modelnumber]').val(jsonObj.AssetInfo[0].modelnumber);
-	$('#assetsInfoFrm input[name=serialnumber]').val(jsonObj.AssetInfo[0].serialnumber);
-	$('#assetsInfoFrm input[name=assetnumber]').val(jsonObj.AssetInfo[0].assetnumber);
-	$('#assetsInfoFrm input[name=dateinstalled]').val(jsonObj.AssetInfo[0].dateinstalled);
-	$('#assetsInfoFrm input[name=operatingsystem]').val(jsonObj.AssetInfo[0].operatingsystem);
+	if(assetInfo.length == 0){
+		
+		
+		
+	}else{
 	
-	/* Location */
-	$('#assetsInfoFrm input[name=state]').val(jsonObj.AssetInfo[0].state);
-	$('#assetsInfoFrm input[name=region]').val(jsonObj.AssetInfo[0].region);
-	$('#assetsInfoFrm input[name=address1]').val(jsonObj.AssetInfo[0].address1);
-	$('#assetsInfoFrm input[name=address2]').val(jsonObj.AssetInfo[0].address2);
-	$('#assetsInfoFrm input[name=city]').val(jsonObj.AssetInfo[0].city);
-	$('#assetsInfoFrm input[name=zip]').val(jsonObj.AssetInfo[0].zip);
-	$('#assetsInfoFrm input[name=division]').val(jsonObj.AssetInfo[0].division);
-	$('#assetsInfoFrm input[name=department]').val(jsonObj.AssetInfo[0].department);
-	$('#assetsInfoFrm input[name=building]').val(jsonObj.AssetInfo[0].building);
-	$('#assetsInfoFrm input[name=floor]').val(jsonObj.AssetInfo[0].floor);
-	$('#assetsInfoFrm input[name=room]').val(jsonObj.AssetInfo[0].room);
-	$('#assetsInfoFrm input[name=rack]').val(jsonObj.AssetInfo[0].rack);
-	$('#assetsInfoFrm input[name=rackunitheight]').val(jsonObj.AssetInfo[0].rackunitheight);
-	$('#assetsInfoFrm input[name=slot]').val(jsonObj.AssetInfo[0].slot);
-	$('#assetsInfoFrm input[name=port]').val(jsonObj.AssetInfo[0].port);
-	$('#assetsInfoFrm input[name=circuitid]').val(jsonObj.AssetInfo[0].circuitid);
-	$('#assetsInfoFrm input[name=admin]').val(jsonObj.AssetInfo[0].admin);
+		/* Configuration Categories */
+		$('#assetsInfoFrm input[name=displaycategory]').val(jsonObj.AssetInfo[0].displaycategory);
+		$('#assetsInfoFrm input[name=notifycategory]').val(jsonObj.AssetInfo[0].notifycategory);
+		$('#assetsInfoFrm input[name=pollercategory]').val(jsonObj.AssetInfo[0].pollercategory);
+		$('#assetsInfoFrm input[name=thresholdcategory]').val(jsonObj.AssetInfo[0].thresholdcategory);
+		
+		/* Identification */
+		$('#assetsInfoFrm input[name=description]').val(jsonObj.AssetInfo[0].description);
+		$("select[name=category] option[value="+jsonObj.AssetInfo[0].category+"]").attr("selected",true);
+		$('#assetsInfoFrm input[name=manufacturer]').val(jsonObj.AssetInfo[0].manufacturer);
+		$('#assetsInfoFrm input[name=modelnumber]').val(jsonObj.AssetInfo[0].modelnumber);
+		$('#assetsInfoFrm input[name=serialnumber]').val(jsonObj.AssetInfo[0].serialnumber);
+		$('#assetsInfoFrm input[name=assetnumber]').val(jsonObj.AssetInfo[0].assetnumber);
+		$('#assetsInfoFrm input[name=dateinstalled]').val(jsonObj.AssetInfo[0].dateinstalled);
+		$('#assetsInfoFrm input[name=operatingsystem]').val(jsonObj.AssetInfo[0].operatingsystem);
+		
+		/* Location */
+		$('#assetsInfoFrm input[name=state]').val(jsonObj.AssetInfo[0].state);
+		$('#assetsInfoFrm input[name=region]').val(jsonObj.AssetInfo[0].region);
+		$('#assetsInfoFrm input[name=address1]').val(jsonObj.AssetInfo[0].address1);
+		$('#assetsInfoFrm input[name=address2]').val(jsonObj.AssetInfo[0].address2);
+		$('#assetsInfoFrm input[name=city]').val(jsonObj.AssetInfo[0].city);
+		$('#assetsInfoFrm input[name=zip]').val(jsonObj.AssetInfo[0].zip);
+		$('#assetsInfoFrm input[name=division]').val(jsonObj.AssetInfo[0].division);
+		$('#assetsInfoFrm input[name=department]').val(jsonObj.AssetInfo[0].department);
+		$('#assetsInfoFrm input[name=building]').val(jsonObj.AssetInfo[0].building);
+		$('#assetsInfoFrm input[name=floor]').val(jsonObj.AssetInfo[0].floor);
+		$('#assetsInfoFrm input[name=room]').val(jsonObj.AssetInfo[0].room);
+		$('#assetsInfoFrm input[name=rack]').val(jsonObj.AssetInfo[0].rack);
+		$('#assetsInfoFrm input[name=rackunitheight]').val(jsonObj.AssetInfo[0].rackunitheight);
+		$('#assetsInfoFrm input[name=slot]').val(jsonObj.AssetInfo[0].slot);
+		$('#assetsInfoFrm input[name=port]').val(jsonObj.AssetInfo[0].port);
+		$('#assetsInfoFrm input[name=circuitid]').val(jsonObj.AssetInfo[0].circuitid);
+		$('#assetsInfoFrm input[name=admin]').val(jsonObj.AssetInfo[0].admin);
+		
+		/* Vendor */
+		$('#assetsInfoFrm input[name=vendor]').val(jsonObj.AssetInfo[0].vendor);
+		$('#assetsInfoFrm input[name=vendorphone]').val(jsonObj.AssetInfo[0].vendorphone);
+		$('#assetsInfoFrm input[name=vendorfax]').val(jsonObj.AssetInfo[0].vendorfax);
+		$('#assetsInfoFrm input[name=lease]').val(jsonObj.AssetInfo[0].lease);
+		$('#assetsInfoFrm input[name=leaseexpires]').val(jsonObj.AssetInfo[0].leaseexpires);
+		$('#assetsInfoFrm input[name=vendorassetnumber]').val(jsonObj.AssetInfo[0].vendorassetnumber);
+		$('#assetsInfoFrm input[name=maintcontractexpires]').val(jsonObj.AssetInfo[0].maintcontractexpires);
+		$('#assetsInfoFrm input[name=maintcontract]').val(jsonObj.AssetInfo[0].maintcontract);
+		$('#assetsInfoFrm input[name=supportphone]').val(jsonObj.AssetInfo[0].supportphone);
+		
+		/* Authentication */
+		$('#assetsInfoFrm input[name=username]').val(jsonObj.AssetInfo[0].username);
+		$('#assetsInfoFrm input[name=password]').val(jsonObj.AssetInfo[0].password);
+		$('#assetsInfoFrm input[name=enable]').val(jsonObj.AssetInfo[0].enable);
+		$("select[name=connection] option[value="+jsonObj.AssetInfo[0].connection+"]").attr("selected",true);
+		$("select[name=autoenable] option[value="+jsonObj.AssetInfo[0].autoenable+"]").attr("selected",true);
+		$('#assetsInfoFrm input[name=snmpcommunity]').val(jsonObj.AssetInfo[0].snmpcommunity);
+		
+		/* Hardware */
+		$('#assetsInfoFrm input[name=cpu]').val(jsonObj.AssetInfo[0].cpu);
+		$('#assetsInfoFrm input[name=ram]').val(jsonObj.AssetInfo[0].ram);
+		$('#assetsInfoFrm input[name=additionalhardware]').val(jsonObj.AssetInfo[0].additionalhardware);
+		$('#assetsInfoFrm input[name=numpowersupplies]').val(jsonObj.AssetInfo[0].numpowersupplies);
+		$('#assetsInfoFrm input[name=inputpower]').val(jsonObj.AssetInfo[0].inputpower);
+		$('#assetsInfoFrm input[name=storagectrl]').val(jsonObj.AssetInfo[0].storagectrl);
+		$('#assetsInfoFrm input[name=hdd1]').val(jsonObj.AssetInfo[0].hdd1);
+		
+		$('#assetsInfoFrm input[name=hdd2]').val(jsonObj.AssetInfo[0].hdd2);
+		$('#assetsInfoFrm input[name=hdd3]').val(jsonObj.AssetInfo[0].hdd3);
+		$('#assetsInfoFrm input[name=hdd4]').val(jsonObj.AssetInfo[0].hdd4);
+		$('#assetsInfoFrm input[name=hdd5]').val(jsonObj.AssetInfo[0].hdd5);
+		$('#assetsInfoFrm input[name=hdd6]').val(jsonObj.AssetInfo[0].hdd6);
+		
+		/*Comments*/
+		$('#assetsInfoFrm input[name=comment]').val(jsonObj.AssetInfo[0].comment);
+		//document.getElementById('아이디입력').value = (data.etcProgramInfo[0].etcTitle==null?'':data.etcProgramInfo[0].etcTitle);
+		
+		
+	}
 	
-	/* Vendor */
-	$('#assetsInfoFrm input[name=vendor]').val(jsonObj.AssetInfo[0].vendor);
-	$('#assetsInfoFrm input[name=vendorphone]').val(jsonObj.AssetInfo[0].vendorphone);
-	$('#assetsInfoFrm input[name=vendorfax]').val(jsonObj.AssetInfo[0].vendorfax);
-	$('#assetsInfoFrm input[name=lease]').val(jsonObj.AssetInfo[0].lease);
-	$('#assetsInfoFrm input[name=leaseexpires]').val(jsonObj.AssetInfo[0].leaseexpires);
-	$('#assetsInfoFrm input[name=vendorassetnumber]').val(jsonObj.AssetInfo[0].vendorassetnumber);
-	$('#assetsInfoFrm input[name=maintcontractexpires]').val(jsonObj.AssetInfo[0].maintcontractexpires);
-	$('#assetsInfoFrm input[name=maintcontract]').val(jsonObj.AssetInfo[0].maintcontract);
-	$('#assetsInfoFrm input[name=supportphone]').val(jsonObj.AssetInfo[0].supportphone);
 	
-	/* Authentication */
-	$('#assetsInfoFrm input[name=username]').val(jsonObj.AssetInfo[0].username);
-	$('#assetsInfoFrm input[name=password]').val(jsonObj.AssetInfo[0].password);
-	$('#assetsInfoFrm input[name=enable]').val(jsonObj.AssetInfo[0].enable);
-	$("select[name=connection] option[value="+jsonObj.AssetInfo[0].connection+"]").attr("selected",true);
-	$("select[name=autoenable] option[value="+jsonObj.AssetInfo[0].autoenable+"]").attr("selected",true);
-	$('#assetsInfoFrm input[name=snmpcommunity]').val(jsonObj.AssetInfo[0].snmpcommunity);
 	
-	/* Hardware */
-	$('#assetsInfoFrm input[name=cpu]').val(jsonObj.AssetInfo[0].cpu);
-	$('#assetsInfoFrm input[name=ram]').val(jsonObj.AssetInfo[0].ram);
-	$('#assetsInfoFrm input[name=additionalhardware]').val(jsonObj.AssetInfo[0].additionalhardware);
-	$('#assetsInfoFrm input[name=numpowersupplies]').val(jsonObj.AssetInfo[0].numpowersupplies);
-	$('#assetsInfoFrm input[name=inputpower]').val(jsonObj.AssetInfo[0].inputpower);
-	$('#assetsInfoFrm input[name=storagectrl]').val(jsonObj.AssetInfo[0].storagectrl);
-	$('#assetsInfoFrm input[name=hdd1]').val(jsonObj.AssetInfo[0].hdd1);
-	
-	$('#assetsInfoFrm input[name=hdd2]').val(jsonObj.AssetInfo[0].hdd2);
-	$('#assetsInfoFrm input[name=hdd3]').val(jsonObj.AssetInfo[0].hdd3);
-	$('#assetsInfoFrm input[name=hdd4]').val(jsonObj.AssetInfo[0].hdd4);
-	$('#assetsInfoFrm input[name=hdd5]').val(jsonObj.AssetInfo[0].hdd5);
-	$('#assetsInfoFrm input[name=hdd6]').val(jsonObj.AssetInfo[0].hdd6);
-	
-	/*Comments*/
-	$('#assetsInfoFrm input[name=comment]').val(jsonObj.AssetInfo[0].comment);
-	//document.getElementById('아이디입력').value = (data.etcProgramInfo[0].etcTitle==null?'':data.etcProgramInfo[0].etcTitle);
 	
 }
 	

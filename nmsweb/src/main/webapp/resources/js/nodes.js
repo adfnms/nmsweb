@@ -68,6 +68,7 @@ function getInterfaceInfo(callback, nodeId, ipAddress) {
 		},
 		success : function(data) {
 			// 콜백함수
+			console.log(data);
 			if (typeof callback == "function") {
 				callback(data);
 			}
@@ -894,10 +895,9 @@ function getNodelistJsonObj(jsonObj){
 		
 	}else if (jsonObj["@totalCount"] == 1 || jsonObj["@count"] == 1) {
 		
-		
 		ULobj.append(
 			LIobj.clone().append(
-				Aobj.clone().attr("herf","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+"").append(
+				Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+"").append(
 					H5obj.clone().text( nodeObj["@label"])
 				)
 			)
@@ -906,7 +906,6 @@ function getNodelistJsonObj(jsonObj){
 				+ nodeObj["@label"]
 				+ "</h5></a></li>";*/
 	}else if (jsonObj["@totalCount"] > 1 || jsonObj["@count"] > 1) {
-			
 			for ( var i in nodeObj) {
 				
 				ULobj.append(
@@ -1081,6 +1080,9 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 }
 
 function getInterfaceInfoBox(jsonObj){
+	
+	
+	
 	var nodeObj = getSpecificNode(null, jsonObj["nodeId"]);
 
 	var str = 	"<div class='row-fluid'>"+

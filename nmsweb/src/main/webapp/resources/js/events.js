@@ -579,7 +579,9 @@ function getTabletagToServiceEventJsonObj(jsonObj){
  * @param jsonObj
  */
 function getEventinfoBox(jsonObj){
-	//console.log(jsonObj);
+	console.log("------이벤트 정보------");
+	console.log(jsonObj);
+	
 	small= jsonObj["event"]["@severity"].toLowerCase();
 	/*var eventInfoStr = 	'<div class="row-fluid">'+
 						'	<div class="span12">'+
@@ -639,6 +641,9 @@ function getEventinfoBox(jsonObj){
  */
 function getEventLogBox(jsonObj){
 
+	console.log("------이벤트 로그 메시지------");
+	console.log(jsonObj);
+	
 	var eventLogStr = 	'<div class="row-fluid">'+
 						'	<div class="span12">'+
 						'		<h5>로그&nbsp;메시지</h5>'+
@@ -659,6 +664,9 @@ function getEventLogBox(jsonObj){
  */
 function getEventDescBox(jsonObj){
 
+	console.log("------이벤트 설명------");
+	console.log(jsonObj);
+	
 	var eventDescStr = 	'<div class="row-fluid">'+
 						'	<div class="span12">'+
 						'		<h5>설명</h5>'+
