@@ -58,14 +58,15 @@
 
 			str = '<table class="table table-striped">';
 			str += '	<tr>';
-			str += '		<td class ="span5">';
+			str += '		<td class ="span4">';
 			str += '		</td>';
 			str += '		<td>';
-			str += '	<h4>	데이터가 없습니다.</h4>';
+			str += '	<h4 class="text-error">  인터페이스 관리 대상이 없습니다.</h4>';
 			str += '		</td>';
 			str += '	</tr>';
 			str += '</table>';
 			
+			addServiceInfo("${nodeId}");
 			
 		}else{
 			if(jsonObj["@count"] > 0){
@@ -129,47 +130,67 @@
 		
 		var str ="";
 		
-		if(jsonObj["@count"] > 0){
-			if(jsonObj["@count"] > 1){
-				var serviceObj = jsonObj["service"];
-				str += "<h5>"+ipAddress+"</h5>";
-				str += '<table class="table table-striped">';
-				str += '	<tr>';
+		alert(jsonObj);
+		
+		if(jsonObj["@count"] == 0){
+			
+			str = '<table class="table table-striped">';
+			str += '	<tr>';
+			str += '		<td class ="span4">';
+			str += '		</td>';
+			str += '		<td>';
+			str += '	<h4 class="text-error">  서비스 관리 대상이 없습니다.</h4>';
+			str += '		</td>';
+			str += '	</tr>';
+			str += '</table>';
+			
+		}else{
+			if(jsonObj["@count"] > 0){
+				if(jsonObj["@count"] > 1){
+					var serviceObj = jsonObj["service"];
+					str += "<h5>"+ipAddress+"</h5>";
+					str += '<table class="table table-striped">';
+					str += '	<tr>';
 
-				for(var i in serviceObj){
-					
-					if(i % 6 == 0 && i != 0){
-						str += '<tr></tr>';
+					for(var i in serviceObj){
+						
+						if(i % 6 == 0 && i != 0){
+							str += '<tr></tr>';
+						}
+						
+						str += '		<td class="span2">';
+						str += '			<label class="checkbox">';
+						str += '				<input value="'+serviceObj[i]["@status"]+'" name="'+ipAddress+'" id="'+serviceObj[i]["serviceType"]["name"]+'"  type="checkbox" '+ (serviceObj[i]["@status"] != "S" ? "checked" : "" ) +'/> ';
+						str +=					serviceObj[i]["serviceType"]["name"];
+						str += '			</label>';
+						str += '		</td>';
+										
 					}
-					
-					str += '		<td class="span2">';
+
+					str += '	</tr>';
+					str += '</table>';
+						
+				}else{
+					str += "<h5>"+ipAddress+"</h5>";
+					str += '<table class="table table-striped">';
+					str += '	<tr>';
+					str += '		<td>';
 					str += '			<label class="checkbox">';
-					str += '				<input value="'+serviceObj[i]["@status"]+'" name="'+ipAddress+'" id="'+serviceObj[i]["serviceType"]["name"]+'"  type="checkbox" '+ (serviceObj[i]["@status"] != "S" ? "checked" : "" ) +'/> ';
-					str +=					serviceObj[i]["serviceType"]["name"];
+					str += '				<input value="'+jsonObj["service"]["@status"]+'" name="'+ipAddress+'" id="'+jsonObj["service"]["serviceType"]["name"]+'" type="checkbox" '+ (jsonObj["service"]["@status"] != "S" ? "checked" : "" ) +'/> ';
+					str +=					jsonObj["service"]["serviceType"]["name"];
 					str += '			</label>';
 					str += '		</td>';
-									
+					str += '	</tr>';
+					str += '</table>';
+				
 				}
-
-				str += '	</tr>';
-				str += '</table>';
-					
-			}else{
-				str += "<h5>"+ipAddress+"</h5>";
-				str += '<table class="table table-striped">';
-				str += '	<tr>';
-				str += '		<td>';
-				str += '			<label class="checkbox">';
-				str += '				<input value="'+jsonObj["service"]["@status"]+'" name="'+ipAddress+'" id="'+jsonObj["service"]["serviceType"]["name"]+'" type="checkbox" '+ (jsonObj["service"]["@status"] != "S" ? "checked" : "" ) +'/> ';
-				str +=					jsonObj["service"]["serviceType"]["name"];
-				str += '			</label>';
-				str += '		</td>';
-				str += '	</tr>';
-				str += '</table>';
-			
+				
 			}
 			
 		}
+		
+		
+
 		
 		$('#serviceInfo').prepend(str);
 		
