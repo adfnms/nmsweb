@@ -136,29 +136,33 @@
 //chackbox reg
 function saveMenuItems()
 {
+	
 	var checkItemId = g_menuItems.getAllChecked();
 	var checkItemIds = checkItemId.split(',');
 	
 	$("#SaveMenuItemsFrm").children().remove();
 	
-	for(var i = 0; i < checkItemIds.length; i++)
-	{
-		
-		var tmpTr = $('<tr></tr>');
-		var tmpTd = $('<td><input type="hidden" name="menuId" value="" /></td>'); 
-		var tmpTd2 = $('<td><input type="hidden" name="groupName" value="${name}" /></td>'); 
-		
-		tmpTr.append(tmpTd);
-		tmpTr.append(tmpTd2);
-		
-		tmpTd.find('input[name=menuId]').val(checkItemIds[i]);
-		
-		$("#SaveMenuItemsFrm").append(tmpTr);
-		
-	}
-	
-	alert('요청이 완료되었습니다.');
-	
+		for(var i = 0; i < checkItemIds.length; i++)
+		{
+			
+			var tmpTr = $('<tr></tr>');
+			var tmpTd = $('<td><input type="hidden" name="menuId" value="" /></td>'); 
+			var tmpTd2 = $('<td><input type="hidden" name="groupName" value="${name}" /></td>'); 
+			
+			tmpTr.append(tmpTd);
+			tmpTr.append(tmpTd2);
+			
+			tmpTd.find('input[name=menuId]').val(checkItemIds[i]);
+			
+			$("#SaveMenuItemsFrm").append(tmpTr);
+			
+		}
+		if(checkItemIds.length == 1){
+			alert('메뉴 항목 트리의 체크 박스를 선택하십시오.');	
+		}
+		else {
+			alert('요청이 완료되었습니다.');
+		}
 	var data = $("#SaveMenuItemsFrm").serialize();
 
 	

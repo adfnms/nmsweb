@@ -107,7 +107,7 @@ function groupListStr(jsonObj){
 	
 	
 	console.log(jsonObj);
-	console.log("======jsonObj========");
+	console.log("======groupObj[i][name]========");
 	
 	var str = "";
 	var groupObj = jsonObj["group"];
@@ -134,7 +134,7 @@ function groupListStr(jsonObj){
 			var groupname = groupObj[i]["name"];
 			
 			TBODYobj.append(
-			
+					
 			
 			TRobj.clone().append(	
 				TDobj.clone().attr("class","text-info").append().text(groupObj[i]["name"]),
@@ -143,15 +143,16 @@ function groupListStr(jsonObj){
 					
 						
 						//BUTTONobj.clone().attr("type", "button").attr("class", "btn").attr("onclick","javascript:getGroupInfo("+groupObj[i]["name"]+")").text("권한 설정"),
-						BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","getGroupInfo()").text("권한 설정")
+						BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","getGroupInfo('"+groupObj[i]["name"]+"')").text("권한 설정")
 						//Aobj.clone().attr("type", "button").attr("class", "btn").attr("href","javascript:getGroupInfo('"+groupObj[i]["name"]+")").append().text(nodeObj[i]["@label"])
 						
 					
 					
 				),
+				
 				TDobj.clone().attr("title","그룹 삭제 버튼").append(
 					ABBRobj.clone().attr("title","그룹 삭제 버튼").append(
-							BUTTONobj.clone().attr("type", "button").attr("class", "btn btn-danger").attr("href", "javascript:deleteGroup("+groupObj[i]["name"]+")").text("삭제")
+							BUTTONobj.clone().attr("type", "button").attr("class", "btn btn-danger").attr("onclick", "deleteGroup('"+groupObj[i]["name"]+"')").text("삭제")
 					)
 				)
 			)
@@ -159,18 +160,6 @@ function groupListStr(jsonObj){
 	
 
 //<a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+ "'></a>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			
 			/*str += "<tr>";
 			str += "	<td class=\"text-info\">";

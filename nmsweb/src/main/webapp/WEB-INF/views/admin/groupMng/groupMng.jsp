@@ -54,11 +54,9 @@
 	
 	/*그룹 상세정보 갖고오기*/
 	
-	function getGroupInfo(){
+	function getGroupInfo(data){
 		
-		alert("-----test----");
-		var obj = "Admin";
-		alert(obj);
+		var obj = data;
 		
 	 	$("#groupFrm").find('[name=name]:input').val(obj);
 		
@@ -98,6 +96,7 @@
 	} 
 	
 	function deleteGroup(name){
+		alert(name);
 		
 		var option = confirm(" 삭제 하시겠습니까? ");
 		
