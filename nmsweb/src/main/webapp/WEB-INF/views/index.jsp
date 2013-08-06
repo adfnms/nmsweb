@@ -114,14 +114,8 @@
 				
 				var errorStr = "";
 				
-				Divobj.attr("class","alert alert-arror").append(
-						BUTTONobj.clone().attr("type","button").attr("class","close").attr("data-dismiss","alert").text("&times"),
-						SPANobj.clone().attr("class","label label-important").text("Warning!"),
-						STRONGobj.clone().text(categoryObj[i]["name"])
-				
-				);
-				
-				$('#categoryInfo').append(Divobj);
+		
+				$('#categoryInfo').append(DIVobj);
 				
 				errorStr += '	<div class="alert alert-error">';
 				errorStr += '	<button type="button" class="close" data-dismiss="alert">&times;</button>';

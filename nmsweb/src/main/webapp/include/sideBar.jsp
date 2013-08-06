@@ -59,7 +59,6 @@ function sidebarInfo(jsonObj) {
 		
 	}else{
 		
-		alert("not null");
 		for ( var i in sideOutageObj) {
 
 			var lostTime = new Date(sideOutageObj[i]["iflostservice"]);

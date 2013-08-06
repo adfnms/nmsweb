@@ -46,10 +46,12 @@ public class MenuManagerController extends BaseController
 			}
 		
 			userList =userTbl.get();
-				//System.out.println(userList.size());
+			
+			System.out.println("-------------------");
+			System.out.println(userList.size());
+			System.out.println("-------------------");
 			
 			if(userList.size() !=0){
-				
 				
 				groupNm =userList.get(0).getGroupNm();
 				
