@@ -104,10 +104,10 @@
  		getTotalEvenstListForDashboard(addEvents,data,"10");
 	}
 	
-	/* outage append ,중단 서비스 목록*/
+	/* outage append ,장애 서비스 목록*/
 	function addOutage(jsonObj){
-		//중단 목록
-		console.log("------------addOutage-중단서비스목록-------------");
+		//장애 목록
+		console.log("------------addOutage-장애서비스목록-------------");
 		console.log(jsonObj);
 		var str= "";
 		var outageObj = jsonObj["Outages"];
@@ -175,7 +175,7 @@
 		
 		
 	}
-	/*//outage append ,중단 서비스 목록*/
+	/*//outage append ,장애 서비스 목록*/
 	
 	
 	/*이벤트 목록  */
@@ -204,7 +204,7 @@
 	
 			for ( var i in events) {
 				str += "<tr>";
-				str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events[i]["eventid"]+"' target='_blank'>" + events[i]["eventid"]
+				str += "<td><a href='/"+version+"/search/event/eventDesc.do?eventId="+events[i]["eventid"]+"'>" + events[i]["eventid"]
 						+ "</a></td>";
 				str += "<td>"
 						+ new Date(events[i]["eventtime"])

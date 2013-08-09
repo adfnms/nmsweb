@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author byun
- * 검색 > 중단 검색
+ * 검색 > 장애 검색
  */
 @Controller
 public class OutageSearchController

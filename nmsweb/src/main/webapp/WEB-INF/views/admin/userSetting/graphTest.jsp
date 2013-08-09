@@ -197,7 +197,7 @@
                 <a class="dropdown-toggle" id="drop5" role="button" data-toggle="dropdown" href="#">검색<b class="caret"></b></a>
                 <ul id="menu3" class="dropdown-menu" role="menu" aria-labelledby="drop5">
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="<c:url value="/search/node.do" />">노드검색</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="<c:url value="/search/outage.do" />">중단 검색</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="<c:url value="/search/outage.do" />">장애 검색</a></li>
                 </ul>
               </li>
               <li class="dropdown">

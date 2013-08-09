@@ -14,6 +14,7 @@
 <script src="<c:url value="/resources/js/events.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script src="<c:url value="/resources/js/category.js" />"></script>
+<script src="<c:url value="/resources/js/outages.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		
@@ -24,7 +25,6 @@
 	
 	/* Event Info */
 	function addEventInfo(jsonObj){
-		
 		//Event Info
 		var eventInfoStr = 	getEventinfoBox(jsonObj);
 		$('#eventInfoDiv').append(eventInfoStr);

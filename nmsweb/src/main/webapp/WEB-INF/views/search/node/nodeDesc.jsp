@@ -31,10 +31,9 @@
 		/* Node Availability */
 		getNodeAvailability(addNodeAvailability, "${nodeId}");
 		
+		
 		/* Interface Availability */
 		getInterfacesFromNodeId(addInterfaceAvailability, "${nodeId}");
-		
-		
 		
 		
 	});
@@ -102,7 +101,7 @@
 			if(jsonObj["@count"] > 1){
 				interfaceObj = jsonObj["ipInterface"];
 				var ipAddrs = interfaceAvail[i]["ipAddress"];
-			
+				
 				for(var i in interfaceObj){
 					
 					
@@ -123,7 +122,6 @@
 				}
 			}else{
 				var ipAddrs =jsonObj["ipInterface"]["ipAddress"];
-				
 				//인터페이스 가용성
  				var interfaceAvail = Number(getInterfaceAvailability("${nodeId}", ipAddrs)).toFixed(3)+"%";
  				var headStr = '<h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>'; 
@@ -185,10 +183,7 @@ function addInterfaceInfo(jsonObj) {
 	
 	function goInterfaceDescPage(nodeId,intf){
 	//location.href ="/"+version+"/search/node/interfaceDesc.do?nodeId="+nodeId+"&intf="+intf;
-	
-	
 	/* Recent Outages */
-	//====1========
 	getOutagesForInterface(addOutagesForInterface, nodeId, intf,"5");
 
 	/* Recent Events */
@@ -197,50 +192,50 @@ function addInterfaceInfo(jsonObj) {
 }
 	
 		/* Recent Outages Callback For Interface*/
-	function addOutagesForInterface(jsonObj ,nodeId) {
-		//=====4========
-			$('#rightUnderDiv').empty();
-		var str = getTabletagToInterfaceOutageJsonObj(jsonObj,nodeId);
-		//=====5=========
+	function addOutagesForInterface(jsonObj ,nodeId ,ipAddrs) {
+		$('#rightUnderDiv').empty();
+		var str = getTabletagToInterfaceOutageJsonObj(jsonObj,nodeId, ipAddrs);
 		$('#rightUnderDiv').append(str);
 
 	}
 	/*//Recent Outages Callback For Interface */
 	
 	/* Recent Events Callback ForInterface */
-	function addEventsForInterface(jsonObj) {
+	function addEventsForInterface(jsonObj, notiId, ipAddress, serviceNm) {
+		
 		$('#rightUnderDiv2').empty();
-		var str = getTabletagToInterfaceEventJsonObj(jsonObj);
+		var str = getTabletagToInterfaceEventJsonObj(jsonObj, notiId, ipAddress, serviceNm);
 		$('#rightUnderDiv2').append(str);
 
 	}
 	/*//Recent Events Callback For Interface*/
 	
 
-function 	goServiceDiv(nodeId,intf){
+function goServiceDiv(nodeId,intf,serviceNm){
 		
 		/* Recent Outages */
-		getOutagesForInterface(addOutagesForService, nodeId, intf,"5");
+		getOutagesForInterface(addOutagesForService, nodeId, intf,"5", serviceNm);
 
 		/* Recent Events */
-		getEventsForInterface(addEventsForService,nodeId, intf,"5");
+		getEventsForInterface(addEventsForService,nodeId, intf,"5", serviceNm);
 		
 	}
 
 	
 	/* Recent Outages Callback For Service*/
-function addOutagesForService(jsonObj ,nodeId) {
+function addOutagesForService(jsonObj ,ipaddr,nodeId , serviceNm) {
+	
 	$('#rightUnderDiv').empty();
-	var str = getTabletagToServiceOutageJsonObj(jsonObj,nodeId);
+	var str = getTabletagToServiceOutageJsonObj(jsonObj,serviceNm);
 	$('#rightUnderDiv').append(str);
 
 }
 /*//Recent Outages Callback For Service*/
 
 /* Recent Events Callback For Service*/
-function addEventsForService(jsonObj) {
+function addEventsForService(jsonObj,notiId, ipaddr, serviceNm) {
 	$('#rightUnderDiv2').empty();
-	var str = getTabletagToServiceEventJsonObj(jsonObj);
+	var str = getTabletagToServiceEventJsonObj(jsonObj, serviceNm);
 	$('#rightUnderDiv2').append(str);
 
 }

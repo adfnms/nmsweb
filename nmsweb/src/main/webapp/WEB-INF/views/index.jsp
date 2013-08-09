@@ -84,8 +84,7 @@
 		 var str = "";
 		str += '<table class="table table-striped table-hover">';
 		//str += '	<colgroup><col class="span6" /><col class="span3" /><col class="span3" /></colgroup>';
-		str += '	<tr><th>카테고리</th><th>중단 서비스</th><th>서비스 Availability</th></tr>';
-
+		str += '	<tr><th>카테고리</th><th>장애 서비스</th><th>서비스 Availability</th></tr>';
 		for ( var i in categoryObj) {
 			//var status = Number(categoryObj[i]["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical";
 			
@@ -217,7 +216,7 @@
 		tstr += '	</tr></table>';
 
 		$('#totalCategoryInfo').append(tstr); 
-
+		
 		//GET 장애 목록
 		var outageObj = jsonObj["Outages"];
 		console.log("--------outageObj-------");
@@ -237,7 +236,8 @@
 				var lastTime = dateDiff(lostTime, current);
 				
 			/* $('#outageInfo').append("<strong><a class=text-error href='<c:url value='/search/outage/outageDesc?outageId=' />"+outageObj[i]["outageid"]+"'>" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>"); */
-				$('#outageInfo').append("<strong><a class=text-error data-toggle=modal href='#myModal' onclick=\"javascript:outagePop('"+outageObj[i]["outageid"]+"','"+outageObj[i]["ipaddr"]+"');\">" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>");
+				$('#outageInfo').append("<strong><a class=text-error data-toggle=modal href='#myModal' onclick=\"javascript:outagePop('"+outageObj
+						[i]["outageid"]+"','"+outageObj[i]["ipaddr"]+"');\">" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>");
 			}
 		}
 		

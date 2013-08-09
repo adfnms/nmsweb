@@ -8,7 +8,7 @@
 <html lang="ko">
 <head>
 <jsp:include page="/include/header.jsp">
-	<jsp:param value="중단 상세보기" name="title" />
+	<jsp:param value="장애 상세보기" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/outages.js" />"></script>
@@ -45,7 +45,7 @@
 						class="divider">/</span></li>
 					<li><a href="<c:url value="/search/node.do" />" />노드검색</a>
 						<span class="divider">/</span></li>
-					<li class="active">중단</li>
+					<li class="active">장애</li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
@@ -54,7 +54,7 @@
 			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span3">
-						<h4 id="nodeLabel">중단정보</h4>
+						<h4 id="nodeLabel">장애정보</h4>
 					</div>
 					<div class="span9">
 						<jsp:include page="/include/statsBar.jsp" />

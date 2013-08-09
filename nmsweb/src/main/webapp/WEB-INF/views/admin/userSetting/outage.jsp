@@ -19,7 +19,7 @@ try{
 <html lang="en">
 <head>
 <jsp:include page="/include/header.jsp">
-	<jsp:param value="중단 목록 리스트" name="title" />
+	<jsp:param value="장애 목록 리스트" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 
@@ -62,7 +62,7 @@ try{
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
 					<li><a href="/v1/admin/setting.do">사용자 설정</a> <span class="divider">/</span></li>
-					<li class="active">중단 목록 상세 정보</li>
+					<li class="active">장애 목록 상세 정보</li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />

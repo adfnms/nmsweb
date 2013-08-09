@@ -960,7 +960,6 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 		success : function(data) {
 
 			jsonObj = data;
-			console.log(jsonObj);
 		}
 	});
 		
@@ -1006,17 +1005,15 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 		});
 		if(AvailJsonObj == null){return false;}
 		var serviceObj = jsonObj["service"];
-		console.log(serviceObj);
-		
 		/******************************************************/
 		//TABLEobj.attr("class", "table table-striped").append(
 		/******************************************************/
 		//str += '<table class="table table-striped">';
 
 				if (jsonObj["@count"] > 1) {
-		
 					for ( var i in serviceObj) {
 						var serviceAvail = "";
+						var serviceNm = serviceObj[i]["serviceType"]["name"];
 						
 						for(var j in AvailJsonObj["serviceAvailability"]){
 							if(AvailJsonObj["serviceAvailability"][j]["serviceId"] == serviceObj[i]["serviceType"]["@id"]){
@@ -1028,7 +1025,7 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 						TABLEobj.attr("class", "table table-striped").append(
 								TRobj.clone().append(
 									TDobj.clone().append(
-										Aobj.clone().attr("href", "javascript:goServiceDiv('"+nodeId+"', '"+ipAddress+"')").text(serviceObj[i]["serviceType"]["name"])
+										Aobj.clone().attr("href", "javascript:goServiceDiv('"+nodeId+"', '"+ipAddress+"','"+serviceNm+"')").text(serviceObj[i]["serviceType"]["name"])
 									),
 									TDobj.clone().text(availToStringFromStatoCode(serviceObj[i]["@status"],Number(serviceAvail).toFixed(3)))
 								)
@@ -1046,6 +1043,7 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 					}
 				} else {
 					/**********************************************************************************************************************************************************************************************/
+					console.log("=======================else==jsonObj=======================");
 					TABLEobj.attr("class", "table table-striped").append(
 							TRobj.clone().append(
 								TDobj.clone().append(

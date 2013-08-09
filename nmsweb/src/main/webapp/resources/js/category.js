@@ -20,7 +20,6 @@ function getTotalIndexInfo(callback, data){
 			}
 		}
 	});
-	
 }
 
 /** Total Category info

@@ -35,7 +35,7 @@ function addNodeListsSideBar(jsonObj) {
 function sidebarInfo(jsonObj) {
 	console.log("-----------sidebar 장애목록---------------");
 	console.log(jsonObj);
-	//중단 목록
+	//장애 목록
 	var str = "";
 	var ULobj = $("<ul></ul>");
 	var TRobj = $("<tr></tr>");
@@ -48,7 +48,7 @@ function sidebarInfo(jsonObj) {
 	var STRONGobj = $("<strong></strong>");
 	
 	var sideOutageObj = jsonObj["Outages"];
-
+	
 	if(sideOutageObj=="null"){
 		
 		$('#sideBarOutageList').append(
@@ -88,8 +88,8 @@ function sidebarInfo(jsonObj) {
 }
 
 function outageSideBarPop(outageid){
-	
 	var data = "id="+outageid;
+	
 	getTotalOutagesList(addOutageSideInfo, data);
 }
 /* outageSideBarPop Callback */

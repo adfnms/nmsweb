@@ -117,7 +117,7 @@ function logOut(){
 					<a id="4" class="dropdown-toggle muted" data-toggle="dropdown" href="#" style="width: 110px; display:none;"><h4>검색<b class="caret"></b></h4></a>
 					<ul class="dropdown-menu">
 						<li id="41" style="display:none;"><a href="<c:url value="/search/node.do" />">노드검색</a></li>
-						<li id="42" style="display:none;"><a href="<c:url value="/search/outage.do" />">중단 검색</a></li>
+						<li id="42" style="display:none;"><a href="<c:url value="/search/outage.do" />">장애 검색</a></li>
 						<li id="6"  style="display:none;"><a  href="<c:url value="/assets.do"/>" >ASSETS 검색</a></li>
 					</ul>
 				</li>

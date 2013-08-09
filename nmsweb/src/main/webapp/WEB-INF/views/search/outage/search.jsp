@@ -8,7 +8,7 @@
 <html lang="ko">
 <head>
 <jsp:include page="/include/header.jsp">
-	<jsp:param value="중단 검색" name="title" />
+	<jsp:param value="장애 검색" name="title" />
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/outages.js" />"></script>
@@ -26,15 +26,19 @@
 	});
 		/* 장애 목록*/
 	function addOutage(jsonObj){
-			
 			console.log("-----------jsonObj-----------");
 			console.log(jsonObj);
-			var str = "<tr><th>ID</th><th>인터페이스</th><th>중단 시간</th><th>회복 시간</th><th>서비스</th></tr>";
+			var str = "<tr><th>ID</th><th>인터페이스</th><th>장애 시간</th><th>회복 시간</th><th>서비스</th></tr>";
 
-			str += getTabletagToOutageSearchJsonObj(jsonObj);
+			var row = getTabletagToOutageSearchJsonObj(jsonObj);
 		
-		$('#outageListTable').empty();
-		$('#outageListTable').append(str);
+			$('#outageListTable').empty();
+			$('#outageListTable').html(str);
+			$('#outageListTable').append(row);
+			/* var str = getTabletagToOutageSearchJsonObj(jsonObj);
+		
+			$('#outageListTable').empty();
+			$('#outageListTable').append(str); */
 		
 		getPagingHtml($('#pagingDiv'), "goSearchPageing", jsonObj["@totalCount"], pageNum, "10", "10" );
 	}
@@ -50,9 +54,7 @@
 	
 	//페이징 처리 스크립트
 	function goSearchPageing(pageNm){
-		
 		pageNum = pageNm;
-		
 		offset = (parseInt(pageNm)-1) * limit;
 		
 		getTotalOutagesList(addOutage, "limit="+limit+"&offset="+offset);
@@ -126,7 +128,7 @@
 			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12">
-						<h4>중단&nbsp;목록</h4>
+						<h4>장애&nbsp;목록</h4>
 					</div>
 				</div>
 				<div class="row-fluid">
@@ -136,7 +138,7 @@
 								<th>ID</th>
 								<th>인터페이스</th>
 								<th>서비스</th>
-								<th>중단 시간</th>
+								<th>장애 시간</th>
 								<th>회복 시간</th>
 							</tr>
 						</table>
