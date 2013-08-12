@@ -45,13 +45,11 @@ var encodeTime = encodeURI(time);
 		
 		
 		
-		
 		var obj = jsonObj["notifications"];
 		 
 		if(obj == "null"){
 				
 			  var str = getFailJsonObj();
-			  alert("sss");
 		
 				$('#userTable').append(str);
 				

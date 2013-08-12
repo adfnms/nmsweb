@@ -42,9 +42,10 @@ function searchCategory(){
 //getSearchAssetsList callback 함수
 function searchAssetsList(jsonObj) {
 	var str = "<tr><th>ASSETS</th><th>ASSET LINK</th><th>NODE LINK</th></tr>";
-	str += assetsListStr(jsonObj);
+	var row = assetsListStr(jsonObj);
 	 $('#assetsListTable').empty();
 	 $('#assetsListTable').append(str);
+	 $('#assetsListTable').append(row);
 }
 /* 필드리스트 검색  */
 function searchField(){
@@ -57,9 +58,10 @@ function searchField(){
 function FieldListStr(jsonObj) {
 	
 	var str = "<tr><th>ASSETS</th><th>ASSET LINK</th><th>NODE LINK</th></tr>";
-	str += FieldStr(jsonObj);
+	var row = FieldStr(jsonObj);
 	 $('#assetsListTable').empty();
 	 $('#assetsListTable').append(str);
+	 $('#assetsListTable').append(row);
 }	
 </script>
 </head>
@@ -206,11 +208,11 @@ function FieldListStr(jsonObj) {
 			</div>
 			</div>
 			<!-- tree -->
-			 <div class="span6 well ">
-			 <div class="span12 well well-small">
-		 		<div class="span12">
+			 <div class="span6 well" style="height:220px">
+			 <div class="span12 well well-small" style="height:180px">
+		 		<div class="span12" style="margin-top:16px">
 					<h4 id="nodeLabel">Assets in category는&nbsp;원하는&nbsp;카테고리를&nbsp;선택하고&nbsp;&nbsp;[Search]을&nbsp;클릭합니다.</h4>
-					<h4 id="nodeLabel">또는&nbsp;해당&nbsp;범주와&nbsp;관련된&nbsp;모든&nbsp;Assets의&nbsp;목록을&nbsp;검색하려면&nbsp;Field Search의&nbsp;원하&nbsp;항목을&nbsp;선택하여&nbsp;[Search]을&nbsp;클릭합니다.</h4>
+					<h4 id="nodeLabel">또는&nbsp;해당&nbsp;범주와&nbsp;관련된&nbsp;모든&nbsp;Assets의&nbsp;목록을&nbsp;검색하려면&nbsp;Field Search의&nbsp;원하는&nbsp;항목을&nbsp;선택하고&nbsp;[Search]을&nbsp;클릭합니다.</h4>
 				
 				</div>
 			</div>

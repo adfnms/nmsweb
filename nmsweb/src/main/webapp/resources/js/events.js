@@ -598,6 +598,7 @@ function getEventinfoBox(jsonObj){
 	var TDobj = $("<td></td>");
 	var MTDobj = $("<td></td>");
 	var Aobj = $("<a></a>");
+	var FONTobj = $("<font></font>");
 	
 	var eventInfoStr = DIVobj.attr("class", "row-fluid").append(
 							MDIVobj.attr("class", "span12 well well-small").clone().append(
@@ -611,7 +612,7 @@ function getEventinfoBox(jsonObj){
 										),
 										THobj.clone().text("이벤트ID"),
 										TDobj.clone().append(
-											Aobj.attr("href", "/" + version + "/search/event/eventDesc.do?eventId=" + jsonObj["event"]["@id"]+ "").clone().text(jsonObj["event"]["@id"])
+											FONTobj.attr("color", "gray").text(jsonObj["event"]["@id"])
 										),
 										TDobj.clone().text("")
 									),

@@ -42,66 +42,148 @@
 	/*/test/*/
 	
 	
-	
-	
-	
+	/*	메뉴의 검색 -> ASSETS 검색의 ASSETS in Category에 선택항목 중 Infrastructure와 Server를 선택하고 Search를 클릭 시 변화된 하단부의 소스코드
+	 * 
+	 * */
 	function assetsListStr(jsonObj) {
-		var str = "";
-		
+		//var str = "";
 		console.log(jsonObj);
-		
 		var CatagoryList=jsonObj["CatagoryList"];
-		
+		/***********************************************************************************/
+		var TRobj = $("<tr></tr>");
+		var TDobj = $("<td></td>");
+		var Aobj = $("<a></a>");
+		var TBODYobj = $("<tbody></tbody>");
+		/***********************************************************************************/
 		if (CatagoryList.length == 0) {
-			str += "<tr>";
+			/*str += "<tr>";
 			str += "<td></td>";
 			str += "<td>데이터가 없습니다</td>";
-			str += "<td></td>";
+			str += "<td></td>";*/
+			/***********************************************************************************/
+			TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.clone().text(),
+					TDobj.clone().text("데이터가 없습니다"),
+					TDobj.clone().text(""),
+					TDobj.clone().text("")
+				)
+			);
+			/***********************************************************************************/
 		}else if(CatagoryList.length ==1) {
-			str += "<tr>";
+			/*str += "<tr>";
 			str += "<td>" + CatagoryList[0]["category"]+ "</td>";
 			str += "<td><a href='/" + version+ "/assets/modifyAssets?nodeId="+ CatagoryList[0]["nodeid"] + "&nodeLabel="+CatagoryList[0]["nodeLabel"]+"'>" + CatagoryList[0]["nodeLabel"]+ "</a></td>";
-			str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ CatagoryList[0]["nodeid"]+ "'>" + CatagoryList[0]["nodeLabel"]+ "</a></td>";
-			
+			str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ CatagoryList[0]["nodeid"]+ "'>" + CatagoryList[0]["nodeLabel"]+ "</a></td>";*/
+			/***********************************************************************************************************************************************************************************************/
+			TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.clone().text(CatagoryList[0]["category"]),
+					TDobj.clone().append(
+						Aobj.attr("href", "/"  + version + "/assets/modifyAssets?nodeId=" + CatagoryList[0]["nodeid"] + "&nodeLabel=" + CatagoryList[0]["nodeLabel"]).clone().text(CatagoryList[0]["nodeLabel"])
+					),
+					TDobj.clone().append(
+						Aobj.attr("href", "/"  + version + "/search/node/nodeDesc.do?nodeId=" + CatagoryList[0]["nodeid"]).clone().text(CatagoryList[0]["nodeLabel"])
+					)
+				)
+			);
+			/***********************************************************************************************************************************************************************************************/
 		}else if(CatagoryList.length >0) {
 			for ( var i in CatagoryList) {
 
-				str += "<tr>";
+				/*str += "<tr>";
 				str += "<td>" + CatagoryList[i]["category"]+ "</td>";
 				str += "<td><a href='/" + version+ "/assets/modifyAssets?nodeId="+ CatagoryList[i]["nodeid"] + "&nodeLabel="+CatagoryList[i]["nodeLabel"]+"'>" + CatagoryList[i]["nodeLabel"]+ "</a></td>";
-				str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ CatagoryList[i]["nodeid"]+ "'>" + CatagoryList[i]["nodeLabel"]+ "</a></td>";
+				str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ CatagoryList[i]["nodeid"]+ "'>" + CatagoryList[i]["nodeLabel"]+ "</a></td>";*/
+				/***********************************************************************************************************************************************************************************************/
+				TBODYobj.append(
+					TRobj.clone().append(
+						TDobj.clone().text(CatagoryList[i]["category"]),
+						TDobj.clone().append(
+							Aobj.attr("href", "/"  + version + "/assets/modifyAssets?nodeId=" + CatagoryList[i]["nodeid"] + "&nodeLabel="+CatagoryList[i]["nodeLabel"]).clone().text(CatagoryList[i]["nodeLabel"])
+						),
+						TDobj.clone().append(
+							Aobj.attr("href", "/"  + version + "/search/node/nodeDesc.do?nodeId=" + CatagoryList[i]["nodeid"]).clone().text(CatagoryList[i]["nodeLabel"])
+						)
+					)
+				);
+				/***********************************************************************************************************************************************************************************************/
 			}
 		}
-		return str;
+		//return str;
+		return TBODYobj;
 	}
 	
-	
+	/* 메뉴의 검색 -> ASSETS 검색의 ASSETS in Category의 Field Search 선택항목 중 Address 1을 선택하고 Search를 클릭 시 변화된 하단부의 소스코드
+	 * 
+	 * */
 	function FieldStr(jsonObj) {
 
 		var str = "";
 		var FieldList=jsonObj["fieldData"];
-		
+		/***********************************************************************************/
+		var TRobj = $("<tr></tr>");
+		var TDobj = $("<td></td>");
+		var Aobj = $("<a></a>");
+		var TBODYobj = $("<tbody></tbody>");
+		/***********************************************************************************/
 		if (FieldList.length == 0) {
-			str += "<tr>";
+			/*str += "<tr>";
 			str += "<td></td>";
 			str += "<td>데이터가 없습니다</td>";
-			str += "<td></td>";
+			str += "<td></td>";*/
+			/***********************************************************************************/
+			TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.clone().text(),
+					TDobj.clone().text("데이터가 없습니다"),
+					TDobj.clone().text(""),
+					TDobj.clone().text("")
+				)
+			);
+			/***********************************************************************************/
 		}else if(FieldList.length ==1) {
-			str += "<tr>";
+			/*str += "<tr>";
 			str += "<td>" + FieldList[0]["category"]+ "</td>";
 			str += "<td><a href='/" + version+ "/assets/modifyAssets?nodeId="+ FieldList[0]["nodeid"] + "&nodeLabel="+FieldList[0]["nodeLabel"]+"'>" + FieldList[0]["nodeLabel"]+ "</a></td>";
-			str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ FieldList[0]["nodeid"]+ "'>" + FieldList[0]["nodeLabel"]+ "</a></td>";
-			
+			str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ FieldList[0]["nodeid"]+ "'>" + FieldList[0]["nodeLabel"]+ "</a></td>";*/
+			/***********************************************************************************************************************************************************************************************/
+			TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.clone().text(FieldList[0]["category"]),
+					TDobj.clone().append(
+						Aobj.attr("href", "/"  + version + "/assets/modifyAssets?nodeId=" + FieldList[0]["nodeid"] + "&nodeLabel=" + FieldList[0]["nodeLabel"]).clone().text(FieldList[0]["nodeLabel"])
+					),
+					TDobj.clone().append(
+						Aobj.attr("href", "/"  + version + "/search/node/nodeDesc.do?nodeId=" + FieldList[0]["nodeid"]).clone().text(FieldList[0]["nodeLabel"])
+					)
+				)
+			);
+			/***********************************************************************************************************************************************************************************************/
 		}else if(FieldList.length >0) {
 			for ( var i in FieldList) {
 
-				str += "<tr>";
+				/*str += "<tr>";
 				str += "<td>" + FieldList[i]["category"]+ "</td>";
 				str += "<td><a href='/" + version+ "/assets/modifyAssets?nodeId="+ FieldList[i]["nodeid"] + "&nodeLabel="+FieldList[0]["nodeLabel"]+"'>" + FieldList[i]["nodeLabel"]+ "</a></td>";
-				str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ FieldList[i]["nodeid"]+ "'>" + FieldList[i]["nodeLabel"]+ "</a></td>";
+				str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ FieldList[i]["nodeid"]+ "'>" + FieldList[i]["nodeLabel"]+ "</a></td>";*/
+				/***********************************************************************************************************************************************************************************************/
+				TBODYobj.append(
+					TRobj.clone().append(
+						TDobj.clone().text(FieldList[i]["category"]),
+						TDobj.clone().append(
+							Aobj.attr("href", "/"  + version + "/assets/modifyAssets?nodeId=" + FieldList[i]["category"] + "&nodeLabel="+FieldList[0]["nodeLabel"]).clone().text(FieldList[i]["nodeLabel"])
+						),
+						TDobj.clone().append(
+							Aobj.attr("href", "/"  + version + "/search/node/nodeDesc.do?nodeId=" + FieldList[i]["nodeLabel"]).clone().text(FieldList[i]["nodeLabel"])
+						)
+					)
+				);
+				/***********************************************************************************************************************************************************************************************/
 			}
 		}
-		return str;
+		//return str;
+		return TBODYobj;
 	}
 	
 	

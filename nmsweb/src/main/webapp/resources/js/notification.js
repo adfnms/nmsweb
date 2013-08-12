@@ -443,7 +443,6 @@ function modifySetPathAjax(){
  * @param recentCount
  */
 function getUserNotiList(callback , userId, nowDate, recentCount ){
-	
 	if(userId == null){
 		
 		alert("사용자 아이디가 없습니다.");
@@ -505,11 +504,11 @@ function getAllEvent(callback){
 
 //나의 공지 정보 가져오기
 /**
+ * 메뉴의 [Home] -> [알림 정보]란의 [나의 알림] 옆 [확인]을 클릭 시 새로 생성된 표의 내용들
  * @param jsonObj
  */
 function userNotiListjsonObj(jsonObj) {
-	
-		var str = "";
+	var str = "";
 		
 	var userObj = jsonObj["notifications"];
 	
@@ -640,6 +639,7 @@ function userNotiListjsonObj(jsonObj) {
 }
 //전체 공지 정보 가져오기
 /**
+ * 메뉴의 [Home] -> [알림 정보]란의 [모든 알림] 옆 [확인]을 클릭 시 새로 생성된 표의 내용들
  * @param jsonObj
  */
 function totalNotiListjsonObj(jsonObj) {
@@ -765,7 +765,9 @@ function totalNotiListjsonObj(jsonObj) {
 	$("#totalTable").append(str);
 	
 }
-
+/*
+ * 메뉴의 [Home] -> [알림 정보]란의 [모든 알림] 옆 [확인]을 클릭 시 새로 생성된 표의 내용들 중 [ID] 항목을 클릭 시 새로 생성된 삽입창의 내용들
+ */
 function notifiInfo(jsonObj){
 	
 	
@@ -829,7 +831,11 @@ var notifiInfoStr ='<div class="row-fluid">'+
 	return notifiInfoStr;	
 
 }
-function destiInfo(jsonObj){
+
+/*
+ * 
+ */ 
+/*function destiInfo(jsonObj){
 	
 	var str = "";
 	
@@ -869,10 +875,10 @@ function destiInfo(jsonObj){
 			
 		}
 	 $("#destiInfoDiv").append(str);
-}
+}*/
 
 
-//모든 이벤트 목록 가져오기
+//메뉴의 [운영관리] -> [알림] -> [알림 설정] -> [수정]의 [event List]표의 내용
 function getEventJsonObj(jsonObj){
 	
 	var str = "";
@@ -895,9 +901,9 @@ function getEventJsonObj(jsonObj){
 }
 }
 
+//=========================================================================================================================================================
 //모든 이벤트 목록 select div 가져오기
 function getEventSelectJsonObj(jsonObj){
-	
 	var str = "";
 
 	var eventObj = jsonObj["event"]; 
@@ -916,8 +922,9 @@ function getEventSelectJsonObj(jsonObj){
 }
 
 
-
+//메뉴의 [운영관리] -> [알림] -> [알림 설정] -> [공지 추가] -> [2단계 공지 메시지 정의] -> [목적지관리] -> [Destination Configration] 클릭 시 새로 생성된 하단부의 [Existing Paths]창의 리스트
 function pathsNameStr(jsonObj){
+	
 	var str = "";
 
 	var pathsObj = jsonObj["path"];
@@ -959,7 +966,7 @@ function pathsNameStr(jsonObj){
 	
 }
 
-
+//메뉴의 [운영관리] -> [알 림] -> [알림 설정] -> [+ 공지 추가] -> [2단계 공지 메시지 정의] -> [목적지 선택]탭의 선택 항목
 // pathsName <select> str
 function pathsNameSelectStr(jsonObj){
 	
