@@ -1,5 +1,5 @@
 
-
+//2013-08-12
 /*POST Adjust the information related with real occured, certain event*/
 /*reg Notification obj*/
 
@@ -989,7 +989,7 @@ function pathsNameSelectStr(jsonObj){
 	$("#destinationPath").append(str);
 }
 
-
+//메뉴의 [운영관리] -> [알림] -> [알림 설정] -> [공지 추가] -> [2단계 공지 메시지 정의] -> [목적지관리] -> [Destination Target Target Select] 클릭 시 새로 생성된 하단부
 function getFailJsonObj(){
 	var str = "";
 
@@ -1003,6 +1003,7 @@ function getFailJsonObj(){
 	str += "</tr>";
 	return str;
 }
+//메뉴의 [운영관리] -> [알림] -> [알림 설정]의 리스트
 //추가된 공지 목록 가져오기
 function addNotiStr(jsonObj){
 	
