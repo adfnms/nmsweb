@@ -39,13 +39,11 @@
 		$('#label').empty();
 		$('#indexNodeList').empty();
 		
-		var strNode = getSearchSelectNodeJsonObj(jsonObj);
 		var str = getNodelistJsonObj(jsonObj);
 		
 		
 		$('#indexNodeList').append(str);
 		$('#id').append(str);
-		$('#label').append(strNode);
 	}
 	
 	//서비스 리스트 가져오기

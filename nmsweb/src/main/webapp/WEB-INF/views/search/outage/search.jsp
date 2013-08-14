@@ -28,18 +28,9 @@
 	function addOutage(jsonObj){
 			console.log("-----------jsonObj-----------");
 			console.log(jsonObj);
-			var str = "<tr><th>ID</th><th>인터페이스</th><th>장애 시간</th><th>회복 시간</th><th>서비스</th></tr>";
-
-			var row = getTabletagToOutageSearchJsonObj(jsonObj);
-		
+			var str = getTabletagToOutageSearchJsonObj(jsonObj);
 			$('#outageListTable').empty();
-			$('#outageListTable').html(str);
-			$('#outageListTable').append(row);
-			/* var str = getTabletagToOutageSearchJsonObj(jsonObj);
-		
-			$('#outageListTable').empty();
-			$('#outageListTable').append(str); */
-		
+			$('#outageListTable').append(str);
 		getPagingHtml($('#pagingDiv'), "goSearchPageing", jsonObj["@totalCount"], pageNum, "10", "10" );
 	}
 	

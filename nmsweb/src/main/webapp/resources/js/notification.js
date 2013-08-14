@@ -472,7 +472,6 @@ function getTotalNotiList(callback, nowDate, recentCount ){
  * @param notifyid
  */
 function getNotificaitionDetail(callback , notifyid){
-	
 		getNotofication(callback, notifyid );
 		
 }
@@ -508,21 +507,47 @@ function getAllEvent(callback){
  * @param jsonObj
  */
 function userNotiListjsonObj(jsonObj) {
-	var str = "";
-		
+	//var str = "";
+	/*********************************************************/
+	var TRobj = $("<tr></tr>");
+	var TDobj = $("<td></td>");
+	var ATDobj = $("<td></td>");
+	var DIVobj = $("<div></div>");
+	var ADIVobj = $("<div></div>");
+	var BDIVobj = $("<div></div>");
+	var CDIVobj = $("<div></div>");
+	var DDIVobj = $("<div></div>");
+	var EDIVobj = $("<div></div>");
+	var Aobj = $("<a></a>");
+	var TBODYobj = $("<tbody></tbody>");
+	var H4obj = $("<h4></h4>");
+	/*********************************************************/
 	var userObj = jsonObj["notifications"];
 	
 	console.log("------------userNotificationList----------");
 	console.log(jsonObj);
 	
 	if(userObj.length >= 1){
-		
-		//for ( var i = 1; i < userObj.length; i++){
-		
+		TBODYobj.append(
+			TRobj.clone().append(
+				TDobj.clone().append(
+					H4obj.clone().text("ID")
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("EventID")
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("Status")
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("PageTime")
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("Message")
+				)
+			)	
+		);
 		for ( var i in  userObj){
-			
-			
-			
 			/************************Get @severity  from event****************************/
 			var eventId = userObj[i]["eventid"];
 			
@@ -568,8 +593,37 @@ function userNotiListjsonObj(jsonObj) {
 			});
 			
 			/************************Get @severity  from event****************************/
-			
-			str += "<tr>";
+			/************************************************************************************************************************************************************************/
+			TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.attr("class", "span1").clone().append(
+						Aobj.attr("class", "accordion-toggle").attr("data-toggle","collapse").attr("data-parent","#accordion2").attr("href", "#" + userObj[i]["notifyid"]).attr("onclick", "showNotiInfoDiv(" + userObj[i]["notifyid"] + "," + userObj[i]["eventid"] + ")").clone().text(userObj[i]["notifyid"])	
+					),
+					TDobj.attr("class", "span1").clone().append(
+						Aobj.attr("class", "accordion-toggle").attr("data-toggle","collapse").attr("data-parent","#accordion2").attr("href", "#" + userObj[i]["notifyid"]).attr("onclick", "showEventInfoDiv(" + userObj[i]["notifyid"] + "," + userObj[i]["eventid"] + ")").clone().text(userObj[i]["eventid"])	
+					),
+					TDobj.attr("class", "span2").clone().append(
+						DIVobj.attr("class", "progress progress-striped active  " + statusProgress + "").attr("style", "margin-bottom: 0px;width: 130px;").clone().append(
+							ADIVobj.attr("class", "bar").attr("style", "width:100%").clone().text(stat)
+						)	
+					),
+					TDobj.attr("class", "span2").clone().text(new Date(userObj[i]["pagetime"]).format('yy-MM-dd hh:mm:ss')),
+					TDobj.attr("class", "span6").clone().text(userObj[i]["textmsg"])
+				),
+				TRobj.clone().append(
+					ATDobj.attr("colspan", "5").clone().append(
+						BDIVobj.attr("class", "accordion-group").clone().append(
+							CDIVobj.attr("id", userObj[i]["notifyid"]).attr("class", "accordion-body collapse").clone().append(
+								DDIVobj.attr("class", "accordion-inner").clone().append(
+									EDIVobj.attr("class", "row-fluid").clone().text("")
+								)
+							)
+						)
+					)
+				)
+			);
+			/************************************************************************************************************************************************************************/
+			/*str += "<tr>";
 			//str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";
 		//	str += "	<td class=\"span1\"><a href='javascript:goNotiInfo("+userObj[i]["notifyid"]+","+userObj[i]["eventid"]+")'>";
 			str += "	<td class=\"span1\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\"  href=\"#"+userObj[i]["notifyid"]+"\" onclick=\"showNotiInfoDiv("+userObj[i]["notifyid"]+","+userObj[i]["eventid"]+");\">";
@@ -581,7 +635,7 @@ function userNotiListjsonObj(jsonObj) {
 			str += "	</a></td>";
 			str += '		<th class=""><div class="progress progress-striped active  '+statusProgress+' " style="margin-bottom: 0px;width: 130px; ">';
 			str += '		<div class="bar" style="width:100%">' + stat + '</div>';
-			str += '		</div></td>';
+			str += '		</div></th>';
 			str += "	<td class=\"span2\">";										
 			str +=  new Date(userObj[i]["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
 			str += "	</td>";														
@@ -606,12 +660,90 @@ function userNotiListjsonObj(jsonObj) {
 			str += "			</div>";
 			str += "		</div>";
 			str += "	</div>";
-			str += "</td></tr>";
+			str += "</td></tr>";*/
 			}
-		
-		
 	} else {
-		str += "<tr>";
+		/*************************************************************************************************************************************************************************************/
+		/************************Get @severity  from event****************************/
+		var eventId = userObj[i]["eventid"];
+		
+		var statusProgress = "";
+		var stat = "";
+		$.ajax({
+			type : 'get',
+			url : '/' + version + '/events',
+			dataType : 'json',
+			data : encodeURI("query=this_.eventId  = '"+eventId+"'"),
+			async: false,
+			contentType : "application/json;charset=UTF-8", 
+			error : function(data) {
+				//console.log(data);
+				alert('심각도 가져오기 서비스 실패');
+			},
+			success : function(data) {
+				stat = data["event"]["@severity"];
+				
+				if(stat=="CRITICAL"){
+					 statusProgress = "progress-danger";
+				}
+				else if(stat=="MAJOR"){
+					 statusProgress = "progress-caution";						
+				}
+				else if(stat=="MINOR"){
+					 statusProgress = "progress-warning";
+				}
+				else if(stat=="WARNING"){
+					 statusProgress = "progress-gray";
+				}
+				else if(stat=="NORMAL"){
+					 statusProgress = "progress-info";
+				}
+				else if(stat=="CLEARED"){
+					 statusProgress = "progress";
+				}
+				else if(stat=="INDETERMINATE"){
+					 statusProgress = "progress-success";
+				}
+			}
+			
+		});
+		/************************Get @severity  from event****************************/
+		TBODYobj.append(
+			TRobj.clone().append(
+				TDobj.clone().append(
+					H4obj.clone().text("ID")
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("EventID")
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("Status")
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("PageTime")
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("Message")
+				)
+			),
+			TRobj.clone().append(
+				TDobj.attr("class", "span1").clone().append(
+					Aobj.attr("href", "/" + version + "/admin/setting/notificationDetali.do?notifyid=" + userObj["notifyid"] + "&eventId=" + userObj["eventid"]).clone().text(userObj["notifyid"])	
+				),
+				TDobj.attr("class", "span1").clone().append(
+					Aobj.attr("href", "/" + version + "/search/event/eventDesc.do?eventId=" + userObj["eventid"]).clone().text(userObj["eventid"])	
+				),
+				TDobj.attr("class", "").clone().append(
+					DIVobj.attr("class", "progress progress-striped active  " + statusProgress + "").attr("style", "margin-bottom: 0px;width: 130px;").clone().append(
+						ADIVobj.attr("class", "bar").attr("style", "width:100%").clone().text(stat)
+					)	
+				),
+				TDobj.attr("class", "span2").clone().text(new Date(userObj["pagetime"]).format('yy-MM-dd hh:mm:ss')),
+				TDobj.attr("class", "span6").clone().text(userObj["textmsg"])
+			)
+		);
+		/*************************************************************************************************************************************************************************************/
+		/*str += "<tr>";
 		str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj["notifyid"]+"&eventId="+userObj["eventid"]+"'>";										
 		str += userObj["notifyid"];											//notifyid
 		str += "	</a></td>";
@@ -631,14 +763,12 @@ function userNotiListjsonObj(jsonObj) {
 		str += "	<td class=\"span6\" >";
 		str += userObj["textmsg"];											//textmsg
 		str += "	</td>";
-		str += "</tr>";
-	
-		
+		str += "</tr>";*/
 	}
-	$("#userTable").append(str);
+	$("#userTable").append(TBODYobj);
 }
 //전체 공지 정보 가져오기
-/**
+/**===============================================================================================2013-08-13
  * 메뉴의 [Home] -> [알림 정보]란의 [모든 알림] 옆 [확인]을 클릭 시 새로 생성된 표의 내용들
  * @param jsonObj
  */
@@ -901,9 +1031,8 @@ function getEventJsonObj(jsonObj){
 }
 }
 
-//=========================================================================================================================================================
 //모든 이벤트 목록 select div 가져오기
-function getEventSelectJsonObj(jsonObj){
+/*function getEventSelectJsonObj(jsonObj){
 	var str = "";
 
 	var eventObj = jsonObj["event"]; 
@@ -919,7 +1048,7 @@ function getEventSelectJsonObj(jsonObj){
 	}
 	
 	 $("#uei").append(str);
-}
+}*/
 
 
 //메뉴의 [운영관리] -> [알림] -> [알림 설정] -> [공지 추가] -> [2단계 공지 메시지 정의] -> [목적지관리] -> [Destination Configration] 클릭 시 새로 생성된 하단부의 [Existing Paths]창의 리스트

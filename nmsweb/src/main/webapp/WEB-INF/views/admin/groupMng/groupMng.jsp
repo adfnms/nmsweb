@@ -207,12 +207,12 @@
 				<table class="table table-striped table-hover table-condensed" id="groupTable" >
 					
 					
-						<tr>
+						<!-- <tr>
 							<th><h4><abbr title="그룹 이름">GroupName</abbr></h4></th>
 							<th><h4><abbr title="그룹 설명">GroupComments</abbr></h4></th>
 							<th>&nbsp;</th>
 							<th>&nbsp;</th>
-						</tr>
+						</tr> -->
 					
 				</table>
 			

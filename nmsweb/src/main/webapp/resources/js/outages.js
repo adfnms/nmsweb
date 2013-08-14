@@ -194,17 +194,11 @@ function getTabletagToOutageJsonObj(jsonObj) {
 						+ "&intf="
 						+ outages[i]["ipAddress"]
 						+ "&serviceNm="
-						+ nullCheckJsonObject(
-								outages[i]["serviceLostEvent"]["serviceType"],
-								"name")
-						+ "'>"
+						+ nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],"name")+ "'>"
 						+ nullCheckJsonObject(
 								outages[i]["serviceLostEvent"]["serviceType"],
 								"name") + "</a></td>";
-				str += "<td class=\"text-error\">"
-						+ new Date(nullCheckJsonObject(
-								outages[i]["serviceLostEvent"], "time"))
-								.format('yy-MM-dd hh:mm:ss') + "</td>";
+				str += "<td class=\"text-error\">"+ new Date(nullCheckJsonObject(outages[i]["serviceLostEvent"], "time")).format('yy-MM-dd hh:mm:ss') + "</td>";
 				str += "<td class=\"text-success\">"
 						+ new Date(nullCheckJsonObject(
 								outages[i]["serviceRegainedEvent"], "time"))
@@ -710,16 +704,36 @@ function getTabletagToOutageSearchJsonObj(jsonObj) {
 	var Aobj = $("<a></a>");
 	var H4obj = $("<h4></h4>");
 	var TBODYobj = $("<tbody></tbody>");
+	var Bobj = $("<b></b>");
 	/************************************************************************************************************************/
 	
 	if(jsonObj["@totalCount"] == 0){
 		/*****************************************************************************************************************/
-		TRobj.append(
-			TDobj.clone().append().text(""),
-			TDobj.clone().append().text(""),
-			TDobj.clone().append().text(""),
-			TDobj.clone().append(
-				H4obj.attr("class", "text-error").text("장애가 검색되지 않습니다.")
+		TBODYobj.append(
+			TRobj.clone().append(
+				TDobj.clone().append(
+					Bobj.clone().text("ID")
+				),
+				TDobj.clone().append(
+					Bobj.clone().text("인터페이스")
+				),
+				TDobj.clone().append(
+					Bobj.clone().text("장애 시간")
+				),
+				TDobj.clone().append(
+					Bobj.clone().text("회복 시간")
+				),
+				TDobj.clone().append(
+					Bobj.clone().text("서비스")
+				)
+			),	
+			TRobj.clone().append(
+				TDobj.clone().append().text(""),
+				TDobj.clone().append().text(""),
+				TDobj.clone().append().text(""),
+				TDobj.clone().append(
+					H4obj.attr("class", "text-error").text("장애가 검색되지 않습니다.")
+				)
 			)
 		);
 		/******************************************************************************************************************/
@@ -735,9 +749,25 @@ function getTabletagToOutageSearchJsonObj(jsonObj) {
 	} else if (jsonObj["@count"] != "undefined" && jsonObj["@count"] != 0) {
 		
 		if (jsonObj["@count"] > 1) {
-			
-			
-				
+				TBODYobj.append(
+					TRobj.clone().append(
+						TDobj.clone().append(
+							Bobj.clone().text("ID")
+						),
+						TDobj.clone().append(
+							Bobj.clone().text("인터페이스")
+						),
+						TDobj.clone().append(
+							Bobj.clone().text("장애 시간")
+						),
+						TDobj.clone().append(
+							Bobj.clone().text("회복 시간")
+						),
+						TDobj.clone().append(
+							Bobj.clone().text("서비스")
+						)
+					)
+				);
 			for ( var i in outages) {
 				/*****************************************************************************************************************/
 				TBODYobj.append(	
@@ -791,6 +821,23 @@ function getTabletagToOutageSearchJsonObj(jsonObj) {
 			outages = outages == null ? jsonObj : jsonObj["outage"];
 			/*****************************************************************************************************************/
 			TBODYobj.append(	
+				TRobj.clone().append(
+					TDobj.clone().append(
+						Bobj.clone().text("ID")
+					),
+					TDobj.clone().append(
+						Bobj.clone().text("인터페이스")
+					),
+					TDobj.clone().append(
+						Bobj.clone().text("장애 시간")
+					),
+					TDobj.clone().append(
+						Bobj.clone().text("회복 시간")
+					),
+					TDobj.clone().append(
+						Bobj.clone().text("서비스")
+					)
+				),
 				TRobj.clone().append(
 					TDobj.clone().append(
 						Aobj.clone().attr("href", "/" + version + "/search/outage/outageDesc?outageId=" + outages["@id"]).text(outages["@id"])

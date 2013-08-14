@@ -41,28 +41,27 @@ function searchCategory(){
 }
 //getSearchAssetsList callback 함수
 function searchAssetsList(jsonObj) {
-	var str = "<tr><th>ASSETS</th><th>ASSET LINK</th><th>NODE LINK</th></tr>";
-	var row = assetsListStr(jsonObj);
+	var str = assetsListStr(jsonObj);
 	 $('#assetsListTable').empty();
 	 $('#assetsListTable').append(str);
-	 $('#assetsListTable').append(row);
 }
+
+//getFieldSearchAssets callback 함수
+function FieldListStr(jsonObj) {
+	var str = FieldStr(jsonObj);
+	$('#assetsListTable').empty();
+	$('#assetsListTable').append(str);
+	
+}	
+
 /* 필드리스트 검색  */
 function searchField(){
 	
 	var fieldText = $("#fieldFrm input[name=field]").val();
 	var fieldSelect = $("#fieldFrm select[name=fieldSelect]").val();
-	getFieldSearchAssets(FieldListStr,fieldSelect,fieldText);
+	getFieldSearchAssets(FieldListStr, fieldSelect,fieldText);
 }	
-//getFieldSearchAssets callback 함수
-function FieldListStr(jsonObj) {
-	
-	var str = "<tr><th>ASSETS</th><th>ASSET LINK</th><th>NODE LINK</th></tr>";
-	var row = FieldStr(jsonObj);
-	 $('#assetsListTable').empty();
-	 $('#assetsListTable').append(str);
-	 $('#assetsListTable').append(row);
-}	
+
 </script>
 </head>
 
@@ -227,7 +226,7 @@ function FieldListStr(jsonObj) {
 					<div class="row-fluid">
 						<div class="span12">
 							<table class="table table-striped" id="assetsListTable">
-								<tr>
+							 <tr>
 									<th>ASSETS</th>
 									<th>ASSET LINK</th>
 									<th>NODE LINK</th>

@@ -90,7 +90,7 @@ function logOut(){
 </form>
 <div class="row-fluid">
 	<div class="span12">
-		<div class="span9 controls"><h3 class="muted"><a href="<c:url value="/index.do" />">Network manage System</a></h3></div>
+		<div class="span9 controls"><h2 class="muted"><a href="<c:url value="/index.do" />">Blue-EyesOpen</a></h2></div>
 		<div class="span1 controls" style="text-align: right; margin-top: 15px; " id="logOutDiv">
 			<h5><a class="text-error" href="<c:url value="/login.do" />">LogIn&nbsp;&nbsp;&nbsp;</a></h5>
 		</div>

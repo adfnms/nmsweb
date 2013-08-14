@@ -116,11 +116,27 @@ function groupListStr(jsonObj){
 	var TDobj = $("<td></td>");
 	var ABBRobj = $("<abbr></abbr>");
 	var BUTTONobj = $("<button></button>");
+	var H4obj = $("<h4></h4>");
 	/***********************************************************/
 	if (jsonObj["@totalCount"] == 1) {
 	}else if (jsonObj["@totalCount"] > 1){
+			TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.clone().append(
+						H4obj.clone().append(
+							ABBRobj.attr("title", "그룹이름").clone().text("GroupName")
+						)
+					),
+					TDobj.clone().append(
+						H4obj.clone().append(
+							ABBRobj.attr("title", "그룹설명").clone().text("GroupComments")
+						)
+					),
+					TDobj.clone().text(""),
+					TDobj.clone().text("")
+				)
+			);
 		for ( var i in groupObj) {
-			console.log("groupname : "+groupObj[i]["name"]);
 			var groupname = groupObj[i]["name"];
 			
 			TBODYobj.append(

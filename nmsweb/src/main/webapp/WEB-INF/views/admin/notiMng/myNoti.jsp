@@ -88,7 +88,6 @@ var encodeTime = encodeURI(time);
 		
 	}
 	function notificaitionInfo(jsonObj) {
-		
 		console.log("---------notificaitionInfo------------");
 		console.log(jsonObj);
 		
@@ -198,13 +197,13 @@ var encodeTime = encodeURI(time);
 				<div class="span12 well well-small">
 					<div class="row-fluid">
 						<table class="table table-striped table-condensed" id="userTable">
-							<tr>
+							<!-- <tr>
 								<th class="span1"><h4>ID</h4></th>
 								<th class="span1"><h4>EventId</h4></th>
 								<th class="span1"><h4>Status</h4></th>
 								<th class="span2"><h4>PageTime</h4></th>
 								<th class="span6"><h4>Message</h4></th>
-							</tr>
+							</tr> -->
 						</table>
 					</div>
 				</div>

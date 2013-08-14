@@ -13,6 +13,7 @@
 </jsp:include>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script src="<c:url value="/resources/js/category.js" />"></script>
+<script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script type="text/javascript">
 	
 	var pageNum = 1;
@@ -23,6 +24,8 @@
 	$(document).ready(function(){
 		
 		getNodeTotalList(addNodeLists, "orderBy="+orderBy+"&limit="+limit);
+		
+		
 		
 	});
 	
@@ -55,6 +58,16 @@
 		getNodeTotalList(addNodeLists, "orderBy="+orderBy+"&limit="+limit+"&offset="+offset);
 		
 	}
+	
+	
+	function getTotalRequisitions(jsonObj){
+		
+		$("#requisitionsListTable").empty();
+		var str = getTableToRequisitionsJsonObj(jsonObj);
+		$("#requisitionsListTable").append(str);
+	}
+	
+	
 </script>
 </head>
 
@@ -94,9 +107,36 @@
 					<div class="span12" id="pagingDiv"></div>
 				</div>
 			</div>
+			
+		</div>
+		
+		<div class="row-fluid" id="requisitionsBox"  style="display:none" >
+			<div class="span12 well well-small">
+				<div class="row-fluid" >
+					<div class="span3">
+						<input type="text"   id="requisitions"   name="requisitions"    placeholder="" value="" > 
+					</div>
+					<div class="span3">
+						<button type="button" class="btn btn-primary" style="width:220px" title="" onclick="javascript:addRequisition();">새로운 요구추가</button>
+					</div>
+					<div class="span3">
+						<button type="button" class="btn btn-primary " style="width:220px" title="" onclick="javascript:editRequisition();">기본외부소스 편집</button>
+					</div>
+					<div class="span3">
+						<button type="button" class="btn btn-primary" style="width:220px" title="" onclick="javascript:resetRequisition();">기본외부소스 초기화</button>
+					</div>
+				</div>
+				<div class="row-fluid">
+					<div class="span12">
+						<table class="table  table-hover" id="requisitionsListTable"></table>
+					</div>
+				</div>
+					
+				
+			</div>
+			</div>
 		</div>
 		<hr>
-	</div>
 	<!-- /container -->
 </body>
 </html>

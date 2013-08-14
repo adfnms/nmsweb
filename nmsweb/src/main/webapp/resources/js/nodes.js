@@ -276,31 +276,9 @@ function getInterfacesFromNodeId(callback, nodeId) {
 
 }
 
-/**
- *  add Node Popup
- */
-function addNodePop(){
-	
-	var settings ="toolbar=no ,width=350 ,height=205 ,directories=no,status=no,scrollbars=no,menubar=no";
-	var winObject = window.open("/" + version + "/admin/addNode.pop", "addNodePop", settings);
-	winObject.focus();	
 
-}
 
-/**
- *  add Node Popup
- */
-function addNodePop(){
-	
-	var settings ="toolbar=no ,width=350 ,height=205 ,directories=no,status=no,scrollbars=no,menubar=no";
-	var winObject = window.open("/" + version + "/admin/addNode.pop", "addNodePop", settings);
-	winObject.focus();	
 
-}
-
-/**
- *  add Node Popup
- */
 function changeNodeLabelPop(nodeId){
 	
 	var settings ="toolbar=no ,width=350 ,height=255 ,directories=no,status=no,scrollbars=no,menubar=no";
@@ -581,6 +559,9 @@ function manageSnmpService(nodeId, ifIndex, collect){
 	
 	return str;
 }*/
+
+
+
 
 function getTabletagToSearchJsonObj(jsonObj, auth){
 	var nodeObj = jsonObj["node"] != null ? jsonObj["node"] : jsonObj["nodes"];
@@ -1147,7 +1128,7 @@ function getSearchSelectJsonObj(jsonObj) {
  * @param jsonObj
  * @returns {String}
  */
-function getSearchSelectNodeJsonObj(jsonObj) {
+/*function getSearchSelectNodeJsonObj(jsonObj) {
 
 	var node= jsonObj["node"];
 
@@ -1168,6 +1149,6 @@ function getSearchSelectNodeJsonObj(jsonObj) {
 
 	return optionlabelStr;
 	
-}
+}*/
 
 
