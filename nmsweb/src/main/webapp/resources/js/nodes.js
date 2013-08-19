@@ -906,13 +906,19 @@ function getNodelistJsonObj(jsonObj){
 	//return str;
 	return ULobj;
 }
+/****************************************노드 라벨 목록 리스트********************************************************/
+function getNodeLablelistJsonObj(jsonObj){
+	//for(var i in jsonObj){
+		//console.log("------------------jsonObj--------------------");
+		//console.log(jsonObj["node"][i]["@label"]);
+		var TRobj = $("<tr></tr>");
+		TRobj.text("2222");
+		return TRobj;
+	//}
+}
+
+
 /*****************************//*감시대상목록*노드리스트****************************************/
-
-
-
-
-
-
 /** 이벤트 정보를 table 테그 Str로 만들어준다. 
  * @param jsonObj
  */
