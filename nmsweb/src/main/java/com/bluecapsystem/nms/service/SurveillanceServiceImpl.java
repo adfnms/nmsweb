@@ -9,6 +9,7 @@ import com.bluecapsystem.frm.BaseService;
 import com.bluecapsystem.nms.dao.AssetsDao;
 import com.bluecapsystem.nms.dao.SurveillanceDao;
 import com.bluecapsystem.nms.dto.AssetsTbl;
+import com.bluecapsystem.nms.dto.CategoriesTbl;
 import com.bluecapsystem.nms.dto.CategoryNodeTbl;
 
 
@@ -20,29 +21,13 @@ public class SurveillanceServiceImpl extends BaseService implements Surveillance
 	private SurveillanceDao surveillanceDao;
 	
 	
-	@Override
-	public boolean getNodeId(List<CategoryNodeTbl> nodeId) {
-
-		boolean ret = false;
-		
-		ret = surveillanceDao.getNodeId(nodeId);
-		
-		if(ret == false)
-		{
-			logger.error("fail of get menu Id");
-		}
-		
-		return ret;
-	}
 	
-	
-
 	@Override
-	public boolean getRouters(List<CategoryNodeTbl> routersInfo) {
+	public boolean getCategoriesName(List<CategoriesTbl> CategoriesItem) {
 		
 		boolean ret = false;
 		
-		ret = surveillanceDao.getRouters(routersInfo);
+		ret = surveillanceDao.getCategoriesName(CategoriesItem);
 		
 		if(ret == false)
 		{
@@ -52,51 +37,14 @@ public class SurveillanceServiceImpl extends BaseService implements Surveillance
 		return ret;
 	}
 
-	@Override
-	public boolean getSwitches(List<CategoryNodeTbl> switchesInfo) {
-		
-		boolean ret = false;
-		
-		ret = surveillanceDao.getSwitches(switchesInfo);
-		
-		if(ret == false)
-		{
-			logger.error("fail of get menu Id");
-		}
-		
-		return ret;
-	}
+
 
 	@Override
-	public boolean getServers(List<CategoryNodeTbl> serversInfo) {
+	public Integer getCount(Integer categoryId) 
+	{
 		
-		boolean ret = false;
+		return surveillanceDao.getCount(categoryId);
 		
-		ret = surveillanceDao.getServers(serversInfo);
-		
-		if(ret == false)
-		{
-			logger.error("fail of get menu Id");
-		}
-		
-		return ret;
 	}
-
-	
-
-	/*@Override
-	public boolean getAllAssetList(List<AssetsTbl> CatagoryList) {
-		
-		boolean ret = false;
-		
-		ret = assetsDao.getAllAssetList(CatagoryList);
-		
-		if(ret == false)
-		{
-			logger.error("fail of get menu Id");
-		}
-		
-		return ret;
-	}*/
 
 }
