@@ -28,10 +28,65 @@
 		/*노드 정보 갖고오기  */
 		getNodeTotalList(searchNodeLists, "orderBy=id&limit=0");
 		
+		getNodeLabelTotalList(searchNodeLabels);
 		
 		
 		
 	});
+
+function getNodeLabelTotalList(){
+	
+	$.ajax({
+		type : 'get',
+		url : '<c:url value="/getSurveillanceCategories.do" />',
+		dataType : 'json',
+		async : false,
+		contentType : 'application/json',
+		error : function(data) {
+			alert('모든 카테고리 정보 가져오기 실패');
+		},
+		success : function(data) {
+			console.log("-----------getNodeLabelTotalList-----------");
+			console.log(data);
+			
+			for(var i in data["CategoriesItem"]){
+				
+				alert(data["CategoriesItem"][i]["categoryid"]);
+ 				var  categoryid = data["CategoriesItem"][i]["categoryid"];
+				
+				getCount(categoryid);
+			}
+			
+		}
+	});
+}
+
+
+
+
+
+
+function getCount(categoryid){
+
+	$.ajax({
+		type : 'get',
+		url : '<c:url value="/Categories/getCount.do" />',
+		data: 'categoryid='+categoryid,
+		dataType : 'json',
+		async : false,
+		contentType : 'application/json',
+		error : function(data) {
+			alert('모든 카테고리 정보 가져오기 실패');
+		},
+		success : function(data) {
+			console.log("-----------getCount ID-----------"+categoryid);
+			console.log(data);
+		}
+	}); 
+	
+	
+	
+}
 
 	/* 감시대상목록 */
 	function searchNodeLists(jsonObj) {
@@ -44,6 +99,19 @@
 		
 		$('#indexNodeList').append(str);
 		$('#id').append(str);
+	}
+	
+	/* 노드목록 */
+	function searchNodeLabels(jsonObj) {
+		$('#nodeLabel').empty();
+		
+		var str = getNodeLablelistJsonObj(jsonObj);
+		
+		$('#nodeLabel').append(str);
+	}
+	
+	function getNodeLablelistJsonObj(jsonObj){
+		
 	}
 	
 	//서비스 리스트 가져오기
@@ -323,6 +391,16 @@
 										나의 알림 <a  style="margin-left: 16px;" class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/notimng/mynoti.do" />">확인</a><br />
 										 모든 알림<a style="margin-left: 20px;"  class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/notimng/allnoti.do" />">확인</a><br />
 									</div>
+								</div>
+							</div>
+							<div class="row-fluid">
+								<div class="span12">
+									<h4>노드 목록</h4>
+								</div>
+							</div>
+							<div class="well well-small">
+								<div class="row-fluid">
+									<div class="span12" id="nodeLabel"></div>
 								</div>
 							</div>
 						</div>
