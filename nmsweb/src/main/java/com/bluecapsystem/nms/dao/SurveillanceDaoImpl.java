@@ -1,13 +1,16 @@
 package com.bluecapsystem.nms.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Repository;
 
 import com.bluecapsystem.frm.BaseDao;
-import com.bluecapsystem.nms.dto.CategoryNodeTbl;
+import com.bluecapsystem.nms.dto.AssetsTbl;
+import com.bluecapsystem.nms.dto.CategoriesTbl;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 
@@ -22,19 +25,18 @@ public class SurveillanceDaoImpl extends BaseDao implements SurveillanceDao
 		super.setSqlMapClient(sqlMapClient);
 	}
 
-	
 	@Override
-	public boolean getNodeId(List<CategoryNodeTbl> nodeId) {
+	public boolean getCategoriesName(List<CategoriesTbl> CategoriesItem) {
 		
 		boolean ret = false;
 		
-		String sqlMapId = "com.bluecapsystem.nms.surveillance.getNodeId";
+		String sqlMapId = "com.bluecapsystem.nms.surveillance.getCategoriesName";
 		
-		List<CategoryNodeTbl> nodeIds 	= null;
+		List<CategoriesTbl> Categories 	= null;
 		
 		try
 		{
-			nodeIds = (List<CategoryNodeTbl>) super.getSqlMapClientTemplate().queryForList(sqlMapId);
+			Categories = (List<CategoriesTbl>) super.getSqlMapClientTemplate().queryForList(sqlMapId);
 			ret = true;
 		}catch(Exception ex)
 		{
@@ -42,75 +44,41 @@ public class SurveillanceDaoImpl extends BaseDao implements SurveillanceDao
 			ret = false;
 		}finally
 		{
-			if(nodeIds != null)
+			if(Categories != null)
 			{
-				nodeId.addAll(nodeIds);
+				CategoriesItem.addAll(Categories);
 			}
 		}
 		return ret;
 	}
 
-	
-	
-	
-	
-	
-	
 	@Override
-	public boolean getRouters(List<CategoryNodeTbl> routersInfo) {
-		return false;
-	}
-
-	@Override
-	public boolean getSwitches(List<CategoryNodeTbl> switchesInfo) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean getServers(List<CategoryNodeTbl> serversInfo) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-
-
-
-
-	
-
-
-	/*@Override
-	public boolean fieldSearch(List<AssetsTbl> CatagoryList) {
-		boolean ret = false;
-		String sqlMapId = "com.bluecapsystem.nms.assets.getAllAssetList";
+	public Integer getCount(Integer categoryId) 
+	{
+		Integer count = null;
 		
-		List<AssetsTbl> CatagoryLists 	= null;
+		String sqlMapId = "com.bluecapsystem.nms.surveillance.getCount";
+		
+		System.out.println("-----------SurveillanceDaoImpl------------");
+		System.out.println(categoryId);
+		
+		Map<String, Object>	params = new HashMap<String,Object>();
+		
+		
+		params.put("categoryid", categoryId);
 		
 		try
 		{
-			CatagoryLists = (List<AssetsTbl>) super.getSqlMapClientTemplate().queryForList(sqlMapId);
-			ret = true;
+			count = (Integer) super.getSqlMapClientTemplate().queryForObject(sqlMapId, params);
+			
+			logger.debug(String.format("getCount result ==> %d", count));
 		}catch(Exception ex)
 		{
 			logger.error(ex.getMessage());
-			ret = false;
-		}finally
-		{
-			if(CatagoryLists != null)
-			{
-				CatagoryList.addAll(CatagoryLists);
-			}
+			count = null;
 		}
-		return ret;
-	}*/
-
-
-
-	
-
-	
+		return count;
+	}
 	
 }
 
