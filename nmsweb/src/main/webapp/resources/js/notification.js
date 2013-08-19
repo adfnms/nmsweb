@@ -665,7 +665,7 @@ function userNotiListjsonObj(jsonObj) {
 	} else {
 		/*************************************************************************************************************************************************************************************/
 		/************************Get @severity  from event****************************/
-		var eventId = userObj[i]["eventid"];
+		var eventId = userObj["eventid"];
 		
 		var statusProgress = "";
 		var stat = "";
@@ -768,8 +768,7 @@ function userNotiListjsonObj(jsonObj) {
 	$("#userTable").append(TBODYobj);
 }
 //전체 공지 정보 가져오기
-/**===============================================================================================2013-08-13
- * 메뉴의 [Home] -> [알림 정보]란의 [모든 알림] 옆 [확인]을 클릭 시 새로 생성된 표의 내용들
+/* 메뉴의 [Home] -> [알림 정보]란의 [모든 알림] 옆 [확인]을 클릭 시 새로 생성된 표의 내용들
  * @param jsonObj
  */
 function totalNotiListjsonObj(jsonObj) {
@@ -777,10 +776,42 @@ function totalNotiListjsonObj(jsonObj) {
 	var str = "";
 
 	console.log(jsonObj);
-	
+	/*********************************************************/
+	var TRobj = $("<tr></tr>");
+	var TDobj = $("<td></td>");
+	var ATDobj = $("<td></td>");
+	var DIVobj = $("<div></div>");
+	var ADIVobj = $("<div></div>");
+	var BDIVobj = $("<div></div>");
+	var CDIVobj = $("<div></div>");
+	var DDIVobj = $("<div></div>");
+	var EDIVobj = $("<div></div>");
+	var Aobj = $("<a></a>");
+	var TBODYobj = $("<tbody></tbody>");
+	var H4obj = $("<h4></h4>");
+	/*********************************************************/
 	
 	var userObj = jsonObj["notifications"];
 	if(userObj.length >=1){
+		TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.clone().append(
+						H4obj.clone().text("ID")
+					),
+					TDobj.clone().append(
+						H4obj.clone().text("EventID")
+					),
+					TDobj.clone().append(
+						H4obj.clone().text("Status")
+					),
+					TDobj.clone().append(
+						H4obj.clone().text("PageTime")
+					),
+					TDobj.clone().append(
+						H4obj.clone().text("Message")
+					)
+				)	
+			);
 		for ( var i in userObj) {
 			
 			var eventId = userObj[i]["eventid"];
@@ -827,8 +858,37 @@ function totalNotiListjsonObj(jsonObj) {
 			
 			
 			str += "<tr>";
-			
-			//str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";
+			/************************************************************************************************************************************************************************/
+			TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.attr("class", "span1").clone().append(
+						Aobj.attr("class", "accordion-toggle").attr("data-toggle","collapse").attr("data-parent","#accordion2").attr("href", "#total" + userObj[i]["notifyid"]).attr("onclick", "showTotalNotiInfoDiv(" + userObj[i]["notifyid"] + "," + userObj[i]["eventid"] + ")").clone().text(userObj[i]["notifyid"])	
+					),
+					TDobj.attr("class", "span1").clone().append(
+						Aobj.attr("class", "accordion-toggle").attr("data-toggle","collapse").attr("data-parent","#accordion2").attr("href", "#total" + userObj[i]["notifyid"]).attr("onclick", "showTotalEventInfoDiv(" + userObj[i]["notifyid"] + "," + userObj[i]["eventid"] + ")").clone().text(userObj[i]["eventid"])	
+					),
+					TDobj.attr("class", "span2").clone().append(
+						DIVobj.attr("class", "progress progress-striped active  " + statusProgress + "").attr("style", "margin-bottom: 0px;width: 130px;").clone().append(
+							ADIVobj.attr("class", "bar").attr("style", "width:100%").clone().text(stat)
+						)	
+					),
+					TDobj.attr("class", "span2").clone().text(new Date(userObj[i]["pagetime"]).format('yy-MM-dd hh:mm:ss')),
+					TDobj.attr("class", "span6").clone().text(userObj[i]["textmsg"])
+				),
+				TRobj.clone().append(
+					ATDobj.attr("colspan", "5").clone().append(
+						BDIVobj.attr("class", "accordion-group").clone().append(
+							CDIVobj.attr("id", "total" + userObj[i]["notifyid"]).attr("class", "accordion-body collapse").clone().append(
+								DDIVobj.attr("class", "accordion-inner").clone().append(
+									EDIVobj.attr("class", "row-fluid").clone().text("")
+								)
+							)
+						)
+					)
+				)
+			);
+			/************************************************************************************************************************************************************************/
+			/*//str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";
 			str += "	<td class=\"span1\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\"  href=\"#total"+userObj[i]["notifyid"]+"\" onclick=\"showTotalNotiInfoDiv("+userObj[i]["notifyid"]+","+userObj[i]["eventid"]+");\">";
 			str += userObj[i]["notifyid"];											//notifyid
 			str += "	</a></td>";
@@ -862,12 +922,91 @@ function totalNotiListjsonObj(jsonObj) {
 			str += "			</div>";
 			str += "		</div>";
 			str += "	</div>";
-			str += "</td></tr>";
+			str += "</td></tr>";*/
 			
 		}
 		
 	}else{
-		str += "<tr>";
+		/************************Get @severity  from event****************************/
+		var eventId = userObj["eventid"];
+		var statusProgress = "";
+		var stat = "";
+		$.ajax({
+			type : 'get',
+			url : '/' + version + '/events',
+			dataType : 'json',
+			data : encodeURI("query=this_.eventId  = '"+eventId+"'"),
+			async: false,
+			contentType : "application/json;charset=UTF-8", 
+			error : function(data) {
+				//console.log(data);
+				console.log(data);
+				alert('심각도 가져오기 서비스 실패');
+			},
+			success : function(data) {
+				stat = data["event"]["@severity"];
+				if(stat=="CRITICAL"){
+					 statusProgress = "progress-danger";
+				}
+				else if(stat=="MAJOR"){
+					 statusProgress = "progress-caution";						
+				}
+				else if(stat=="MINOR"){
+					 statusProgress = "progress-warning";
+				}
+				else if(stat=="WARNING"){
+					 statusProgress = "progress-gray";
+				}
+				else if(stat=="NORMAL"){
+					 statusProgress = "progress-info";
+				}
+				else if(stat=="CLEARED"){
+					 statusProgress = "progress";
+				}
+				else if(stat=="INDETERMINATE"){
+					 statusProgress = "progress-success";
+				}
+			}
+
+		});
+		/************************Get @severity  from event****************************/
+		TBODYobj.append(
+			TRobj.clone().append(
+				TDobj.clone().append(
+					H4obj.clone().text("ID")
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("EventID")
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("Status")
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("PageTime")
+				),
+				TDobj.clone().append(
+					H4obj.clone().text("Message")
+				)
+			),
+			TRobj.clone().append(
+				TDobj.attr("class", "span1").clone().append(
+					Aobj.attr("href", "/" + version + "/admin/setting/notificationDetali.do?notifyid=" + userObj["notifyid"] + "&eventId=" + userObj["eventid"]).clone().text(userObj["notifyid"])	
+				),
+				TDobj.attr("class", "span1").clone().append(
+					Aobj.attr("href", "/" + version + "/search/event/eventDesc.do?eventId=" + userObj["eventid"]).clone().text(userObj["eventid"])	
+				),
+				TDobj.attr("class", "").clone().append(
+					DIVobj.attr("class", "progress progress-striped active  " + statusProgress + "").attr("style", "margin-bottom: 0px;width: 130px;").clone().append(
+						ADIVobj.attr("class", "bar").attr("style", "width:100%").clone().text(stat)
+					)	
+				),
+				TDobj.attr("class", "span2").clone().text(new Date(userObj["pagetime"]).format('yy-MM-dd hh:mm:ss')),
+				TDobj.attr("class", "span6").clone().text(userObj["textmsg"])
+			)
+		);
+		/*************************************************************************************************************************************************************************************/
+		
+		/*str += "<tr>";
 		
 		str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj["notifyid"]+"&eventId="+userObj["eventid"]+"'>";										
 		str += userObj["notifyid"];											//notifyid
@@ -890,24 +1029,76 @@ function totalNotiListjsonObj(jsonObj) {
 		str += "	</td>";
 		
 		str += "</tr>";
-		
+		*/
 	}
-	$("#totalTable").append(str);
+	$("#totalTable").append(TBODYobj);
+	//$("#totalTable").append(str);
 	
 }
 /*
  * 메뉴의 [Home] -> [알림 정보]란의 [모든 알림] 옆 [확인]을 클릭 시 새로 생성된 표의 내용들 중 [ID] 항목을 클릭 시 새로 생성된 삽입창의 내용들
  */
 function notifiInfo(jsonObj){
-	
-	
+	console.log('---------------------------------jsonObj["ipAddress"]---------------------------------------');
+	console.log(jsonObj["ipAddress"]);
+	console.log(jsonObj);
+	/*********************************************************/
+	var TRobj = $("<tr></tr>");
+	var THobj = $("<th></th>");
+	var TDobj = $("<td></td>");
+	var DIVobj = $("<div></div>");
+	var Aobj = $("<a></a>");
+	var TABLEobj = $("<table></table>");
+	/*********************************************************/	
 	
 	/*var notifiInfoStr = '<div class="row-fluid">'+
 						'	<div class="span12">'+
 						'		<h5>공지&nbsp;상세&nbsp;정보</h5>'+
 						'	</div>'+
 						'</div>'+*/
-var notifiInfoStr ='<div class="row-fluid">'+
+	/****************************************************************************************************************************************************************************************************************************************/
+	var notifiInfoStr = DIVobj.attr("class", "row-fluid").append(
+							DIVobj.attr("class", "span12 well well-small").clone().append(
+								TABLEobj.attr("class", "table table-striped").clone().append(
+									TRobj.clone().append(
+										THobj.clone().text("Notification Time"),
+										TDobj.clone().text(new Date(jsonObj["pageTime"]).format('yy-MM-dd hh:mm:ss')),
+										THobj.clone().text("노드"),
+										TDobj.clone().append(
+											Aobj.attr("href", "/" + version+"/search/node/nodeDesc.do?nodeId=" + jsonObj["nodeId"]).clone().text(jsonObj["nodeLabel"])
+										)
+									),
+									TRobj.clone().append(
+										TDobj.clone().append(
+											Aobj.attr("class", "text-error").attr("href", "/" + version + "/admin/setting/notificationDetali/outages.do?nodeId=" + jsonObj["nodeId"] + "&nodeLabel=" + jsonObj["nodeLabel"]).clone().text("See outages for " + jsonObj["ipAddress"])
+										),
+										THobj.clone().text(""),
+										THobj.clone().text("인터페이스"),
+										TDobj.clone().append(
+											Aobj.attr("href", "/" + version + "/search/node/interfaceDesc.do?nodeId=" +jsonObj["nodeId"]+"&intf="+jsonObj["ipAddress"]).clone().text(jsonObj["ipAddress"])	
+										)
+									)
+								)	
+							),
+							DIVobj.attr("class", "span12 well well-small").attr("style", "margin-left:0px").clone().append(
+								TABLEobj.attr("class", "table table-striped").clone().append(
+									TRobj.clone().append(
+										THobj.clone().append("Uei"),
+										TDobj.clone().append(jsonObj["uei"])
+									),
+									TRobj.clone().append(	
+										THobj.clone().append("numericMessage"),
+										TDobj.clone().append(jsonObj["numericMessage"])
+									),
+									TRobj.clone().append(
+										THobj.clone().append("textMessage"),
+										TDobj.clone().append(jsonObj["textMessage"])
+									)
+								)
+							)
+						);
+	/****************************************************************************************************************************************************************************************************************************************/
+	/*var notifiInfoStr ='<div class="row-fluid">'+
 						'	<div class="span12 well well-small">'+
 						'	<table class="table table-striped">'+
 						'		<tr>'+
@@ -940,23 +1131,23 @@ var notifiInfoStr ='<div class="row-fluid">'+
 						'	</div>'+
 						'</div>'+
 						'<div class="row-fluid">'+
-						'<div class="span12  well well-small">'+
-						'	<table class="table table-striped">'+
-						'		<tr>'+
+						'	<div class="span12  well well-small">'+
+						'		<table class="table table-striped">'+
+						'			<tr>'+
 						'			<th>Uei</th>'+
 						'			<td>'+jsonObj["uei"]+'</td>'+
-						'		</tr>'+
-						'		<tr>'+
+						'			</tr>'+
+						'			<tr>'+
 						'			<th>numericMessage</th>'+
 						'			<td>'+jsonObj["numericMessage"]+'</td>'+
-						'		</tr>'+
-						'		<tr>'+
+						'			</tr>'+
+						'			<tr>'+
 						'			<th>textMessage</th>'+
 						'			<td>'+jsonObj["textMessage"]+'</td>'+
-						'		</tr>'+
-						'	</table>'+
-						'</div>'+
-						'</div>';
+						'			</tr>'+
+						'		</table>'+
+						'	</div>'+
+						'</div>';*/
 	
 	return notifiInfoStr;	
 
@@ -1008,26 +1199,42 @@ var notifiInfoStr ='<div class="row-fluid">'+
 }*/
 
 
-//메뉴의 [운영관리] -> [알림] -> [알림 설정] -> [수정]의 [event List]표의 내용
+//메뉴의 [운영관리] -> [알림] -> [알림 설정] -> [수정]의 [Event List]표의 내용
 function getEventJsonObj(jsonObj){
 	
 	var str = "";
-
 	var eventObj = jsonObj["event"]; 
-	
+	/********************************************/
+	var TRobj = $("<tr></tr>");
+	var TDobj = $("<td></td>");
+	var TBODYobj = $("<tbody></tbody>");
+	var Bobj = $("<b></b>");
+	/********************************************/
 	 if(eventObj.length > 1){
-	
+		 	
+		TBODYobj.append(
+			TRobj.clone().append(
+				Bobj.clone().text("Event List")
+			)
+		);
 		for ( var i in  eventObj){
 			
-			str += "<tr>";
+			/*********************************************************************************************************************************/
+			TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.attr("class", "span1").attr("onclick", "javascript:setDestination('"+eventObj[i]["uei"]+","+eventObj[i]["event-label"] + "')").clone().text(" " + eventObj[i]["event-label"])
+				)
+			);
+			/*********************************************************************************************************************************/
+			/*str += "<tr>";
 			str += "	<td class=\"span1\" onclick=\"javascript:setDestination('"+eventObj[i]["uei"]+","+eventObj[i]["event-label"]+"');\">";										
 			str += "&nbsp;"+eventObj[i]["event-label"];												//event-label
 			str += "	</td>";				
-			str += "</tr>";
+			str += "</tr>";*/
 			
 		}
 	
-	 $("#eventListTable").append(str);
+	 $("#eventListTable").append(TBODYobj);
 }
 }
 
@@ -1055,14 +1262,30 @@ function getEventJsonObj(jsonObj){
 function pathsNameStr(jsonObj){
 	
 	var str = "";
-
 	var pathsObj = jsonObj["path"];
 	
+	/********************************************/
+	var TRobj = $("<tr></tr>");
+	var TDobj = $("<td></td>");
+	var TBODYobj = $("<tbody></tbody>");
+	var Aobj = $("<a></a>");
+	/********************************************/
 	if(pathsObj.length > 1){
 	
 		for ( var i in pathsObj) {
-			
-			
+			/*****************************************************************************************************************************************************************************************************************/
+			TBODYobj.append(
+				TRobj.clone().append(
+					TDobj.attr("style", "width:500px").clone().text(pathsObj[i]["name"]),
+					TDobj.clone().append(
+						Aobj.attr("type", "button").attr("class", "btn btn-warning accordion-toggle").attr("data-toggle", "collapse").attr("data-parent", "#accordion3").attr("onclick", "javascript:modifyPath('"+pathsObj[i]["name"]+"')").attr("href", "#collapseThree").clone().text("수정")
+					),
+					TDobj.clone().append(
+						Aobj.attr("type", "button").attr("class", "btn btn-danger").attr("onclick", "javascript:deletePath('"+pathsObj[i]["name"]+"')").clone().text("삭제")
+					)
+				)
+			);
+			/*****************************************************************************************************************************************************************************************************************/
 			str += "<tr>";
 			str += "	<td style=\"width: 330px;\">";
 			str += pathsObj[i]["name"];
@@ -1077,6 +1300,19 @@ function pathsNameStr(jsonObj){
 			str += "</tr>";
 			}
 	}else{
+		/*****************************************************************************************************************************************************************************************************************************2013-08-19************/
+		TBODYobj.append(
+			TRobj.clone().append(
+				TDobj.text(pathsObj[i]["name"]),
+				TDobj.clone().append(
+					Aobj.attr("type", "button").attr("class", "btn btn-success").attr("data-parent", "#accordion3").attr("onclick", "javascript:modifyPath('"+pathsObj[i]["name"]+"')").attr("href", "#collapseThree").clone().text("수정")
+				),
+				TDobj.clone().append(
+					Aobj.attr("type", "button").attr("class", "btn btn-danger").attr("onclick", "javascript:deletePath('"+pathsObj[i]["name"]+"')").clone().text("삭제")
+				)
+			)
+		);
+		/*****************************************************************************************************************************************************************************************************************************/
 		str += "<tr>";
 		str += "	<td>";
 		str += pathsObj[0]["name"];
@@ -1090,8 +1326,8 @@ function pathsNameStr(jsonObj){
 		str += "</tr>";
 	}
 
-	$("#PathsTable").append(str);
-	
+	//$("#PathsTable").append(str);
+	$("#PathsTable").append(TBODYobj);
 	
 }
 
