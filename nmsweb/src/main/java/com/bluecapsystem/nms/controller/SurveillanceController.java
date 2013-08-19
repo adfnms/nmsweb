@@ -11,9 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bluecapsystem.nms.dto.CategoryNodeTbl;
+import com.bluecapsystem.nms.dto.CategoriesTbl;
 import com.bluecapsystem.nms.service.SurveillanceService;
 
 
@@ -36,8 +37,8 @@ public class SurveillanceController
 	
 	
 	
-	@RequestMapping(value = "/getSurveillance", method = RequestMethod.GET)
-	public ModelAndView getSurveillance(HttpServletRequest request, HttpServletResponse response)
+	@RequestMapping(value = "/getSurveillanceCategories")
+	public ModelAndView getSurveillanceCategories(HttpServletRequest request, HttpServletResponse response)
 	{
 		
 		boolean isSuccess = false;
@@ -45,51 +46,61 @@ public class SurveillanceController
 		
 		ModelAndView model =  new ModelAndView();
 		
-		/*List<CategoryNodeTbl> routersInfo = new ArrayList<CategoryNodeTbl>();
-		List<CategoryNodeTbl> switchesInfo = new ArrayList<CategoryNodeTbl>();
-		List<CategoryNodeTbl> serversInfo = new ArrayList<CategoryNodeTbl>();
+		List<CategoriesTbl> CategoriesItem = new ArrayList<CategoriesTbl>();
 		
-		if(surveillanceService.getRouters(routersInfo)==false){
-				errorMessage = "Surveillance 검색 실패";
-			
-			isSuccess = true;
+		if(surveillanceService.getCategoriesName(CategoriesItem) == false)
+		{
+			errorMessage = " CategoriesItem 목록 조회 실패";
 		}
-		if(surveillanceService.getSwitches(switchesInfo)==false){
-			errorMessage = "Surveillance 검색 실패";
-	
-			isSuccess = true;
-		}
-		if(surveillanceService.getServers(serversInfo)==false){
-			errorMessage = "Surveillance 검색 실패";
+		model.addObject("CategoriesItem", CategoriesItem);
 		
-			isSuccess = true;
-		}*/
+		model.setViewName("jsonView");
 		
-		
-		List<CategoryNodeTbl> nodeId = new ArrayList<CategoryNodeTbl>();
-		
-		if(surveillanceService.getNodeId(nodeId)==false){
-			errorMessage = "nodeId 검색 실패";
-		}
-		
-		System.out.println("---------------------------------------");
-		for( int i=0 ; i < nodeId.size(); i++)
-    	{
-			System.out.println(nodeId.get(i).getNodeid());
-    	}
-		System.out.println("---------------------------------------");
-		
-		model.addObject("nodeId", nodeId);
 		isSuccess = true;
-		
+
 		model.addObject("isSuccess", isSuccess);
 		model.addObject("errorMessage", errorMessage);
-		model.setViewName("jsonView");
 		
 		return model;
 	}
 	
 	
+	@RequestMapping(value = "/Categories/getCount")
+	public ModelAndView getCount(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "categoryid", required = false)Integer categoryId) 
+	{
+		
+		boolean isSuccess = false;
+		String errorMessage = "";
+		
+		ModelAndView model =  new ModelAndView();
+		
+		
+		
+		System.out.println("-----------categoryid------------");
+		System.out.println(categoryId);
+		
+		Integer categoriesCount = surveillanceService.getCount(categoryId);
+		
+		if(categoriesCount == null)
+		{
+			errorMessage = " CategoriesCount 목록 조회 실패";
+		}
+		model.addObject("CategoriesCount", categoriesCount);
+		
+		model.setViewName("jsonView");
+		
+		isSuccess = true;
 
+		model.addObject("isSuccess", isSuccess);
+		model.addObject("errorMessage", errorMessage);
+		
+		return model;
+	}
+	
+	
+	
+	
+	
 	
 }
