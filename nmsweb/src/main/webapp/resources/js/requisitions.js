@@ -1,7 +1,3 @@
-//2013-08-14
-
-
-
 /**
  *  add Node Popup
  */
@@ -9,19 +5,13 @@ function addNodePop(){
 	
 	$("#requisitionsBox").show();
 	
-	
 	getTotalRequisitionsList(getTotalRequisitions);
-	
 	
 	/*var settings ="toolbar=no ,width=350 ,height=205 ,directories=no,status=no,scrollbars=no,menubar=no";
 	var winObject = window.open("/" + version + "/admin/addNode.pop", "addNodePop", settings);
 	winObject.focus();*/	
 
 }
-/**
- *  add Node Popup
- */
-
 
 function getTotalRequisitionsList(callback) {
 
@@ -34,14 +24,37 @@ function getTotalRequisitionsList(callback) {
 			alert('필요조건 리스트 가져오기 서비스 실패');
 		},
 		success : function(data) {
-			// 콜백함수
 			if (typeof callback == "function") {
 				callback(data);
 			}
 		}
 	});
-
 }
+
+function delRequisition(nodeNm) {
+	if (nodeNm == ""){
+		alert("노드가 없습니다.");
+		return;
+	}
+	
+	if(!confirm("정말 삭제하시겠습니까?")){
+		return;
+	}
+	
+	$.ajax({
+		type : 'delete',
+		url : '/' + version + '/requisitions/' + nodeNm,
+		datatype : 'json',
+		contentType : 'application/json',
+		error : function(data) {
+			alert("노드 [" + nodeNm + "] 삭제 실패");
+		},
+		success : function(data) {
+			getTotalRequisitionsList(getTotalRequisitions);
+		}
+	});
+}
+
 function addRequisition() {
 	getTotalRequisitionsList(getTotalRequisitions);
 }
@@ -59,7 +72,8 @@ function resetRequisition() {
 
 //메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 사 새로 생성된 하단부 리스트
 function getTableToRequisitionsJsonObj(jsonObj) {
-	
+	console.log("---------------getTableToRequisitionsJsonObj--------------");
+	console.log(jsonObj);
 	var requisitionObj = jsonObj["model-import"];
 	var str = "";
 	
@@ -142,7 +156,7 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		
 		str += "<tr>";
 		str += "<div id= 'deleteButton'>";
-		str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition();">노드 삭제</button></td>';
+		str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\''+requisitionObj[i]["@foreign-source"]+'\');">노드 삭제</button></td>';
 		str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-800px" title="" onclick="javascript:synRequisition();">동기화</button></td>';
 		str += "</div>";
 		str += "</tr>";
