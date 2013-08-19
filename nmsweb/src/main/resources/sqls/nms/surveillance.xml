@@ -3,22 +3,65 @@
 
 <sqlMap namespace="com.bluecapsystem.nms.surveillance">
 
-
-
-	<select id="getNodeId" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.CategoryNodeTbl">
+<!-- 	<select id="getNodeId" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.CategoryNodeTbl">
 		SELECT 
-			
-			DISTINCT  
-			NODEID as nodeid 
-  		
+				DISTINCT  
+				NODEID AS nodeid 
   		FROM 
-  			CATEGORY_NODE;
-		
+	  			CATEGORY_NODE;
+	</select> -->
+	
+ 	<select id="getCount"  parameterClass="java.util.Map" resultClass="java.lang.Integer">
+		SELECT 
+				COUNT(CATEGORYID) as count
+		FROM 
+				(SELECT
+						CS.CATEGORYID,
+						CATEGORYNAME,
+						NODEID
+				FROM 
+						CATEGORIES CS
+				INNER JOIN 
+						CATEGORY_NODE CN 
+				ON  
+						CN.CATEGORYID = CS.CATEGORYID) 
+		AS 
+				CNT
+				
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="categoryid">
+					CATEGORYID = #categoryid#
+			</isNotEmpty>
+         </dynamic>		
 	</select>
 	
-	
+	<!-- <select id="getNodeLabel" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.CategoryNodeTbl">
+		SELECT	
+				CN.CATEGORYID,
+				N.NODELABEL
+		FROM 	
+				CATEGORY_NODE CN
+		INNER JOIN 
+				NODE N 
+		ON 
+				CN.NODEID = N.NODEID
+		WHERE
+				CATEGORYID = #categoryid#;
+	</select> -->
 
+	<select id="getCategoriesName" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.CategoriesTbl">
 	
+	SELECT 
+		
+		categoryid AS categoryid,
+		categoryname AS categoryname, 
+		categorydescription AS categorydescription
+ 	
+ 	FROM 
+ 		
+ 		categories;
+
+	</select>
 	
 	
 	
