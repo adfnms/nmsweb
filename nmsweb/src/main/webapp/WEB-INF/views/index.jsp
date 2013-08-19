@@ -51,10 +51,10 @@ function getNodeLabelTotalList(){
 			
 			for(var i in data["CategoriesItem"]){
 				
-				alert(data["CategoriesItem"][i]["categoryid"]);
  				var  categoryid = data["CategoriesItem"][i]["categoryid"];
+				var categoryname = data["CategoriesItem"][i]["categoryname"];
 				
-				getCount(categoryid);
+				getCount(categoryid,categoryname);
 			}
 			
 		}
@@ -66,7 +66,7 @@ function getNodeLabelTotalList(){
 
 
 
-function getCount(categoryid){
+function getCount(categoryid,categoryname){
 
 	$.ajax({
 		type : 'get',
@@ -81,6 +81,17 @@ function getCount(categoryid){
 		success : function(data) {
 			console.log("-----------getCount ID-----------"+categoryid);
 			console.log(data);
+			
+			 var str = ""; 
+			str += '	<tr>';
+			str += '		<th><a href="<c:url value="/category/nodeList?cateNm=" />'+categoryid+'">' + categoryname + '</a></th>';
+			str += '		<th class="text-error">&nbsp;&nbsp;&nbsp;&nbsp;'+ data["CategoriesCount"] + '</th>';
+			str += '	</tr>';
+
+				$('#surveillenceLabel').append(str); 
+			 
+			 
+			 
 		}
 	}); 
 	
@@ -307,13 +318,6 @@ function getCount(categoryid){
 			}
 		}
 		
-		
-		
-		
-		
-		
-		
-		
 	}//******//24시간 가용률 , 카테고리 정보 ****************/
 	
 	
@@ -395,12 +399,20 @@ function getCount(categoryid){
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<h4>노드 목록</h4>
+									<h4>surveillence</h4>
 								</div>
 							</div>
 							<div class="well well-small">
 								<div class="row-fluid">
-									<div class="span12" id="nodeLabel"></div>
+									<div class="span12"  >
+											<table class="table table-striped " id="surveillenceLabel">
+												<tr>
+													<th>카테고리</th>
+													<th>장애 서비스</th>
+												</tr>
+											
+											</table>
+									</div>
 								</div>
 							</div>
 						</div>
