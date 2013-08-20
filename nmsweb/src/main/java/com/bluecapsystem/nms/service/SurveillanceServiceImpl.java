@@ -31,7 +31,7 @@ public class SurveillanceServiceImpl extends BaseService implements Surveillance
 		
 		if(ret == false)
 		{
-			logger.error("fail of get menu Id");
+			logger.error("fail of get CategoriesName");
 		}
 		
 		return ret;
@@ -45,6 +45,24 @@ public class SurveillanceServiceImpl extends BaseService implements Surveillance
 		
 		return surveillanceDao.getCount(categoryId);
 		
+	}
+
+
+
+	@Override
+	public boolean getRegNodeList(Integer categoryId, List<CategoriesTbl> RegNodeItems) {
+
+		boolean ret = false;
+		
+		ret = surveillanceDao.getRegNodeList(categoryId, RegNodeItems);
+		
+		if(ret == false)
+		{
+			logger.error("fail of get RegNodeList");
+		}
+		
+		return ret;
+	
 	}
 
 }

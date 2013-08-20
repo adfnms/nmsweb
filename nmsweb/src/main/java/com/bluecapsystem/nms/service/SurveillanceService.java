@@ -10,5 +10,5 @@ public interface SurveillanceService {
 	
 	Integer getCount(Integer categoryId);	
 	
-		
+	boolean getRegNodeList(Integer categoryId, List<CategoriesTbl> RegNodeItems);	
 }

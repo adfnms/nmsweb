@@ -261,7 +261,7 @@
 				$('#outageInfo').append("<strong><a class=text-error data-toggle=modal href='#myModal' onclick=\"javascript:outagePop('"+outageObj
 						[i]["outageid"]+"','"+outageObj[i]["ipaddr"]+"');\">" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>");
 			}
-		}
+		}​
 		
 	}//******//24시간 가용률 , 카테고리 정보 ****************/
 	
@@ -414,4 +414,5 @@
 		<button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
 	</div>
 </div>
+<!-- Modal -->
 </html>

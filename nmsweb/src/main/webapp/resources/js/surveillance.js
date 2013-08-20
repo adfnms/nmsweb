@@ -52,47 +52,73 @@ function countStr(jsonObj,categoryid,categoryname){
 	
 	var str = ""; 
 	str += '	<tr>';
-	str += '		<th><a href="<c:url value="/category/nodeList?cateNm=" />'+categoryid+'">' + categoryname + '</a></th>';
+	str += '		<th><a href=/'+version+'/surveillanceNode.do?categoryid='+categoryid+'&categoryname=' + categoryname + '>' + categoryname + '</a></th>';
 	str += '		<th class="text-error">&nbsp;&nbsp;&nbsp;&nbsp;'+ jsonObj["CategoriesCount"] + '개</th>';
 	str += '	</tr>';
 	return str;
 }
 
-
-
-
-
-/*surveillance 카테고리의 등록 노드 정보 갖고오기  */
-
-/*function getCount(callback,categoryid,categoryname){
+function getNodeToSurveillance(callback,categoryId){
 	
 	$.ajax({
 		type : 'get',
-		url : '/' + version + '/Categories/getCount.do',
-		data: 'categoryid='+categoryid,
+		url : '/' + version + '/getRegNodeList.do',
+		data: 'categoryid='+categoryId,
 		dataType : 'json',
 		async : false,
 		contentType : 'application/json',
 		error : function(data) {
-			alert('모든 카테고리 정보 가져오기 실패');
+			alert('등록된 노드 정보 가져오기 실패');
 		},
 		success : function(data) {
 			
-			if (typeof callback == "function") {
-				callback(data,categoryid,categoryname);
-			}
-		
 			
+			
+			if (typeof callback == "function") {
+				callback(data);
+			}
 		}
 	}); 
+	
 }
-*/
 
+function regNodeListStr(jsonObj){
+	console.log("---------getNodeToSurveillance--------");
+	console.log(jsonObj);
+	
+	if(jsonObj["RegNodeItems"].length==0){
+		$('#nodeListTable').empty();
+		var nodeObj = jsonObj["RegNodeItems"];
+		var str = "";
+		str += '<table class="table table-striped ">';
+		str += '	<tr>';
+		str += '		<td class="span3"></td>';
+		str += '		<td class="span6" style ="text-align: center;" >등록된 노드가 없습니다.</td>';
+		str += '		<td class="span3"></td>';
+		str += '	</tr>';
+		str += '</table>';
+		
+	}else{
+		$('#nodeListTable').empty();
+		
+		var nodeObj = jsonObj["RegNodeItems"];
+		var str = "";
+		str += '<table class="table table-striped" style="margin-bottom: -16px;">';
+		for( var i in nodeObj){
+			var status = Number(nodeObj[i]["nodelabel"]).toFixed(2) >= 100 ? "normal" :  "critical";
+			str += '	<tr >';
+			str += '		<td class="span2"></td>';
+			str += '		<td class="span3">노드 라벨&nbsp;:&nbsp;&nbsp;<a>'+nodeObj[i]["nodelabel"]+'</a></td>';
+			str += '		<td class="span3"> 노드 아이디&nbsp;:&nbsp;&nbsp;'+nodeObj[i]["nodeid"]+'</td>';
+			str += '	</tr>';
+		}
+		str += '</table>';
+		
+	}
 
+	return str;
 
-
-
-
+}
 
 
 

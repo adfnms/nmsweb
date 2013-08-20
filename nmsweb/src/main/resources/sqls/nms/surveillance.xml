@@ -64,6 +64,23 @@
 	</select>
 	
 	
+	<select id="getRegNodeList" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.CategoriesTbl">
+	
+		SELECT DISTINCT
+			nd.nodeid,
+			nd.nodelabel
+			
+		FROM 
+			category_node cn
+
+			
+		INNER 
+			JOIN node nd ON nd.nodeid = cn.nodeid
+			
+			where cn.categoryid=#categoryid#;
+
+	</select>
+	
 	
 	
 </sqlMap>

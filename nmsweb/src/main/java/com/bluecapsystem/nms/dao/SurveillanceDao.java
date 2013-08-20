@@ -11,4 +11,6 @@ public interface SurveillanceDao
 	boolean getCategoriesName(List<CategoriesTbl> CategoriesItem);	
 	
 	Integer getCount(Integer categoryId);
+
+	boolean getRegNodeList(Integer categoryId, List<CategoriesTbl> RegNodeItems);
 }

@@ -25,16 +25,48 @@ public class SurveillanceController
 	@Autowired
 	private SurveillanceService surveillanceService;
 	
-	@RequestMapping(value = "/surveillance", method = RequestMethod.GET)
-	public ModelAndView surveillance(HttpServletRequest request, HttpServletResponse response)
+	@RequestMapping(value = "/surveillanceNode")
+	public ModelAndView surveillance(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "categoryid", required = false)Integer categoryId,
+			@RequestParam(value = "categoryname", required = false)String categoryname)
 			
 	{
+		
 		ModelAndView model = new ModelAndView();
-		model.setViewName("/surveillance/surveillanceView");
+		model.addObject("categoryId", categoryId);
+		model.addObject("categoryname", categoryname);
+		model.setViewName("/surveillance/suveillanceNode");
 		
 		return model;
 	}
 	
+	@RequestMapping(value = "/getRegNodeList")
+	public ModelAndView getRegNodeList(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "categoryid", required = false)Integer categoryId)
+	{
+		
+		boolean isSuccess = false;
+		String errorMessage = "";
+		
+		ModelAndView model =  new ModelAndView();
+		
+		List<CategoriesTbl> RegNodeItems = new ArrayList<CategoriesTbl>();
+		
+		if(surveillanceService.getRegNodeList(categoryId,RegNodeItems) == false)
+		{
+			errorMessage = " CategoriesItem 목록 조회 실패";
+		}
+		model.addObject("RegNodeItems", RegNodeItems);
+		
+		model.setViewName("jsonView");
+		
+		isSuccess = true;
+
+		model.addObject("isSuccess", isSuccess);
+		model.addObject("errorMessage", errorMessage);
+		
+		return model;
+	}
 	
 	
 	@RequestMapping(value = "/getSurveillanceCategories")
@@ -74,11 +106,6 @@ public class SurveillanceController
 		String errorMessage = "";
 		
 		ModelAndView model =  new ModelAndView();
-		
-		
-		
-		System.out.println("-----------categoryid------------");
-		System.out.println(categoryId);
 		
 		Integer categoriesCount = surveillanceService.getCount(categoryId);
 		

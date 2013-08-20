@@ -59,9 +59,6 @@ public class SurveillanceDaoImpl extends BaseDao implements SurveillanceDao
 		
 		String sqlMapId = "com.bluecapsystem.nms.surveillance.getCount";
 		
-		System.out.println("-----------SurveillanceDaoImpl------------");
-		System.out.println(categoryId);
-		
 		Map<String, Object>	params = new HashMap<String,Object>();
 		
 		
@@ -78,6 +75,36 @@ public class SurveillanceDaoImpl extends BaseDao implements SurveillanceDao
 			count = null;
 		}
 		return count;
+	}
+
+	@Override
+	public boolean getRegNodeList(Integer categoryId, List<CategoriesTbl> RegNodeItems) {
+boolean ret = false;
+		
+		String sqlMapId = "com.bluecapsystem.nms.surveillance.getRegNodeList";
+		
+		List<CategoriesTbl> RegNodeList 	= null;
+		
+		Map<String, Object>	params = new HashMap<String,Object>();
+		
+		params.put("categoryid", categoryId);
+		
+		try
+		{
+			RegNodeList = (List<CategoriesTbl>) super.getSqlMapClientTemplate().queryForList(sqlMapId,params);
+			ret = true;
+		}catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+			ret = false;
+		}finally
+		{
+			if(RegNodeList != null)
+			{
+				RegNodeItems.addAll(RegNodeList);
+			}
+		}
+		return ret;
 	}
 	
 }
