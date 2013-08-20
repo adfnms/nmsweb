@@ -127,8 +127,6 @@
 		
 		var data = $("#userIdModiFrm").serialize();
 		
-		alert(data);
-		
 		frm.action = "/v1/admin/userMng/deleteToDb.do";
 	    frm.submit();
 	}

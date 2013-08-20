@@ -182,7 +182,6 @@ function setDestination(obj){
 	
  	function destinationPathInfo(userid){
  		
- 		//alert("destinationPathInfo : "+userid);
  		$("#userTr").html("<th class=\"span3 control-label text-success\">selected :"+userid+"</th>");
  		
  		

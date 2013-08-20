@@ -69,13 +69,10 @@ try{
 		
 		var data = $("#userInfoFrm").serialize();
 		
-		alert(data);
 		
 		frm.action = "/v1/admin/userMng/modifyToDb.do";
-		//frm.action = "<c:url value="/admin/userMng/modifyToDb.do"/>";
 		frm.submit();
 	    
-	   // $(location).attr('href', "/v1/admin/userMng.do");
 		
 	}
 	

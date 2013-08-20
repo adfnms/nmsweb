@@ -212,7 +212,6 @@ function saveMenuItems()
 			       			
 			       			for(var i = 0; i < res.menuItems.length; i++)
 				        	{
-				        		//alert("res.menuItems[i].menuId : "+res.menuItems[i].menuId);
 				        		
 				        		g_menuItems.setCheck(res.menuItems[i].menuId,true);
 				        	}	
@@ -299,7 +298,7 @@ function saveMenuItems()
    				contentType : 'application/json',
    				dataType:'json',
    				error : function(data) {
-   					//alert('그룹 내  사용자 삭제 실패');
+   					alert('그룹 내  사용자 삭제 실패');
    				},
    				success : function(data) {
    					deleteUserTbl(userName,groupName);

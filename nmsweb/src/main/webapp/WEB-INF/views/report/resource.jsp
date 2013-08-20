@@ -159,16 +159,12 @@
         		var beforeyear=beforeOneyear(); //일년전
                
         		if(value=="day"){
-        			//alert(beforeOneDay);
         			$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeOneDay+"</h5></div>");
         		}else if(value=="week"){
-        			//alert(beforeWeek);
         			$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeWeek+"</h5></div>");
         		}else if(value=="month"){
-        			 //alert(beforeMonth);
         			 $("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeMonth+"</h5></div>");
         		}else if(value=="year"){
-        			// alert(beforeyear);
         			 $("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeyear+"</h5></div>");
         		}
                goRelativeTime(value);

@@ -97,7 +97,6 @@
 	
 	function deleteGroup(name){
 		
-		alert(name);
 		
 		var option = confirm(" 삭제 하시겠습니까? ");
 		
@@ -135,16 +134,14 @@
 	}
 	
 	 function regGroupTbl(groupName,comments){
-		// alert("groupName : "+groupName);
-		// alert("comments : "+comments);
-		
-	      $.ajax({
+
+		 $.ajax({
 			type : 'get',
 			url : '<c:url value="/admin/groupMng/regGroup.do" />',
 			data: 'groupName='+groupName+'&comments='+comments,
 			contentType : 'application/json', 
 			error : function(data) {
-				//console.log(data);
+			
 				alert('그룹 등록 서비스 실패');
 			},
 			success : function(data) {

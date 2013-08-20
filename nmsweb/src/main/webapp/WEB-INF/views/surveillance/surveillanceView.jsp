@@ -113,11 +113,10 @@ function getCountNodes(hIdx, vIdx)
 					alert('노드 리스트 가져오기 서비스 실패');
 				},
 				success : function(data) {
-					console.log(data);////////////console/////////////
 		
  					if( data.nodeId.length >0) {
-				//	alert(data.nodeId.length);
-						for ( var i = 0; i < data.nodeId.length; i++) 
+
+ 						for ( var i = 0; i < data.nodeId.length; i++) 
 						{
 							nodeid=data.nodeId[i];
 							

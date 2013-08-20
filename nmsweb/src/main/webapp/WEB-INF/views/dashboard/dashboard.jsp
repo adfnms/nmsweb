@@ -34,6 +34,7 @@
 		
 		grapHide(index+1);
 		index++;
+		
 		if( index == 7){
 			eventListAct();
 			index = 0;
@@ -47,11 +48,8 @@
 		
 		var categoryObj = jsonObj["CategoryInfo"];
 		
-		console.log("-----initDashboard----");
-		console.log(categoryObj);
 		for ( var i in categoryObj) {
 			var cateIdx = getCategorieIdx(categoryObj[i]["name"]);
-			 //var status = Number(categoryObj[i]["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical"; 
 			$('.graph-container>li:nth-child('+cateIdx+') span div').html(" ["+Number(categoryObj[i]["availabili"]).toFixed(2)+"%]");
 			$('.graph-container>li:nth-child('+cateIdx+')').attr("class",status+"-graph");
 			$('.graph-container>li:nth-child('+cateIdx+') .bar-inner').css("height",Number(categoryObj[i]["availabili"]).toFixed(2)+"%").css("bottom", "0");
@@ -74,8 +72,6 @@
 	function grapShow(jsonObj, idx){
 		
 		var categoryObj = jsonObj["CategoryInfo"];
-		
-		/* var status = Number(categoryObj["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical"; */
 		
 		if(Number(categoryObj["availabili"]).toFixed(2) >= 100){
 			var status = "normal";
@@ -107,14 +103,9 @@
 	/* outage append ,장애 서비스 목록*/
 	function addOutage(jsonObj){
 		//장애 목록
-		console.log("------------addOutage-장애서비스목록-------------");
-		console.log(jsonObj);
 		var str= "";
 		var outageObj = jsonObj["Outages"];
 		$('#outageDiv').empty();
-		
-		console.log("----------outageDiv---------");
-		console.log(outageObj);
 		
 		if(outageObj == "null"){
 			
@@ -169,11 +160,7 @@
 					$('#outageDiv').append($(str)).fadeIn('slow');
 				}
 			}
-			
 		}
-		
-		
-		
 	}
 	/*//outage append ,장애 서비스 목록*/
 	

@@ -353,16 +353,11 @@
 		var result = true;
 		var selectObj = $('#snmpInfo select');
 		
-		console.log("-------snmpManage--------");
-		console.log(selectObj);
 		for(var i = 0 ; i < selectObj.length ; i++){
 			
 			var nodeId = "${nodeId}";
-			alert(nodeId);
 			var ifIndex = $(selectObj[i]).attr("name");
-			alert(ifIndex);
 			var collect = $(selectObj[i]).val();
-			alert(collect);
 			if(!manageSnmpService(nodeId, ifIndex, collect)){
  				result = false;
  			}
@@ -495,8 +490,6 @@ function modifyAssets(){
 	var frm = document.getElementById("assetsInfoFrm");
 	
 	var data = $("#assetsInfoFrm").serialize();
-	
-	alert(data);
 	
 	frm.action = "/v1/assets/regAssets.do";
    

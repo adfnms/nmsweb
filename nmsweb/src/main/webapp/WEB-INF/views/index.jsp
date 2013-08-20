@@ -16,6 +16,7 @@
 <script src="<c:url value="/resources/js/category.js" />"></script>
 <script src="<c:url value="/resources/js/service.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/surveillance.js" />"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 
@@ -27,77 +28,21 @@
 		
 		/*노드 정보 갖고오기  */
 		getNodeTotalList(searchNodeLists, "orderBy=id&limit=0");
-		
-		getNodeLabelTotalList(searchNodeLabels);
-		
-		
+	
+		/*surveillence 정보 갖고오기  */
+		getsurveillanceLabel(searchLabels);
 		
 	});
+	/*surveillence 정보 갖고오기 callback함수 */
+	function searchLabels(jsonObj,categoryid,categoryname){
+		
+		console.log("-----------searchLabels----------");
+		console.log(jsonObj);
+		var str = countStr(jsonObj,categoryid,categoryname);
+			$('#surveillenceLabel').append(str); 
+	 
+	}
 
-function getNodeLabelTotalList(){
-	
-	$.ajax({
-		type : 'get',
-		url : '<c:url value="/getSurveillanceCategories.do" />',
-		dataType : 'json',
-		async : false,
-		contentType : 'application/json',
-		error : function(data) {
-			alert('모든 카테고리 정보 가져오기 실패');
-		},
-		success : function(data) {
-			console.log("-----------getNodeLabelTotalList-----------");
-			console.log(data);
-			
-			for(var i in data["CategoriesItem"]){
-				
- 				var  categoryid = data["CategoriesItem"][i]["categoryid"];
-				var categoryname = data["CategoriesItem"][i]["categoryname"];
-				
-				getCount(categoryid,categoryname);
-			}
-			
-		}
-	});
-}
-
-
-
-
-
-
-function getCount(categoryid,categoryname){
-
-	$.ajax({
-		type : 'get',
-		url : '<c:url value="/Categories/getCount.do" />',
-		data: 'categoryid='+categoryid,
-		dataType : 'json',
-		async : false,
-		contentType : 'application/json',
-		error : function(data) {
-			alert('모든 카테고리 정보 가져오기 실패');
-		},
-		success : function(data) {
-			console.log("-----------getCount ID-----------"+categoryid);
-			console.log(data);
-			
-			 var str = ""; 
-			str += '	<tr>';
-			str += '		<th><a href="<c:url value="/category/nodeList?cateNm=" />'+categoryid+'">' + categoryname + '</a></th>';
-			str += '		<th class="text-error">&nbsp;&nbsp;&nbsp;&nbsp;'+ data["CategoriesCount"] + '</th>';
-			str += '	</tr>';
-
-				$('#surveillenceLabel').append(str); 
-			 
-			 
-			 
-		}
-	}); 
-	
-	
-	
-}
 
 	/* 감시대상목록 */
 	function searchNodeLists(jsonObj) {
@@ -379,7 +324,7 @@ function getCount(categoryid,categoryname){
 									<h4>장애&nbsp;목록</h4>
 								</div> 
 							</div>
-							<div class="well well-small">
+							<div class="well well-small" style="margin-bottom: 0px;">
 								<div class="row-fluid">
 									<div class="span12" id="outageInfo"></div>
 								</div>
@@ -389,7 +334,7 @@ function getCount(categoryid,categoryname){
 									<h4>알림&nbsp;정보</h4>
 								</div>
 							</div>
-							<div class="well well-small">
+							<div class="well well-small" style="margin-bottom: 0px;">
 								<div class="row-fluid">
 									<div class="span12">
 										나의 알림 <a  style="margin-left: 16px;" class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/notimng/mynoti.do" />">확인</a><br />
@@ -407,10 +352,9 @@ function getCount(categoryid,categoryname){
 									<div class="span12"  >
 											<table class="table table-striped " id="surveillenceLabel">
 												<tr>
-													<th>카테고리</th>
-													<th>장애 서비스</th>
+													<th>카테 고리</th>
+													<th>등록 노드</th>
 												</tr>
-											
 											</table>
 									</div>
 								</div>
@@ -424,7 +368,12 @@ function getCount(categoryid,categoryname){
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<div class="well well-small" id="categoryInfo"></div>
+									<div class="well well-small" style="margin-bottom: 0px;" id="categoryInfo"></div>
+									<div class="row-fluid">
+									<div class="span12" >
+										<h4>전체&nbsp;가용율&nbsp;정보</h4>
+									</div>
+							</div>
 									<div class="well well-small" id="totalCategoryInfo" style ="height: 99px;"></div>
 								</div>
 							</div>

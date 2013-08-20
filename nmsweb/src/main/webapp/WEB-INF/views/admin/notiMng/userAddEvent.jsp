@@ -226,7 +226,6 @@ function setDestination(obj){
  	function destinationPathInfo(userid){
  		
  		
- 		//alert("destinationPathInfo : "+userid);
  		$("#userTr").html("<th class=\"span3 control-label text-success\">selected :"+userid+"</th>");
  		
  		
@@ -237,7 +236,6 @@ function setDestination(obj){
  	}
  	function addEmail(){
  		var email = $("#emailTable input[name=email]").val();	
- 		//$("#emailTableDiv").html("<label class=\"span3 control-label\">e-mail Targets :</label><div class=\"span9 controls\" > <h4 style= \"margin-top: 0px;\" class=\"text-success\">"+email+"</h4> <input type=\"hidden\" id=\"\"  name=\"\" class=\"span12\" value=\""+email+"\"></div>");
  		
  		$("#emailTableDiv").html("<h4 style= \"margin-top: 0px; margin-left: 12px;\" class=\"text-success\">"+email+"</h4>");
  		$("#emailSelect").html("<label class=\"span5 control-label  text-success\"><h4>"+email+"</h4></label>");
@@ -258,16 +256,6 @@ function setDestination(obj){
  		var status = $("#destiFrm input[name=status]").val();						//8.상태
  		var rule = $("#destiFrm input[name=rule]").val();							//9.메세지
  		
- 		/* alert("---------uei----------------"+uei);
- 		alert("---------noticeQueue----------------"+noticeQueue);
- 		alert("---------name----------------"+name);
- 		alert("---------description----------------"+description);
- 		alert("---------subject----------------"+subject);
- 		alert("---------numericMessage----------------"+numericMessage);
- 		alert("---------textMessage----------------"+textMessage);
- 		alert("---------destinationPath----------------"+destinationPath);
- 		alert("---------status----------------"+status);
- 		alert("---------rule----------------"+rule); */
  		
  	 str=requestBodyStr ( uei,name,description,subject,numericMessage,textMessage,destinationPath,status,rule,noticeQueue);
  		

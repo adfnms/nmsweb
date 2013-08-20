@@ -1,4 +1,105 @@
-	function getSearchAssetsList(callback,categorynm) {
+	
+
+
+/*surveillance 카테고리  정보 갖고오기  */
+function getsurveillanceLabel(callback){
+	var str = ""; 
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/getSurveillanceCategories.do',
+		dataType : 'json',
+		async : false,
+		contentType : 'application/json',
+		error : function(data) {
+			alert('모든 카테고리 정보 가져오기 실패');
+		},
+		success : function(data) {
+			getCount(callback,data);
+		}
+	});
+}
+
+function getCount(callback,data){
+	
+	
+	console.log(data);
+	for(var i in data["CategoriesItem"]){
+		
+		var  categoryid = data["CategoriesItem"][i]["categoryid"];
+		var categoryname = data["CategoriesItem"][i]["categoryname"];
+		
+		$.ajax({
+			type : 'get',
+			url : '/' + version + '/Categories/getCount.do',
+			data: 'categoryid='+categoryid,
+			dataType : 'json',
+			async : false,
+			contentType : 'application/json',
+			error : function(data) {
+				alert('모든 카테고리 정보 가져오기 실패');
+			},
+			success : function(data) {
+				
+				if (typeof callback == "function") {
+					callback(data,categoryid,categoryname);
+				}
+			}
+		}); 
+	}
+}
+
+function countStr(jsonObj,categoryid,categoryname){
+	
+	var str = ""; 
+	str += '	<tr>';
+	str += '		<th><a href="<c:url value="/category/nodeList?cateNm=" />'+categoryid+'">' + categoryname + '</a></th>';
+	str += '		<th class="text-error">&nbsp;&nbsp;&nbsp;&nbsp;'+ jsonObj["CategoriesCount"] + '개</th>';
+	str += '	</tr>';
+	return str;
+}
+
+
+
+
+
+/*surveillance 카테고리의 등록 노드 정보 갖고오기  */
+
+/*function getCount(callback,categoryid,categoryname){
+	
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/Categories/getCount.do',
+		data: 'categoryid='+categoryid,
+		dataType : 'json',
+		async : false,
+		contentType : 'application/json',
+		error : function(data) {
+			alert('모든 카테고리 정보 가져오기 실패');
+		},
+		success : function(data) {
+			
+			if (typeof callback == "function") {
+				callback(data,categoryid,categoryname);
+			}
+		
+			
+		}
+	}); 
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+function getSearchAssetsList(callback,categorynm) {
 		$.ajax({
 			type : 'get',
 			url : '/' + version + '/assets/selectSearchAssets',
