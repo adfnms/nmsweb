@@ -38,10 +38,9 @@ function delRequisition(nodeNm) {
 	if(!confirm("정말 삭제하시겠습니까?")){
 		return;
 	}
-	
 	$.ajax({
 		type : 'delete',
-		url : '/' + version + '/requisitions/' + nodeNm,
+		url : '/' + version + '/requisitions/deployed/' + nodeNm,
 		datatype : 'json',
 		contentType : 'application/json',
 		error : function(data) {
@@ -60,7 +59,6 @@ function addRequisition() {
 	}
 		var text = $("#requisitionsBox input[name=requisitions]").val();
 		regRequisitionAjax(text);
-	
 }
 
 function regRequisitionAjax(text){
@@ -104,26 +102,19 @@ function synRequisition(nodeNm){
 			alert("[" + nodeNm + '] 동기화 실패');
 		},
 		success : function(data) {
+			//callback(data);
 			getTotalRequisitionsList(getTotalRequisitions);
 		}
 	});
 }
 
-function editRequisition(nodeNm){
-	//동기화 실행 스크립트
-	synRequisition(nodeNm);
-	$("#editRequisitions").append("<tr><td>dddddddd</tr></td>");
-}
-
 //메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성된 하단부 창의 노드 삭제 버튼
 function delNodeRequisition(nodeNm, nodeId){
+	alert(nodeId);
 	synRequisition(nodeNm);
-	
-	console.log(nodeId);
 	if(!confirm("정말 삭제하시겠습니까?")){
 		return;
 	}
-	
 	$.ajax({
 		type : 'delete',
 		url : '/' + version + '/requisitions/' + nodeNm + '/nodes/' + nodeId,
@@ -137,7 +128,27 @@ function delNodeRequisition(nodeNm, nodeId){
 		}
 	});
 }
+
+function showEditRequisitionInfoDiv(jsonObj, nodeNm){
+	$("#" + nodeNm).empty();
+	var requisitionObj = jsonObj["model-import"];
+	var str = "";
+	console.log('----------jsonObj---------');
+	console.log(jsonObj);
+	str += '<tr>';
+	str += '	<td><button type="button" class="btn btn-primary" title="" onclick="javascript:synRequisition(\'' +  +'\');">동기화</button></td>';
+	str += '</tr>';
+	var row = getTableToEditRequisition(jsonObj);
+	$("#" + nodeNm).append(str);
+	$("#" + nodeNm).append(row);
+}
 /************************** view String edit *****************************/
+//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 리스트
+function getTableToEditRequisition(jsonObj){
+	var str = "";
+	str += '<tr><td>2</td></tr>';
+	return str;
+}
 
 //메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 사 새로 생성된 하단부 리스트
 function getTableToRequisitionsJsonObj(jsonObj) {
@@ -150,23 +161,15 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 	if(jsonObj["@count"] == 1){
 	
 		var nullStrLastImport =nullCheckJsonObject(jsonObj["model-import"], ["@last-import"]);
-		
-		if(nullStrLastImport == ""){
-			
-			nullStrLastImport ="최근 동기화를 하지 않았습니다. ";
-		}
-		
 		var nullStrNode =nullCheckJsonObject(jsonObj["model-import"], ["node"]);
-			
-			if(nullStrNode.length >1){
+		if(nullStrNode.length >1){
 			nodeStr = nullStrNode.length;
-			}
-			else if(nullStrNode == ""){
-				nodeStr ="0";
-				
-			}else{
-				nodeStr ="1";
-			}
+		}
+		else if(nullStrNode == ""){
+			nodeStr ="0";
+		}else{
+			nodeStr ="1";
+		}
 		
 		
 		str += "<tr>";
@@ -176,33 +179,46 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		str += "	<td>";
 		str += "	</td>";
 		str += "</tr>";
-		str += "<tr>";
-		str += '	<td id= "deleteButton" ><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">노드 삭제</button></td>';
-		//str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-100px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
-		str += '	<td><button type="button" class="btn btn-info" style=";margin-left:-840px" title="" onclick="javascript:editRequisition(\'' + requisitionObj["@foreign-source"] +'\');">편집</button></td>';
-		str += "</tr>";
+		if(nodeStr > 0){
+			str += "<tr>";
+			str += "<div id= 'deleteButton'>";
+			//str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delNodeRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\', \'' + requisitionObj[i]["node"]["@foreign-id"] +'\');">노드 삭제</button></td>';
+			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">노드 삭제</button></td>';
+			str += '	<td><button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo" style="margin-left:-750px" title="" onclick="javascript:editRequisition(\'' + requisitionObj["@foreign-source"] + '\');">편집</button></td>';
+			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-855px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
+			str += "</div>";
+			str += "</tr>";
+		}else{
+			str += "<tr>";
+			str += "<div id= 'deleteButton'>";
+			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">요구 삭제</button></td>';
+			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" title="" onclick="javascript:editRequisition(\'' + requisitionObj["@foreign-source"] + '\');">편집</button></td>';
+			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-855px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
+			str += "</div>";
+			str += "</tr>";
+		}
 		str += "<tr>";
 		str += "    <td><b class='text-error'>" + nodeStr + "</b> nodes defined</td>";
 		str += "</tr>";
 		str += "<tr>";
-		str += "	<td>마지막 수정일: <b>" + requisitionObj["@date-stamp"] + "</b></td>";
+		str += "	<td>마지막 수정일: <b>" + new Date(requisitionObj["@date-stamp"]).format('yy-MM-dd hh:mm:ss') + "</b></td>";
 		str += "</tr>";
-		str += "<tr>";
-		
-		str += "	<td>최근 동기화: <b>" + nullStrLastImport + "</b></td>";
-		str += "</tr>";
-		
+		if(nullStrLastImport == ""){
+			str += "<tr>";
+			str += "	<td>최근 동기화: <b>최근 동기화를 하지 않았습니다. </b></td>";
+			str += "</tr>";
+		}else{
+			str += "<tr>";
+			str += "	<td>최근 동기화: <b>" + new Date(nullStrLastImport).format('yy-MM-dd hh:mm:ss') + "</b></td>";
+			str += "</tr>";
+		}
+		str += "<tr><td style='width:1000px;'><hr/></td></tr>";
 	}else if(jsonObj["@count"] > 1){
 		
 		
 		
 		for (var i in requisitionObj) {
 			var nullStrLastImport =nullCheckJsonObject(jsonObj["model-import"][i], ["@last-import"]);
-			if(nullStrLastImport == ""){
-				
-				nullStrLastImport ="최근 동기화를 하지 않았습니다. ";
-			}
-			
 			var nullStrNode =nullCheckJsonObject(jsonObj["model-import"][i], ["node"]);
 				
 				if(nullStrNode.length >1){
@@ -215,7 +231,6 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 					nodeStr ="1";
 				}
 		
-				
 		str += "<tr>";
 		str += "	<td class='text-info'>";
 		str	+= "		<h3>" + requisitionObj[i]["@foreign-source"] + "</h3>";
@@ -225,34 +240,48 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		str += "</tr>";
 		if(nodeStr > 0){
 			str += "<tr>";
-			str += "<div id= 'deleteButton'>";
-			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delNodeRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\', \'' + requisitionObj[i]["node"]["@foreign-id"] +'\');">노드 삭제</button></td>';
-			str += '	<td><button type="button" class="btn btn-info" style=";margin-left:-840px" title="" onclick="javascript:editRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">편집</button></td>';
-			//str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-840px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
-			str += "</div>";
-			str += "</tr>";
+			//str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delNodeRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\', \'' + requisitionObj[i]["node"]["@foreign-id"] +'\');">노드 삭제</button></td>';
+			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">노드 삭제</button></td>';
+			str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-831px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
+			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="collapse"  href=\'#' + requisitionObj[i]["@foreign-source"]+'\' onclick="javascript:showEditRequisitionInfoDiv(\'' + jsonObj + '\', \'' + requisitionObj[i]["@foreign-source"] + '\');">편집</button></td>';
+			str += '</tr>';
 		}else{
 			str += "<tr>";
-			str += "<div id= 'deleteButton'>";
 			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">요구 삭제</button></td>';
-			str += '	<td><button type="button" class="btn btn-info" style=";margin-left:-840px" title="" onclick="javascript:editRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">편집</button></td>';
-			//str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-840px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
-			str += "</div>";
-			str += "</tr>";
+			str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-831px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
+			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="collapse"  href=\'#' + requisitionObj[i]["@foreign-source"]+'\' onclick="javascript:showEditRequisitionInfoDiv(\'' + jsonObj + '\', \'' + requisitionObj[i]["@foreign-source"] + '\');">편집</button></td>';
+			str += '</tr>';
 		}
-		str += '<div id="editRequisitions"></div>';
+		str += '<tr>';
+		str += ' 	<td><div class="editRqstList">';
+		str += ' 			<div class="accordion" id="accordion2">';
+		str += '				<div class="accordion-group">';
+		str += ' 					<div id=\'' + requisitionObj[i]["@foreign-source"] + '\' class="accordion-body collapse in">';
+		str += ' 						<div class="accordion-inner">';
+		str += ' 						</div>';
+		str += ' 					</div>';
+		str += ' 				</div>';
+		str += '			</div>';
+		str += '		</div>';
+		str += '	</td>';
+		str += '</tr>';
 		str += "<tr>";
 		str += "    <td><b class='text-error'>"+nodeStr+"</b> nodes defined</td>";
 		str += "</tr>";
 		str += "<tr>";
 		str += "	<td>마지막 수정일: <b>" + new Date(requisitionObj[i]["@date-stamp"]).format('yy-MM-dd hh:mm:ss') + "</b></td>";
 		str += "</tr>";
-		str += "<tr>";
-		str += "	<td>최근 동기화: <b>" + new Date(nullStrLastImport).format('yy-MM-dd hh:mm:ss') + "</b></td>";
-		str += "</tr>";
-		str += "<tr><td style='width:1000px;'><hr/></td></tr>";
+		if(nullStrLastImport == ""){
+			str += "<tr>";
+			str += "	<td>최근 동기화: <b>최근 동기화를 하지 않았습니다. </b></td>";
+			str += "</tr>";
+		}else{
+			str += "<tr>";
+			str += "	<td>최근 동기화: <b>" + new Date(nullStrLastImport).format('yy-MM-dd hh:mm:ss') + "</b></td>";
+			str += "</tr>";
 		}
-	
+		str += "<tr><td style='width:1000px;'><hr/></td></tr>";
+		}	
 	}else{
 
 		str += "<tr>";
@@ -262,90 +291,8 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		str += "	<td>";
 		str += "	</td>";
 		str += "</tr>";
-		
 	}
 	
-	
-	
-	
-/*	for (var i in requisitionObj) {
-	
-		if(requisitionObj[i]["node"] == undefined) {
-			str += "<tr>";
-			str += "	<td class='text-info'>";
-			str	+= "		<h3>" + requisitionObj[i]["@foreign-source"] + "</h3>";
-			str += "	</td>";
-			str += "	<td>";
-			str += "	</td>";
-			str += "</tr>";
-			str += "<tr>";
-			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition();">요구 삭제</button></td>';
-			str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-800px" title="" onclick="javascript:synRequisition();">동기화</button></td>';
-			str += "</tr>";
-			str += "<tr>";
-			str += "    <td>요구(Requisition) : <b ><a class='text-success'>Edit</a></b></td>";
-			str += "</tr>";
-			str += "<tr>";
-			str += "    <td>외부 소스 정의(Foreign Source Definition:) : <b ><a class='text-success'>Edit</a></b></td>";
-			str += "</tr>";
-			str += "<tr>";
-			str += "    <td><b class='text-error'>0</b> nodes defined</td>";
-			str += "</tr>";
-			str += "<tr>";
-			str += "	<td>Last Modified: <b>" + requisitionObj[i]["@date-stamp"] + "</b></td>";
-			str += "</tr>";
-			str += "<tr>";
-			str += "	<td>Last Synchronization Requested: <b>Never</b><hr/></td>";
-			str += "</tr>";	
-			str += "<tr>";
-			str += "	<td>Last Synchronization Requested: <b>" + requisitionObj[i]["@last-import"] +"dd" +"</b><hr/></td>";
-			str += "</tr>";	
-		}else{
-			if(requisitionObj[i] > 1){
-				str += "<tr>";
-				str += "	<td class='text-info'>";
-				str	+= "		<h3>" + requisitionObj[i]["@foreign-source"] + "</h3>";
-				str += "	</td>";
-				str += "	<td>";
-				str += "	</td>";
-				str += "</tr>";
-				str += "<tr>";
-				str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition();">노드 삭제</button></td>';
-				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-800px" title="" onclick="javascript:synRequisition();">동기화</button></td>';
-				str += "</tr>";
-				str += "<tr>";
-				str += "    <td><b class='text-error'>1</b> nodes defined</td>";
-				str += "</tr>";
-				str += "<tr>";
-				str += "	<td>Last Modified: " + requisitionObj[i]["@date-stamp"] + "</td>";
-				str += "</tr>";
-				str += "<tr>";
-				str += "	<td>Last Synchronization Requested: " + requisitionObj[i]["@last-import"] + "</td>";
-				str += "</tr>";
-			}else{
-				str += "<tr>";
-				str += "	<td class='text-info'>";
-				str	+= "		<h3>" + requisitionObj[i]["@foreign-source"] + "</h3>";
-				str += "	</td>";
-				str += "	<td>";
-				str += "	</td>";
-				str += "</tr>";
-				str += "<tr>";
-				str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition();">노드 삭제</button></td>';
-				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-800px" title="" onclick="javascript:synRequisition();">동기화</button></td>';
-				str += "</tr>";
-				str += "<tr>";
-				str += "    <td><b class='text-error'>"+requisitionObj[i]["node"].length + "</b> nodes defined</td>";
-				str += "</tr>";
-				str += "<tr>";
-				str += "	<td>Last Modified: <b>" + requisitionObj[i]["@date-stamp"] + "</b></td>";
-				str += "</tr>";
-				str += "<tr>";
-				str += "	<td>Last Synchronization Requested: <b>" + requisitionObj[i]["@last-import"] + "</b></td>";
-				str += "</tr>";
-			}
-		}
-	}*/
 	return str;
 }
 

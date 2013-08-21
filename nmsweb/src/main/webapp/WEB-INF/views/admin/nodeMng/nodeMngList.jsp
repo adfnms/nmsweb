@@ -22,11 +22,7 @@
 	var orderBy = "id";
   	
 	$(document).ready(function(){
-		
 		getNodeTotalList(addNodeLists, "orderBy="+orderBy+"&limit="+limit);
-		
-		
-		
 	});
 	
 	//getNodeTotalList callback 함수 
@@ -137,6 +133,7 @@
 			</div>
 		</div>
 		<hr>
+
 	<!-- /container -->
 </body>
 </html>
