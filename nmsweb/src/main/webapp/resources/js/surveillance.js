@@ -98,6 +98,8 @@ function regNodeListStr(jsonObj){
 		str += '	</tr>';
 		str += '</table>';
 		
+		$("#checkboxPopup input[name=nodeid][value=" + nodeObj[i]["nodeid"] + "]").attr("checked", false);
+		
 	}else{
 		$('#nodeListTable').empty();
 		
@@ -105,12 +107,13 @@ function regNodeListStr(jsonObj){
 		var str = "";
 		str += '<table class="table table-striped" style="margin-bottom: -16px;">';
 		for( var i in nodeObj){
-			var status = Number(nodeObj[i]["nodelabel"]).toFixed(2) >= 100 ? "normal" :  "critical";
 			str += '	<tr >';
 			str += '		<td class="span2"></td>';
 			str += '		<td class="span3">노드 라벨&nbsp;:&nbsp;&nbsp;<a>'+nodeObj[i]["nodelabel"]+'</a></td>';
 			str += '		<td class="span3"> 노드 아이디&nbsp;:&nbsp;&nbsp;'+nodeObj[i]["nodeid"]+'</td>';
 			str += '	</tr>';
+			
+			$("#checkboxPopup input[name=nodeid][value=" + nodeObj[i]["nodeid"] + "]").attr("checked", true);
 		}
 		str += '</table>';
 		
@@ -255,4 +258,42 @@ function getSearchAssetsList(callback,categorynm) {
 		
 		
 	}
-	
+	function nodeCheckBoxStr(jsonObj, categoryid ){
+		console.log("-----jsonObj------");
+		console.log(jsonObj);
+		
+		var str = "";
+		var node=jsonObj["node"];
+		
+		if (node.length == 0) {
+			str += "<tr>";
+			str += "<td></td>";
+			str += "<td>노드가 없습니다</td>";
+			str += "<td></td>";
+		}else if(node.length ==1) {
+			str += "<tr>";
+			str += "	<td class='span1'></td>";
+			str += "	<td class='span2'>";
+			str += "		<label class='checkbox'>";
+			str += "			<input  value='"+categoryid+"'  name='categoryid' id='categoryid'  type='hidden'/>	"; 
+			str += "			<input value='"+node["@id"]+"' name='nodeid' id='nodeid'  type='checkbox' />"; 
+			str += "			노드라벨 : "+node["@label"] ;
+			str += "		</label>";
+			str += "</td>";
+		}else if(node.length >0) {
+			for ( var i in node) {
+				str += "<tr>";
+				str += "	<td class='span1'></td>";
+				str += "	<td class='span2'>";
+				str += "		<label class='checkbox'>";
+				str += "			<input  value='"+categoryid+"'  name='categoryid' id='categoryid'  type='hidden'/>	"; 
+				str += "			<input value='"+node[i]["@id"]+"' name='nodeid' id='nodeid'  type='checkbox' />"; 
+				str += "			노드라벨 : "+node[i]["@label"] ;
+				str += "		</label>";
+				str += "</td>";
+			}
+		}
+		return str;
+		
+		
+	}

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.bluecapsystem.frm.BaseDao;
 import com.bluecapsystem.nms.dto.AssetsTbl;
 import com.bluecapsystem.nms.dto.CategoriesTbl;
+import com.bluecapsystem.nms.dto.CategoryNodeTbl;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 
@@ -105,6 +106,36 @@ boolean ret = false;
 			}
 		}
 		return ret;
+	}
+
+	@Override
+	public boolean delNodePop(Integer categoryId, CategoryNodeTbl categoryNodeTbl) {
+		
+		try{
+			
+			super.getSqlMapClientTemplate().delete("com.bluecapsystem.nms.surveillance.delNodePop", categoryId);
+			
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean regNodePop(CategoryNodeTbl categoryNodeTbl) {
+		
+		try{
+			
+			super.getSqlMapClientTemplate().insert("com.bluecapsystem.nms.surveillance.regNodePop", categoryNodeTbl);
+			
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 }

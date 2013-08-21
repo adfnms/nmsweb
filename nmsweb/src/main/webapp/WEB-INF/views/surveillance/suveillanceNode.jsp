@@ -15,6 +15,12 @@
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script src="<c:url value="/resources/js/surveillance.js" />"></script>
 <script type="text/javascript">
+var pageNum = 1;
+var limit = 10;
+var offset = 0;
+var orderBy = "id";
+
+
 	$(document).ready(function() {
 		
 		// getNodeListToCategoryName(addNodeLists, "${cateNm}"); 
@@ -27,14 +33,75 @@
 	function getRegNodeList(jsonObj) {
 		
 		var str = regNodeListStr(jsonObj);
+		
+		console.log(jsonObj);
+		/* var nodeObj = jsonObj["RegNodeItems"];
+		
+		if(jsonObj["RegNodeItems"].length==0){
+			
+			$("input[name=nodeid][value=" + nodeObj[i]["nodeid"] + "]").attr("checked", false);
+			
+		}else{
+			
+			for( var i in nodeObj){
+				
+				$("input[name=nodeid][value=" + nodeObj[i]["nodeid"] + "]").attr("checked", true);
+					
+				}
+		}
+		 */
+		
+		
 		$('#nodeListTable').append(str);
+		
+		
 	}
 	
+	/*노드 리스트 정보 갖고와서 POPUP창에 보여주기  */
 	function addNodeCategory(){
 		
+	
+		getNodeTotalList(NodeCheckBoxStr,  "orderBy="+orderBy+"&limit="+limit);
 		
+		/*등록된 노드의 정보를 갖고와서 체크해주기  */
+		getNodeToSurveillance(getRegNodeList, "${categoryId}");
+	}
+	function NodeCheckBoxStr(jsonObj){
+		var categoryid=("${categoryId}");
+		
+		$('#checkboxNode').empty();
+		var str = nodeCheckBoxStr(jsonObj,categoryid );
+		
+		$('#checkboxNode').prepend(str);	
+	}
+	
+	
+	// POPUP창에 노드 CheckBox의 노드아이디를 1)삭제 후  2)저장 <트랜젝션>
+	function regNodePop(){
+		
+		//var chkObj = $('#checkboxPopup');
+		var data = $("#checkboxPopup").serialize();
+		
+		 $.ajax({
+	      	url : '<c:url value="/regNodePop.do" />',
+	        type:'post',
+	        dataType:'json',
+	        data:data,
+	        error:function(data, status, err){
+	            alert('Error, service not found');
+	        },
+	        success:function(res){
+	        	if(res.isSuccess == false)
+	       		{
+	        		alert(res.errorMessage);        		
+	        		return;
+	       		}
+	        	getNodeToSurveillance(getRegNodeList, "${categoryId}");
+	        }
+		});  
 		
 	}
+	
 	
 	
 </script>
@@ -80,7 +147,7 @@
 				<!--  -->
 				
 					 <a type="button" class="btn btn-primary span12" data-toggle="modal" title="노드추가"
-						href="#mySurvaillenceModal" onclick="javascript:addNodeCategory();">Add Node</a>
+						href="#mySurvaillenceModal" onclick="javascript:addNodeCategory();">+ 노드추가</a>
 				</div>
 			</div>
 		</div>
@@ -92,12 +159,23 @@
 <div id="mySurvaillenceModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalSurvaillence" aria-hidden="true" >
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="myModalSurvaillence" >장애정보</h3>
+		<h3 id="myModalSurvaillence" >노드 추가</h3>
 	</div>
 	<div class="modal-body">
-		<div class="row-fluid" id=""></div>
+		<div class="row-fluid" >
+		<!----------------->
+		<form id="checkboxPopup">
+			<table id="checkboxNode" class="table table-striped">
+				
+			</table>
+		
+		</form>
+			
+		<!----------------->
+		</div>
 	</div>
 	<div class="modal-footer">
+		<button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true" onclick="javascript:regNodePop();" >+ 등록</button>
 		<button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
 	</div>
 </div>

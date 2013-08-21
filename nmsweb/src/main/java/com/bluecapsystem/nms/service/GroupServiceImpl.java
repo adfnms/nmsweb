@@ -125,7 +125,6 @@ public class GroupServiceImpl extends BaseService implements GroupService
 				try
 				{
 					
-					
 					String[] menuIdsp = null;
 					
 					String [] groupNmsp = null;
@@ -154,6 +153,7 @@ public class GroupServiceImpl extends BaseService implements GroupService
 						break _TRANSACTION;
 					
 					for(int i=0;i<menuIdsp.length;i++){
+						
 						menuId=menuIdsp[i];
 						groupName=groupNmsp[i];
 						menuGroupTbl.setMenuId(menuId);

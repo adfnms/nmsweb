@@ -81,7 +81,31 @@
 
 	</select>
 	
+
+	<delete id="delNodePop"  parameterClass="java.lang.Integer" >
+
+		DELETE FROM CATEGORY_NODE
+
+		WHERE CATEGORYID = $categoryid$;
+
+	</delete>
 	
+	<insert id="regNodePop" parameterClass="com.bluecapsystem.nms.dto.CategoryNodeTbl" >
+
+		INSERT INTO CATEGORY_NODE (
+
+				categoryid, 
+				
+				nodeid
+
+		) VALUES (
+
+				#categoryid#, 
+				
+				#nodeid#
+		);
+
+	</insert>
 	
 </sqlMap>
 	

@@ -52,8 +52,6 @@ public class UserManagerServiceImpl  extends BaseService implements UserManagerS
 		{
 			userManagerDao.modifyToDb(userTbl);
 			
-			System.out.println("-------------------------------"+userTbl.getUserNm());
-			
 			ret = true;
 			
 		}catch(Exception ex)
