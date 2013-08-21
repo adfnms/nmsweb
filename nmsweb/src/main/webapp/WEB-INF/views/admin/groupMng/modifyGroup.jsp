@@ -212,8 +212,12 @@ function saveMenuItems()
 			       			
 			       			for(var i = 0; i < res.menuItems.length; i++)
 				        	{
+			       				console.log("---------메뉴아이디--------");
+			       				console.log(res.menuItems[i].menuId);
+				        	
+			       				g_menuItems.setCheck(res.menuItems[i].menuId,true);
 				        		
-				        		g_menuItems.setCheck(res.menuItems[i].menuId,true);
+				        	/*여기서 트리에 체크해주면 됨  */
 				        	}	
 			       			
 			       		}

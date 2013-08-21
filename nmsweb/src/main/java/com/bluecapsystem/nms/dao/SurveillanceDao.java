@@ -13,4 +13,9 @@ public interface SurveillanceDao
 	Integer getCount(Integer categoryId);
 
 	boolean getRegNodeList(Integer categoryId, List<CategoriesTbl> RegNodeItems);
+	
+	
+	boolean delNodePop(Integer categoryId,CategoryNodeTbl categoryNodeTbl);
+	
+	boolean regNodePop(CategoryNodeTbl categoryNodeTbl);
 }

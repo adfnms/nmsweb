@@ -3,18 +3,24 @@ package com.bluecapsystem.nms.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bluecapsystem.nms.define.Define;
 import com.bluecapsystem.nms.dto.CategoriesTbl;
+import com.bluecapsystem.nms.dto.CategoryNodeTbl;
+import com.bluecapsystem.nms.dto.MenuGroupTbl;
 import com.bluecapsystem.nms.service.SurveillanceService;
 
 
@@ -125,7 +131,42 @@ public class SurveillanceController
 		return model;
 	}
 	
-	
+	@RequestMapping(value = "/regNodePop")
+	public ModelAndView regNodePop(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
+			@RequestParam(value = "categoryid", required = false)Integer[] categoryid,
+			@RequestParam(value = "nodeid", required = false)Integer[] nodeid,
+			@ModelAttribute("CategoryNodeTbl") CategoryNodeTbl categoryNodeTbl) 
+			
+	{
+		
+		boolean isSuccess = false;
+		String errorMessage = "";
+		
+		ModelAndView model =  new ModelAndView();
+		
+		 _REG_NODE :
+		{
+				try{
+					if(surveillanceService.regNodePop(categoryid, nodeid, categoryNodeTbl) == false)
+					{
+						errorMessage = "surveillance 등록 실패";
+						break _REG_NODE;
+					}
+					
+					isSuccess = true;
+					}
+				
+				catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+		model.setViewName("jsonView");
+		model.addObject("isSuccess", isSuccess);
+		model.addObject("errorMessage", errorMessage);
+		//model.setViewName("/admin/groupMng/groupMng");
+		
+		return model;
+	}
 	
 	
 	

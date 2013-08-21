@@ -125,12 +125,10 @@ public class GroupManagerController  extends BaseController {
 			errorMessage = "메뉴Id SELECT 실패";
 		}
 		
-		System.out.println("---------------------------------------");
 		for( int i=0 ; i < menuIds.size(); i++)
     	{
 			System.out.println(menuIds.get(i).getMenuId());
     	}
-		System.out.println("---------------------------------------");
 		
 		
 		model.addObject("menuItems", menuIds);
