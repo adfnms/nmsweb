@@ -324,7 +324,7 @@
 									<h4>장애&nbsp;목록</h4>
 								</div> 
 							</div>
-							<div class="well well-small" style="margin-bottom: 0px;">
+							<div class="well well-small" >
 								<div class="row-fluid">
 									<div class="span12" id="outageInfo"></div>
 								</div>
@@ -334,7 +334,7 @@
 									<h4>알림&nbsp;정보</h4>
 								</div>
 							</div>
-							<div class="well well-small" style="margin-bottom: 0px;">
+							<div class="well well-small" style="margin-bottom: 30px;">
 								<div class="row-fluid">
 									<div class="span12">
 										나의 알림 <a  style="margin-left: 16px;" class="btn btn-mini btn-primary" type="button" href="<c:url value="/admin/notimng/mynoti.do" />">확인</a><br />
@@ -347,18 +347,15 @@
 									<h4>surveillence</h4>
 								</div>
 							</div>
-							<div class="well well-small">
+							<!-- <div class="well well-small">
 								<div class="row-fluid">
-									<div class="span12"  >
+									<div class="span12"  > -->
 											<table class="table table-striped " id="surveillenceLabel">
-												<tr>
-													<th>카테 고리</th>
-													<th>등록 노드</th>
-												</tr>
+												
 											</table>
-									</div>
+								<!-- 	</div>
 								</div>
-							</div>
+							</div> -->
 						</div>
 						<div class="span6">
 							<div class="row-fluid">
@@ -368,10 +365,10 @@
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<div class="well well-small" style="margin-bottom: 0px;" id="categoryInfo"></div>
+									<div class="well well-small" style="margin-bottom: 37px;" id="categoryInfo"></div>
 									<div class="row-fluid">
 									<div class="span12" >
-										<h4>전체&nbsp;가용율&nbsp;정보</h4>
+										<h4>전체&nbsp;가용률&nbsp;정보</h4>
 									</div>
 							</div>
 									<div class="well well-small" id="totalCategoryInfo" style ="height: 99px;"></div>
@@ -387,7 +384,7 @@
 									<a  class="btn btn-mini btn-primary" type="button" href="<c:url value="/monitoring/nodelist.do" />">[More]</a>
 								</div>
 							</div>
-							<div class="well well-small" style ="height:452px;">
+							<div class="well well-small" style ="height:510px;">
 								<div class="row-fluid">
 									<div class="span12" id="indexNodeList"></div>
 								</div>

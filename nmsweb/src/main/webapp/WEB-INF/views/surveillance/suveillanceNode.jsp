@@ -131,12 +131,16 @@ var orderBy = "id";
 			
 		</div>
 		<div class="row-fluid">
-			<div class="span12 well well-small">
+			<div class="span9 well well-small">
 				<div class="row-fluid">
 					<div class="span12">
 						<table class="table table-striped" id="nodeListTable"></table>
 					</div>
 				</div>
+			</div>
+			<div class="span2" style=" margin-left: 73px; margin-top: 23px;" >
+					 <a type="button" class="btn btn-primary span12" data-toggle="modal" title="노드추가"
+						href="#mySurvaillenceModal" onclick="javascript:addNodeCategory();">+ 노드추가</a>
 			</div>
 		</div>
 		<div class="row-fluid">
