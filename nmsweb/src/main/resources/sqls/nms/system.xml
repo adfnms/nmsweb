@@ -29,9 +29,12 @@
 			MENU_LEV, UPPER_MENU_ID, MENU_ORD
 	</select>
 
-	<select id="getMenuId" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.MenuGroupTbl">
-		select 
-			MENU_ID AS menuId
+	<select id="getMenuGroupId" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.MenuGroupTbl">
+		select
+			GROUP_NM AS groupNm, 
+			MENU_ID AS menuId,
+			REGRID AS regrId,
+			REG_DT AS regDt
 		from 
 			MENU_GROUP_TBL 
 		where  
@@ -69,11 +72,8 @@
 	</insert>
 
 	<delete id="deleteGroupTbl" parameterClass="com.bluecapsystem.nms.dto.GroupTbl">
-
 		DELETE FROM GROUP_TBL
-
 		WHERE GROUP_NM = #groupNm#;
-
 	</delete>
 
 
@@ -88,11 +88,10 @@
 		)
 	</insert>
 
-	<delete id="delMenuAuth" parameterClass="com.bluecapsystem.nms.dto.MenuGroupTbl">
+	<delete id="delMenuAuth" parameterClass="java.util.Map">
 
 		DELETE FROM MENU_GROUP_TBL
-
-		WHERE GROUP_NM = #groupNm#;
+		WHERE GROUP_NM = #groupNm#
 
 	</delete>
 

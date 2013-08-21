@@ -10,8 +10,12 @@ import com.bluecapsystem.nms.dto.UserTbl;
 public interface GroupService {	
 	//Menu Tree
 	boolean getMenuList(String sysId, List<MenuTbl> refMenuList);
+	
+	
 	//Menu Tree
-		boolean getMenuId(String groupNm, List<MenuGroupTbl> menuIds);
+	List<MenuGroupTbl> getMenuId(String groupNm) throws Exception;
+	
+	
 	/**
 	 * 권한 리스트 
 	 * @param authTbl
@@ -20,8 +24,9 @@ public interface GroupService {
 	//spublic boolean getAuth(OutParam<List<AuthTbl>> authTbl);
 	
 	public boolean regGroupTbl(GroupTbl groupTbl);
-	
 	public boolean deleteGroupTbl(GroupTbl groupTbl);
 	
-	public boolean regGroupMenu(String menuId, String groupName, MenuGroupTbl menuGroupTbl);
+	
+	
+	public boolean regGroupMenu(String groupName, MenuGroupTbl[] groupMenues);
 }

@@ -111,7 +111,7 @@ public class GroupManagerController  extends BaseController {
 	
 	
 	@RequestMapping(value = "/admin/groupMng/selectMeunId")
-	public ModelAndView modifyGroup(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
+	public ModelAndView modifyGroup(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			@RequestParam(value = "groupNm", required = false)String groupNm,
 			@ModelAttribute("MenuGroupTbl") MenuGroupTbl menuGroupTbl) 
 	{
@@ -120,26 +120,25 @@ public class GroupManagerController  extends BaseController {
 		
 		ModelAndView model =  new ModelAndView();
 		List<MenuGroupTbl> menuIds = new ArrayList<MenuGroupTbl>();
-		if(groupService.getMenuId(groupNm, menuIds) == false)
-		{
-			errorMessage = "메뉴Id SELECT 실패";
-		}
 		
-		for( int i=0 ; i < menuIds.size(); i++)
-    	{
-			System.out.println(menuIds.get(i).getMenuId());
-    	}
+		model.setViewName("jsonView");
+		
+		try
+		{
+			menuIds = groupService.getMenuId(groupNm);
+			isSuccess = true;
+		}catch(Exception ex)
+		{
+			errorMessage = "설정 값 불러오기 실패";
+			logger.error(ex.getMessage());
+		}
 		
 		
 		model.addObject("menuItems", menuIds);
 		
-		
-		isSuccess = true;
-		
-		
 		model.addObject("isSuccess", isSuccess);
 		model.addObject("errorMessage", errorMessage);
-		model.setViewName("jsonView");
+		
 		
 		return model;
 	}
@@ -239,6 +238,7 @@ public class GroupManagerController  extends BaseController {
 		
 		return model;
 	}
+	
 	@RequestMapping(value = "/admin/userMng/deleteUserTbl", method = RequestMethod.GET)
 	public ModelAndView deleteUserTbl(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
 			@RequestParam(value = "userName", required = false)String userName,
@@ -275,11 +275,12 @@ public class GroupManagerController  extends BaseController {
 	}
 	
 	
+	
+	
 	@RequestMapping(value = "/admin/groupMng/regGroupMenu")
-	public ModelAndView regGroupMenu(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
+	public ModelAndView regGroupMenu(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			@RequestParam(value = "groupName", required = false)String groupName,
-			@RequestParam(value = "menuId", required = false)String menuId,
-			@ModelAttribute("MenuGroupTbl") MenuGroupTbl menuGroupTbl) 
+			@RequestParam(value = "menuId", required = false)Integer[] menuId) 
 	{
 		
 		boolean isSuccess = false;
@@ -287,30 +288,46 @@ public class GroupManagerController  extends BaseController {
 		
 		ModelAndView model =  new ModelAndView();
 		
-		
+		String userId =(String) session.getAttribute(Define.USER_ID_KEY);
 		_LOAD_MENU :
 		{
-				try{
-					String Id =(String) session.getAttribute(Define.USER_ID_KEY);
-					
-					menuGroupTbl.setRegrId(Id);
-					
-					if(groupService.regGroupMenu(menuId, groupName, menuGroupTbl) == false)
-					{
-						errorMessage = "Auth Menu 등록 실패";
-						break _LOAD_MENU;
-					}
-					isSuccess = true;
-					}
-				
-				catch (Exception e){
-					e.printStackTrace();
-				}
+			
+			if(menuId == null)
+			{
+				menuId = new Integer[0];
 			}
+			
+			MenuGroupTbl[] menuGroupTbl = new MenuGroupTbl[menuId.length];
+			
+			for(int i = 0; i < menuId.length; i++)
+			{
+				
+				menuGroupTbl[i] = new MenuGroupTbl();
+				menuGroupTbl[i].setMenuId(menuId[i]);
+				menuGroupTbl[i].setGroupNm(groupName);
+				menuGroupTbl[i].setRegrId(userId);
+			}
+			
+			
+			try
+			{
+				if(groupService.regGroupMenu(groupName, menuGroupTbl) == false)
+				{
+					errorMessage = "권한 그룹 메뉴 등록 실패";
+					break _LOAD_MENU;
+				}else
+				{
+					isSuccess = true;
+				}
+			}catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+			
+		}
 		model.setViewName("jsonView");
 		model.addObject("isSuccess", isSuccess);
 		model.addObject("errorMessage", errorMessage);
-		//model.setViewName("/admin/groupMng/groupMng");
 		
 		return model;
 	}

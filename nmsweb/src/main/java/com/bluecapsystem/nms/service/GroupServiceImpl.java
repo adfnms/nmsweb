@@ -71,7 +71,6 @@ public class GroupServiceImpl extends BaseService implements GroupService
 		{
 			groupDao.deleteGroupTbl(groupTbl);
 			
-			
 			ret = true;
 			
 		}catch(Exception ex)
@@ -84,82 +83,61 @@ public class GroupServiceImpl extends BaseService implements GroupService
 		}
 		return ret;
 	}
+	
 
 	@Override
-	public boolean regGroupMenu(String menuId, String groupName, MenuGroupTbl menuGroupTbl) {
+	public List<MenuGroupTbl> getMenuId(String groupNm) throws Exception
+	{
 		
-		logger.debug("start service");
-		boolean ret = false;
+		logger.error("Start service");
+		return groupDao.getMenuId(groupNm);
+	}
 
-		MenuAuthTransactionCallback transWorker = new MenuAuthTransactionCallback(menuId, groupName, menuGroupTbl); 
-		 transWorker.menuGroupTbl = menuGroupTbl;
-		 transWorker.menuId = menuId;
-		 transWorker.groupName = groupName;
-		 ret = this.transactionTemplate.execute(transWorker);
+	
+
+	@Override
+	public boolean regGroupMenu(String groupName, MenuGroupTbl[] groupMenues)
+	{
+		boolean retValue = false;
 		
+		logger.debug("Start regist menu group");
 		
-		logger.debug(String.format("end service result : %b", ret));
+		MenuAuthTransactionCallback transWorker = new MenuAuthTransactionCallback(groupName, groupMenues); 
+		retValue = this.transactionTemplate.execute(transWorker);
 		
-		return ret;
+		logger.debug(String.format("end service result : %b", retValue));
+		return retValue;
 	}
 
 
 	class MenuAuthTransactionCallback implements TransactionCallback <Boolean>
 	{
-		MenuGroupTbl menuGroupTbl = null;
-		String menuId = null;
-		String groupName = null;
-
-		public MenuAuthTransactionCallback(String menuId, String groupName, MenuGroupTbl menuGroupTbl)
+		private MenuGroupTbl[] groupMenues = null;
+		private String groupName = null;
+		
+		public MenuAuthTransactionCallback(String groupName, MenuGroupTbl[] groupMenues)
 		{
-			this.menuGroupTbl = menuGroupTbl;
-			this.menuId = menuId;
 			this.groupName = groupName;
+			this.groupMenues = groupMenues;
 		}
 
 		@Override
-		public Boolean doInTransaction(TransactionStatus status) {
+		public Boolean doInTransaction(TransactionStatus status) 
+		{
 			boolean retTrans = false;
 			
-			_TRANSACTION : {
+			_TRANSACTION : 
+			{
 				try
 				{
-					
-					String[] menuIdsp = null;
-					
-					String [] groupNmsp = null;
-					
-					if(menuId == null || menuId.equals("")){
-						menuIdsp=new String[0];
-					}else{
-						
-						menuIdsp=menuId.split(",");
-					}
-					if(groupName == null || groupName.equals("")){
-						groupNmsp=new String[0];
-					}else{
-						groupNmsp=groupName.split(",");
-					}
-					
-					
-					for(int i=0;i<groupNmsp.length;i++){
-						groupName=groupNmsp[i];
-						menuGroupTbl.setGroupNm(groupName);
-						
-					}
-					
-					if(groupDao.delMenuAuth(groupName, menuGroupTbl) == false)
-						
+					if(groupDao.delMenuAuth(groupName) == false)
+					{
 						break _TRANSACTION;
+					}
 					
-					for(int i=0;i<menuIdsp.length;i++){
-						
-						menuId=menuIdsp[i];
-						groupName=groupNmsp[i];
-						menuGroupTbl.setMenuId(menuId);
-						menuGroupTbl.setGroupNm(groupName);
-						
-						if(groupDao.regMenuAuth(menuGroupTbl) == false)
+					for(int i = 0; i < groupMenues.length; i++)
+					{
+						if(groupDao.regMenuAuth(groupMenues[i]) == false)
 							break _TRANSACTION;
 					}
 					
@@ -170,6 +148,7 @@ public class GroupServiceImpl extends BaseService implements GroupService
 					logger.error(ex.getMessage());
 				}
 			}
+			
 			
 			if(retTrans == false)
 			{
@@ -183,24 +162,6 @@ public class GroupServiceImpl extends BaseService implements GroupService
 		}
 	}
 
-
-	@Override
-	public boolean getMenuId(String groupNm, List<MenuGroupTbl> menuIds) {
-		
-		boolean ret = false;
-		
-		
-		ret = groupDao.getMenuId(groupNm, menuIds);
-		
-		//System.out.println("--------------refMenuList----SystemService----------"+refMenuList);
-		if(ret == false)
-		{
-			logger.error("fail of get menu Id");
-		}
-		
-		return ret;		
-		
-	}
 
 	
 

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.bluecapsystem.frm.BaseDao;
@@ -59,33 +60,14 @@ public class GroupDaoImpl extends BaseDao implements GroupDao
 	
 	
 	@Override
-	public boolean getMenuId(String groupNm, List<MenuGroupTbl> menuIds) {
-		
-		boolean ret = false;
-		String sqlMapId = "com.bluecapsystem.nms.system.getMenuId";
-		
+	public List<MenuGroupTbl> getMenuId(String groupNm) throws DataAccessException
+	{
+		String sqlMapId = "com.bluecapsystem.nms.system.getMenuGroupId";
 		Map<String, Object>	params 		= new HashMap<String,Object>();
-		List<MenuGroupTbl> 		menuId 	= null;
-		
 		params.put("groupNm", groupNm);
 		
-		try
-		{
-			menuId = (List<MenuGroupTbl>) super.getSqlMapClientTemplate().queryForList(sqlMapId, params);
-			ret = true;
-		}catch(Exception ex)
-		{
-			logger.error(ex.getMessage());
-			ret = false;
-		}finally
-		{
-			if(menuId != null)
-			{
-				menuIds.addAll(menuId);
-			}
-			//logger.info(String.format("sqlMapId : %s, sysId: %s, ret : %b", sqlMapId, sysId, ret));
-		}
-		return ret;
+		List<MenuGroupTbl> retGroupMenues = (List<MenuGroupTbl>) super.getSqlMapClientTemplate().queryForList(sqlMapId, params);
+		return retGroupMenues;
 	}
 
 	@Override
@@ -122,12 +104,14 @@ public class GroupDaoImpl extends BaseDao implements GroupDao
 
 
 	@Override
-	public boolean delMenuAuth(String groupName, MenuGroupTbl menuGroupTbl) {
+	public boolean delMenuAuth(String groupNm) 
+	{
 		
 		try{
+			HashMap<String, Object> params = new HashMap<String, Object>();
+			params.put("groupNm", groupNm);
 			
-			super.getSqlMapClientTemplate().delete("com.bluecapsystem.nms.system.delMenuAuth", menuGroupTbl);
-			
+			super.getSqlMapClientTemplate().delete("com.bluecapsystem.nms.system.delMenuAuth", params);
 		}catch(Exception ex)
 		{
 			ex.printStackTrace();

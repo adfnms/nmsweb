@@ -7,7 +7,7 @@ import java.util.Date;
 public class MenuGroupTbl {
 
 	
-	private String menuId;	
+	private Integer menuId;	
 	private String groupNm;
 	private String	regrId;
 	private Date	regDt;
@@ -31,12 +31,12 @@ public class MenuGroupTbl {
 	}
 
 
-	public String getMenuId() {
+	public Integer getMenuId() {
 		return menuId;
 	}
 
 
-	public void setMenuId(String menuId) {
+	public void setMenuId(Integer menuId) {
 		this.menuId = menuId;
 	}
 
