@@ -98,7 +98,7 @@ function regNodeListStr(jsonObj){
 		str += '	</tr>';
 		str += '</table>';
 		
-		$("input[name=nodeid][value=" + nodeObj[i]["nodeid"] + "]").attr("checked", false);
+		$("#checkboxPopup input[name=nodeid][value=" + nodeObj[i]["nodeid"] + "]").attr("checked", false);
 		
 	}else{
 		$('#nodeListTable').empty();
@@ -113,7 +113,7 @@ function regNodeListStr(jsonObj){
 			str += '		<td class="span3"> 노드 아이디&nbsp;:&nbsp;&nbsp;'+nodeObj[i]["nodeid"]+'</td>';
 			str += '	</tr>';
 			
-			$("input[name=nodeid][value=" + nodeObj[i]["nodeid"] + "]").attr("checked", true);
+			$("#checkboxPopup input[name=nodeid][value=" + nodeObj[i]["nodeid"] + "]").attr("checked", true);
 		}
 		str += '</table>';
 		

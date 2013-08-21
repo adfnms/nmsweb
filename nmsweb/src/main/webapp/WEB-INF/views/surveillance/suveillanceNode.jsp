@@ -96,7 +96,7 @@ var orderBy = "id";
 	        		alert(res.errorMessage);        		
 	        		return;
 	       		}
-	        	
+	        	getNodeToSurveillance(getRegNodeList, "${categoryId}");
 	        }
 		});  
 		
