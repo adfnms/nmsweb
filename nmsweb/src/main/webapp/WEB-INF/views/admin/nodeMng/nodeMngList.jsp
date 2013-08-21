@@ -128,7 +128,7 @@
 				</div>
 				<div class="row-fluid">
 					<div class="span12">
-						<table class="table  table-hover" id="requisitionsListTable"></table>
+						<div class="table  table-hover" id="requisitionsListTable"></div>
 					</div>
 				</div>
 					
