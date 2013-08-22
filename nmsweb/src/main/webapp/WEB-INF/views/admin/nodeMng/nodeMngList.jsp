@@ -127,13 +127,10 @@
 						<div class="table  table-hover" id="requisitionsListTable"></div>
 					</div>
 				</div>
-					
-				
-			</div>
 			</div>
 		</div>
-		<hr>
-
+	</div>
+	<hr>	
 	<!-- /container -->
 </body>
 </html>

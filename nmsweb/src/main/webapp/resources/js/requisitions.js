@@ -131,22 +131,25 @@ function delNodeRequisition(nodeNm, nodeId){
 
 function showEditRequisitionInfoDiv(jsonObj, nodeNm){
 	$("#" + nodeNm).empty();
-	var requisitionObj = jsonObj["model-import"];
 	var str = "";
-	console.log('----------jsonObj---------');
-	console.log(jsonObj);
 	str += '<tr>';
-	str += '	<td><button type="button" class="btn btn-primary" title="" onclick="javascript:synRequisition(\'' +  +'\');">동기화</button></td>';
+	str += '	<td><button type="button" class="btn btn-mute" title="" href="#popDestinationPaths" data-toggle="modal">실행 완료</button></td>';
+	str += '	<td><button type="button" class="btn btn-mute" title="" onclick="addNodeRequisition()">노드 추가</button></td>';
 	str += '</tr>';
 	var row = getTableToEditRequisition(jsonObj);
 	$("#" + nodeNm).append(str);
 	$("#" + nodeNm).append(row);
 }
+
+//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 탭 안의 리스트
+function addNodeRequisition(){
+	alert("1");
+}
 /************************** view String edit *****************************/
-//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 리스트
+//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 탭
 function getTableToEditRequisition(jsonObj){
 	var str = "";
-	str += '<tr><td>2</td></tr>';
+	str += '<tr><td>1</td></tr>';
 	return str;
 }
 
@@ -170,7 +173,6 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		}else{
 			nodeStr ="1";
 		}
-		
 		
 		str += "<tr>";
 		str += "	<td class='text-info'>";

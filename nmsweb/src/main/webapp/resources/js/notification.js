@@ -792,29 +792,150 @@ function totalNotiListjsonObj(jsonObj) {
 	/*********************************************************/
 	
 	var userObj = jsonObj["notifications"];
-	if(userObj.length >=1){
-		TBODYobj.append(
-				TRobj.clone().append(
-					TDobj.clone().append(
-						H4obj.clone().text("ID")
+	
+	if(userObj == "null"){
+		var str = getFailJsonObj();
+		$('#totalTable').append(str);
+	}
+	else{
+		
+		if(userObj.length >=1){
+			TBODYobj.append(
+					TRobj.clone().append(
+						TDobj.clone().append(
+							H4obj.clone().text("ID")
+						),
+						TDobj.clone().append(
+							H4obj.clone().text("EventID")
+						),
+						TDobj.clone().append(
+							H4obj.clone().text("Status")
+						),
+						TDobj.clone().append(
+							H4obj.clone().text("PageTime")
+						),
+						TDobj.clone().append(
+							H4obj.clone().text("Message")
+						)
+					)	
+				);
+			for ( var i in userObj) {
+				
+				var eventId = userObj[i]["eventid"];
+				var statusProgress = "";
+				var stat = "";
+				$.ajax({
+					type : 'get',
+					url : '/' + version + '/events',
+					dataType : 'json',
+					data : encodeURI("query=this_.eventId  = '"+eventId+"'"),
+					async: false,
+					contentType : "application/json;charset=UTF-8", 
+					error : function(data) {
+						//console.log(data);
+						console.log(data);
+						alert('심각도 가져오기 서비스 실패');
+					},
+					success : function(data) {
+						stat = data["event"]["@severity"];
+						if(stat=="CRITICAL"){
+							 statusProgress = "progress-danger";
+						}
+						else if(stat=="MAJOR"){
+							 statusProgress = "progress-caution";						
+						}
+						else if(stat=="MINOR"){
+							 statusProgress = "progress-warning";
+						}
+						else if(stat=="WARNING"){
+							 statusProgress = "progress-gray";
+						}
+						else if(stat=="NORMAL"){
+							 statusProgress = "progress-info";
+						}
+						else if(stat=="CLEARED"){
+							 statusProgress = "progress";
+						}
+						else if(stat=="INDETERMINATE"){
+							 statusProgress = "progress-success";
+						}
+					}
+	
+				});
+				
+				
+				str += "<tr>";
+				/************************************************************************************************************************************************************************/
+				TBODYobj.append(
+					TRobj.clone().append(
+						TDobj.attr("class", "span1").clone().append(
+							Aobj.attr("class", "accordion-toggle").attr("data-toggle","collapse").attr("data-parent","#accordion2").attr("href", "#total" + userObj[i]["notifyid"]).attr("onclick", "showTotalNotiInfoDiv(" + userObj[i]["notifyid"] + "," + userObj[i]["eventid"] + ")").clone().text(userObj[i]["notifyid"])	
+						),
+						TDobj.attr("class", "span1").clone().append(
+							Aobj.attr("class", "accordion-toggle").attr("data-toggle","collapse").attr("data-parent","#accordion2").attr("href", "#total" + userObj[i]["notifyid"]).attr("onclick", "showTotalEventInfoDiv(" + userObj[i]["notifyid"] + "," + userObj[i]["eventid"] + ")").clone().text(userObj[i]["eventid"])	
+						),
+						TDobj.attr("class", "span2").clone().append(
+							DIVobj.attr("class", "progress progress-striped active  " + statusProgress + "").attr("style", "margin-bottom: 0px;width: 130px;").clone().append(
+								ADIVobj.attr("class", "bar").attr("style", "width:100%").clone().text(stat)
+							)	
+						),
+						TDobj.attr("class", "span2").clone().text(new Date(userObj[i]["pagetime"]).format('yy-MM-dd hh:mm:ss')),
+						TDobj.attr("class", "span6").clone().text(userObj[i]["textmsg"])
 					),
-					TDobj.clone().append(
-						H4obj.clone().text("EventID")
-					),
-					TDobj.clone().append(
-						H4obj.clone().text("Status")
-					),
-					TDobj.clone().append(
-						H4obj.clone().text("PageTime")
-					),
-					TDobj.clone().append(
-						H4obj.clone().text("Message")
+					TRobj.clone().append(
+						ATDobj.attr("colspan", "5").clone().append(
+							BDIVobj.attr("class", "accordion-group").clone().append(
+								CDIVobj.attr("id", "total" + userObj[i]["notifyid"]).attr("class", "accordion-body collapse").clone().append(
+									DDIVobj.attr("class", "accordion-inner").clone().append(
+										EDIVobj.attr("class", "row-fluid").clone().text("")
+									)
+								)
+							)
+						)
 					)
-				)	
-			);
-		for ( var i in userObj) {
+				);
+				/************************************************************************************************************************************************************************/
+				/*//str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";
+				str += "	<td class=\"span1\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\"  href=\"#total"+userObj[i]["notifyid"]+"\" onclick=\"showTotalNotiInfoDiv("+userObj[i]["notifyid"]+","+userObj[i]["eventid"]+");\">";
+				str += userObj[i]["notifyid"];											//notifyid
+				str += "	</a></td>";
+				//str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj[i]["eventid"]+"'>";	
+				str += "	<td class=\"span1\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\"  href=\"#total"+userObj[i]["notifyid"]+"\" onclick=\"showTotalEventInfoDiv("+userObj[i]["notifyid"]+","+userObj[i]["eventid"]+");\">";
+				str += userObj[i]["eventid"];											//eventid
+				str += "	</a></td>";
+				//str += "<th class='"+stat.toLowerCase()+"'>" + stat + "</th>";			//condition
+				str += '		<td class=""><div class="progress progress-striped active  '+statusProgress+' " style="margin-bottom: 0px;width: 130px; ">';
+				str += '		<div class="bar" style="width:100%">' + stat + '</div>';
+				str += '		</div></td>';
+				str += "	<td class=\"span2\">";										
+				str +=  new Date(userObj[i]["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
+				str += "	</td>";														
+			//	str += "	<td class=\"span1\" ><a href='/"+version+"/search/node/interfaceDesc.do?nodeId="+userObj[i]["nodeid"]+"&intf="+nullCheckJsonObject(userObj[i]["notifications"],"interfaceid")+"'>";
+			//	str += nullCheckJsonObject(userObj[i]["notifications"],"interfaceid");	//interface
+			//	str += "	</a></td>";	
+				str += "	<td class=\"span6\" >";
+				str += userObj[i]["textmsg"];											//textmsg
+				str += "	</td>";
+				
+				str += "</tr>";
+				
+				str += "<tr><td colspan=\"5\">";
+				str += "	<div class=\"accordion-group\">";
+				str += "		<div id=\"total"+userObj[i]["notifyid"]+"\" class=\"accordion-body collapse \">";
+				str += "			<div class=\"accordion-inner\">";
+				str += "					<div class=\"row-fluid\">";
+				str += "						</div>";
+				str += "					</div>";
+				str += "			</div>";
+				str += "		</div>";
+				str += "	</div>";
+				str += "</td></tr>";*/
+				
+			}
 			
-			var eventId = userObj[i]["eventid"];
+		}else{
+			/************************Get @severity  from event****************************/
+			var eventId = userObj["eventid"];
 			var statusProgress = "";
 			var stat = "";
 			$.ajax({
@@ -853,183 +974,70 @@ function totalNotiListjsonObj(jsonObj) {
 						 statusProgress = "progress-success";
 					}
 				}
-
+	
 			});
-			
-			
-			str += "<tr>";
-			/************************************************************************************************************************************************************************/
+			/************************Get @severity  from event****************************/
 			TBODYobj.append(
 				TRobj.clone().append(
+					TDobj.clone().append(
+						H4obj.clone().text("ID")
+					),
+					TDobj.clone().append(
+						H4obj.clone().text("EventID")
+					),
+					TDobj.clone().append(
+						H4obj.clone().text("Status")
+					),
+					TDobj.clone().append(
+						H4obj.clone().text("PageTime")
+					),
+					TDobj.clone().append(
+						H4obj.clone().text("Message")
+					)
+				),
+				TRobj.clone().append(
 					TDobj.attr("class", "span1").clone().append(
-						Aobj.attr("class", "accordion-toggle").attr("data-toggle","collapse").attr("data-parent","#accordion2").attr("href", "#total" + userObj[i]["notifyid"]).attr("onclick", "showTotalNotiInfoDiv(" + userObj[i]["notifyid"] + "," + userObj[i]["eventid"] + ")").clone().text(userObj[i]["notifyid"])	
+						Aobj.attr("href", "/" + version + "/admin/setting/notificationDetali.do?notifyid=" + userObj["notifyid"] + "&eventId=" + userObj["eventid"]).clone().text(userObj["notifyid"])	
 					),
 					TDobj.attr("class", "span1").clone().append(
-						Aobj.attr("class", "accordion-toggle").attr("data-toggle","collapse").attr("data-parent","#accordion2").attr("href", "#total" + userObj[i]["notifyid"]).attr("onclick", "showTotalEventInfoDiv(" + userObj[i]["notifyid"] + "," + userObj[i]["eventid"] + ")").clone().text(userObj[i]["eventid"])	
+						Aobj.attr("href", "/" + version + "/search/event/eventDesc.do?eventId=" + userObj["eventid"]).clone().text(userObj["eventid"])	
 					),
-					TDobj.attr("class", "span2").clone().append(
+					TDobj.attr("class", "").clone().append(
 						DIVobj.attr("class", "progress progress-striped active  " + statusProgress + "").attr("style", "margin-bottom: 0px;width: 130px;").clone().append(
 							ADIVobj.attr("class", "bar").attr("style", "width:100%").clone().text(stat)
 						)	
 					),
-					TDobj.attr("class", "span2").clone().text(new Date(userObj[i]["pagetime"]).format('yy-MM-dd hh:mm:ss')),
-					TDobj.attr("class", "span6").clone().text(userObj[i]["textmsg"])
-				),
-				TRobj.clone().append(
-					ATDobj.attr("colspan", "5").clone().append(
-						BDIVobj.attr("class", "accordion-group").clone().append(
-							CDIVobj.attr("id", "total" + userObj[i]["notifyid"]).attr("class", "accordion-body collapse").clone().append(
-								DDIVobj.attr("class", "accordion-inner").clone().append(
-									EDIVobj.attr("class", "row-fluid").clone().text("")
-								)
-							)
-						)
-					)
+					TDobj.attr("class", "span2").clone().text(new Date(userObj["pagetime"]).format('yy-MM-dd hh:mm:ss')),
+					TDobj.attr("class", "span6").clone().text(userObj["textmsg"])
 				)
 			);
-			/************************************************************************************************************************************************************************/
-			/*//str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj[i]["notifyid"]+"&eventId="+userObj[i]["eventid"]+"'>";
-			str += "	<td class=\"span1\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\"  href=\"#total"+userObj[i]["notifyid"]+"\" onclick=\"showTotalNotiInfoDiv("+userObj[i]["notifyid"]+","+userObj[i]["eventid"]+");\">";
-			str += userObj[i]["notifyid"];											//notifyid
+			/*************************************************************************************************************************************************************************************/
+			
+			/*str += "<tr>";
+			
+			str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj["notifyid"]+"&eventId="+userObj["eventid"]+"'>";										
+			str += userObj["notifyid"];											//notifyid
 			str += "	</a></td>";
-			//str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj[i]["eventid"]+"'>";	
-			str += "	<td class=\"span1\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\"  href=\"#total"+userObj[i]["notifyid"]+"\" onclick=\"showTotalEventInfoDiv("+userObj[i]["notifyid"]+","+userObj[i]["eventid"]+");\">";
-			str += userObj[i]["eventid"];											//eventid
+			str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj["eventid"]+"'>";										
+			str += userObj["eventid"];											//eventid
 			str += "	</a></td>";
 			//str += "<th class='"+stat.toLowerCase()+"'>" + stat + "</th>";			//condition
-			str += '		<td class=""><div class="progress progress-striped active  '+statusProgress+' " style="margin-bottom: 0px;width: 130px; ">';
+			str += '		<th class=""><div class="progress progress-striped active  '+statusProgress+' " style="margin-bottom: 0px;width: 130px; ">';
 			str += '		<div class="bar" style="width:100%">' + stat + '</div>';
 			str += '		</div></td>';
 			str += "	<td class=\"span2\">";										
-			str +=  new Date(userObj[i]["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
+			str +=  new Date(userObj["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
 			str += "	</td>";														
 		//	str += "	<td class=\"span1\" ><a href='/"+version+"/search/node/interfaceDesc.do?nodeId="+userObj[i]["nodeid"]+"&intf="+nullCheckJsonObject(userObj[i]["notifications"],"interfaceid")+"'>";
 		//	str += nullCheckJsonObject(userObj[i]["notifications"],"interfaceid");	//interface
 		//	str += "	</a></td>";	
 			str += "	<td class=\"span6\" >";
-			str += userObj[i]["textmsg"];											//textmsg
+			str += userObj["textmsg"];											//textmsg
 			str += "	</td>";
 			
-			str += "</tr>";
-			
-			str += "<tr><td colspan=\"5\">";
-			str += "	<div class=\"accordion-group\">";
-			str += "		<div id=\"total"+userObj[i]["notifyid"]+"\" class=\"accordion-body collapse \">";
-			str += "			<div class=\"accordion-inner\">";
-			str += "					<div class=\"row-fluid\">";
-			str += "						</div>";
-			str += "					</div>";
-			str += "			</div>";
-			str += "		</div>";
-			str += "	</div>";
-			str += "</td></tr>";*/
+			str += "</tr>";*/
 			
 		}
-		
-	}else{
-		/************************Get @severity  from event****************************/
-		var eventId = userObj["eventid"];
-		var statusProgress = "";
-		var stat = "";
-		$.ajax({
-			type : 'get',
-			url : '/' + version + '/events',
-			dataType : 'json',
-			data : encodeURI("query=this_.eventId  = '"+eventId+"'"),
-			async: false,
-			contentType : "application/json;charset=UTF-8", 
-			error : function(data) {
-				//console.log(data);
-				console.log(data);
-				alert('심각도 가져오기 서비스 실패');
-			},
-			success : function(data) {
-				stat = data["event"]["@severity"];
-				if(stat=="CRITICAL"){
-					 statusProgress = "progress-danger";
-				}
-				else if(stat=="MAJOR"){
-					 statusProgress = "progress-caution";						
-				}
-				else if(stat=="MINOR"){
-					 statusProgress = "progress-warning";
-				}
-				else if(stat=="WARNING"){
-					 statusProgress = "progress-gray";
-				}
-				else if(stat=="NORMAL"){
-					 statusProgress = "progress-info";
-				}
-				else if(stat=="CLEARED"){
-					 statusProgress = "progress";
-				}
-				else if(stat=="INDETERMINATE"){
-					 statusProgress = "progress-success";
-				}
-			}
-
-		});
-		/************************Get @severity  from event****************************/
-		TBODYobj.append(
-			TRobj.clone().append(
-				TDobj.clone().append(
-					H4obj.clone().text("ID")
-				),
-				TDobj.clone().append(
-					H4obj.clone().text("EventID")
-				),
-				TDobj.clone().append(
-					H4obj.clone().text("Status")
-				),
-				TDobj.clone().append(
-					H4obj.clone().text("PageTime")
-				),
-				TDobj.clone().append(
-					H4obj.clone().text("Message")
-				)
-			),
-			TRobj.clone().append(
-				TDobj.attr("class", "span1").clone().append(
-					Aobj.attr("href", "/" + version + "/admin/setting/notificationDetali.do?notifyid=" + userObj["notifyid"] + "&eventId=" + userObj["eventid"]).clone().text(userObj["notifyid"])	
-				),
-				TDobj.attr("class", "span1").clone().append(
-					Aobj.attr("href", "/" + version + "/search/event/eventDesc.do?eventId=" + userObj["eventid"]).clone().text(userObj["eventid"])	
-				),
-				TDobj.attr("class", "").clone().append(
-					DIVobj.attr("class", "progress progress-striped active  " + statusProgress + "").attr("style", "margin-bottom: 0px;width: 130px;").clone().append(
-						ADIVobj.attr("class", "bar").attr("style", "width:100%").clone().text(stat)
-					)	
-				),
-				TDobj.attr("class", "span2").clone().text(new Date(userObj["pagetime"]).format('yy-MM-dd hh:mm:ss')),
-				TDobj.attr("class", "span6").clone().text(userObj["textmsg"])
-			)
-		);
-		/*************************************************************************************************************************************************************************************/
-		
-		/*str += "<tr>";
-		
-		str += "	<td class=\"span1\"><a href='/"+version+"/admin/setting/notificationDetali.do?notifyid="+userObj["notifyid"]+"&eventId="+userObj["eventid"]+"'>";										
-		str += userObj["notifyid"];											//notifyid
-		str += "	</a></td>";
-		str += "	<td class=\"span1\"><a href='/"+version+"/search/event/eventDesc.do?eventId="+userObj["eventid"]+"'>";										
-		str += userObj["eventid"];											//eventid
-		str += "	</a></td>";
-		//str += "<th class='"+stat.toLowerCase()+"'>" + stat + "</th>";			//condition
-		str += '		<th class=""><div class="progress progress-striped active  '+statusProgress+' " style="margin-bottom: 0px;width: 130px; ">';
-		str += '		<div class="bar" style="width:100%">' + stat + '</div>';
-		str += '		</div></td>';
-		str += "	<td class=\"span2\">";										
-		str +=  new Date(userObj["pagetime"]).format('yy-MM-dd hh:mm:ss');	//pagetime 
-		str += "	</td>";														
-	//	str += "	<td class=\"span1\" ><a href='/"+version+"/search/node/interfaceDesc.do?nodeId="+userObj[i]["nodeid"]+"&intf="+nullCheckJsonObject(userObj[i]["notifications"],"interfaceid")+"'>";
-	//	str += nullCheckJsonObject(userObj[i]["notifications"],"interfaceid");	//interface
-	//	str += "	</a></td>";	
-		str += "	<td class=\"span6\" >";
-		str += userObj["textmsg"];											//textmsg
-		str += "	</td>";
-		
-		str += "</tr>";
-		*/
 	}
 	$("#totalTable").append(TBODYobj);
 	//$("#totalTable").append(str);
