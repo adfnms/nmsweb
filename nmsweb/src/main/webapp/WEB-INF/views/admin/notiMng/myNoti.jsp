@@ -213,7 +213,7 @@ var encodeTime = encodeURI(time);
 				<div class="span12">
 				<div class="span9" style="width: 80.358974%;"></div>
 					<div class="span2" style="width: 16.529915%;">
-						<a type="button" class="btn btn-primary" title="" href="/v1/admin/setting/configureNotification.do">configure notification</a>
+						<a type="button" class="btn btn-primary" title="" href="/v1/admin/notimng/configureNotification.do">configure notification</a>
 					</div>
 				</div>
 			</div>

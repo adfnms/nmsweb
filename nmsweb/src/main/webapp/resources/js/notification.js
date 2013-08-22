@@ -3,19 +3,17 @@
 /*POST Adjust the information related with real occured, certain event*/
 /*reg Notification obj*/
 
-function requestBodyStr (uei,name,description,subject,numericMessage,textMessage,destinationPath,status,rule,noticeQueue){
+function requestBodyStr (uei,noticeQueue,name,description,subject,numericMessage,textMessage,destinationPath,status,rule){
  		
  		var str ="{\"name\":\""+name+"\",\"description\": \""+description+"\"," + 
  				"\"subject\": \""+subject+"\",\"status\": \""+status+"\"," +
  				"\"parameter\": [],\"rule\": \""+rule+"\"," +
- 				"\"varbind\": {" + 
+ 				"\"varbind\":{" + 
  				"\"vbname\":\"\",\"vbvalue\": \"\"}," +
  				"\"writeable\":\"yes\",\"uei\": \""+uei+"\"," +
  				"\"noticeQueue\": \""+noticeQueue+"\",\"destinationPath\": \""+destinationPath+"\"," +
  				"\"textMessage\": \""+textMessage+"\",\"numericMessage\": \""+numericMessage+"\"," +
  				"\"eventSeverity\": \"\"}";
- 		
- 		console.log(str);
  		
  		return str;
  	}
@@ -349,9 +347,7 @@ function deletePathAjax(PathName){
 
 
 function regNotificationAjax(PathName){
-	
 	$.ajax({
-		
 		type : 'put',
 		url : '/' + version + '/notifications/eventNotifications',
 		contentType : 'application/json',
@@ -361,7 +357,7 @@ function regNotificationAjax(PathName){
 			alert('공지 수정 실패');
 		},
 		success : function(data) {
-			$(location).attr('href', "/v1/admin/setting/configureNotification.do");
+			$(location).attr('href', "/v1/admin/notimng/configureNotification.do");
 		}
 	}); 
 		

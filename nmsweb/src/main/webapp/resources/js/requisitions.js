@@ -110,7 +110,6 @@ function synRequisition(nodeNm){
 
 //메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성된 하단부 창의 노드 삭제 버튼
 function delNodeRequisition(nodeNm, nodeId){
-	alert(nodeId);
 	synRequisition(nodeNm);
 	if(!confirm("정말 삭제하시겠습니까?")){
 		return;
@@ -129,27 +128,53 @@ function delNodeRequisition(nodeNm, nodeId){
 	});
 }
 
-function showEditRequisitionInfoDiv(jsonObj, nodeNm){
-	$("#" + nodeNm).empty();
-	var str = "";
-	str += '<tr>';
-	str += '	<td><button type="button" class="btn btn-mute" title="" href="#popDestinationPaths" data-toggle="modal">실행 완료</button></td>';
-	str += '	<td><button type="button" class="btn btn-mute" title="" onclick="addNodeRequisition()">노드 추가</button></td>';
-	str += '</tr>';
-	var row = getTableToEditRequisition(jsonObj);
-	$("#" + nodeNm).append(str);
-	$("#" + nodeNm).append(row);
+//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 팝업창
+function showEditRequisitionInfo(nodeNm){
+	getTotalRequisitionsList(showEditRequisitionInfoDiv);
 }
 
-//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 탭 안의 리스트
-function addNodeRequisition(){
-	alert("1");
+/*function showEditRequisitionInfoDiv(jsonObj, nodeNm) {
+	
+}*/
+
+function showEditRequisitionPopList(){
+	getTotalRequisitionsList(editRequisitionPopList);
+} 
+
+function editRequisitionPopList(jsonObj){
+	var str = getTableToEditRequisitionPop(jsonObj);
+	$('#requisitionListTable').append(str);
 }
-/************************** view String edit *****************************/
-//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 탭
-function getTableToEditRequisition(jsonObj){
+
+function showEditRequisitionInfoDivTitle(nodeNm){
+	$('#editRequisitionPopTitle').empty();
+	$('#editRequisitionPopTitle').append("Requisitioned Nodes: " + nodeNm);
+	
+}
+/*function addNodeRequisition(nodeNm){
 	var str = "";
-	str += '<tr><td>1</td></tr>';
+	str += '<tr>';
+	str += '	<td>';
+	str += '			<input class="input-large" type="text" placeholder="추가할 노드명">';
+	str += '	</td>';
+	str += '</tr>';
+	$("#" + nodeNm).append(str);
+}*/
+/************************** view String edit *****************************/
+//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 팝업창 안의 리스트
+function getTableToEditRequisitionPop(jsonObj){
+	var requisitionObj = jsonObj["model-import"];
+	var str = "";
+	str += '<tr>';
+	str += '<td>Node</td>';
+	str += '<td><input type="text" placeholder="" style="margin-left: -15px;width: 338px;"></td>';
+	str += '<td>ForeignId</td>';
+	str += '<td><input type="text" placeholder="" style="margin-left: -15px;"></td>';
+	str += '<td>Site</td>';
+	str += '<td><input type="text" placeholder="" style="margin-left: -15px;"></td>';
+	str += '<td><a type="button" class="btn btn-primary" onclick="saveRequisitionPopList()">저장</a></td>';
+	str += '<td><a type="button" class="btn btn-danger" onclick="cancelRequisitionPopList()">취소</a></td>';
+	str += '</tr>';
 	return str;
 }
 
@@ -216,9 +241,6 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		}
 		str += "<tr><td style='width:1000px;'><hr/></td></tr>";
 	}else if(jsonObj["@count"] > 1){
-		
-		
-		
 		for (var i in requisitionObj) {
 			var nullStrLastImport =nullCheckJsonObject(jsonObj["model-import"][i], ["@last-import"]);
 			var nullStrNode =nullCheckJsonObject(jsonObj["model-import"][i], ["node"]);
@@ -251,10 +273,12 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 			str += "<tr>";
 			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">요구 삭제</button></td>';
 			str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-831px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
-			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="collapse"  href=\'#' + requisitionObj[i]["@foreign-source"]+'\' onclick="javascript:showEditRequisitionInfoDiv(\'' + jsonObj + '\', \'' + requisitionObj[i]["@foreign-source"] + '\');">편집</button></td>';
+			//str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal"  href=\'#' + requisitionObj[i]["@foreign-source"]+'\' onclick="javascript:showEditRequisitionInfo();">편집</button></td>';
+			//str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href=\'#' + requisitionObj[i]["@foreign-source"]+'\'>편집</button>';
+			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj[i]["@foreign-source"] +'\')">편집</button>';
 			str += '</tr>';
 		}
-		str += '<tr>';
+		/*str += '<tr>';
 		str += ' 	<td><div class="editRqstList">';
 		str += ' 			<div class="accordion" id="accordion2">';
 		str += '				<div class="accordion-group">';
@@ -266,26 +290,26 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		str += '			</div>';
 		str += '		</div>';
 		str += '	</td>';
-		str += '</tr>';
+		str += '</tr>';*/
+		
 		str += "<tr>";
 		str += "    <td><b class='text-error'>"+nodeStr+"</b> nodes defined</td>";
 		str += "</tr>";
 		str += "<tr>";
 		str += "	<td>마지막 수정일: <b>" + new Date(requisitionObj[i]["@date-stamp"]).format('yy-MM-dd hh:mm:ss') + "</b></td>";
 		str += "</tr>";
-		if(nullStrLastImport == ""){
-			str += "<tr>";
-			str += "	<td>최근 동기화: <b>최근 동기화를 하지 않았습니다. </b></td>";
-			str += "</tr>";
-		}else{
-			str += "<tr>";
-			str += "	<td>최근 동기화: <b>" + new Date(nullStrLastImport).format('yy-MM-dd hh:mm:ss') + "</b></td>";
-			str += "</tr>";
-		}
+			if(nullStrLastImport == ""){
+				str += "<tr>";
+				str += "	<td>최근 동기화: <b>최근 동기화를 하지 않았습니다. </b></td>";
+				str += "</tr>";
+			}else{
+				str += "<tr>";
+				str += "	<td>최근 동기화: <b>" + new Date(nullStrLastImport).format('yy-MM-dd hh:mm:ss') + "</b></td>";
+				str += "</tr>";
+			}
 		str += "<tr><td style='width:1000px;'><hr/></td></tr>";
 		}	
 	}else{
-
 		str += "<tr>";
 		str += "	<td class='text-info'>";
 		str	+= "		<h3>Requisition을 등록해주세요.</h3>";
@@ -293,6 +317,7 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		str += "	<td>";
 		str += "	</td>";
 		str += "</tr>";
+		
 	}
 	
 	return str;

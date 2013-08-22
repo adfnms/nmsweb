@@ -201,7 +201,6 @@ function setDestination(obj){
  	
  	/*get form[#destinationFrm] object*/
  	function regNotification(){
- 		
  		var uei = $("#destinationFrm input[name=uei]").val();						//0.이벤트
  		var noticeQueue = $("#destinationFrm input[name=noticeQueue]").val();		//1.이벤트 라벨
  		var name = $("#destiFrm input[name=name]").val();							//2.메세지명
@@ -212,10 +211,10 @@ function setDestination(obj){
  		var destinationPath = $("#destiFrm select").val();							//7.목적지
  		var status = $("#destiFrm input[name=status]").val();						//8.상태
  		var rule = $("#destiFrm input[name=rule]").val();							//9.메세지
+ 	 
+ 		str = requestBodyStr(uei,noticeQueue,name,description,subject,numericMessage,textMessage,destinationPath,status,rule);
  		
- 	 str=requestBodyStr ( uei,name,description,subject,numericMessage,textMessage,destinationPath,status,rule,noticeQueue);
- 		
- 		regNotificationAjax();
+ 		regNotificationAjax(str);
  	 
  	}
  	
@@ -469,9 +468,9 @@ function setDestination(obj){
 									<col class="span12"/>
 								</colgroup>
 								
-									<tr>
+									<!-- <tr>
 										<th>even List</th>
-									</tr>
+									</tr> -->
 								
 							</table>
 							

@@ -130,7 +130,38 @@
 			</div>
 		</div>
 	</div>
+	
 	<hr>	
 	<!-- /container -->
 </body>
+<!-- modal -->
+<div id="editRequisitionPop" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" 
+style="display: none; width: 1137px; margin-left: -571px;margin-top: 42px;height: 651px;">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">닫기</button>
+		<h3 id="editRequisitionPopTitle"></h3>
+	</div>
+	<div class="modal-body" style="width: 1106px;height: 532px;">
+		<div>
+			<div class="accordion" id="accordion3">
+				<div class="accordion-group">
+					<div id="collapseOne" class="accordion-body collapse in" style="height: 510px;overflow-y: auto">
+						<div class="accordion-inner">
+							 <div class="span8" style="margin-left: -14px;" data-toggle="collapse">
+								<form id="memberInfoFrm" name="memberInfoFrm" method="post">
+									<a type="button" class="btn btn-primary" style="margin-right:27px;margin-top:-9px;">실행&nbsp;완료</a>
+									<a type="button" class="btn btn-primary" style="margin-top:-9px;" onclick="showEditRequisitionPopList()">노드&nbsp;추가</a>
+									<table class="table table-hover" style="background-color: #BAD1DB;width: 1103px;" id="requisitionListTable">
+									<!-- 리스트 부분-->
+									</table>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- modal -->
 </html>
