@@ -110,7 +110,7 @@
 			<div class="span12 well well-small">
 				<div class="row-fluid" >
 					<div class="span3">
-						<input type="text"   id="requisitions"   name="requisitions"    placeholder="" value="" > 
+						<input type="text" id="requisitions" name="requisitions" placeholder="" value="" > 
 					</div>
 					<div class="span3">
 						<button type="button" class="btn btn-primary" style="width:220px" title="" onclick="javascript:addRequisition();">새로운 요구추가</button>
