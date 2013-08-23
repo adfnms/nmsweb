@@ -35,11 +35,10 @@
 	});
 	/*surveillence 정보 갖고오기 callback함수 */
 	function searchLabels(jsonObj,categoryid,categoryname){
-		
-		console.log("-----------searchLabels----------");
-		console.log(jsonObj);
+		//$('#surveillenceLabel').empty();
 		var str = countStr(jsonObj,categoryid,categoryname);
-			$('#surveillenceLabel').append(str); 
+	
+		$('#surveillenceLabel').append(str); 
 	 
 	}
 
@@ -229,20 +228,14 @@
 		tstr += '	<tr class="'+statusTotal+'">';
 		tstr += '	<th>전체 이용률 </th>';
 		tstr += '		<td class=""><div class="progress progress-striped active '+statustotalAvail+' " style="margin-bottom: 0px;width: 317px; ">';
-		
 		tstr += '		<div class="bar" style="width:' + totalAv + '%">' + (totalAvail / categoryObj.length).toFixed(2)  + '%</div>';
-		
 		tstr += '		</div></td>';
-		//tstr += '	<td class="'+statustotalAvail+'">' + (totalAvail / categoryObj.length).toFixed(2)
-		//		+ 	'%</td>';
 		tstr += '	</tr></table>';
 
 		$('#totalCategoryInfo').append(tstr); 
 		
 		//GET 장애 목록
 		var outageObj = jsonObj["Outages"];
-		console.log("--------outageObj-------");
-		console.log(outageObj);
 		
 		if(outageObj == "null"){
 			
@@ -257,7 +250,6 @@
 				var current = new Date();
 				var lastTime = dateDiff(lostTime, current);
 				
-			/* $('#outageInfo').append("<strong><a class=text-error href='<c:url value='/search/outage/outageDesc?outageId=' />"+outageObj[i]["outageid"]+"'>" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>"); */
 				$('#outageInfo').append("<strong><a class=text-error data-toggle=modal href='#myModal' onclick=\"javascript:outagePop('"+outageObj
 						[i]["outageid"]+"','"+outageObj[i]["ipaddr"]+"');\">" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>");
 			}
@@ -273,18 +265,6 @@
 		var data = "id="+outageId;
 		getTotalOutagesList(addOutageInfo, data,ipAdress);
 		
-		//var modalWidth = "1144";
-		//var conWidth = $("modal").width();
-		console.log("-----outagePop---------");
-		console.log($(document).width());
-		console.log();
-		//var	marginleft  = ( ($(document).width() -modalWidth) /2 );
-		//$("#myModal").css("margin-left",marginleft);
-		/*
-		left = ( screen.width - 팝업 길이 ) / 2; 
-		$("#sideBarOutageList").css("left",-14);
-		*/
-		
 	}
 	
 	/* outage Info Callback */
@@ -298,6 +278,42 @@
 	/*//outage Info Callback */
 	/*// 장애 정보 POPUP창 */
 	
+	function showAddSurveillence(){
+		$("#AddSurveillenceName input:not([protect=true]),textarea,select").val("");
+		 $('#showAddSurveillence').show();
+		}	
+	
+	function addSurveillence(){
+		 
+		$('#showAddSurveillence').hide();
+		
+		 var categoryname  = $("#AddSurveillenceName input[name=categoryname]").val();
+		
+		 if(categoryname ==""){
+			 return;
+		 };
+		 
+		 $.ajax({
+		      	url : '<c:url value="/regSurveillenceName.do" />',
+		        type:'post',
+		        dataType:'json',
+		        data:'categoryname='+categoryname,
+		        error:function(data, status, err){
+		            alert('Error, service not found');
+		        },
+		        success:function(res){
+		        	if(res.isSuccess == false)
+		       		{
+		        		alert(res.errorMessage);        		
+		        		return;
+		       		}
+		        	 alert("등록되었습니다.");
+		        	 
+		        	 $(location).attr('href', "/v1/index.do");
+		        }
+			});  
+		
+	}
 	
 </script>
 </head>
@@ -333,6 +349,7 @@
 								<div class="span12">
 									<h4>알림&nbsp;정보</h4>
 								</div>
+								
 							</div>
 							<div class="well well-small" style="margin-bottom: 30px;">
 								<div class="row-fluid">
@@ -343,19 +360,24 @@
 								</div>
 							</div>
 							<div class="row-fluid">
-								<div class="span12">
+								<div class="span9">
 									<h4>surveillence</h4>
 								</div>
-							</div>
-							<!-- <div class="well well-small">
-								<div class="row-fluid">
-									<div class="span12"  > -->
-											<table class="table table-striped " id="surveillenceLabel">
-												
-											</table>
-								<!-- 	</div>
+								<div class="span3" style="margin-top: 7px;">
+									<a  class="btn btn-mini btn-primary" type="button" onclick="javascript:showAddSurveillence()">[+ add]</a>
 								</div>
-							</div> -->
+							</div>
+							<div class="row-fluid" id="showAddSurveillence"  style="display:none">
+								<form id="AddSurveillenceName">
+									<div class="input-append" >
+										<input class="span9" id="appendedInputButton" type="text"  placeholder="Add Surveillence Name" name="categoryname" value="">
+										<button class="btn" type="button" onclick="javascript:addSurveillence()">등록</button>
+									</div>
+								</form>
+							</div>
+								<table class="table table-striped " id="surveillenceLabel">
+									
+								</table>
 						</div>
 						<div class="span6">
 							<div class="row-fluid">

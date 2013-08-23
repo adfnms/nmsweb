@@ -167,6 +167,87 @@ public class SurveillanceController
 		
 		return model;
 	}
+
+	
+	@RequestMapping(value = "/regSurveillenceName")
+	public ModelAndView regSurveillenceName(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
+			@RequestParam(value = "categoryname", required = false)String categoryname,
+			@ModelAttribute("CategoriesTbl") CategoriesTbl categoriesTbl) 
+			
+	{
+		
+		boolean isSuccess = false;
+		String errorMessage = "";
+		
+		ModelAndView model =  new ModelAndView();
+		
+		 _REG_Name :
+		{
+				try{
+					categoriesTbl.setCategoryname(categoryname);
+					
+					if(surveillanceService.regSurveillenceName(categoriesTbl) == false)
+					{
+						errorMessage = "surveillanceName 등록 실패";
+						break _REG_Name ;
+					}
+					
+					isSuccess = true;
+					}
+				
+				catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+		model.setViewName("jsonView");
+		model.addObject("isSuccess", isSuccess);
+		model.addObject("errorMessage", errorMessage);
+		
+		return model;
+	}
+	
+	@RequestMapping(value = "/delCategory")
+	public ModelAndView delCategory(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
+			@RequestParam(value = "categoryid", required = false)Integer categoryid,
+			@ModelAttribute("CategoriesTbl") CategoriesTbl categoriesTbl,
+			@ModelAttribute("CategoryNodeTbl") CategoryNodeTbl categoryNodeTbl) 
+			
+	{
+		
+		boolean isSuccess = false;
+		String errorMessage = "";
+		
+		ModelAndView model =  new ModelAndView();
+		
+		 _REG_NODE :
+		{
+				try{
+					if(surveillanceService.delNodePop(categoryid, categoryNodeTbl) == false)
+					{
+						errorMessage = "surveillance 등록 실패";
+						break _REG_NODE;
+					}
+					
+					if(surveillanceService.delCategory(categoryid, categoriesTbl) == false)
+					{
+						errorMessage = "surveillance 등록 실패";
+						break _REG_NODE;
+					}
+					
+					isSuccess = true;
+					}
+				
+				catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+		model.setViewName("jsonView");
+		model.addObject("isSuccess", isSuccess);
+		model.addObject("errorMessage", errorMessage);
+		//model.setViewName("/admin/groupMng/groupMng");
+		
+		return model;
+	}
 	
 	
 	

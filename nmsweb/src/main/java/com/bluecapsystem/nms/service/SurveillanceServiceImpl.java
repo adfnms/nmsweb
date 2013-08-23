@@ -155,4 +155,74 @@ public class SurveillanceServiceImpl extends BaseService implements Surveillance
 			return retTrans;
 		}
 	}
+
+	@Override
+	public boolean regSurveillenceName(CategoriesTbl categoriesTbl) {
+		boolean ret = false;
+		try
+		{
+			surveillanceDao.regSurveillenceName(categoriesTbl);
+			
+			ret = true;
+			
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			ret = false;
+		}finally
+		{
+			
+		}
+		return ret;
+	}
+
+
+
+	@Override
+	public boolean delNodePop(Integer categoryid,CategoryNodeTbl categoryNodeTbl) {
+		boolean ret = false;
+		try
+		{
+			surveillanceDao.delNodePop(categoryid,categoryNodeTbl);
+			
+			
+			ret = true;
+			
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			ret = false;
+		}finally
+		{
+			
+		}
+		return ret;
+	}
+	
+
+
+
+	@Override
+	public boolean delCategory(Integer categoryid, CategoriesTbl categoriesTbl) {
+		
+		boolean ret = false;
+		
+		categoriesTbl.setCategoryid(categoryid);
+		try
+		{
+			surveillanceDao.delCategory(categoryid,categoriesTbl);
+			
+			
+			ret = true;
+			
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			ret = false;
+		}finally
+		{
+			
+		}
+		return ret;
+	}
 }

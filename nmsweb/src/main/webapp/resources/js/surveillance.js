@@ -83,8 +83,6 @@ function getNodeToSurveillance(callback,categoryId){
 }
 
 function regNodeListStr(jsonObj){
-	console.log("---------getNodeToSurveillance--------");
-	console.log(jsonObj);
 	
 	if(jsonObj["RegNodeItems"].length==0){
 		$('#nodeListTable').empty();
@@ -93,12 +91,11 @@ function regNodeListStr(jsonObj){
 		str += '<table class="table table-striped ">';
 		str += '	<tr>';
 		str += '		<td class="span3"></td>';
-		str += '		<td class="span6" style ="text-align: center;" >등록된 노드가 없습니다.</td>';
+		str += '		<td class="span6" style ="text-align: center;" ><input type ="hidden" name="emptyNode" value="emptyNode">등록된 노드가 없습니다.</td>';
 		str += '		<td class="span3"></td>';
 		str += '	</tr>';
 		str += '</table>';
 		
-		$("#checkboxPopup input[name=nodeid][value=" + nodeObj[i]["nodeid"] + "]").attr("checked", false);
 		
 	}else{
 		$('#nodeListTable').empty();
@@ -106,6 +103,7 @@ function regNodeListStr(jsonObj){
 		var nodeObj = jsonObj["RegNodeItems"];
 		var str = "";
 		str += '<table class="table table-striped" style="margin-bottom: -16px;">';
+		str+='<input type ="hidden" name="emptyNode" value="notEmptyNode">';
 		for( var i in nodeObj){
 			str += '	<tr >';
 			str += '		<td class="span2"></td>';

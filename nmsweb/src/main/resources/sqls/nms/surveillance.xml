@@ -89,6 +89,13 @@
 		WHERE CATEGORYID = $categoryid$;
 
 	</delete>
+	<delete id="delCategory"  parameterClass="com.bluecapsystem.nms.dto.CategoriesTbl">
+
+		DELETE FROM CATEGORIES
+
+		WHERE CATEGORYID = #categoryid#;
+
+	</delete>
 	
 	<insert id="regNodePop" parameterClass="com.bluecapsystem.nms.dto.CategoryNodeTbl" >
 
@@ -106,6 +113,29 @@
 		);
 
 	</insert>
+	
+<insert id="regSurveillenceName" parameterClass="com.bluecapsystem.nms.dto.CategoriesTbl" >
+
+		INSERT INTO 
+		
+					CATEGORIES(
+						
+						categoryid,
+						
+						categoryname
+						
+						)VALUES (
+  				
+			    			nextval('catnxtid'),
+			    			
+			    			#categoryname#
+			    			
+			    			);
+
+
+	</insert> 
+	
+	
 	
 </sqlMap>
 	

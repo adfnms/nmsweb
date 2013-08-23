@@ -137,6 +137,37 @@ boolean ret = false;
 		}
 		return true;
 	}
+
+	@Override
+	public boolean regSurveillenceName(CategoriesTbl categoriesTbl) {
+
+		try{
+			
+			
+			super.getSqlMapClientTemplate().insert("com.bluecapsystem.nms.surveillance.regSurveillenceName", categoriesTbl);
+			
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean delCategory(Integer categoryid, CategoriesTbl categoriesTbl) {
+	try{
+		System.out.println("--------categoryId---------");
+		System.out.println(categoriesTbl.getCategoryid());
+			super.getSqlMapClientTemplate().delete("com.bluecapsystem.nms.surveillance.delCategory", categoriesTbl);
+			
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 	
 }
 

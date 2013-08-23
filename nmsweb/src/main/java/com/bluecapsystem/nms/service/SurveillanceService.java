@@ -16,4 +16,10 @@ public interface SurveillanceService {
 	
 	boolean regNodePop(Integer[] categoryid, Integer[] nodeid , CategoryNodeTbl categoryNodeTbl);
 	
+	boolean delNodePop(Integer categoryid,  CategoryNodeTbl categoryNodeTbl);
+	
+	boolean delCategory (Integer categoryid,  CategoriesTbl categoriesTbl);
+	
+	boolean regSurveillenceName(CategoriesTbl categoriesTbl);
+	
 }

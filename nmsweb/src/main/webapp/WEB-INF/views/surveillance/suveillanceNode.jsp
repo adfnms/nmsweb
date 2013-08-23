@@ -34,26 +34,7 @@ var orderBy = "id";
 		
 		var str = regNodeListStr(jsonObj);
 		
-		console.log(jsonObj);
-		/* var nodeObj = jsonObj["RegNodeItems"];
-		
-		if(jsonObj["RegNodeItems"].length==0){
-			
-			$("input[name=nodeid][value=" + nodeObj[i]["nodeid"] + "]").attr("checked", false);
-			
-		}else{
-			
-			for( var i in nodeObj){
-				
-				$("input[name=nodeid][value=" + nodeObj[i]["nodeid"] + "]").attr("checked", true);
-					
-				}
-		}
-		 */
-		
-		
 		$('#nodeListTable').append(str);
-		
 		
 	}
 	
@@ -102,14 +83,68 @@ var orderBy = "id";
 		
 	}
 	
-	
+function delCategory(){
+		
+		var emptyNode  = $("#nodeListTable input[name=emptyNode]").val();
+		
+		if(!confirm("삭제하시겠습니까?")){
+			return;
+		}else{
+			if(emptyNode=="notEmptyNode"){
+				
+				if(!confirm("등록된 노드가 있습니다. 삭제하시겠습니까?")){
+					return;
+				}
+				
+				var categoryid=("${categoryId}");
+				$.ajax({
+			      	url : '<c:url value="/delCategory.do" />',
+			        type:'post',
+			        dataType:'json',
+			        data:'categoryid='+categoryid,
+			        error:function(data, status, err){
+			            alert('Error, service not found');
+			        },
+			        success:function(res){
+			        	if(res.isSuccess == false)
+			       		{
+			        		alert(res.errorMessage);        		
+			        		return;
+			       		}
+			        	alert("삭제되었습니다. 메인화면으로 이동합니다.");
+			        	$(location).attr('href', "/v1/index.do");
+			        }
+				});  
+				
+			}else{
+				var categoryid=("${categoryId}");
+				$.ajax({
+			      	url : '<c:url value="/delCategory.do" />',
+			        type:'post',
+			        dataType:'json',
+			        data:'categoryid='+categoryid,
+			        error:function(data, status, err){
+			            alert('Error, service not found');
+			        },
+			        success:function(res){
+			        	if(res.isSuccess == false)
+			       		{
+			        		alert(res.errorMessage);        		
+			        		return;
+			       		}
+			        	alert("삭제되었습니다. 메인화면으로 이동합니다.");
+			        	$(location).attr('href', "/v1/index.do");
+			        }
+				});  
+			}
+		}
+	}
 	
 </script>
 </head>
 
 <body>
 	<div class="container">
-
 		<jsp:include page="/include/menu.jsp" />
 
 		<div class="row-fluid">
@@ -133,28 +168,33 @@ var orderBy = "id";
 		<div class="row-fluid">
 			<div class="span9 well well-small">
 				<div class="row-fluid">
-					<div class="span12">
+					<div class="span12" >
 						<table class="table table-striped" id="nodeListTable"></table>
 					</div>
 				</div>
+			</div>
+			<div class="span2" style=" margin-left: 73px; margin-top: 7px;" >
+					 <a type="button" class="btn btn-primary span12" data-toggle="modal" title="suveillance 삭제"
+						 onclick="javascript:delCategory();">- suveillance 삭제</a>
 			</div>
 			<div class="span2" style=" margin-left: 73px; margin-top: 23px;" >
 					 <a type="button" class="btn btn-primary span12" data-toggle="modal" title="노드추가"
 						href="#mySurvaillenceModal" onclick="javascript:addNodeCategory();">+ 노드추가</a>
 			</div>
 		</div>
-		<div class="row-fluid">
+		
+		<!-- <div class="row-fluid">
 			<div class="span12">
 				<div class="span10">
 				</div>
 				<div class="span2">
-				<!--  -->
+				
 				
 					 <a type="button" class="btn btn-primary span12" data-toggle="modal" title="노드추가"
 						href="#mySurvaillenceModal" onclick="javascript:addNodeCategory();">+ 노드추가</a>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<hr>
 	</div>
 	<!-- /container -->

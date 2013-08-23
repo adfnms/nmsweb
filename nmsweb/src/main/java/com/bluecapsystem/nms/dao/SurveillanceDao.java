@@ -17,5 +17,9 @@ public interface SurveillanceDao
 	
 	boolean delNodePop(Integer categoryId,CategoryNodeTbl categoryNodeTbl);
 	
+	boolean delCategory(Integer categoryId,CategoriesTbl categoriesTbl);
+	
 	boolean regNodePop(CategoryNodeTbl categoryNodeTbl);
+	
+	boolean regSurveillenceName(CategoriesTbl categoriesTbl);
 }
