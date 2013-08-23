@@ -139,7 +139,7 @@
 style="display: none; width: 1137px; margin-left: -571px;margin-top: 42px;height: 651px;">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">닫기</button>
-		<h3 id="editRequisitionPopTitle"></h3>
+		<h3 id="editRequisitionPopTitle"><!-- 제목 부분--></h3>
 	</div>
 	<div class="modal-body" style="width: 1106px;height: 532px;">
 		<div>
