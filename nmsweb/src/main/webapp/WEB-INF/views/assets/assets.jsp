@@ -39,6 +39,12 @@ function searchCategory(){
 	getSearchAssetsList(searchAssetsList, category);
 	
 }
+function searchCategoryList(){
+	
+	var category = "";
+	getSearchAssetsList(searchAssetsList, category);
+	
+}
 //getSearchAssetsList callback 함수
 function searchAssetsList(jsonObj) {
 	var str = assetsListStr(jsonObj);
@@ -198,7 +204,7 @@ function searchField(){
 									</div>
 								</div>
 								<div class="span12" style ="margin-top: 33px; margin-left: -13px;">
-									<a href="<c:url value="/assets/searchAssets.do" />"><label class="text-center span5 control-label">All nodes with asset info</label></a>
+									<a href="javascript:searchCategoryList()"><label class="text-center span5 control-label">All nodes with asset info</label></a>
 								</div>
 							</div>
 						</form>

@@ -14,8 +14,6 @@
 				
 			}
 		});   	 
-		
-		
 	}
 	
 	/*/test/*/
@@ -143,6 +141,17 @@
 						)
 					)
 				);
+				/*TBODYobj.append(
+						TRobj.clone().append(
+							TDobj.clone().text("kkk"),
+							TDobj.clone().append(
+								Aobj.attr("href", "/"  + version + "/assets/modifyAssets?nodeId=" + CatagoryList[i]["nodeid"] + "&nodeLabel="+CatagoryList[i]["nodeLabel"]).clone().text("wqq")
+							),
+							TDobj.clone().append(
+								Aobj.attr("href", "/"  + version + "/search/node/nodeDesc.do?nodeId=" + CatagoryList[i]["nodeid"]).clone().text("ewew")
+							)
+						)
+					);*/
 				/***********************************************************************************************************************************************************************************************/
 			}
 		}

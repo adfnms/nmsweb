@@ -40,16 +40,6 @@ public class AssetsController
 		return model;
 	}
 
-	@RequestMapping(value = "/assets/searchAssets", method = RequestMethod.GET)
-	public ModelAndView searchAssets(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(value = "category", required = false)String category)
-	{
-		
-		ModelAndView model = new ModelAndView();
-		model.addObject("category", category);
-		model.setViewName("/assets/searchAssets");
-		return model;
-	}
 	@RequestMapping(value = "/assets/searchField", method = RequestMethod.GET)
 	public ModelAndView searchField(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "fieldName", required = false)String fieldName,
