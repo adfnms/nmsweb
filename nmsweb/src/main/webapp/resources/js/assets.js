@@ -33,11 +33,8 @@
 				if (typeof callback == "function") {
 					callback(data);
 				}
-				
 			}
 		});   	
-		
-		
 	} 
 	/*/test/*/
 	
@@ -47,6 +44,7 @@
 	 * */
 	function assetsListStr(jsonObj) {
 		//var str = "";
+		console.log("-------assetsListStr-------");
 		console.log(jsonObj);
 		var CatagoryList=jsonObj["CatagoryList"];
 		/***********************************************************************************/

@@ -375,9 +375,12 @@
 									</div>
 								</form>
 							</div>
-								<table class="table table-striped " id="surveillenceLabel">
+							<div class="well well-small" style=" height:265px; overflow-y:auto;;">
+								<table class="table table-striped table-hover " id="surveillenceLabel">
+								
 									
 								</table>
+							</div>	
 						</div>
 						<div class="span6">
 							<div class="row-fluid">
@@ -406,7 +409,7 @@
 									<a  class="btn btn-mini btn-primary" type="button" href="<c:url value="/monitoring/nodelist.do" />">[More]</a>
 								</div>
 							</div>
-							<div class="well well-small" style ="height:510px;">
+							<div class="well well-small" style ="height:510px; overflow-y:auto;" >
 								<div class="row-fluid">
 									<div class="span12" id="indexNodeList"></div>
 								</div>

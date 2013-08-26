@@ -205,9 +205,8 @@ function delCategory(){
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		<h3 id="myModalSurvaillence" >노드 추가</h3>
 	</div>
-	<div class="modal-body">
+	<div class="modal-body" style="height:400px;  overflow-y:auto;">
 		<div class="row-fluid" >
-		<!----------------->
 		<form id="checkboxPopup">
 			<table id="checkboxNode" class="table table-striped">
 				
@@ -215,7 +214,6 @@ function delCategory(){
 		
 		</form>
 			
-		<!----------------->
 		</div>
 	</div>
 	<div class="modal-footer">

@@ -22,7 +22,6 @@ function getsurveillanceLabel(callback){
 function getCount(callback,data){
 	
 	
-	console.log(data);
 	for(var i in data["CategoriesItem"]){
 		
 		var  categoryid = data["CategoriesItem"][i]["categoryid"];
@@ -53,6 +52,7 @@ function countStr(jsonObj,categoryid,categoryname){
 	var str = ""; 
 	str += '	<tr>';
 	str += '		<th><a href=/'+version+'/surveillanceNode.do?categoryid='+categoryid+'&categoryname=' + categoryname + '>' + categoryname + '</a></th>';
+	
 	str += '		<th class="text-error">&nbsp;&nbsp;&nbsp;&nbsp;'+ jsonObj["CategoriesCount"] + '개</th>';
 	str += '	</tr>';
 	return str;
@@ -107,7 +107,7 @@ function regNodeListStr(jsonObj){
 		for( var i in nodeObj){
 			str += '	<tr >';
 			str += '		<td class="span2"></td>';
-			str += '		<td class="span3"><h5>노드 라벨&nbsp;:&nbsp;&nbsp;<a>'+nodeObj[i]["nodelabel"]+'</a></h5></td>';
+			str += '		<td class="span3"><h5>노드 라벨&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+nodeObj[i]["nodeid"]+'">'+nodeObj[i]["nodelabel"]+'</a></h5></td>';
 			str += '		<td class="span3"> <h5>노드 아이디&nbsp;:&nbsp;&nbsp;'+nodeObj[i]["nodeid"]+'<h5></td>';
 			str += '	</tr>';
 			
@@ -173,7 +173,7 @@ function getSearchAssetsList(callback,categorynm) {
 	
 	
 	
-	function assetsListStr(jsonObj) {
+	/*function assetsListStr(jsonObj) {
 		var str = "";
 		
 		console.log(jsonObj);
@@ -201,7 +201,7 @@ function getSearchAssetsList(callback,categorynm) {
 			}
 		}
 		return str;
-	}
+	}*/
 	
 	
 	function FieldStr(jsonObj) {

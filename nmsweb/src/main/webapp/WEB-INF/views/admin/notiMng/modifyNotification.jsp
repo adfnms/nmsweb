@@ -169,7 +169,7 @@ function setDestination(obj){
  	
 	function destinationGroup(GroupNm){
 		/*Set Destination Target*/
-		$("#groupTr").html("<th class=\"span3 control-label  text-success\">selected : "+GroupNm+"</th>");
+		$("#groupTr").html("<th class=\"span3 control-label  text-error\"><h4>selected : "+GroupNm+"</h4></th>");
 		$("#groupTableDiv").html("<h4 style= \"margin-top: 0px; margin-left: 12px;\" class=\"text-success\">"+GroupNm+"</h4>");
 		
 		/*Set Destination Setting*/
@@ -182,7 +182,7 @@ function setDestination(obj){
 	
  	function destinationPathInfo(userid){
  		
- 		$("#userTr").html("<th class=\"span3 control-label text-success\">selected :"+userid+"</th>");
+ 		$("#userTr").html("<th class=\"span3 control-label text-error\"><h4>selected :"+userid+"</h4></th>");
  		
  		
  		$("#userTableDiv").html("<h4 style= \"margin-top: 0px; margin-left: 12px;\" class=\"text-success\">"+userid+"</h4>");
@@ -684,7 +684,7 @@ function setDestination(obj){
 									</tr>
 									<tr>
 										<td>
-											<input type="text"  style="width: 477px; margin-top: -5px; margin-bottom: -3px; margin-left: -7px;" id="email"   name="email" class="span3" value=""  placeholder=" ex) OpenNms@google.com">
+											<input type="text"  style="width: 477px; margin-top: -5px; margin-bottom: -3px; margin-left: -7px;" id="email"   name="email" class="span3" value=""  placeholder="E-mail을 입력해주세요. ">
 										</td>			
 									</tr>
 									<tr>
