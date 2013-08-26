@@ -365,9 +365,6 @@ function getInterfaceAvailability(nodeId, ipAddress){
  * @param nodeId
  */
 function deleteNode(nodeId){
-	
-	alert("nodeId"+nodeId);
-	
 	if (nodeId == "") {
 		alert("노드 ID가 없습니다.");
 		return;

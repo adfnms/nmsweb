@@ -6,7 +6,6 @@ function addNodePop(){
 	/*var settings ="toolbar=no ,width=350 ,height=205 ,directories=no,status=no,scrollbars=no,menubar=no";
 	var winObject = window.open("/" + version + "/admin/addNode.pop", "addNodePop", settings);
 	winObject.focus();*/	
-
 }
 
 function getTotalRequisitionsList(callback) {
@@ -21,6 +20,23 @@ function getTotalRequisitionsList(callback) {
 		success : function(data) {
 			if (typeof callback == "function") {
 				callback(data);
+			}
+		}
+	});
+}
+
+function getTotalNodesList(callback, foreignId){
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/requisitions/' + foreignId + '/nodes',
+		dataType : 'json',
+		contentType : 'application/json',
+		error : function(data) {
+			alert('노드 리스트 가져오기 서비스 실패');
+		},
+		success : function(data) {
+			if (typeof callback == "function") {
+				callback(data, foreignId);
 			}
 		}
 	});
@@ -101,7 +117,6 @@ function synRequisition(nodeNm){
 			alert("[" + nodeNm + '] 동기화 실패');
 		},
 		success : function(data) {
-			//callback(data);
 			getTotalRequisitionsList(getTotalRequisitions);
 		}
 	});
@@ -127,39 +142,41 @@ function delNodeRequisition(nodeNm, nodeId){
 	});
 }
 
-function showEditRequisitionPopList(){
-	getTotalRequisitionsListForNodes(editRequisitionPopList);
+function returnEditRequisitionPopList(){
+	var requisitionObj = $("#requisitionsListTable input[name=requisitionObj]").val();
+	$.each(requisitionObj, function(i){
+	var foreignId = $("#requisitionsListTable input[name=foreignSources]").eq(i).val();
+	return foreignId;
+	});
 } 
 
-function editRequisitionPopList(jsonObj){
-	var str = getTableToEditRequisitionPop(jsonObj);
+function showEditRequisitionPopList(){
+	var foreignId = returnEditRequisitionPopList();
+	alert(foreignId);
+	getTotalNodesList(editRequisitionPopList, foreignId);
+}
+
+function editRequisitionPopList(jsonObj, foreignId){
+	var str = getTableToEditRequisitionPop(jsonObj, foreignId);
+	$('#requisitionListTable').empty();
 	$('#requisitionListTable').append(str);
 }
 
-function showEditRequisitionInfoDivTitle(foreignSource){
+function showEditRequisitionInfoDivTitle(foreignId){
 	$('#editRequisitionPopTitle').empty();
-	$('#editRequisitionPopTitle').append("Requisitioned Nodes: " + foreignSource);
-	showEditRequisitionPopList();
+	$('#editRequisitionPopTitle').append("Requisitioned Nodes: " + foreignId);
+	//showEditRequisitionPopList(foreignId);
 }
 
 function showCancelRequisitionPopList(){
 	$('#editRequisitionItem').remove();
 } 
 
-function showSaveRequisitionPopList(){
-	if($("#requisitionsListTable input[name=foreignSource]").val() == undefined){
-		var foreignSource = $("#requisitionsListTable input[name=foreignSourceList]").val();
-		var nodeLabel = $("#editRequisitionItem input[name=editRequisitionNodeLabel]").val();
-		var foreignId = $("#editRequisitionItem input[name=editRequisitionForeignId]").val();
-		var building = $("#editRequisitionItem input[name=editRequisitionBuilding]").val();
-		showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
-	}else{
-		var foreignSource = $("#requisitionsListTable input[name=foreignSource]").val();
-		var nodeLabel = $("#editRequisitionItem input[name=editRequisitionNodeLabel]").val();
-		var foreignId = $("#editRequisitionItem input[name=editRequisitionForeignId]").val();
-		var building = $("#editRequisitionItem input[name=editRequisitionBuilding]").val();
-		showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
-	}
+function showSaveRequisitionPopList(foreignSource){
+	var nodeLabel = $("#editRequisitionItem input[name=editRequisitionNodeLabel]").val();
+	var foreignId = $("#editRequisitionItem input[name=editRequisitionForeignId]").val();
+	var building = $("#editRequisitionItem input[name=editRequisitionBuilding]").val();
+	showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
 }
 
 function showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource){
@@ -180,43 +197,32 @@ function showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignS
 	}); 
 }
 
+
 /********************************************************* view String edit ********************************************************************/
+/*function foreignSourceList(jsonObj){
+	var requisitionObj = jsonObj["model-import"];
+	$.each(requisitionObj, function(i){
+		var foreignSourceList = $("#requisitionsListTable input[name='foreignSourceList']").eq(i).val();
+		//var foreignSourceList = $("#requisitionsListTable input[name='foreignSourceList']").last(i).val();
+	return foreignSourceList;
+	});
+}*/
+
 //메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 팝업창 안의 리스트
-function getTableToEditRequisitionPop(jsonObj){
-	if($("#requisitionsListTable input[name=foreignSource]").val() == undefined){
-		var requisitionObj = jsonObj["model-import"];
-		for(var i in requisitionObj){
-			 alert($("#requisitionsListTable input[name='foreignSourceList']").eq(i).val());
-		}
-		var str = "";
-		str += '<tr id="editRequisitionItem">';
-		str += '<td>Node</td>';
-		str += '<td><input name="editRequisitionNodeLabel" type="text" placeholder="" style="margin-left: -15px;width: 338px;"></td>';
-		str += '<td>ForeignId</td>';
-		str += '<td><input name="editRequisitionForeignId" type="text" placeholder="" style="margin-left: -15px;"></td>';
-		str += '<td>Site</td>';
-		str += '<td><input name="editRequisitionBuilding" type="text" placeholder=\'' + foreignSource + '\' style="margin-left: -15px;"></td>';
-		str += '<td><a type="button" class="btn btn-primary" onclick="showSaveRequisitionPopList(\'' + foreignSource + '\')">저장</a></td>';
-		str += '<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">취소</a></td>';
-		str += '</tr>';
-		return str;
-		
-		
-	}else{
-		var foreignSource = $("#requisitionsListTable input[name=foreignSource]").val();
-		var str = "";
-		str += '<tr id="editRequisitionItem">';
-		str += '<td>Node</td>';
-		str += '<td><input name="editRequisitionNodeLabel" type="text" placeholder="" style="margin-left: -15px;width: 338px;"></td>';
-		str += '<td>ForeignId</td>';
-		str += '<td><input name="editRequisitionForeignId" type="text" placeholder="" style="margin-left: -15px;"></td>';
-		str += '<td>Site</td>';
-		str += '<td><input name="editRequisitionBuilding" type="text" placeholder=\'' + foreignSource + '\' style="margin-left: -15px;"></td>';
-		str += '<td><a type="button" class="btn btn-primary" onclick="showSaveRequisitionPopList(\'' + foreignSource + '\')">저장</a></td>';
-		str += '<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">취소</a></td>';
-		str += '</tr>';
-		return str;
-	}
+function getTableToEditRequisitionPop(jsonObj, foreignId){
+	var str = "";
+	str += '<tr id="editRequisitionItem">';
+	str += '<td>Node</td>';
+	str += '<td><input name="editRequisitionNodeLabel" type="text" placeholder="New Node" style="margin-left: -15px;width: 338px;"></td>';
+	str += '<td>ForeignId</td>';
+	str += '<td><input name="editRequisitionForeignId" type="text" placeholder="Foreign ID" style="margin-left: -15px;"></td>';
+	str += '<td>Site</td>';
+	str += '<td><input name="editRequisitionBuilding" type="text" placeholder="Site" style="margin-left: -15px;"></td>';
+	str += '<td><a type="button" class="btn btn-primary" onclick="showSaveRequisitionPopList(\'' + foreignId + '\')">저장</a></td>';
+	str += '<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">취소</a></td>';
+	//str += '<td><input type="hidden" value="' + foreignId + '" name="foreignSource"/></td>';
+	str += '</tr>';
+	return str;
 }
 
 //메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 사 새로 생성된 하단부 리스트
@@ -238,22 +244,21 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		str += "	<td class='text-info'>";
 		str	+= "		<h3>" + requisitionObj["@foreign-source"] + "</h3>";
 		str += "	</td>";
-		str += "	<td>";
 		str += "	</td>";
 		str += "</tr>";
 		if(nodeStr > 0){
 			str += "<tr>";
 			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">노드 삭제</button></td>';
-			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-824px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
+			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-823px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
 			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj["@foreign-source"] +'\')">편집</button>';
-			str += '	<td><input type="hidden" value="' + requisitionObj["@foreign-source"] + '" name="foreignSource"/>';
+			//str += '	<td><input type="hidden" value="' + requisitionObj["@foreign-source"] + '" name="foreignSource"/>';
 			str += "</tr>";
 		}else{
 			str += "<tr>";
 			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">요구 삭제</button></td>';
-			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-824px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
+			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-823px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
 			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj["@foreign-source"] +'\')">편집</button>';
-			str += '	<td><input type="hidden" value="' + requisitionObj["@foreign-source"] + '" name="foreignSource"/>';
+			//str += '	<td><input type="hidden" value="' + requisitionObj["@foreign-source"] + '" name="foreignSource"/>';
 			str += "</tr>";
 		}
 		str += "<tr>";
@@ -297,16 +302,17 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 			if(nodeStr > 0){
 				str += "<tr>";
 				str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">노드 삭제</button></td>';
-				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-824px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
+				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-823px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
 				str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj[i]["@foreign-source"] +'\')">편집</button>';
-				str += '	<td><input type="hidden" value="' + requisitionObj[i]["@foreign-source"] + '" name="foreignSourceList"/>';
+				//str += '	<td><input type="hidden" value="' + requisitionObj[i]["@foreign-source"] + '" name="foreignSources"/>';
 				str += '</tr>';
 			}else{
 				str += "<tr>";
 				str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">요구 삭제</button></td>';
-				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-824px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
+				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-823px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
 				str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj[i]["@foreign-source"] +'\')">편집</button>';
-				str += '	<td><input type="hidden" value="' + requisitionObj[i]["@foreign-source"] + '" name="foreignSourceList"/>';
+				str += '	<td><input type="hidden" value="' + requisitionObj[i]["@foreign-source"] + '" name="foreignSources"/>';
+				str += '	<td><input type="hidden" value="' + requisitionObj + '" name="requisitionObj"/>';
 				str += '</tr>';
 			}
 			str += "<tr>";
@@ -336,7 +342,9 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		str += "	</td>";
 		str += "</tr>";
 	}
+	
 	return str;
+	
 }
 
 /** 이벤트 정보를 table 테그 Str로 만들어준다. 

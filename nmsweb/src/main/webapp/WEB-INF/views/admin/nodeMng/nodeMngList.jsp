@@ -57,7 +57,6 @@
 	
 	
 	function getTotalRequisitions(jsonObj){
-		
 		$("#requisitionsListTable").empty();
 		var str = getTableToRequisitionsJsonObj(jsonObj);
 		$("#requisitionsListTable").append(str);
