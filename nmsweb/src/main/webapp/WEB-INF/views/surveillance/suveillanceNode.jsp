@@ -118,6 +118,8 @@ function delCategory(){
 				
 			}else{
 				var categoryid=("${categoryId}");
+				
+				
 				$.ajax({
 			      	url : '<c:url value="/delCategory.do" />',
 			        type:'post',
@@ -159,42 +161,44 @@ function delCategory(){
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
-				<li class="active"><h4><a href="<c:url value="/index.do" />">surveillance : </a></h4></li>
+				<li class="active"><h4><a href="<c:url value="/index.do" />">System 분류 : </a></h4></li>
 				<li><h4 class="text-success">${categoryname}</h4></li>
 				</ul>
 			</div>
 			
 		</div>
 		<div class="row-fluid">
-			<div class="span9 well well-small">
+			<div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12" >
 						<table class="table table-striped" id="nodeListTable"></table>
 					</div>
 				</div>
 			</div>
-			<div class="span2" style=" margin-left: 73px; margin-top: 7px;" >
+			<!-- <div class="span2" style=" margin-left: 73px; margin-top: 7px;" >
 					 <a type="button" class="btn btn-primary span12" data-toggle="modal" title="suveillance 삭제"
-						 onclick="javascript:delCategory();">- suveillance 삭제</a>
+						 onclick="javascript:delCategory();">System 분류 삭제</a>
 			</div>
 			<div class="span2" style=" margin-left: 73px; margin-top: 23px;" >
 					 <a type="button" class="btn btn-primary span12" data-toggle="modal" title="노드추가"
 						href="#mySurvaillenceModal" onclick="javascript:addNodeCategory();">+ 노드추가</a>
-			</div>
+			</div> -->
 		</div>
 		
-		<!-- <div class="row-fluid">
+		<div class="row-fluid">
 			<div class="span12">
-				<div class="span10">
+				<div class="span8">
 				</div>
 				<div class="span2">
-				
-				
-					 <a type="button" class="btn btn-primary span12" data-toggle="modal" title="노드추가"
+					<a type="button" class="btn btn-primary span12" data-toggle="modal" title="suveillance 삭제"
+						 onclick="javascript:delCategory();">System 분류 삭제</a>
+				</div>
+				<div class="span2">
+					<a type="button" class="btn btn-primary span12" data-toggle="modal" title="노드추가"
 						href="#mySurvaillenceModal" onclick="javascript:addNodeCategory();">+ 노드추가</a>
 				</div>
 			</div>
-		</div> -->
+		</div> 
 		<hr>
 	</div>
 	<!-- /container -->

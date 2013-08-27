@@ -99,7 +99,6 @@ function seachOutageToOutageId(callback, outageId){
 			alert('以묐떒紐⑸줉 媛�졇�ㅺ린 �ㅽ뙣');
 		},
 		success : function(data) {
-			// 肄쒕갚�⑥닔
 			if (typeof callback == "function") {
 				callback(data);
 			}
@@ -122,7 +121,6 @@ function seachOutageToNodeId(callback, nodeId){
 			alert('以묐떒紐⑸줉 媛�졇�ㅺ린 �ㅽ뙣');
 		},
 		success : function(data) {
-			// 肄쒕갚�⑥닔
 			if (typeof callback == "function") {
 				callback(data);
 			}
@@ -162,14 +160,15 @@ function getTabletagToOutageJsonObj(jsonObj) {
 				+ "	<div class='row-fluid'>"
 				+ "		<div class='span12 well well-small'>"
 				+ "<table class='table table-striped'>"
-				+ "<tr><th>인터페이스</th><th>서비스</th><th>장애 시간</th><th>회복 시간</th><th>ID</th></tr>";*/
+				+ "<tr><th>인터페이스</th><th>장애 시간</th><th>회복 시간</th><th>ID</th></tr>";*/
 		/**********************************************************************************************************************************************/
 		DIVobj.attr("class", "row-fluid").append(
 			H5obj.append().text("이벤트 장애 목록" + "[" + jsonObj["@count"] + "]"),
 			DIVobj.clone().attr("class", "span12 well well-small").attr("style", "margin-left:0px").append(
 				TABLEobj.attr("class", "table table-striped").append(
 					TRobj.clone().append(
-						THobj.clone().append().text("이벤트"),
+						THobj.clone().append().text("인터페이스"),
+						THobj.clone().append().text("상태"),
 						THobj.clone().append().text("서비스"),
 						THobj.clone().append().text("장애 시간"),
 						THobj.clone().append().text("회복 시간"),
@@ -182,66 +181,44 @@ function getTabletagToOutageJsonObj(jsonObj) {
 		if (jsonObj["@count"] > 0) {
 
 			for ( var i in outages) {
+				var nullchenkserviceLostEvent =nullCheckJsonObject(outages[i]["serviceLostEvent"], ["time"]);
+				var nullchenkserviceRegainedEvent =nullCheckJsonObject(outages[i]["serviceRegainedEvent"], ["time"]);
+		
 				/*str += "<tr>";
-				str += "<td><a href='/" + version
-						+ "/search/node/interfaceDesc.do?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"]
-						+ "&intf=" + outages[i]["ipAddress"] + "'>"
-						+ outages[i]["ipAddress"] + "</a></td>";
-				str += "<td><a href='/"
-						+ version
-						+ "/search/service/serviceDesc?nodeId="
-						+ outages[i]["serviceLostEvent"]["nodeId"]
-						+ "&intf="
-						+ outages[i]["ipAddress"]
-						+ "&serviceNm="
-						+ nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],"name")+ "'>"
-						+ nullCheckJsonObject(
-								outages[i]["serviceLostEvent"]["serviceType"],
-								"name") + "</a></td>";
-				str += "<td class=\"text-error\">"+ new Date(nullCheckJsonObject(outages[i]["serviceLostEvent"], "time")).format('yy-MM-dd hh:mm:ss') + "</td>";
-				str += "<td class=\"text-success\">"
-						+ new Date(nullCheckJsonObject(
-								outages[i]["serviceRegainedEvent"], "time"))
-								.format('yy-MM-dd hh:mm:ss') + "</td>";
-				str += "<td><a href='/" + version
-						+ "/search/outage/outageDesc?outageId="
-						+ outages[i]["@id"] + "'>" + outages[i]["@id"]
-						+ "</a></td>";
+				str += "	<td><a href='/" + version+ "/search/node/interfaceDesc.do?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"]+ "&intf=" + outages[i]["ipAddress"] + "'>"+ outages[i]["ipAddress"] + "</a></td>";
+				str += "	<td class=\"text-error\">"+ new Date(nullchenkserviceLostEvent).format('yy-MM-dd hh:mm:ss') + "</td>";
+				str += "	<td class=\"text-success\">"+ new Date(nullchenkserviceRegainedEvent).format('yy-MM-dd hh:mm:ss') + "</td>";
+				str += "	<td><a href='/" + version+ "/search/outage/outageDesc?outageId="+ outages[i]["@id"] + "'>" + outages[i]["@id"]+ "</a></td>";
 				str += "</tr>";*/
 				/**********************************************************************************************************************************************/
 				TABLEobj.append(
-					TRobj.clone().append(
-						TDobj.clone().append(
-							FONTobj.clone().attr("color", "gray").text(outages[i]["ipAddress"])
-							//Pobj.clone().attr("class", "text-muted").text(outages[i]["ipAddress"])
-						),
-						TDobj.clone().append(
-							Aobj.clone().attr("href", "/" + version + "/search/service/serviceDesc?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"] + "&intf=" + outages[i]["ipAddress"] + "&serviceNm=" + nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],"name")).append().text(nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],"name"))
-						),
-						TDobj.clone().append().text(new Date(nullCheckJsonObject(outages[i]["serviceLostEvent"], "time")).format('yy-MM-dd hh:mm:ss')),
-						TDobj.clone().append().text(new Date(nullCheckJsonObject(outages[i]["serviceRegainedEvent"], "time")).format('yy-MM-dd hh:mm:ss')),
-						TDobj.clone().append(
-							Aobj.clone().attr("href", "/" + version + "/search/outage/outageDesc?outageId=" + outages[i]["@id"]).append().text(outages[i]["@id"])
+						TRobj.clone().append(
+							TDobj.clone().append(
+								FONTobj.clone().attr("color", "gray").text(outages[i]["ipAddress"])
+								//Pobj.clone().attr("class", "text-muted").text(outages[i]["ipAddress"])
+							),
+							TDobj.clone().append().text(outages[i]["serviceLostEvent"]["@severity"]),
+							TDobj.clone().append().text(outages[i]["monitoredService"]["serviceType"]["name"]),
+							TDobj.clone().append().text(new Date(nullchenkserviceLostEvent).format('yy-MM-dd hh:mm:ss')),
+							TDobj.clone().append().text(new Date(nullchenkserviceRegainedEvent).format('yy-MM-dd hh:mm:ss')),
+							TDobj.clone().append(
+								Aobj.clone().attr("href", "/" + version + "/search/outage/outageDesc?outageId=" + outages[i]["@id"]).append().text(outages[i]["@id"])
+							)
 						)
-					)
-				);
+					);
 				/**********************************************************************************************************************************************/
 			}
 
 		} else {
-			/*str += "<tr>";
+		/*	str += "<tr>";
 			str += "<td><a href='#'>" + outages["ipAddress"] + "</a></td>";
 			str += "<td><a href='#'>"
-					+ nullCheckJsonObject(
-							outages["serviceLostEvent"]["serviceType"], "name")
+					+ nullchenk
 					+ "</a></td>";
 			str += "<td>"
-					+ new Date(nullCheckJsonObject(outages["serviceLostEvent"],
-							"time")).format('yy-MM-dd hh:mm:ss') + "</td>";
+					+ new Date(nullchenk).format('yy-MM-dd hh:mm:ss') + "</td>";
 			str += "<td>"
-					+ new Date(nullCheckJsonObject(
-							outages["serviceRegainedEvent"], "time"))
-							.format('yy-MM-dd hh:mm:ss') + "</td>";
+					+ new Date(nullchenk).format('yy-MM-dd hh:mm:ss') + "</td>";
 			str += "<td><a href='#'>" + outages["@id"] + "</a></td>";
 			str += "</tr>";*/
 			/**********************************************************************************************************************************************/
@@ -250,16 +227,13 @@ function getTabletagToOutageJsonObj(jsonObj) {
 					TDobj.clone().append(
 						Aobj.clone().attr("href", "#").append().text(outages["@id"])
 					),
+					TDobj.clone().append().text(new Date(nullchenkserviceLostEvent).format('yy-MM-dd hh:mm:ss')),
+					TDobj.clone().append().text(new Date(nullchenkserviceRegainedEvent).format('yy-MM-dd hh:mm:ss')),
 					TDobj.clone().append(
-						Aobj.clone().attr("href", "#").append().text(nullCheckJsonObject(outages["serviceLostEvent"]["serviceType"], "name"))
-					),
-					TDobj.clone().append().text(new Date(nullCheckJsonObject(outages["serviceLostEvent"],"time")).format('yy-MM-dd hh:mm:ss')),
-					TDobj.clone().append().text(new Date(nullCheckJsonObject(outages["serviceRegainedEvent"], "time")).format('yy-MM-dd hh:mm:ss')),
-					TDobj.clone().append(
-						Aobj.clone().attr("href", "#").append().text(outages["@id"])
+							Aobj.clone().attr("href", "/" + version + "/search/outage/outageDesc?outageId=" + outages[i]["@id"]).append().text(outages[i]["@id"])
+						)
 					)
-				)
-			);
+				);
 			/**********************************************************************************************************************************************/
 
 		}
@@ -360,10 +334,10 @@ function getTabletagToInterfaceOutageJsonObj(jsonObj, ipAddress) {
 							//Pobj.clone().attr("class", "text-muted").text(outages[i]["ipAddress"])
 						),
 						TDobj.clone().append(
-							Aobj.clone().attr("href", "/" + version + "/search/service/serviceDesc?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"] + "&intf=" + outages[i]["ipAddress"] + "&serviceNm=" + nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],"name")).append().text(nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],"name"))
+							Aobj.clone().attr("href", "/" + version + "/search/service/serviceDesc?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"] + "&intf=" + outages[i]["ipAddress"] + "&serviceNm=" + nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],["name"])).append().text(nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],["name"]))
 						),
-						TDobj.clone().append().text(new Date(nullCheckJsonObject(outages[i]["serviceLostEvent"], "time")).format('yy-MM-dd hh:mm:ss')),
-						TDobj.clone().append().text(new Date(nullCheckJsonObject(outages[i]["serviceRegainedEvent"], "time")).format('yy-MM-dd hh:mm:ss')),
+						TDobj.clone().append().text(new Date(nullCheckJsonObject(outages[i]["serviceLostEvent"], ["time"])).format('yy-MM-dd hh:mm:ss')),
+						TDobj.clone().append().text(new Date(nullCheckJsonObject(outages[i]["serviceRegainedEvent"], ["time"])).format('yy-MM-dd hh:mm:ss')),
 						TDobj.clone().append(
 							Aobj.clone().attr("href", "/" + version + "/search/outage/outageDesc?outageId=" + outages[i]["@id"]).append().text(outages[i]["@id"])
 						)
@@ -394,15 +368,16 @@ function getTabletagToInterfaceOutageJsonObj(jsonObj, ipAddress) {
 						Aobj.clone().attr("href", "#").append().text(outages["@id"])
 					),
 					TDobj.clone().append(
-						Aobj.clone().attr("href", "#").append().text(nullCheckJsonObject(outages["serviceLostEvent"]["serviceType"], "name"))
+						Aobj.clone().attr("href", "#").append().text(nullCheckJsonObject(outages["serviceLostEvent"]["serviceType"], ["name"]))
 					),
-					TDobj.clone().append().text(new Date(nullCheckJsonObject(outages["serviceLostEvent"],"time")).format('yy-MM-dd hh:mm:ss')),
-					TDobj.clone().append().text(new Date(nullCheckJsonObject(outages["serviceRegainedEvent"], "time")).format('yy-MM-dd hh:mm:ss')),
+					TDobj.clone().append().text(new Date(nullCheckJsonObject(outages["serviceLostEvent"],["time"]).format('yy-MM-dd hh:mm:ss')),
+					TDobj.clone().append().text(new Date(nullCheckJsonObject(outages["serviceRegainedEvent"], ["time"])).format('yy-MM-dd hh:mm:ss')),
 					TDobj.clone().append(
 						Aobj.clone().attr("href", "#").append().text(outages["@id"])
 					)
 				)
-			);
+			)
+			)
 			/**********************************************************************************************************************************************/
 		}
 
@@ -506,10 +481,10 @@ function getTabletagToServiceOutageJsonObj(jsonObj,serviceNm) {
 							//Pobj.clone().attr("class", "text-muted").text(outages[i]["ipAddress"])
 						),
 						TDobj.clone().append(
-							Aobj.clone().attr("href", "/" + version + "/search/service/serviceDesc?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"] + "&intf=" + outages[i]["ipAddress"] + "&serviceNm=" + nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],"name")).append().text(nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],"name"))
+							Aobj.clone().attr("href", "/" + version + "/search/service/serviceDesc?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"] + "&intf=" + outages[i]["ipAddress"] + "&serviceNm=" + nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],["name"])).append().text(nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],"name"))
 						),
-						TDobj.clone().append().text(new Date(nullCheckJsonObject(outages[i]["serviceLostEvent"], "time")).format('yy-MM-dd hh:mm:ss')),
-						TDobj.clone().append().text(new Date(nullCheckJsonObject(outages[i]["serviceRegainedEvent"], "time")).format('yy-MM-dd hh:mm:ss')),
+						TDobj.clone().append().text(new Date(nullCheckJsonObject(outages[i]["serviceLostEvent"], ["time"])).format('yy-MM-dd hh:mm:ss')),
+						TDobj.clone().append().text(new Date(nullCheckJsonObject(outages[i]["serviceRegainedEvent"], ["time"])).format('yy-MM-dd hh:mm:ss')),
 						TDobj.clone().append(
 							Aobj.clone().attr("href", "/" + version + "/search/outage/outageDesc?outageId=" + outages[i]["@id"]).append().text(outages[i]["@id"])
 						)
@@ -542,10 +517,10 @@ function getTabletagToServiceOutageJsonObj(jsonObj,serviceNm) {
 						Aobj.clone().attr("href", "#").append().text(outages["@id"])
 					),
 					TDobj.clone().append(
-						Aobj.clone().attr("href", "#").append().text(nullCheckJsonObject(outages["serviceLostEvent"]["serviceType"], "name"))
+						Aobj.clone().attr("href", "#").append().text(nullCheckJsonObject(outages["serviceLostEvent"]["serviceType"], ["name"]))
 					),
-					TDobj.clone().append().text(new Date(nullCheckJsonObject(outages["serviceLostEvent"],"time")).format('yy-MM-dd hh:mm:ss')),
-					TDobj.clone().append().text(new Date(nullCheckJsonObject(outages["serviceRegainedEvent"], "time")).format('yy-MM-dd hh:mm:ss')),
+					TDobj.clone().append().text(new Date(nullCheckJsonObject(outages["serviceLostEvent"],["time"])).format('yy-MM-dd hh:mm:ss')),
+					TDobj.clone().append().text(new Date(nullCheckJsonObject(outages["serviceRegainedEvent"], ["time"])).format('yy-MM-dd hh:mm:ss')),
 					TDobj.clone().append(
 						Aobj.clone().attr("href", "#").append().text(outages["@id"])
 					)
