@@ -191,17 +191,17 @@ Number.prototype.zf = function(len) {
  * @param childName
  * @returns {String}
  */
-function nullCheckJsonObject(parentObj, childName) {
+function nullCheckJsonObject(parentObj, childname) {
 	
-	console.log("-----------nullCheckJsonObject-----------");
+	/*console.log("-----------nullCheckJsonObject-----------");
 	console.log(parentObj);
 	console.log(childName);
-	console.log(typeof parentObj[childName]);
+	console.log(typeof parentObj[childName]);*/
 	
-	
+	var childName=childname;
 	var strValue = "";
 		
-		if(parentObj[childName] != null || (typeof parentObj[childName] != "undefined")){
+		if(parentObj[childName] != null || (typeof parentObj["childName"] != "undefined")){
 			
 			strValue = parentObj[childName];
 		
@@ -209,10 +209,6 @@ function nullCheckJsonObject(parentObj, childName) {
 			
 			strValue="";
 		}
-		
-		
-	
-
 	return strValue;
 
 }

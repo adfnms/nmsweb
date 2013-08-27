@@ -361,7 +361,7 @@
 							</div>
 							<div class="row-fluid">
 								<div class="span9">
-									<h4>surveillence</h4>
+									<h4>System 분류</h4>
 								</div>
 								<div class="span3" style="margin-top: 7px;">
 									<a  class="btn btn-mini btn-primary" type="button" onclick="javascript:showAddSurveillence()">[+ add]</a>

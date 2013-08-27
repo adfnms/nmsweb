@@ -52,8 +52,7 @@ function countStr(jsonObj,categoryid,categoryname){
 	var str = ""; 
 	str += '	<tr>';
 	str += '		<th><a href=/'+version+'/surveillanceNode.do?categoryid='+categoryid+'&categoryname=' + categoryname + '>' + categoryname + '</a></th>';
-	
-	str += '		<th class="text-error">&nbsp;&nbsp;&nbsp;&nbsp;'+ jsonObj["CategoriesCount"] + '개</th>';
+	str += '		<th class="text">&nbsp;&nbsp;&nbsp;&nbsp;'+ jsonObj["CategoriesCount"] + '개</th>';
 	str += '	</tr>';
 	return str;
 }
@@ -71,8 +70,6 @@ function getNodeToSurveillance(callback,categoryId){
 			alert('등록된 노드 정보 가져오기 실패');
 		},
 		success : function(data) {
-			
-			
 			
 			if (typeof callback == "function") {
 				callback(data);
@@ -105,25 +102,41 @@ function regNodeListStr(jsonObj){
 		str += '<table class="table table-striped" style="margin-bottom: -16px;">';
 		str+='<input type ="hidden" name="emptyNode" value="notEmptyNode">';
 		for( var i in nodeObj){
+			
+			$.ajax({
+				type : 'get',
+				url : '/' + version + '/getRegNodeList.do',
+				data: 'categoryid='+categoryId,
+				dataType : 'json',
+				async : false,
+				contentType : 'application/json',
+				error : function(data) {
+					alert('등록된 노드 정보 가져오기 실패');
+				},
+				success : function(data) {
+					
+					if (typeof callback == "function") {
+						callback(data);
+					}
+				}
+			}); 
+			
 			str += '	<tr >';
-			str += '		<td class="span2"></td>';
+		//	str += '		<td class="span2"></td>';
 			str += '		<td class="span3"><h5>노드 라벨&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+nodeObj[i]["nodeid"]+'">'+nodeObj[i]["nodelabel"]+'</a></h5></td>';
-			str += '		<td class="span3"> <h5>노드 아이디&nbsp;:&nbsp;&nbsp;'+nodeObj[i]["nodeid"]+'<h5></td>';
+			//str += '		<td class="span3"> <h5>노드 아이디&nbsp;:&nbsp;&nbsp;'+nodeObj[i]["nodeid"]+'<h5></td>';
 			str += '	</tr>';
+			
+			
+			
 			
 			$("#checkboxPopup input[name=nodeid][value=" + nodeObj[i]["nodeid"] + "]").attr("checked", true);
 		}
 		str += '</table>';
 		
 	}
-
 	return str;
-
 }
-
-
-
-
 
 
 function getSearchAssetsList(callback,categorynm) {
@@ -142,8 +155,6 @@ function getSearchAssetsList(callback,categorynm) {
 				
 			}
 		});   	 
-		
-		
 	}
 	
 	/*/test/*/
@@ -161,17 +172,10 @@ function getSearchAssetsList(callback,categorynm) {
 				if (typeof callback == "function") {
 					callback(data);
 				}
-				
 			}
 		});   	
-		
-		
 	} 
 	/*/test/*/
-	
-	
-	
-	
 	
 	/*function assetsListStr(jsonObj) {
 		var str = "";
