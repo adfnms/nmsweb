@@ -67,10 +67,14 @@
 </head>
 
 <body>
+
 	<div class="container">
-
+<!-- hidden -->	
+		<form id="hiddenForm">
+			<input type="hidden" id="hiddenValue" name="foreignId" placeholder="" value="" > 
+		</form>
+<!-- hidden -->		
 		<jsp:include page="/include/menu.jsp" />
-
 		<div class="row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb well well-small">

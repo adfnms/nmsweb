@@ -42,6 +42,28 @@ function getTotalNodesList(callback, foreignId){
 	});
 }
 
+function getNodeListInfoAjax(callback, foreignId){
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/requisitions/' + foreignId,
+		dataType : 'json',
+		contentType : 'application/json',
+		error : function(data) {
+			alert('노드 리스트 가져오기 서비스 실패');
+		},
+		success : function(data) {
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+}
+
+function getNodeListInfo(foreignId){
+	
+	getNodeListInfoAjax(NodeListInfo, foreignId);
+}
+
 function getTotalRequisitionsListForNodes(callback){
 	getTotalRequisitionsList(callback);
 }
@@ -142,30 +164,23 @@ function delNodeRequisition(nodeNm, nodeId){
 	});
 }
 
-function returnEditRequisitionPopList(){
-	var requisitionObj = $("#requisitionsListTable input[name=requisitionObj]").val();
-	$.each(requisitionObj, function(i){
-	var foreignId = $("#requisitionsListTable input[name=foreignSources]").eq(i).val();
-	return foreignId;
-	});
-} 
-
 function showEditRequisitionPopList(){
-	var foreignId = returnEditRequisitionPopList();
-	alert(foreignId);
+	var foreignId = $("#hiddenForm input[name=foreignId]").val();
 	getTotalNodesList(editRequisitionPopList, foreignId);
 }
 
 function editRequisitionPopList(jsonObj, foreignId){
+	//$('#requisitionListTable').empty();
 	var str = getTableToEditRequisitionPop(jsonObj, foreignId);
-	$('#requisitionListTable').empty();
 	$('#requisitionListTable').append(str);
 }
 
 function showEditRequisitionInfoDivTitle(foreignId){
+	getNodeListInfo(foreignId);
+	$('#hiddenValue input[name=foreignId]').val(foreignId);
+	alert(foreignId);
 	$('#editRequisitionPopTitle').empty();
 	$('#editRequisitionPopTitle').append("Requisitioned Nodes: " + foreignId);
-	//showEditRequisitionPopList(foreignId);
 }
 
 function showCancelRequisitionPopList(){
@@ -192,35 +207,89 @@ function showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignS
 			alert('새로운 노드추가 실패');
 		},
 		success : function(data) {
-			//getTotalRequisitionsList(getTotalRequisitions);
+			showTableToFinishRequisitionPop(nodeLabel, foreignId, building, foreignSource);
 		}
 	}); 
 }
 
+function showTableToFinishRequisitionPop(nodeLabel, foreignId, building, foreignSource){
+	var str = getTableToFinishRequisitionPop(nodeLabel, foreignId, building);
+	$('#requisitionListTable').empty();
+	$('#requisitionListTable').append(str);
+}
 
+function NodeListInfo(jsonObj){
+	var str = getTableToEditRequisitionPop(jsonObj);
+	$('#requisitionListTable').empty();
+	$('#requisitionListTable').append(str);
+}
 /********************************************************* view String edit ********************************************************************/
-/*function foreignSourceList(jsonObj){
-	var requisitionObj = jsonObj["model-import"];
-	$.each(requisitionObj, function(i){
-		var foreignSourceList = $("#requisitionsListTable input[name='foreignSourceList']").eq(i).val();
-		//var foreignSourceList = $("#requisitionsListTable input[name='foreignSourceList']").last(i).val();
-	return foreignSourceList;
-	});
-}*/
-
-//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 팝업창 안의 리스트
-function getTableToEditRequisitionPop(jsonObj, foreignId){
+function getTableToFinishRequisitionPop(nodeLabel, foreignId, building){
 	var str = "";
 	str += '<tr id="editRequisitionItem">';
 	str += '<td>Node</td>';
+	str += '<td><b>\'' + nodeLabel +'\'</b></td>';
+	str += '<td>ForeignId</td>';
+	str += '<td><b>\'' + foreignId + '\'</b></td>';
+	str += '<td>Site</td>';
+	str += '<td><b>\'' + building + '\'</b></td>';
+	str += '<td><a type="button" class="btn btn-primary" onclick="showSaveRequisitionPopList(\'' + foreignId + '\')">Interface 추가</a></td>';
+	str += '<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">Node Category 추가</a></td>';
+	str += '<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">Node Asset 추가</a></td>';
+	str += '</tr>';
+	str += '<tr id="editRequisitionDownItem1">';
+	str += '</tr>';
+	return str;
+}
+
+//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 팝업창 안의 리스트
+function getTableToEditRequisitionPop(jsonObj, foreignId){
+	console.log('--------pys------');
+	console.log(jsonObj);
+	var str = "";
+	if(jsonObj["@count"] == 1){
+		var nodeObj = jsonObj["node"];
+		str += '<tr id="editRequisitionItem">';
+		str += '<td>Node</td>';
+		str += '<td>\'' + nodeObj["@node-label"] + '\'</td>';
+		str += '<td>ForeignId</td>';
+		str += '<td>\'' + nodeObj["@foreign-id"] + '\'</td>';
+		str += '<td>Site</td>';
+		str += '<td>\'' + nodeObj["@building"] + '\'</td>';
+		str += '<td><a type="button" class="btn btn-primary" onclick="showSaveRequisitionPopList(\'' + foreignId + '\')">저장</a></td>';
+		str += '<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">취소</a></td>';
+		str += '</tr>';
+	}else if(jsonObj["@count"] > 1){
+		var nodeObj = jsonObj["node"];
+		for(var i in nodeObj){
+			str += '<tr id="editRequisitionItem">';
+			str += '<td>Node</td>';
+			str += '<td>\'' + nodeObj[i]["@node-label"] + '\'</td>';
+			str += '<td>ForeignId</td>';
+			str += '<td>\'' + nodeObj[i]["@foreign-id"] + '\'</td>';
+			str += '<td>Site</td>';
+			str += '<td>\'' + nodeObj[i]["@building"] + '\'</td>';
+			str += '<td><a type="button" class="btn btn-primary" onclick="showSaveRequisitionPopList(\'' + foreignId + '\')">저장</a></td>';
+			str += '<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">취소</a></td>';
+			str += '</tr>';
+		}
+	}else{
+		
+	}
+	return str;
+}
+
+//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 팝업창 안의 하위 리스트
+function getTableToEditRequisitionJsonObj(jsonObj){
+	var str = "";
+	str += '<tr id="editRequisitionDownItem2">';
+	str += '<td>Nodeq</td>';
 	str += '<td><input name="editRequisitionNodeLabel" type="text" placeholder="New Node" style="margin-left: -15px;width: 338px;"></td>';
 	str += '<td>ForeignId</td>';
 	str += '<td><input name="editRequisitionForeignId" type="text" placeholder="Foreign ID" style="margin-left: -15px;"></td>';
 	str += '<td>Site</td>';
 	str += '<td><input name="editRequisitionBuilding" type="text" placeholder="Site" style="margin-left: -15px;"></td>';
-	str += '<td><a type="button" class="btn btn-primary" onclick="showSaveRequisitionPopList(\'' + foreignId + '\')">저장</a></td>';
 	str += '<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">취소</a></td>';
-	//str += '<td><input type="hidden" value="' + foreignId + '" name="foreignSource"/></td>';
 	str += '</tr>';
 	return str;
 }
@@ -249,16 +318,14 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		if(nodeStr > 0){
 			str += "<tr>";
 			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">노드 삭제</button></td>';
-			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-823px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
+			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-832px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
 			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj["@foreign-source"] +'\')">편집</button>';
-			//str += '	<td><input type="hidden" value="' + requisitionObj["@foreign-source"] + '" name="foreignSource"/>';
 			str += "</tr>";
 		}else{
 			str += "<tr>";
 			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">요구 삭제</button></td>';
-			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-823px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
+			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-832px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
 			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj["@foreign-source"] +'\')">편집</button>';
-			//str += '	<td><input type="hidden" value="' + requisitionObj["@foreign-source"] + '" name="foreignSource"/>';
 			str += "</tr>";
 		}
 		str += "<tr>";
@@ -278,9 +345,7 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		}
 		str += "<tr><td style='width:1000px;'><hr/></td></tr>";
 	}else if(jsonObj["@count"] > 1){
-		for (var i in requisitionObj) 
-		{
-			
+		for (var i in requisitionObj){
 			var nullStrLastImport =nullCheckJsonObject(jsonObj["model-import"][i], ["@last-import"]);
 			var nullStrNode =nullCheckJsonObject(jsonObj["model-import"][i], ["node"]);
 			if(nullStrNode.length >1)
@@ -302,21 +367,18 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 			if(nodeStr > 0){
 				str += "<tr>";
 				str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">노드 삭제</button></td>';
-				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-823px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
+				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-832px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
 				str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj[i]["@foreign-source"] +'\')">편집</button>';
-				//str += '	<td><input type="hidden" value="' + requisitionObj[i]["@foreign-source"] + '" name="foreignSources"/>';
 				str += '</tr>';
 			}else{
 				str += "<tr>";
 				str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">요구 삭제</button></td>';
-				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-823px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
+				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-832px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
 				str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj[i]["@foreign-source"] +'\')">편집</button>';
-				str += '	<td><input type="hidden" value="' + requisitionObj[i]["@foreign-source"] + '" name="foreignSources"/>';
-				str += '	<td><input type="hidden" value="' + requisitionObj + '" name="requisitionObj"/>';
 				str += '</tr>';
 			}
 			str += "<tr>";
-			str += "    <td><b class='text-error'>"+nodeStr+"</b> nodes defined</td>";
+			str += "    <td><b class='text-error'>" + nodeStr + "</b> nodes defined</td>";
 			str += "</tr>";
 			str += "<tr>";
 			str += "	<td>마지막 수정일: <b>" + new Date(requisitionObj[i]["@date-stamp"]).format('yy-MM-dd hh:mm:ss') + "</b></td>";
