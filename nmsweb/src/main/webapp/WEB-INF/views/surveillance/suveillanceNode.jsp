@@ -31,14 +31,8 @@ var orderBy = "id";
 	
 	
 	function getRegNodeList(jsonObj) {
-		
-		//var str = regNodeListStr(jsonObj);
-	
-		var nodeObj = jsonObj["RegNodeItems"];
-		
 		if(jsonObj["RegNodeItems"].length==0){
 			$('#nodeListTable').empty();
-			var nodeObj = jsonObj["RegNodeItems"];
 			var str = "";
 			str += '<table class="table table-striped ">';
 			str += '	<tr>';
@@ -49,45 +43,24 @@ var orderBy = "id";
 			str += '</table>';
 			$('#nodeListTable').append(str);
 		}else{
+			var nodeObj = jsonObj["RegNodeItems"];
 			
 			for( var i in nodeObj){
 				$('#nodeListTable').empty();
 				var nodeId =  nodeObj[i]["nodeid"];
-				var recentCount =10;
-				var query = encodeURI("query=this_.nodeId = '" + nodeId + "'");
-				var filter = "&orderBy=ifLostService&order=desc&limit=" + recentCount;
-				var data =query + filter;
-				var strInfo = "";
-				$.ajax({
-					type : 'get',
-					url : '/' + version + '/outages',
-					dataType : 'json',
-					data : data,
-					contentType : 'application/json',
-					error : function(data) {
-						alert("장애목록 가져오기 실패");
-					},
-					success : function(data) {
-						//성공 시 데이터 불러오기
-					var	outageObj = data["outage"];
-					
-					console.log(outageObj);
-					
-					var strInfo = regNodeInfoStr(data);
-					
-					$('#nodeListTable').append(strInfo);
-						
-					}
-				});
+				var nodelabel=nodeObj[i]["nodelabel"];
 				
-			
-			
+				NodeListAjax(showRegNodeList,nodeId,nodelabel);
+			}
 		}
-		
-		}
-		
-		//$('#nodeListTable').append(str);
 	}
+	function showRegNodeList(data,nodeId,nodelabel){
+		
+	var strInfo = regNodeInfoStr(data,nodeId,nodelabel);
+		 $('#nodeListTable').append(strInfo);
+		
+	}
+	
 	
 	/*노드 리스트 정보 갖고와서 POPUP창에 보여주기  */
 	function addNodeCategory(){
@@ -210,13 +183,16 @@ function delCategory(){
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
 		<div class="row-fluid">
-			<div class="span12">
-				<ul class="breadcrumb well well-small">
-				<li class="active"><h4><a href="<c:url value="/index.do" />">System 분류 : </a></h4></li>
-				<li><h4 class="text-success">${categoryname}</h4></li>
-				</ul>
+			<div class="span12 well well-small">
+				<div class="row-fluid">
+					<div class="span3">
+						<h4 id="nodeLabel" style="width: 234px;"><a href="<c:url value="/index.do" />">System 분류 : </a>${categoryname}</h4>
+					</div>
+					<div class="span9">
+						<jsp:include page="/include/statsBar.jsp" />
+					</div>
+				</div>
 			</div>
-			
 		</div>
 		<div class="row-fluid">
 			<div class="span12 well well-small">

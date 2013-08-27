@@ -88,9 +88,6 @@ var encodeTime = encodeURI(time);
 		
 	}
 	function notificaitionInfo(jsonObj) {
-		console.log("---------notificaitionInfo------------");
-		console.log(jsonObj);
-		
 		
 		var notiId=jsonObj["@id"];
 		$("#"+notiId).empty();

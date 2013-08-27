@@ -114,60 +114,105 @@ function regNodeListStr(jsonObj){
 	return str;
 }
 
-function regNodeInfoStr(jsonObj){
-/*	if(jsonObj["RegNodeItems"].length==0){
-		$('#nodeListTable').empty();
-		var nodeObj = jsonObj["RegNodeItems"];
-		var str = "";
-		str += '<table class="table table-striped ">';
-		str += '	<tr>';
-		str += '		<td class="span3"></td>';
-		str += '		<td class="span6" style ="text-align: center;" ><input type ="hidden" name="emptyNode" value="emptyNode">등록된 노드가 없습니다.</td>';
-		str += '		<td class="span3"></td>';
-		str += '	</tr>';
-		str += '</table>';
-	}else{*/
-	//	$('#nodeInfoTable').empty();
-		console.log("------regNodeInfoStr------");
-		console.log(jsonObj);
+function NodeListAjax(callback,nodeId,nodelabel){
+	
+	var recentCount =10;
+	var query = encodeURI("query=this_.nodeId = '" + nodeId + "'");
+	var filter = "&orderBy=ifLostService&order=desc&limit=" + recentCount;
+	var data =query + filter;
+	
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/outages',
+		dataType : 'json',
+		data : data,
+		contentType : 'application/json',
+		error : function(data) {
+			alert("장애목록 가져오기 실패");
+		},
+		success : function(data) {
+			//성공 시 데이터 불러오기
+			if (typeof callback == "function") {
+				callback(data,nodeId,nodelabel);
+			}
+		}
+	});
+}
+
+function regNodeInfoStr(data,nodeId,nodelabel){
+
 		
-		var outageObj = jsonObj["outage"];
-		var totalCount = jsonObj["@totalCount"];
+		var outageObj = data["outage"];
+		var totalCount = data["@totalCount"];
 		var strInfo = "";
-		var nodelabel = "";
-		for( var i in outageObj){
-			nodelabel=	outageObj[i]["serviceLostEvent"]["nodeLabel"];
-			//nodeId=	outageObj[i]["serviceLostEvent"]["nodeId"];
-		}
-		strInfo += '<div class="accordion-group" id=test>';
-		strInfo += '		<div class="accordion-heading" >';
-		strInfo += '			<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2"  href="#" id= '+nodelabel+'>'+nodelabel+' 장애목록 </a></h3>';
-		strInfo += '		</div>';
-		strInfo += '		<div id="" class="accordion-body collapse in">';
-		strInfo += '			<div class="accordion-inner">';
-		strInfo += '				<div class="well well-small">';
-		strInfo += '<table class="table table-striped ">';
+		
+		if(totalCount == 0){
+			strInfo += '<div class="accordion-group" id=test>';
+			strInfo += '		<div class="accordion-heading" >';
+			strInfo += '			<h3><a style="margin-left: 18px;">'+nodelabel+'&nbsp;: 노드는 현재 장애 목록이 없습니다.</a></h3>';
+			strInfo += '		</div>';
+			strInfo += '</div>';
+			$("#checkboxPopup input[name=nodeid][value=" + nodeId+ "]").attr("checked", true);
+			return strInfo;
+		}else{
+				
+				strInfo += '<div class="accordion-group" id=test>';
+				strInfo += '		<div class="accordion-heading" >';
+				strInfo += '			<h3><a class="accordion-toggle text-error" data-toggle="collapse" data-parent="#accordion2"  href="#'+nodeId+'" id= '+nodelabel+'>'+nodelabel+'</a></h3>';
+				strInfo += '		</div>';
+				strInfo += '		<div id="'+nodeId+'" class="accordion-body collapse in">';
+				strInfo += '			<div class="accordion-inner">';
+				strInfo += '				<div class="well well-small">';
+				strInfo += '<table class="table table-striped ">';
+					
+				for( var i in outageObj){
+					
+					stat = outageObj[i]["serviceLostEvent"]["@severity"];
+					if(stat=="CRITICAL"){
+						 statusProgress = "progress-danger";
+					}
+					else if(stat=="MAJOR"){
+						 statusProgress = "progress-caution";						
+					}
+					else if(stat=="MINOR"){
+						 statusProgress = "progress-warning";
+					}
+					else if(stat=="WARNING"){
+						 statusProgress = "progress-gray";
+					}
+					else if(stat=="NORMAL"){
+						 statusProgress = "progress-info";
+					}
+					else if(stat=="CLEARED"){
+						 statusProgress = "progress";
+					}
+					else if(stat=="INDETERMINATE"){
+						 statusProgress = "progress-success";
+					}
+					
+						strInfo += '	<tr >';
+						strInfo += '		<td class="span3"><h5>인터페이스&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["ipAddress"]+'">'+outageObj[i]["ipAddress"]+'</a></h5></td>';
+						strInfo += '		<td class=""><div class="progress progress-striped active '+statusProgress+' " style="margin-bottom: 0px;margin-top: 10px; ">';
+						strInfo += '		<div class="bar" style="width:100%">'+outageObj[i]["serviceLostEvent"]["@severity"]+'</div>';
+						strInfo += '		</div></td>';
+						strInfo += '		<td class="span4"><h5>발생시간&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["serviceLostEvent"]["nodeLabel"]+'">'+new Date(outageObj[i]["serviceLostEvent"]["createTime"]).format('yy-MM-dd hh:mm:ss')+'</a></h5></td>';
+						strInfo += '		<td class="span3"><h5>서비스&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["serviceLostEvent"]["nodeLabel"]+'">'+outageObj[i]["monitoredService"]["serviceType"]["name"]+'</a></h5></td>';
+						strInfo += '	</tr>';
+				}
+				strInfo += '</table>';
+				strInfo += '				</div>';
+				strInfo += '			</div>';
+				strInfo += '		</div>';
+				strInfo += '	</div>';
+				strInfo += '<table class="table table-striped" style="margin-bottom: -16px;" >';
+				strInfo+='<input type ="hidden" name="emptyNode" value="notEmptyNode">';
+				
+				$("#checkboxPopup input[name=nodeid][value=" + nodeId+ "]").attr("checked", true);
 			
-		for( var i in outageObj){
-						
-				strInfo += '	<tr >';
-				strInfo += '		<td class="span3"><h5>인터페이스&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["ipAddress"]+'">'+outageObj[i]["ipAddress"]+'</a></h5></td>';
-				strInfo += '		<td class="span3"><h5>상태&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["serviceLostEvent"]["nodeLabel"]+'">'+outageObj[i]["serviceLostEvent"]["@severity"]+'</a></h5></td>';
-				strInfo += '		<td class="span3"><h5>발생시간&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["serviceLostEvent"]["nodeLabel"]+'">'+new Date(outageObj[i]["serviceLostEvent"]["createTime"]).format('yy-MM-dd hh:mm:ss')+'</a></h5></td>';
-				strInfo += '		<td class="span3"><h5>서비스&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["serviceLostEvent"]["nodeLabel"]+'">'+outageObj[i]["monitoredService"]["serviceType"]["name"]+'</a></h5></td>';
-				strInfo += '	</tr>';
+				return strInfo;
+			
 		}
-		strInfo += '</table>';
-		strInfo += '				</div>';
-		strInfo += '			</div>';
-		strInfo += '		</div>';
-		strInfo += '	</div>';
-		strInfo += '<table class="table table-striped" style="margin-bottom: -16px;" >';
-		strInfo+='<input type ="hidden" name="emptyNode" value="notEmptyNode">';
 		
-		
-	//}
-	return strInfo;
 }
 
 
