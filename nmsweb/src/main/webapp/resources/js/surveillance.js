@@ -93,43 +93,19 @@ function regNodeListStr(jsonObj){
 		str += '	</tr>';
 		str += '</table>';
 		
-		
 	}else{
 		$('#nodeListTable').empty();
 		
 		var nodeObj = jsonObj["RegNodeItems"];
+		console.log(jsonObj);
 		var str = "";
-		str += '<table class="table table-striped" style="margin-bottom: -16px;">';
+		str += '<table class="table table-striped" style="margin-bottom: -16px;" id="nodeInfoTable">';
 		str+='<input type ="hidden" name="emptyNode" value="notEmptyNode">';
+	
 		for( var i in nodeObj){
-			
-			$.ajax({
-				type : 'get',
-				url : '/' + version + '/getRegNodeList.do',
-				data: 'categoryid='+categoryId,
-				dataType : 'json',
-				async : false,
-				contentType : 'application/json',
-				error : function(data) {
-					alert('등록된 노드 정보 가져오기 실패');
-				},
-				success : function(data) {
-					
-					if (typeof callback == "function") {
-						callback(data);
-					}
-				}
-			}); 
-			
-			str += '	<tr >';
-		//	str += '		<td class="span2"></td>';
-			str += '		<td class="span3"><h5>노드 라벨&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+nodeObj[i]["nodeid"]+'">'+nodeObj[i]["nodelabel"]+'</a></h5></td>';
-			//str += '		<td class="span3"> <h5>노드 아이디&nbsp;:&nbsp;&nbsp;'+nodeObj[i]["nodeid"]+'<h5></td>';
-			str += '	</tr>';
-			
-			
-			
-			
+				str += '	<tr >';
+				str += '		<td class="span3"><h5>노드 라벨&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+nodeObj[i]["nodeid"]+'">'+nodeObj[i]["nodelabel"]+'</a></h5></td>';
+				str += '	</tr>';
 			$("#checkboxPopup input[name=nodeid][value=" + nodeObj[i]["nodeid"] + "]").attr("checked", true);
 		}
 		str += '</table>';
@@ -137,6 +113,64 @@ function regNodeListStr(jsonObj){
 	}
 	return str;
 }
+
+function regNodeInfoStr(jsonObj){
+/*	if(jsonObj["RegNodeItems"].length==0){
+		$('#nodeListTable').empty();
+		var nodeObj = jsonObj["RegNodeItems"];
+		var str = "";
+		str += '<table class="table table-striped ">';
+		str += '	<tr>';
+		str += '		<td class="span3"></td>';
+		str += '		<td class="span6" style ="text-align: center;" ><input type ="hidden" name="emptyNode" value="emptyNode">등록된 노드가 없습니다.</td>';
+		str += '		<td class="span3"></td>';
+		str += '	</tr>';
+		str += '</table>';
+	}else{*/
+	//	$('#nodeInfoTable').empty();
+		console.log("------regNodeInfoStr------");
+		console.log(jsonObj);
+		
+		var outageObj = jsonObj["outage"];
+		var totalCount = jsonObj["@totalCount"];
+		var strInfo = "";
+		var nodelabel = "";
+		for( var i in outageObj){
+			nodelabel=	outageObj[i]["serviceLostEvent"]["nodeLabel"];
+			//nodeId=	outageObj[i]["serviceLostEvent"]["nodeId"];
+		}
+		strInfo += '<div class="accordion-group" id=test>';
+		strInfo += '		<div class="accordion-heading" >';
+		strInfo += '			<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2"  href="#" id= '+nodelabel+'>'+nodelabel+' 장애목록 </a></h3>';
+		strInfo += '		</div>';
+		strInfo += '		<div id="" class="accordion-body collapse in">';
+		strInfo += '			<div class="accordion-inner">';
+		strInfo += '				<div class="well well-small">';
+		strInfo += '<table class="table table-striped ">';
+			
+		for( var i in outageObj){
+						
+				strInfo += '	<tr >';
+				strInfo += '		<td class="span3"><h5>인터페이스&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["ipAddress"]+'">'+outageObj[i]["ipAddress"]+'</a></h5></td>';
+				strInfo += '		<td class="span3"><h5>상태&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["serviceLostEvent"]["nodeLabel"]+'">'+outageObj[i]["serviceLostEvent"]["@severity"]+'</a></h5></td>';
+				strInfo += '		<td class="span3"><h5>발생시간&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["serviceLostEvent"]["nodeLabel"]+'">'+new Date(outageObj[i]["serviceLostEvent"]["createTime"]).format('yy-MM-dd hh:mm:ss')+'</a></h5></td>';
+				strInfo += '		<td class="span3"><h5>서비스&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["serviceLostEvent"]["nodeLabel"]+'">'+outageObj[i]["monitoredService"]["serviceType"]["name"]+'</a></h5></td>';
+				strInfo += '	</tr>';
+		}
+		strInfo += '</table>';
+		strInfo += '				</div>';
+		strInfo += '			</div>';
+		strInfo += '		</div>';
+		strInfo += '	</div>';
+		strInfo += '<table class="table table-striped" style="margin-bottom: -16px;" >';
+		strInfo+='<input type ="hidden" name="emptyNode" value="notEmptyNode">';
+		
+		
+	//}
+	return strInfo;
+}
+
+
 
 
 function getSearchAssetsList(callback,categorynm) {

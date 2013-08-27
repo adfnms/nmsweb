@@ -32,10 +32,61 @@ var orderBy = "id";
 	
 	function getRegNodeList(jsonObj) {
 		
-		var str = regNodeListStr(jsonObj);
+		//var str = regNodeListStr(jsonObj);
+	
+		var nodeObj = jsonObj["RegNodeItems"];
 		
-		$('#nodeListTable').append(str);
+		if(jsonObj["RegNodeItems"].length==0){
+			$('#nodeListTable').empty();
+			var nodeObj = jsonObj["RegNodeItems"];
+			var str = "";
+			str += '<table class="table table-striped ">';
+			str += '	<tr>';
+			str += '		<td class="span3"></td>';
+			str += '		<td class="span6" style ="text-align: center;" ><input type ="hidden" name="emptyNode" value="emptyNode">등록된 노드가 없습니다.</td>';
+			str += '		<td class="span3"></td>';
+			str += '	</tr>';
+			str += '</table>';
+			$('#nodeListTable').append(str);
+		}else{
+			
+			for( var i in nodeObj){
+				$('#nodeListTable').empty();
+				var nodeId =  nodeObj[i]["nodeid"];
+				var recentCount =10;
+				var query = encodeURI("query=this_.nodeId = '" + nodeId + "'");
+				var filter = "&orderBy=ifLostService&order=desc&limit=" + recentCount;
+				var data =query + filter;
+				var strInfo = "";
+				$.ajax({
+					type : 'get',
+					url : '/' + version + '/outages',
+					dataType : 'json',
+					data : data,
+					contentType : 'application/json',
+					error : function(data) {
+						alert("장애목록 가져오기 실패");
+					},
+					success : function(data) {
+						//성공 시 데이터 불러오기
+					var	outageObj = data["outage"];
+					
+					console.log(outageObj);
+					
+					var strInfo = regNodeInfoStr(data);
+					
+					$('#nodeListTable').append(strInfo);
+						
+					}
+				});
+				
+			
+			
+		}
 		
+		}
+		
+		//$('#nodeListTable').append(str);
 	}
 	
 	/*노드 리스트 정보 갖고와서 POPUP창에 보여주기  */
@@ -169,6 +220,8 @@ function delCategory(){
 		</div>
 		<div class="row-fluid">
 			<div class="span12 well well-small">
+			
+			
 				<div class="row-fluid">
 					<div class="span12" >
 						<table class="table table-striped" id="nodeListTable"></table>
