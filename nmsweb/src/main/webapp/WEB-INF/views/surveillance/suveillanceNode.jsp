@@ -22,15 +22,13 @@ var orderBy = "id";
 
 
 	$(document).ready(function() {
-		
 		// getNodeListToCategoryName(addNodeLists, "${cateNm}"); 
-		
 		//해당 카테고리에 등록되어있는 노드정보를 가져온다.
 		getNodeToSurveillance(getRegNodeList, "${categoryId}");
 	});
 	
 	
-	function getRegNodeList(jsonObj) {
+	function getRegNodeList(jsonObj,categoryId) {
 		if(jsonObj["RegNodeItems"].length==0){
 			$('#nodeListTable').empty();
 			var str = "";
@@ -50,11 +48,11 @@ var orderBy = "id";
 				var nodeId =  nodeObj[i]["nodeid"];
 				var nodelabel=nodeObj[i]["nodelabel"];
 				
-				NodeListAjax(showRegNodeList,nodeId,nodelabel);
+				NodeListAjax(showRegNodeList,nodeId,nodelabel,categoryId);
 			}
 		}
 	}
-	function showRegNodeList(data,nodeId,nodelabel){
+	function showRegNodeList(data,nodeId,nodelabel,categoryId){
 		
 	var strInfo = regNodeInfoStr(data,nodeId,nodelabel);
 		 $('#nodeListTable').append(strInfo);

@@ -21,7 +21,8 @@ function getsurveillanceLabel(callback){
 
 function getCount(callback,data){
 	
-	
+
+	$('#surveillenceLabel').empty();
 	for(var i in data["CategoriesItem"]){
 		
 		var  categoryid = data["CategoriesItem"][i]["categoryid"];
@@ -51,8 +52,9 @@ function countStr(jsonObj,categoryid,categoryname){
 	
 	var str = ""; 
 	str += '	<tr>';
-	str += '		<th><a href=/'+version+'/surveillanceNode.do?categoryid='+categoryid+'&categoryname=' + categoryname + '>' + categoryname + '</a></th>';
-	str += '		<th class="text">&nbsp;&nbsp;&nbsp;&nbsp;'+ jsonObj["CategoriesCount"] + '개</th>';
+	str += '		<td class="text "><a href=/'+version+'/surveillanceNode.do?categoryid='+categoryid+'&categoryname=' + categoryname + '>' + categoryname + '</a></td>';
+	str += '		<td class="text ">&nbsp;&nbsp;&nbsp;&nbsp;'+ jsonObj["CategoriesCount"] + '개</td>';
+	str += '		<td class="text-error" id="'+categoryid+'"></td>';
 	str += '	</tr>';
 	return str;
 }
@@ -72,7 +74,7 @@ function getNodeToSurveillance(callback,categoryId){
 		success : function(data) {
 			
 			if (typeof callback == "function") {
-				callback(data);
+				callback(data,categoryId);
 			}
 		}
 	}); 
@@ -114,7 +116,7 @@ function regNodeListStr(jsonObj){
 	return str;
 }
 
-function NodeListAjax(callback,nodeId,nodelabel){
+function NodeListAjax(callback,nodeId,nodelabel,categoryId){
 	
 	var recentCount =10;
 	var query = encodeURI("query=this_.nodeId = '" + nodeId + "'");
@@ -133,15 +135,16 @@ function NodeListAjax(callback,nodeId,nodelabel){
 		success : function(data) {
 			//성공 시 데이터 불러오기
 			if (typeof callback == "function") {
-				callback(data,nodeId,nodelabel);
+				callback(data,nodeId,nodelabel,categoryId);
 			}
 		}
 	});
 }
 
 function regNodeInfoStr(data,nodeId,nodelabel){
-
-		
+		console.log("----------regNodeInfoStr---------");
+		console.log(data);
+		console.log(nodelabel);
 		var outageObj = data["outage"];
 		var totalCount = data["@totalCount"];
 		var strInfo = "";
@@ -154,7 +157,7 @@ function regNodeInfoStr(data,nodeId,nodelabel){
 			strInfo += '</div>';
 			$("#checkboxPopup input[name=nodeid][value=" + nodeId+ "]").attr("checked", true);
 			return strInfo;
-		}else{
+		}else if(totalCount > 1){
 				
 				strInfo += '<div class="accordion-group" id=test>';
 				strInfo += '		<div class="accordion-heading" >';
@@ -191,12 +194,12 @@ function regNodeInfoStr(data,nodeId,nodelabel){
 					}
 					
 						strInfo += '	<tr >';
-						strInfo += '		<td class="span3"><h5>인터페이스&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["ipAddress"]+'">'+outageObj[i]["ipAddress"]+'</a></h5></td>';
-						strInfo += '		<td class=""><div class="progress progress-striped active '+statusProgress+' " style="margin-bottom: 0px;margin-top: 10px; ">';
-						strInfo += '		<div class="bar" style="width:100%">'+outageObj[i]["serviceLostEvent"]["@severity"]+'</div>';
+						strInfo += '		<td class="span3"><h5 style="width: 195px;">인터페이스&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["ipAddress"]+'">'+outageObj[i]["ipAddress"]+'</a></h5></td>';
+						strInfo += '		<td class="" style ="width: 455px;"><div class="progress progress-striped active '+statusProgress+' " style="margin-bottom: 0px;margin-top: 10px; ">';
+						strInfo += '		<div class="bar" style="width:100%">'+stat+'</div>';
 						strInfo += '		</div></td>';
-						strInfo += '		<td class="span4"><h5>발생시간&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["serviceLostEvent"]["nodeLabel"]+'">'+new Date(outageObj[i]["serviceLostEvent"]["createTime"]).format('yy-MM-dd hh:mm:ss')+'</a></h5></td>';
-						strInfo += '		<td class="span3"><h5>서비스&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj[i]["serviceLostEvent"]["nodeLabel"]+'">'+outageObj[i]["monitoredService"]["serviceType"]["name"]+'</a></h5></td>';
+						strInfo += '		<td class="span4 "><h5>발생시간&nbsp;:&nbsp;&nbsp;<a  class="text-error">'+new Date(outageObj[i]["serviceLostEvent"]["createTime"]).format('yy-MM-dd hh:mm:ss')+'</a></h5></td>';
+						strInfo += '		<td class="span3"><h5>서비스&nbsp;:&nbsp;&nbsp;<a class="text-success">'+outageObj[i]["monitoredService"]["serviceType"]["name"]+'</a></h5></td>';
 						strInfo += '	</tr>';
 				}
 				strInfo += '</table>';
@@ -210,6 +213,65 @@ function regNodeInfoStr(data,nodeId,nodelabel){
 				$("#checkboxPopup input[name=nodeid][value=" + nodeId+ "]").attr("checked", true);
 			
 				return strInfo;
+			
+		}else if(totalCount = 1){
+			
+			strInfo += '<div class="accordion-group" id=test>';
+			strInfo += '		<div class="accordion-heading" >';
+			strInfo += '			<h3><a class="accordion-toggle text-error" data-toggle="collapse" data-parent="#accordion2"  href="#'+nodeId+'" id= '+nodelabel+'>'+nodelabel+'</a></h3>';
+			strInfo += '		</div>';
+			strInfo += '		<div id="'+nodeId+'" class="accordion-body collapse in">';
+			strInfo += '			<div class="accordion-inner">';
+			strInfo += '				<div class="well well-small">';
+			strInfo += '<table class="table table-striped ">';
+				
+			console.log(outageObj["serviceLostEvent"]["@severity"]);
+			
+			
+				
+				stat = outageObj["serviceLostEvent"]["@severity"];
+				if(stat=="CRITICAL"){
+					 statusProgress = "progress-danger";
+				}
+				else if(stat=="MAJOR"){
+					 statusProgress = "progress-caution";						
+				}
+				else if(stat=="MINOR"){
+					 statusProgress = "progress-warning";
+				}
+				else if(stat=="WARNING"){
+					 statusProgress = "progress-gray";
+				}
+				else if(stat=="NORMAL"){
+					 statusProgress = "progress-info";
+				}
+				else if(stat=="CLEARED"){
+					 statusProgress = "progress";
+				}
+				else if(stat=="INDETERMINATE"){
+					 statusProgress = "progress-success";
+				}
+				
+					strInfo += '	<tr >';
+					strInfo += '		<td class="span3"><h5 style="width: 195px;">인터페이스&nbsp;:&nbsp;&nbsp;<a href="/'+version+'/search/node/nodeDesc.do?nodeId='+outageObj["ipAddress"]+'">'+outageObj["ipAddress"]+'</a></h5></td>';
+					strInfo += '		<td class="" style ="width: 455px;"><div class="progress progress-striped active '+statusProgress+' " style="margin-bottom: 0px;margin-top: 10px; ">';
+					strInfo += '		<div class="bar" style="width:100%">'+stat+'</div>';
+					strInfo += '		</div></td>';
+					strInfo += '		<td class="span4"><h5>발생시간&nbsp;:&nbsp;&nbsp;<a  class="text-error">'+new Date(outageObj["serviceLostEvent"]["createTime"]).format('yy-MM-dd hh:mm:ss')+'</a></h5></td>';
+					strInfo += '		<td class="span3"><h5>서비스&nbsp;:&nbsp;&nbsp;<a  class="text-success">'+outageObj["monitoredService"]["serviceType"]["name"]+'</a></h5></td>';
+					strInfo += '	</tr>';
+			
+			strInfo += '</table>';
+			strInfo += '				</div>';
+			strInfo += '			</div>';
+			strInfo += '		</div>';
+			strInfo += '	</div>';
+			strInfo += '<table class="table table-striped" style="margin-bottom: -16px;" >';
+			strInfo+='<input type ="hidden" name="emptyNode" value="notEmptyNode">';
+			
+			$("#checkboxPopup input[name=nodeid][value=" + nodeId+ "]").attr("checked", true);
+		
+			return strInfo;
 			
 		}
 		

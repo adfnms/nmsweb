@@ -35,14 +35,76 @@
 	});
 	/*surveillence 정보 갖고오기 callback함수 */
 	function searchLabels(jsonObj,categoryid,categoryname){
-		//$('#surveillenceLabel').empty();
-		var str = countStr(jsonObj,categoryid,categoryname);
+		
 	
+		getNodeToSurveillance(getNodeAlert,categoryid);
+		var str = countStr(jsonObj,categoryid,categoryname);
+		
 		$('#surveillenceLabel').append(str); 
+		
+		//setTimeout(refreshSystem, 10000);
 	 
 	}
 
+	/* function refreshSystem(){
+		getsurveillanceLabel(searchLabels);
 
+	}    */
+
+	function getNodeAlert(jsonObj,categoryId){
+		
+		if(jsonObj["RegNodeItems"].length==0){
+	
+		}else{
+			var nodeObj = jsonObj["RegNodeItems"];
+			for( var i in nodeObj){
+				
+				var nodeId =  nodeObj[i]["nodeid"];
+				var nodelabel=nodeObj[i]["nodelabel"];
+				
+				NodeListAjax(showRegNodeList,nodeId,nodelabel,categoryId);
+			}
+			
+		}
+	}
+	function showRegNodeList(data,nodeId,nodelabel,categoryId){
+		if(data["@totalCount"]>1){
+			
+			for( var i in data['outage']){
+				
+				if(data['outage'][i]['serviceLostEvent']['@severity'] == "MAJOR" || data['outage'][i]['serviceLostEvent']['@severity'] == "CRITICAL"){
+					console.log(data['outage'][i]['serviceLostEvent']['@severity']);
+					console.log(">1");
+					 $('#'+categoryId+'').empty();
+					 $('#'+categoryId+'').append("<img src='<c:url value="/resources/images/" />red.jpg' />");
+				}else{
+					
+				}
+			}
+			
+		}else if(data["@totalCount"] == 1){
+			
+			if(data['outage']['serviceLostEvent']['@severity'] == "MAJOR" || data['outage']['serviceLostEvent']['@severity'] == "CRITICAL"){
+				console.log("1");
+				console.log(data['outage']['serviceLostEvent']['@severity']);
+				 $('#'+categoryId+'').empty();
+				 $('#'+categoryId+'').append("<img src='<c:url value="/resources/images/" />red.jpg' />");
+			}else{
+				
+			}
+			
+		}else{
+			
+			console.log("0");
+		}
+	}
+	
+	
+	
+
+	
+	
+	
 	/* 감시대상목록 */
 	function searchNodeLists(jsonObj) {
 		$('#id').empty();
@@ -375,7 +437,7 @@
 									</div>
 								</form>
 							</div>
-							<div class="well well-small" style=" height:265px; overflow-y:auto;;">
+							<div class="span12" style=" height:265px; overflow-y:auto;;">
 								<table class="table table-striped table-hover " id="surveillenceLabel">
 								
 									
