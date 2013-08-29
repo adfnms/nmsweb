@@ -134,7 +134,6 @@
 	}
 	/* 24시간 가용률 , 카테고리 정보 */
 	function addIndexInfo(jsonObj) {
-		console.log(jsonObj);
 		
 		var categoryObj = jsonObj["CategoryInfo"];
 		var totalAvail = 0;
@@ -425,10 +424,10 @@
 									<h4>System 분류</h4>
 								</div>
 								<div class="span3" style="margin-top: 7px;">
-									<a  class="btn btn-mini btn-primary" type="button" href="<c:url value="/surveillancetotal.do" />">+ more</a>
+									<a  class="btn btn-mini btn-primary" type="button" href="<c:url value="/surveillancetotal.do" />">+ 전체</a>
 								</div>
 								<div class="span3" style="margin-top: 7px;">
-									<a  class="btn btn-mini btn-primary" type="button" onclick="javascript:showAddSurveillence()">+ add</a>
+									<a  class="btn btn-mini btn-primary" type="button" onclick="javascript:showAddSurveillence()">+ 추가</a>
 								</div>
 							</div>
 							<div class="row-fluid" id="showAddSurveillence"  style="display:none">

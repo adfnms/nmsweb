@@ -26,17 +26,57 @@ try{
 <script src="<c:url value="/resources/js/requisitions.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script src="<c:url value="/resources/js/category.js" />"></script>
+<script src="<c:url value="/resources/js/surveillance.js" />"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	
-	
+	/*시스템 분류 리스트 갖고오기  */
+	getsurveillanceLabel(getSystemCategory);
 	
 });	
 	
+function getSystemCategory(jsonObj,categoryid,categoryname){
 
+	var str = categoryNameStr(jsonObj,categoryid,categoryname);
+	$('#categoryName').append(str);
+	getNodeToSurveillance(getSystemNode,categoryid);
+
+}
+function getSystemNode(jsonObj,categoryId){
+	console.log(jsonObj);
+	if(jsonObj["RegNodeItems"].length==0){
+		
+		var str = lengthZeroStr(nodeId,nodelabel,categoryId);
+		$('#'+categoryId+'').append(str);
+		
+	}else{
+		var nodeObj = jsonObj["RegNodeItems"];
+		for( var i in nodeObj){
+			
+			var nodeId =  nodeObj[i]["nodeid"];
+			var nodelabel=nodeObj[i]["nodelabel"];
+		
+			var str = nodeNameStr(nodeId,nodelabel,categoryId);
+			
+			$('#'+categoryId+'').append(str);
+			
+		NodeListAjax(NodeTotalList,nodeId,nodelabel,categoryId);
+			
+		}
+	}
+}
+	
+function NodeTotalList(data,nodeId,nodelabel,categoryId){
+	
+	var sumId=categoryId+nodeId;
+	
+	var str = nodeInfoStr(data,nodeId,nodelabel,categoryId);
 	
 	
+	$('#'+sumId+'').append(str);
+	
+	
+}
 	
 	
 	
@@ -60,47 +100,11 @@ $(document).ready(function() {
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
-		<div class="row-fluid">
-			<h3 style = "margin-top: -9px;"><code>Surveillance View</code></h3>
-			<div class="bs-docs-example">
-			<form id="userInfoFrm" name = "userInfoFrm">
-				<input type="hidden" name="regrId" value="<%= userId %>"  protect="true" />
-				<input type="hidden" name="modrId" value="<%= userId %>"  protect="true" />
-			</form>
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th>Nodes Down</th>
-							<th class="info">PRODUCTION</th>
-							<th class="info" style ="width: 234px;">TEST</th>
-							<th class="info">DEVELOPMENT</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="info"><strong>ROUTERS</strong></td>
-							<td id="ROUTERS_PRODUCTION">0 of 0</td>
-							<td id="ROUTERS_TEST">0 of 0</td>
-							<td id="ROUTERS_DEVELOPMENT">0 of 0</td>
-						</tr>
-						<tr>
-							<td class="info"><strong>SWITCHES</strong></td>
-							<td id="SWITCHES_PRODUCTION">0 of 0</td>
-							<td id="SWITCHES_TEST">0 of 0</td>
-							<td id="SWITCHES_DEVELOPMENT">0 of 0</td>
-						</tr>
-						<tr>
-							<td class="info"><strong>SERVERS</strong></td>
-							<td id="SERVERS_PRODUCTION">0 of 0</td>
-							<td id="SERVERS_TEST">0 of 0</td>
-							<td id="SERVERS_DEVELOPMENT">0 of 0</td>
-						</tr>
-					</tbody>
-				</table>
+		<div>
+			<div class="row-fluid">
+				<div class="span12" id="categoryName"></div>
 			</div>
-		
-			<hr>
-		</div>
+		</div> 
 	</div>
 	<!-- /container -->
 </body>

@@ -142,9 +142,6 @@ function NodeListAjax(callback,nodeId,nodelabel,categoryId){
 }
 
 function regNodeInfoStr(data,nodeId,nodelabel){
-		console.log("----------regNodeInfoStr---------");
-		console.log(data);
-		console.log(nodelabel);
 		var outageObj = data["outage"];
 		var totalCount = data["@totalCount"];
 		var strInfo = "";
@@ -225,9 +222,6 @@ function regNodeInfoStr(data,nodeId,nodelabel){
 			strInfo += '				<div class="well well-small">';
 			strInfo += '<table class="table table-striped ">';
 				
-			console.log(outageObj["serviceLostEvent"]["@severity"]);
-			
-			
 				
 				stat = outageObj["serviceLostEvent"]["@severity"];
 				if(stat=="CRITICAL"){
@@ -316,38 +310,6 @@ function getSearchAssetsList(callback,categorynm) {
 			}
 		});   	
 	} 
-	/*/test/*/
-	
-	/*function assetsListStr(jsonObj) {
-		var str = "";
-		
-		console.log(jsonObj);
-		
-		var CatagoryList=jsonObj["CatagoryList"];
-		
-		if (CatagoryList.length == 0) {
-			str += "<tr>";
-			str += "<td></td>";
-			str += "<td>데이터가 없습니다</td>";
-			str += "<td></td>";
-		}else if(CatagoryList.length ==1) {
-			str += "<tr>";
-			str += "<td>" + CatagoryList[0]["category"]+ "</td>";
-			str += "<td><a href='/" + version+ "/assets/modifyAssets?nodeId="+ CatagoryList[0]["nodeid"] + "&nodeLabel="+CatagoryList[0]["nodeLabel"]+"'>" + CatagoryList[0]["nodeLabel"]+ "</a></td>";
-			str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ CatagoryList[0]["nodeid"]+ "'>" + CatagoryList[0]["nodeLabel"]+ "</a></td>";
-			
-		}else if(CatagoryList.length >0) {
-			for ( var i in CatagoryList) {
-
-				str += "<tr>";
-				str += "<td>" + CatagoryList[i]["category"]+ "</td>";
-				str += "<td><a href='/" + version+ "/assets/modifyAssets?nodeId="+ CatagoryList[i]["nodeid"] + "&nodeLabel="+CatagoryList[i]["nodeLabel"]+"'>" + CatagoryList[i]["nodeLabel"]+ "</a></td>";
-				str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ CatagoryList[i]["nodeid"]+ "'>" + CatagoryList[i]["nodeLabel"]+ "</a></td>";
-			}
-		}
-		return str;
-	}*/
-	
 	
 	function FieldStr(jsonObj) {
 
@@ -380,9 +342,6 @@ function getSearchAssetsList(callback,categorynm) {
 	
 	function getAssetInfo(callback,nodeId) {
 		
-		console.log("---------getAssetInfo----------");
-		console.log(nodeId);
-		
 		$.ajax({
 			type : 'get',
 			url : '/' + version + '/assets/getAssetInfo',
@@ -402,8 +361,6 @@ function getSearchAssetsList(callback,categorynm) {
 		
 	}
 	function nodeCheckBoxStr(jsonObj, categoryid ){
-		console.log("-----jsonObj------");
-		console.log(jsonObj);
 		
 		var str = "";
 		var node=jsonObj["node"];
@@ -437,6 +394,146 @@ function getSearchAssetsList(callback,categorynm) {
 			}
 		}
 		return str;
+	}
+	
+	function categoryNameStr(jsonObj,categoryid,categoryname){
 		
+		var str = ""; 
 		
+		str += '	<div class="well well-small" >';
+		str += '		<div class="row-fluid">';
+		str += '			<div class="span12" >';
+		str += '				<table id="'+categoryid+'" class="span12" >';
+		str += '					<tr>';
+		str += '						<td class="text "><h3><a class="muted" href=/'+version+'/surveillanceNode.do?categoryid='+categoryid+'&categoryname=' + categoryname + '>' + categoryname + '</a></h3></td>';
+		str += '					</tr>';
+		str += '				</table>';
+		str += '			</div>';
+		str += '		</div>';
+		str += '	</div>';
+	
+		return str;
+		
+	}
+	
+	function nodeNameStr(nodeId,nodelabel,categoryId){
+		
+		var sumId=categoryId+nodeId;
+		
+		var str = ""; 
+		
+		str += '	<table  id="'+sumId+'" style="margin-left: 30px;"  class="span12" >';
+		str += '		<tr>';
+		str += '			<td class="text-success"><h4>' + nodelabel + '</h4></td>';
+		str += '		</tr>';
+		str += '	</table>';
+		return str;
+	}
+	function lengthZeroStr(nodeId,nodelabel,categoryId){
+		
+		var sumId=categoryId+nodeId;
+		
+		var str = ""; 
+		
+		str += '	<table  id="'+sumId+'" style="margin-left: 30px;"  class="span12" >';
+		str += '		<tr>';
+		str += '			<td class="text-success"><h4>등록 노드가 없습니다.</h4></td>';
+		str += '		</tr>';
+		str += '	</table>';
+		return str;
+	}
+	
+	function nodeInfoStr(data,nodeId,nodelabel,categoryId){
+		var outageObj = data["outage"];
+		var str = ""; 
+		str += '	<table  id="'+nodeId+'" style="margin-left: 70px;">';
+		if(data["@totalCount"]>1){
+			
+				for( var i in data['outage']){
+					
+					
+					stat = outageObj[i]["serviceLostEvent"]["@severity"];
+					if(stat=="CRITICAL"){
+						 statusProgress = "progress-danger";
+					}
+					else if(stat=="MAJOR"){
+						 statusProgress = "progress-caution";						
+					}
+					else if(stat=="MINOR"){
+						 statusProgress = "progress-warning";
+					}
+					else if(stat=="WARNING"){
+						 statusProgress = "progress-gray";
+					}
+					else if(stat=="NORMAL"){
+						 statusProgress = "progress-info";
+					}
+					else if(stat=="CLEARED"){
+						 statusProgress = "progress";
+					}
+					else if(stat=="INDETERMINATE"){
+						 statusProgress = "progress-success";
+					}
+					
+					
+					str += '			<tr>';
+					str += '				<th class="text span2">호스트  : <a  class="text-warning">' + data['outage'][i]['serviceLostEvent']['host'] + '</a></th>';
+					str += '				<th class="text span2">IP : <a>' + data['outage'][i]['ipAddress'] + '</a></th>';
+					str += '				<th class="text span2">서비스 : <a>' + data['outage'][i]['monitoredService']['serviceType']['name'] + '</a></th>';
+					str += '				<th class="text span3">중단 시간 : <a  class="text-error">' + new Date(data['outage'][i]['serviceLostEvent']['createTime']).format('yy-MM-dd hh:mm:ss') + '</a></th>';
+					str += '				<td class="span2" style ="width: ;">';
+					str += '					<div class="progress progress-striped active '+statusProgress+' " style="margin-bottom: 0px;margin-top: 10px; ">';
+					str += '					<div class="bar" style="width:100%">'+stat+'</div>';
+					str += '					</div>';
+					str +='				</td>';
+					str += '			</tr>';
+				}
+			
+		}else if(data["@totalCount"] == 1){
+			
+			
+			stat = outageObj["serviceLostEvent"]["@severity"];
+			if(stat=="CRITICAL"){
+				 statusProgress = "progress-danger";
+			}
+			else if(stat=="MAJOR"){
+				 statusProgress = "progress-caution";						
+			}
+			else if(stat=="MINOR"){
+				 statusProgress = "progress-warning";
+			}
+			else if(stat=="WARNING"){
+				 statusProgress = "progress-gray";
+			}
+			else if(stat=="NORMAL"){
+				 statusProgress = "progress-info";
+			}
+			else if(stat=="CLEARED"){
+				 statusProgress = "progress";
+			}
+			else if(stat=="INDETERMINATE"){
+				 statusProgress = "progress-success";
+			}
+			
+			
+			str += '			<tr>';
+			str += '				<th class="text span2">호스트  :<a  class="text-warning"> ' + data['outage']['serviceLostEvent']['host'] + '</a></th>';
+			str += '				<th class="text span2">IP : <a>' + data['outage']['ipAddress'] + '</a></td>';
+			str += '				<th class="text span2">서비스 : <a>' + data['outage']['monitoredService']['serviceType']['name'] + '</a></th>';
+			str += '				<th class="text span3">중단 시간 : <a  class="text-error">' + new Date(data['outage']['serviceLostEvent']['createTime']).format('yy-MM-dd hh:mm:ss') + '</a></th>';
+			str += '				<td class="span2" style ="width: ;">';
+			str += '					<div class="progress progress-striped active '+statusProgress+' " style="margin-bottom: 0px;margin-top: 10px; ">';
+			str += '					<div class="bar" style="width:100%">'+stat+'</div>';
+			str += '					</div>';
+			str +='				</td>';
+			str += '			</tr>';
+			
+		}else{
+			str += '		<tr>';
+			str += '			<td class="text ">데이터가 없습니다.</td>';
+			str += '		</tr>';
+		}
+		
+		str += '	</table>';
+		return str;
 	}

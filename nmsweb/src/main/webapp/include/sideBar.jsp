@@ -33,8 +33,6 @@ function addNodeListsSideBar(jsonObj) {
 }
 
 function sidebarInfo(jsonObj) {
-	console.log("-----------sidebar 장애목록---------------");
-	console.log(jsonObj);
 	//장애 목록
 	var str = "";
 	var ULobj = $("<ul></ul>");
