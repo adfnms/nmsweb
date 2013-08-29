@@ -83,14 +83,29 @@ function logOut(){
 	 } 
 /****************************Menu Manager**************************************/ 
 
-
+function Timer() {
+		/*해당 시,분,초 를 구한다.*/
+		var now = new Date();
+		var H = now.getHours();
+		var M = now.getMinutes();
+		var S = now.getSeconds();
+		//해당 부분에 값 입력
+		myForm.myText.value =  H + "시" + M + "분" + S + "초";
+		//1초 마다 Timer()로 시간을 구한다.
+		setTimeout("Timer()", 1000);
+		}
+	document.onLoad = setTimeout("Timer()",1000);
 </script>
+<form name=myForm>
+				<input type=text name=myText style="text-align:center">
+			</form>
 <form id="userIdFrm" name="userIdFrm">
 	<input type="hidden" id ="userNm" name="userNm" value="<%= userNm %>" />
 </form>
 <div class="row-fluid">
 	<div class="span12">
-		<div class="span9 controls"><h2 class="muted"><a href="<c:url value="/index.do" />">Blue-EyesOpen</a></h2></div>
+		<div class="span9 controls"><h2 class="muted"><a href="<c:url value="/index.do" />">Blue-EyesOpen</a></h2>
+		</div>
 		<div class="span1 controls" style="text-align: right; margin-top: 15px; " id="logOutDiv">
 			<h5><a class="text-error" href="<c:url value="/login.do" />">LogIn&nbsp;&nbsp;&nbsp;</a></h5>
 		</div>
@@ -99,7 +114,6 @@ function logOut(){
 		</div>
 	</div>
 </div>	
-<%-- <h3 class="muted"><a href="<c:url value="/index.do" />">Network manage System</a></h3> --%>
 <div class="navbar-inner " style="margin-bottom: 10px;">
 	<div class="container">
 		<div class="">

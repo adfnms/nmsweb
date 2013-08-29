@@ -42,8 +42,7 @@
 		
 		$('#surveillenceLabel').append(str); 
 		
-		//setTimeout(refreshSystem, 10000);
-	 
+		//setInterval(refreshSystem, 10000);
 	}
 
 	/* function refreshSystem(){
@@ -73,8 +72,6 @@
 			for( var i in data['outage']){
 				
 				if(data['outage'][i]['serviceLostEvent']['@severity'] == "MAJOR" || data['outage'][i]['serviceLostEvent']['@severity'] == "CRITICAL"){
-					console.log(data['outage'][i]['serviceLostEvent']['@severity']);
-					console.log(">1");
 					 $('#'+categoryId+'').empty();
 					 $('#'+categoryId+'').append("<img src='<c:url value="/resources/images/" />red.jpg' />");
 				}else{
@@ -85,8 +82,6 @@
 		}else if(data["@totalCount"] == 1){
 			
 			if(data['outage']['serviceLostEvent']['@severity'] == "MAJOR" || data['outage']['serviceLostEvent']['@severity'] == "CRITICAL"){
-				console.log("1");
-				console.log(data['outage']['serviceLostEvent']['@severity']);
 				 $('#'+categoryId+'').empty();
 				 $('#'+categoryId+'').append("<img src='<c:url value="/resources/images/" />red.jpg' />");
 			}else{
@@ -95,7 +90,6 @@
 			
 		}else{
 			
-			console.log("0");
 		}
 	}
 	
@@ -172,20 +166,20 @@
 			//var status = Number(categoryObj[i]["availabili"]).toFixed(2) >= 100 ? "normal" :  "critical";
 			
 			
-			if(Number(categoryObj[i]["availabili"]).toFixed(2) >= 100){
+			if(Number(categoryObj[i]["availabili"]).toFixed(2) > 99){
 				var status = "progress-success";
 				//var classStatus ="success";
 				var availwidth = Number(categoryObj[i]["availabili"]).toFixed(2) ;
-			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 90 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 99){
+			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) > 89 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 99){
 				var status = "progress";
 				var availwidth = Number(categoryObj[i]["availabili"]).toFixed(2) ;
 				//var classStatus ="success";
 				var classStatus ="";
-			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 80 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 89){
+			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >79 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 89){
 				var status = "progress-info";
 				//var classStatus ="info";
 				var availwidth = Number(categoryObj[i]["availabili"]).toFixed(2) ;
-			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) >= 70 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 79){
+			}else if (Number(categoryObj[i]["availabili"]).toFixed(2) > 69 && Number(categoryObj[i]["availabili"]).toFixed(2) <= 79){
 				var status = "progress-warning";
 				//var classStatus ="warning";
 				var availwidth = Number(categoryObj[i]["availabili"]).toFixed(2) ;
@@ -377,10 +371,15 @@
 		
 	}
 	
+	
+	
+	
+	
 </script>
 </head>
 
 <body>
+
 	<div class="container">
 		<jsp:include page="/include/menu.jsp" /> 
 		<div class="row-fluid">
@@ -422,11 +421,14 @@
 								</div>
 							</div>
 							<div class="row-fluid">
-								<div class="span9">
+								<div class="span6">
 									<h4>System 분류</h4>
 								</div>
 								<div class="span3" style="margin-top: 7px;">
-									<a  class="btn btn-mini btn-primary" type="button" onclick="javascript:showAddSurveillence()">[+ add]</a>
+									<a  class="btn btn-mini btn-primary" type="button" href="<c:url value="/surveillancetotal.do" />">+ more</a>
+								</div>
+								<div class="span3" style="margin-top: 7px;">
+									<a  class="btn btn-mini btn-primary" type="button" onclick="javascript:showAddSurveillence()">+ add</a>
 								</div>
 							</div>
 							<div class="row-fluid" id="showAddSurveillence"  style="display:none">

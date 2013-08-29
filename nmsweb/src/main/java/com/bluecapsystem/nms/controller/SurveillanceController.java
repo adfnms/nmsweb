@@ -46,6 +46,22 @@ public class SurveillanceController
 		return model;
 	}
 	
+	@RequestMapping(value = "/surveillancetotal")
+	public ModelAndView surveillanceTotal(HttpServletRequest request, HttpServletResponse response)
+			
+	{
+		
+		ModelAndView model = new ModelAndView();
+		model.setViewName("/surveillance/surveillanceView");
+		
+		return model;
+	}
+	
+	
+	
+	
+	
+	
 	@RequestMapping(value = "/getRegNodeList")
 	public ModelAndView getRegNodeList(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "categoryid", required = false)Integer categoryId)
