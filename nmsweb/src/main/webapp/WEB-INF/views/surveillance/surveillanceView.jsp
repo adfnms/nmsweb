@@ -47,15 +47,13 @@ function getSystemNode(jsonObj,categoryId){
 
 	if(jsonObj["RegNodeItems"].length==0){
 		
-		var sumId=("categoryId"+categoryId);
+		var sumId=("categoryid"+categoryId);
 		
 		var str = lengthZeroStr(categoryId);
-		alert(sumId);
 		$('#'+sumId+'').append(str);
 		
 	}else{
 		var nodeObj = jsonObj["RegNodeItems"];
-		alert(">0");
 		for( var i in nodeObj){
 			
 			var nodeId =  nodeObj[i]["nodeid"];
@@ -63,7 +61,7 @@ function getSystemNode(jsonObj,categoryId){
 		
 			var str = nodeNameStr(nodeId,nodelabel,categoryId);
 			
-			$('#'+categoryId+'').append(str);
+			$('#categoryid'+categoryId+'').append(str);
 			
 		NodeListAjax(NodeTotalList,nodeId,nodelabel,categoryId);
 			
