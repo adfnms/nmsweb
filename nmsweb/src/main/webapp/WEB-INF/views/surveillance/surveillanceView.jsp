@@ -44,13 +44,18 @@ function getSystemCategory(jsonObj,categoryid,categoryname){
 }
 function getSystemNode(jsonObj,categoryId){
 	console.log(jsonObj);
+
 	if(jsonObj["RegNodeItems"].length==0){
 		
-		var str = lengthZeroStr(nodeId,nodelabel,categoryId);
-		$('#'+categoryId+'').append(str);
+		var sumId=("categoryId"+categoryId);
+		
+		var str = lengthZeroStr(categoryId);
+		alert(sumId);
+		$('#'+sumId+'').append(str);
 		
 	}else{
 		var nodeObj = jsonObj["RegNodeItems"];
+		alert(">0");
 		for( var i in nodeObj){
 			
 			var nodeId =  nodeObj[i]["nodeid"];

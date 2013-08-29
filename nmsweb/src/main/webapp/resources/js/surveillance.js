@@ -403,7 +403,7 @@ function getSearchAssetsList(callback,categorynm) {
 		str += '	<div class="well well-small" >';
 		str += '		<div class="row-fluid">';
 		str += '			<div class="span12" >';
-		str += '				<table id="'+categoryid+'" class="span12" >';
+		str += '				<table id="categoryid'+categoryid+'" class="span12" >';
 		str += '					<tr>';
 		str += '						<td class="text "><h3><a class="muted" href=/'+version+'/surveillanceNode.do?categoryid='+categoryid+'&categoryname=' + categoryname + '>' + categoryname + '</a></h3></td>';
 		str += '					</tr>';
@@ -429,13 +429,11 @@ function getSearchAssetsList(callback,categorynm) {
 		str += '	</table>';
 		return str;
 	}
-	function lengthZeroStr(nodeId,nodelabel,categoryId){
-		
-		var sumId=categoryId+nodeId;
+	function lengthZeroStr(){
 		
 		var str = ""; 
 		
-		str += '	<table  id="'+sumId+'" style="margin-left: 30px;"  class="span12" >';
+		str += '	<table  id="" style="margin-left: 30px;"  class="span12" >';
 		str += '		<tr>';
 		str += '			<td class="text-success"><h4>등록 노드가 없습니다.</h4></td>';
 		str += '		</tr>';

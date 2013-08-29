@@ -59,7 +59,7 @@
 
 	<insert id="regGroupTbl" parameterClass="com.bluecapsystem.nms.dto.GroupTbl">
 
-		INSERT INTO GROUP_TBL (
+		INSERT INTO USER_GROUP_TBL (
 
 		GROUP_NM, GROUP_COMMENTS, REG_DT, REGRID, MODRID, MOD_DT, USE_YN
 
@@ -72,7 +72,7 @@
 	</insert>
 
 	<delete id="deleteGroupTbl" parameterClass="com.bluecapsystem.nms.dto.GroupTbl">
-		DELETE FROM GROUP_TBL
+		DELETE FROM USER_GROUP_TBL
 		WHERE GROUP_NM = #groupNm#;
 	</delete>
 
