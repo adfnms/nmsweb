@@ -50,9 +50,6 @@
 	/* Interface info (getInterfacesFromNodeId) Callback */
 	function addInterfaceInfo(jsonObj){
 		var str ="";
-		console.log("-----------addInterfaceInfo-----------");
-		console.log(jsonObj);
-		
 		if(jsonObj["@count"] == 0){
 			
 
@@ -203,8 +200,6 @@
 	
 	/* SNMP Interface info Callback */
 	function addSnmpInterfaceInfo(jsonObj){
-		console.log("-------addSnmpInterfaceInfo--------");
-		console.log(jsonObj);
 		
 		var str = "";
 		
@@ -394,8 +389,6 @@ $(function() {
 	
 //callback 함수 jsonObj를 이용 파싱 후 append
 function assetInfo(jsonObj) {
-	console.log("-----------assetInfo----------");
-	console.log(jsonObj);
 	
 	var assetInfo = jsonObj["AssetInfo"];
 	
@@ -511,7 +504,8 @@ function modifyAssets(){
 					<li><a href="<c:url value="/index.do" />">Home</a> <span class="divider">/</span></li>
 					<li><a href="<c:url value="/admin/node.do" />">운영관리</a> <span class="divider">/</span></li>
 					<li><a href="<c:url value="/admin/node.do" />">노드 관리 목록</a> <span class="divider">/</span></li>
-					<li class="active">노드 관리</li>
+					<li class="active">노드 관리<span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />

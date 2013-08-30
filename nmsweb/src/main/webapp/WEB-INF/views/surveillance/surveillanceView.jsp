@@ -80,8 +80,7 @@ function NodeTotalList(data,nodeId,nodelabel,categoryId){
 	
 	
 }
-	
-	
+
 	
 	
 </script>
@@ -98,7 +97,8 @@ function NodeTotalList(data,nodeId,nodelabel,categoryId){
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">Home</a> <span class="divider">/</span></li>
-					<li><a href="/v1/surveillance.do">Surveillance</a></li>
+					<li><a href="/v1/surveillancetotal.do">Surveillance</a><span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a> <span class="divider">/</span></li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />

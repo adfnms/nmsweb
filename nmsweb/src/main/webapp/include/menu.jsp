@@ -85,7 +85,10 @@ function logOut(){
 	 } 
 /****************************Menu Manager**************************************/ 
 
-
+	/* 이전페이지로 이동 */
+function beforeUrl(){
+	window.location=document.referrer;
+}
 </script>
 <form id="userIdFrm" name="userIdFrm">
 	<input type="hidden" id ="userNm" name="userNm" value="<%= userNm %>" />
@@ -109,7 +112,7 @@ function logOut(){
 				<li id="1" class="" style="display:none;"><a class="muted" href="<c:url value="/index.do" />" style="width: 120px; "><h4>Home</h4></a></li>
 				<li id="2" style="display:none;"><a class="muted" href="<c:url value="/dashboard.do" />" style="width: 140px;"><h4>DashBoard</h4></a></li>
 				<li class="dropdown">
-					<a id="3" class="dropdown-toggle muted" data-toggle="dropdown" href="<c:url value="/monitoring/nodelist.do" />" style="width: 140px; display:none;"><h4>노드목록<b class="caret"></b> </h4></a>
+					<a id="3" class=" muted"  href="<c:url value="/monitoring/nodelist.do" />" style="width: 140px; display:none;"><h4>노드목록 </h4></a>
 				</li>
 				<li class="dropdown">
 					<a id="4" class="dropdown-toggle muted" data-toggle="dropdown" href="#" style="width: 110px; display:none;"><h4>검색<b class="caret"></b></h4></a>

@@ -327,7 +327,6 @@ function setDestination(obj){
  	/*Destination Path 목적지 수정시 데이터 SET*/
  	function modifyPathstr(data){
  		
- 		//console.log("data[name]");
  		target=data["target"];
  		
  		if(target.length > 1){
@@ -387,10 +386,6 @@ function setDestination(obj){
  		$("select[name=groupInterval] option[value="+groupInterval+"]").attr("selected",true);
  		emailInterval = target[3]["interval"];
  		$("select[name=emailInterval] option[value="+emailInterval+"]").attr("selected",true);
- 		//roleInterval =target[2]["interval"];
- 		//roleCommand =target[2]["command"];
- 		//roleAutoNotify =target[2]["autoNotify"];
- 		//roleName = target[2]["name"];
  		
  		}
  	}
@@ -427,7 +422,6 @@ function setDestination(obj){
  							roleInterval,roleName,roleAutoNotify,roleCommand,
  							emailInterval,emailCommand,emailAutoNotify,email); 
  		
- 		console.log(str);
  		
  		modifySetPathAjax();
  		
@@ -477,7 +471,8 @@ function setDestination(obj){
 					<li>운영관리 <span class="divider">/</span></li>
 					<li>알림 <span class="divider">/</span></li>
 					<li><a href="/v1/admin/notimng/configureNotification.do">알림 설정</a> <span class="divider">/</span></li>
-					<li class="active">알림 추가</li>
+					<li class="active">알림 추가<span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />

@@ -68,6 +68,7 @@
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value="/index.do" />">Home</a> <span class="divider">/</span></li>
 					<li><a href="<c:url value="/admin/node.do" />">운영관리</a> <span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 					<li class="active">메뉴 관리 목록</li>
 				</ul>
 			</div>

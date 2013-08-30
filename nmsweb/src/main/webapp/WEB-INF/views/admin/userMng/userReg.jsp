@@ -134,7 +134,8 @@ try{
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">Home</a> <span class="divider">/</span></li>
 					<li><a href="/v1/admin/userMng.do">사용자관리</a> <span class="divider">/</span></li>
-					<li class="active">사용자 등록</li>
+					<li class="active">사용자 등록<span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />

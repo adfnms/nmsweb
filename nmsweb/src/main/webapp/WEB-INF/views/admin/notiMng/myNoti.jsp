@@ -100,8 +100,6 @@ var encodeTime = encodeURI(time);
 	}
 	/* Event Info */
 	function addEventInfo(jsonObj,notiId){
-		console.log("---------addEventInfo------------");
-		console.log(jsonObj);
 		
 		$("#"+notiId).empty();
 		//Event Info
@@ -124,10 +122,6 @@ var encodeTime = encodeURI(time);
 	}
 	function totalNotificaitionInfo(jsonObj) {
 		
-		console.log("---------totalNotificaitionInfo------------");
-		console.log(jsonObj);
-		
-		
 		var notiId=jsonObj["@id"];
 		$("#total"+notiId).empty();
 		var notifiInfoStr = notifiInfo(jsonObj);
@@ -142,8 +136,6 @@ var encodeTime = encodeURI(time);
 	
 	/* Event Info */
 	function addTotalEventInfo(jsonObj,notiId){
-		console.log("---------addTotalEventInfo------------");
-		console.log(jsonObj);
 		
 		$("#total"+notiId).empty();
 		//Event Info
@@ -177,7 +169,9 @@ var encodeTime = encodeURI(time);
 				<ul class="breadcrumb well well-small">
 					<li>알림<span class="divider">/</span></li>
 					<li><a href="/v1/admin/notimng/allnoti.do">모든 알림 보기</a><span class="divider">/</span></li>
-					<li>나의 알림 보기</li>
+					<li>나의 알림 보기<span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
+					
 				</ul>
 			</div>
 				<jsp:include page="/include/sideBar.jsp" />

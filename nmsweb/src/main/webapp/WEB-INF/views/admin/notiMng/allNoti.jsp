@@ -40,8 +40,6 @@ var encodeTime = encodeURI(time);
 	/* total Notification Callback */
 	  function totalNotificationList(jsonObj) {
 		
-		 console.log('------------------totalNotificationList(jsonObj)---------------');
-		 console.log(jsonObj);
 		  var str = totalNotiListjsonObj(jsonObj);
 		  
 		  $('#totalTable').append(str);
@@ -63,10 +61,6 @@ var encodeTime = encodeURI(time);
 	}
 	function notificaitionInfo(jsonObj) {
 		
-		console.log("---------notificaitionInfo------------");
-		console.log(jsonObj);
-		
-		
 		var notiId=jsonObj["@id"];
 		$("#"+notiId).empty();
 		var notifiInfoStr = notifiInfo(jsonObj);
@@ -78,8 +72,6 @@ var encodeTime = encodeURI(time);
 	}
 	/* Event Info */
 	function addEventInfo(jsonObj,notiId){
-		console.log("---------addEventInfo------------");
-		console.log(jsonObj);
 		
 		$("#"+notiId).empty();
 		//Event Info
@@ -102,10 +94,6 @@ var encodeTime = encodeURI(time);
 	}
 	function totalNotificaitionInfo(jsonObj) {
 		
-		console.log("---------totalNotificaitionInfo------------");
-		console.log(jsonObj);
-		
-		
 		var notiId=jsonObj["@id"];
 		$("#total"+notiId).empty();
 		var notifiInfoStr = notifiInfo(jsonObj);
@@ -120,8 +108,6 @@ var encodeTime = encodeURI(time);
 	
 	/* Event Info */
 	function addTotalEventInfo(jsonObj,notiId){
-		console.log("---------addTotalEventInfo------------");
-		console.log(jsonObj);
 		
 		$("#total"+notiId).empty();
 		//Event Info
@@ -155,7 +141,8 @@ var encodeTime = encodeURI(time);
 				<ul class="breadcrumb well well-small">
 					<li>알림 <span class="divider">/</span></li>
 					<li>모든 알림 보기<span class="divider">/</span></li>
-					<li><a href="/v1/admin/notimng/mynoti.do">나의 알림 보기</a></li>
+					<li><a href="/v1/admin/notimng/mynoti.do">나의 알림 보기</a><span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
 				<jsp:include page="/include/sideBar.jsp" />

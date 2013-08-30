@@ -329,7 +329,8 @@ function saveMenuItems()
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">Home</a> <span class="divider">/</span></li>
 					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
-					<li class="active"><a href="/v1/admin/groupMng.do">그룹관리</a></li>
+					<li class="active"><a href="/v1/admin/groupMng.do">그룹관리</a><span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
