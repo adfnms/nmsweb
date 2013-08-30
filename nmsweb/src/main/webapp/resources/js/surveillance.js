@@ -362,25 +362,29 @@ function getSearchAssetsList(callback,categorynm) {
 	}
 	function nodeCheckBoxStr(jsonObj, categoryid ){
 		
+		console.log("----------NodeCheckBoxStr----------");
+		console.log(jsonObj);
+		
 		var str = "";
 		var node=jsonObj["node"];
+		var totalCount=jsonObj["@totalCount"];
 		
-		if (node.length == 0) {
+		if (totalCount == 0) {
 			str += "<tr>";
 			str += "<td></td>";
 			str += "<td>노드가 없습니다</td>";
 			str += "<td></td>";
-		}else if(node.length ==1) {
+		}else if(totalCount ==1) {
 			str += "<tr>";
-			str += "	<td class='span1'>";
+			str += "	<td class=''>";
 			str += "		<label class='checkbox'>";
 			str += "			<input  value='"+categoryid+"'  name='categoryid' id='categoryid'  type='hidden'/>	"; 
-			str += "			<input style='margin-left: 0px;;' value='"+node["@id"]+"' name='nodeid' id='nodeid'  type='checkbox' />"; 
+			str += "			<input style='margin-left: 0px;;'  value='"+node["@id"]+"' name='nodeid' id='nodeid'  type='checkbox' />"; 
 			str += "		</label>";
 			str += "</td>";
 			str += "	<td class=''><h5>노드아이디 : "+node["@id"]+"</h5></td>";
-			str += "	<td class='span1'>노드 라벨 :"+node["@label"] +"</td>";
-		}else if(node.length >0) {
+			str += "	<td class=''><h5>노드 라벨 :"+node["@label"] +"</h5></td>";
+		}else if(totalCount >0) {
 			for ( var i in node) {
 				str += "<tr>";
 				str += "	<td class=''>";
@@ -444,7 +448,7 @@ function getSearchAssetsList(callback,categorynm) {
 	function nodeInfoStr(data,nodeId,nodelabel,categoryId){
 		var outageObj = data["outage"];
 		var str = ""; 
-		str += '	<table  id="'+nodeId+'" style="margin-left: 70px;">';
+		str += '	<table  id="'+nodeId+'" style="margin-left: 25px;">';
 		if(data["@totalCount"]>1){
 			
 				for( var i in data['outage']){

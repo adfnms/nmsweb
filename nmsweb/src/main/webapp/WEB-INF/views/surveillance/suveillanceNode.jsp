@@ -70,6 +70,7 @@ var orderBy = "id";
 		getNodeToSurveillance(getRegNodeList, "${categoryId}");
 	}
 	function NodeCheckBoxStr(jsonObj){
+		
 		var categoryid=("${categoryId}");
 		
 		$('#checkboxNode').empty();

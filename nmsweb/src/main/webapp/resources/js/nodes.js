@@ -20,8 +20,6 @@ function getNodeTotalList(callback, data) {
 			alert('모든 노드정보 가져오기 실패');
 		},
 		success : function(data) {
-			console.log("testlog1");
-			console.log(data);
 			// 콜백함수
 			if (typeof callback == "function") {
 				callback(data);
@@ -68,7 +66,6 @@ function getInterfaceInfo(callback, nodeId, ipAddress) {
 		},
 		success : function(data) {
 			// 콜백함수
-			console.log(data);
 			if (typeof callback == "function") {
 				callback(data);
 			}
@@ -189,8 +186,6 @@ function searchNodeFromServiceId(callback, serviceId) {
 			alert("[" + ipAddress + '] 서비스 정보 검색 실패');
 		},
 		success : function(data) {
-			console.log("1 : nodes.js");
-			console.log(data);
 			
 			data = JSON.stringify(data).replaceAll('"nodeid"', '"@id"');
 			data = data.replaceAll('"nodelabel"', '"@label"');
@@ -479,7 +474,6 @@ function manageService(nodeId, ipAddress, serviceName, status){
 		data: 'status='+status,
 		async: false,
 		error : function(data) {
-			console.log(url);
 			alert("[" + serviceName + '] 서비스 관리 실패');
 			_return = false;
 		},
