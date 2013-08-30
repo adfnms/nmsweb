@@ -58,7 +58,7 @@ function getNodeListToCategoryName(callback, cateNm){
 		contentType : 'application/json',
 		async :false,
 		error : function(data) {
-			alert('카테고리 리스트 가져오기 서비스 실패');
+			//alert('카테고리 리스트 가져오기 서비스 실패');
 		},
 		success : function(data) {
 			// 콜백함수
