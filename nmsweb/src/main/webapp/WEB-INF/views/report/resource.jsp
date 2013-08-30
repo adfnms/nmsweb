@@ -22,8 +22,6 @@
 	
 	//자원별 노드목록
 	function addGraphsList(jsonObj){
-		console.log("------addGraphsList------");
-		console.log(jsonObj);
 		var str = "";
 		if(jsonObj["total"]==0){
 			
@@ -74,7 +72,6 @@
 		/* var jsonObj = '{"total":"3","records":[{"id":"node[129].nodeSnmp[]","value":"Node-levelPerformanceData","type":"SNMPNodeData"},{"id":"node[129].interfaceSnmp[Embedded_Ethernet_Controller__10_100_Mbps__v1_0__UTP_RJ_45__connector_A1__100_full_duplex-001599771ae7]","value":"EmbeddedEthernetController,10/100Mbps,v1.0,UTPRJ-45,connectorA1,100fullduplex(192.168.0.27,100Mbps)","type":"SNMPInterfaceData"},{"id":"node[129].responseTime[192.168.0.37]","value":"192.168.0.37","type":"ResponseTime"}]}';
 		graphObj = JSON.parse(jsonObj); */
 		
-		console.log(graphObj);
 		
 		var records = graphObj["records"];
 		
@@ -205,7 +202,8 @@
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value='/index.do'/>">Home</a> <span class="divider">/</span></li>
 					<li><a href="<c:url value='/report/resource.do'/>">리포트</a> <span class="divider">/</span></li>
-					<li class="active">자원별&nbsp;리포트</li>
+					<li class="active">자원별&nbsp;리포트<span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
 		</div>

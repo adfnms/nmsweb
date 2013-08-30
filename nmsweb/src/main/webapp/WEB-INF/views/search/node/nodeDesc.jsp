@@ -91,8 +91,6 @@
 		var strAv ="";
 		var str ="";
 		var strcoll ="";
-		console.log("------인터페이스------");
-		console.log(jsonObj);
 		
 		if(jsonObj["@count"] > 0){
 			
@@ -259,7 +257,8 @@ function addEventsForService(jsonObj,notiId, ipaddr, serviceNm) {
 						class="divider">/</span></li>
 					<li><a href="<c:url value="/search/node.do" />" >노드검색</a>
 						<span class="divider">/</span></li>
-					<li class="active">노드정보</li>
+					<li class="active">노드정보<span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />

@@ -46,7 +46,8 @@
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value="/index.do" />" >Home</a> <span class="divider">/</span></li>
 					<li><a href="/v1/assets.do">ASSETS</a><span class="divider">/</span></li>
-					<li class="active">Search&nbsp;ASSETS</li>
+					<li class="active">Search&nbsp;ASSETS<span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />

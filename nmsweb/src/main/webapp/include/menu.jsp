@@ -110,7 +110,7 @@ function beforeUrl(){
 		<div class="">
 			<ul class="nav nav-pills ">
 				<li id="1" class="" style="display:none;"><a class="muted" href="<c:url value="/index.do" />" style="width: 120px; "><h4>Home</h4></a></li>
-				<li id="2" style="display:none;"><a class="muted" href="<c:url value="/dashboard.do" />" style="width: 140px;"><h4>DashBoard</h4></a></li>
+				<li id="22222222" style="display:none;"><a class="muted" href="<c:url value="/dashboard.do" />" style="width: 140px;"><h4>DashBoard</h4></a></li>
 				<li class="dropdown">
 					<a id="3" class=" muted"  href="<c:url value="/monitoring/nodelist.do" />" style="width: 140px; display:none;"><h4>노드목록 </h4></a>
 				</li>
@@ -124,25 +124,24 @@ function beforeUrl(){
 				</li>
 				<li id="5" class="" style="display:none;"><a class="muted" href="<c:url value="/report/resource.do"/>" style="width: 130px;"><h4>그래프</h4></a></li>
 				
-			
+				<li class="dropdown">
+					<a id="64" class="dropdown-toggle muted" data-toggle="dropdown" href="#" style="width: 140px; display:none;"><h4>알&nbsp;&nbsp;림<b class="caret"></b></h4> </a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="<c:url value="/admin/notimng/configureNotification.do" />">알림 설정</a></li>
+						<li class="dropdown-submenu" ><a tabindex="-1" href="#">알림 보기</a>
+							<ul class="dropdown-menu">
+								<li ><a tabindex="-1" href="<c:url value="/admin/notimng/allnoti.do" />">모든 알림</a></li>
+								<li><a tabindex="-1" href="<c:url value="/admin/notimng/mynoti.do" />">나의 알림</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
 				<li class="dropdown">
 					<a id="6" class="dropdown-toggle muted" data-toggle="dropdown" href="#" style="width: 140px; display:none;"><h4>운영관리<b class="caret"></b></h4> </a>
 					<ul class="dropdown-menu">
 						<li id="61" style="display:none;"><a tabindex="-1" href="<c:url value="/admin/node.do" />">노드 관리</a></li>
 						<li id="62" style="display:none;"><a tabindex="-1" href="<c:url value="/admin/groupMng.do" />">그룹 관리</a></li>
 						<li id="63" style="display:none;"><a tabindex="-1" href="<c:url value="/admin/userMng.do" />">사용자 관리</a></li>
-						<li id="64" class="dropdown-submenu" style="display:none;"><a tabindex="-1" href="">알&nbsp;&nbsp;림</a>
-							<ul class="dropdown-menu">
-							<li><a tabindex="-1" href="<c:url value="/admin/notimng/configureNotification.do" />">알림 설정</a></li>
-								<li class="dropdown-submenu" ><a tabindex="-1" href="#">알림 보기</a>
-									<ul class="dropdown-menu">
-										<li ><a tabindex="-1" href="<c:url value="/admin/notimng/allnoti.do" />">모든 알림</a></li>
-										<li><a tabindex="-1" href="<c:url value="/admin/notimng/mynoti.do" />">나의 알림</a></li>
-									</ul>
-								</li>
-								
-							</ul>
-						</li>
 					</ul>
 				</li>
 			</ul>

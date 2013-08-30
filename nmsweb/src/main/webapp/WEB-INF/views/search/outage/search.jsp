@@ -26,8 +26,6 @@
 	});
 		/* 장애 목록*/
 	function addOutage(jsonObj){
-			console.log("-----------jsonObj-----------");
-			console.log(jsonObj);
 			var str = getTabletagToOutageSearchJsonObj(jsonObj);
 			$('#outageListTable').empty();
 			$('#outageListTable').append(str);
@@ -63,7 +61,8 @@
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value="/index.do" />" />Home</a> <span class="divider">/</span></li>
-					<li class="active">장애 검색</li>
+					<li class="active">장애 검색<span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />

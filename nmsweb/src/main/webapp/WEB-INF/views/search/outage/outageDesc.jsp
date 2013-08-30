@@ -45,7 +45,8 @@
 						class="divider">/</span></li>
 					<li><a href="<c:url value="/search/node.do" />" />노드검색</a>
 						<span class="divider">/</span></li>
-					<li class="active">장애</li>
+					<li class="active">장애<span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />

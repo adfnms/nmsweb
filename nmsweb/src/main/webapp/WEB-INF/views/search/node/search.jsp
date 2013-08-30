@@ -73,8 +73,6 @@
 	//callback 함수 jsonObj를 이용 파싱 후 append
 	
 	function addNodeserviceLists(jsonObj) {
-		console.log("2 : search.jsp");
-		console.log(jsonObj);
 		$('#nodeListTable').empty();
 
 		$.ajax({
@@ -155,7 +153,8 @@
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value="/index.do" />">Home</a> <span class="divider">/</span></li>
-					<li class="active">노드검색</li>
+					<li class="active">노드검색<span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />

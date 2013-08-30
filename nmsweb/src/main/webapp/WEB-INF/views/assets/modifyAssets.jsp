@@ -87,8 +87,6 @@ $(function() {
 	
 //callback 함수 jsonObj를 이용 파싱 후 append
 function assetInfo(jsonObj) {
-	console.log("----------assetInfo----------");
-	console.log(jsonObj);
 	/* Configuration Categories */
 	$('#assetsInfoFrm input[name=displaycategory]').val(jsonObj.AssetInfo[0].displaycategory);
 	$('#assetsInfoFrm input[name=notifycategory]').val(jsonObj.AssetInfo[0].notifycategory);
@@ -197,7 +195,8 @@ function modifyAssets(){
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">Home</a> <span class="divider">/</span></li>
 					<li><a href="/v1/assets.do">ASSETS</a><span class="divider">/</span></li>
-					<li class="active">Search&nbsp;ASSETS</li>
+					<li class="active">Search&nbsp;ASSETS<span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />

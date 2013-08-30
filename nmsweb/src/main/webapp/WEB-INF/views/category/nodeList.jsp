@@ -158,7 +158,8 @@ function addNodeAllLists(jsonObj){
 			<div class="span12">
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value="/index.do" />" >Home</a> <span class="divider">/</span></li>
-					<li class="active">노드 목록</li>
+					<li class="active">노드 목록<span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
