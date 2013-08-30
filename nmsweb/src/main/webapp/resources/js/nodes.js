@@ -519,6 +519,13 @@ function manageSnmpService(nodeId, ifIndex, collect){
 	return _return;
 }
 
+//메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성되는 팝업창
+function addNodePop(){
+	var settings ="toolbar=no ,width=350 ,height=205 ,directories=no,status=no,scrollbars=no,menubar=no";
+	var winObject = window.open("/" + version + "/admin/addNode.pop", "addNodePop", settings);
+	winObject.focus();	
+}
+
 /** ************************ view String edit **************************** */
 
 /**

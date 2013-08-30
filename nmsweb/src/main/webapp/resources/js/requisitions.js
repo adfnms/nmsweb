@@ -1,11 +1,7 @@
 //메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성되는 팝업창
-function addNodePop(){
+function addProvisionigRequisition(){
 	$("#requisitionsBox").show();
 	getTotalRequisitionsList(getTotalRequisitions);
-	
-	/*var settings ="toolbar=no ,width=350 ,height=205 ,directories=no,status=no,scrollbars=no,menubar=no";
-	var winObject = window.open("/" + version + "/admin/addNode.pop", "addNodePop", settings);
-	winObject.focus();*/	
 }
 
 function getTotalRequisitionsList(callback) {
@@ -25,10 +21,10 @@ function getTotalRequisitionsList(callback) {
 	});
 }
 
-function getTotalNodesList(callback, foreignId){
+function getTotalNodesList(callback, foreignSource, foreignId){
 	$.ajax({
 		type : 'get',
-		url : '/' + version + '/requisitions/' + foreignId + '/nodes',
+		url : '/' + version + '/requisitions/' + foreignSource + '/nodes',
 		dataType : 'json',
 		contentType : 'application/json',
 		error : function(data) {
@@ -36,16 +32,16 @@ function getTotalNodesList(callback, foreignId){
 		},
 		success : function(data) {
 			if (typeof callback == "function") {
-				callback(data, foreignId);
+				callback(data, foreignSource, foreignId);
 			}
 		}
 	});
 }
 
-function getNodeListInfoAjax(callback, foreignId){
+function getNodeListInfoAjax(callback, foreignSource){
 	$.ajax({
 		type : 'get',
-		url : '/' + version + '/requisitions/' + foreignId,
+		url : '/' + version + '/requisitions/' + foreignSource,
 		dataType : 'json',
 		contentType : 'application/json',
 		error : function(data) {
@@ -53,35 +49,34 @@ function getNodeListInfoAjax(callback, foreignId){
 		},
 		success : function(data) {
 			if (typeof callback == "function") {
-				callback(data);
+				callback(data, foreignSource);
 			}
 		}
 	});
 }
 
-function getNodeListInfo(foreignId){
-	
-	getNodeListInfoAjax(NodeListInfo, foreignId);
+function getNodeListInfo(foreignSource){
+	getNodeListInfoAjax(NodeListInfo, foreignSource);
 }
 
 function getTotalRequisitionsListForNodes(callback){
 	getTotalRequisitionsList(callback);
 }
 
-//메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성된 하단부 창의 요구 삭제 버튼
-function delRequisition(nodeNm) {
+//메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성된 하단부 창의 요구 삭제 버
+function delRequisition(foreignSource) {
 	//동기화 실행 스크립트
-	synRequisition(nodeNm);
+	synRequisition(foreignSource);
 	if(!confirm("정말 삭제하시겠습니까?")){
 		return;
 	}
 	$.ajax({
 		type : 'delete',
-		url : '/' + version + '/requisitions/deployed/' + nodeNm,
+		url : '/' + version + '/requisitions/deployed/' + foreignSource,
 		datatype : 'json',
 		contentType : 'application/json',
 		error : function(data) {
-			alert("노드 [" + nodeNm + "] 삭제 실패");
+			alert("노드 [" + foreignSource + "] 삭제 실패");
 		},
 		success : function(data) {
 			getTotalRequisitionsList(getTotalRequisitions);
@@ -130,13 +125,13 @@ function resetRequisition() {
 }
 
 //메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성된 하단부 창의 동기화 버튼
-function synRequisition(nodeNm){
+function synRequisition(foreignSource){
 	$.ajax({
 		type : 'put',
-		url : '/' + version + '/requisitions/' + nodeNm + '/import',
+		url : '/' + version + '/requisitions/' + foreignSource + '/import',
 		data: 'json',
 		error : function(data) {
-			alert("[" + nodeNm + '] 동기화 실패');
+			alert("[" + foreignSource + '] 동기화 실패');
 		},
 		success : function(data) {
 			getTotalRequisitionsList(getTotalRequisitions);
@@ -144,60 +139,120 @@ function synRequisition(nodeNm){
 	});
 }
 
-//메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성된 하단부 창의 노드 삭제 버튼
-function delNodeRequisition(nodeNm, nodeId){
-	synRequisition(nodeNm);
-	if(!confirm("정말 삭제하시겠습니까?")){
-		return;
-	}
+function delRequisitionPopList(foreignId){
+	var foreignSource = $('#hiddenForm input[name=foreignSource]').val();
 	$.ajax({
 		type : 'delete',
-		url : '/' + version + '/requisitions/' + nodeNm + '/nodes/' + nodeId,
+		url : '/' + version + '/requisitions/' + foreignSource + '/nodes/' + foreignId,
 		datatype : 'json',
 		contentType : 'application/json',
 		error : function(data) {
-			alert("노드 [" + nodeNm + "] 삭제 실패");
+			alert("요구 삭제 실패");
 		},
 		success : function(data) {
-			getTotalRequisitionsList(getTotalRequisitions);
+			getNodeListInfoAjax(NodeListInfo, foreignSource);
 		}
 	});
 }
 
 function showEditRequisitionPopList(){
-	var foreignId = $("#hiddenForm input[name=foreignId]").val();
-	getTotalNodesList(editRequisitionPopList, foreignId);
+	var foreignSource = $("#hiddenForm input[name=foreignSource]").val();
+	
+	/*랜덤하게 값 생성*/
+	var foreignId = Math.floor(Math.random() * Math.pow(10,9)) + 1377 * Math.pow(10,9);
+	
+	$("#hiddenForm input[name=foreignIds]").val(foreignId);
+	getTotalNodesList(editRequisitionList, foreignSource, foreignId);
 }
 
-function editRequisitionPopList(jsonObj, foreignId){
-	//$('#requisitionListTable').empty();
-	var str = getTableToEditRequisitionPop(jsonObj, foreignId);
+function editRequisitionList(jsonObj, foreignSource, foreignId){
+	
+	var str = getTableToEditRequisitionJsonObj(jsonObj, foreignSource, foreignId);
+	
 	$('#requisitionListTable').append(str);
 }
 
-function showEditRequisitionInfoDivTitle(foreignId){
-	getNodeListInfo(foreignId);
-	$('#hiddenValue input[name=foreignId]').val(foreignId);
-	alert(foreignId);
+function showEditRequisitionInfoDivTitle(foreignSource){
+	
+	getNodeListInfo(foreignSource);
+	
+	synRequisition(foreignSource);
+	
+	$('#hiddenForm input[name=foreignSource]').val(foreignSource);
+	
 	$('#editRequisitionPopTitle').empty();
-	$('#editRequisitionPopTitle').append("Requisitioned Nodes: " + foreignId);
+	
+	$('#editRequisitionPopTitle').append("Requisitioned Nodes: " + foreignSource);
 }
 
 function showCancelRequisitionPopList(){
-	$('#editRequisitionItem').remove();
+	$('#editRequisitionDownItemSecond').remove();
 } 
 
 function showSaveRequisitionPopList(foreignSource){
-	var nodeLabel = $("#editRequisitionItem input[name=editRequisitionNodeLabel]").val();
-	var foreignId = $("#editRequisitionItem input[name=editRequisitionForeignId]").val();
-	var building = $("#editRequisitionItem input[name=editRequisitionBuilding]").val();
-	showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+	if($("#editRequisitionDownItemSecond input[name=editRequisitionNodeLabel]").val() == ""){
+		if($("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val() == "" & $("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val() == ""){
+			var nodeLabel = "New Node";
+				$("#editRequisitionDownItemSecond input[name=editRequisitionNodeLabel]").val(nodeLabel);
+			var foreignId = $("#hiddenForm input[name=foreignIds]").val();
+				$("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val(foreignId);
+			var building = foreignSource;
+				$("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val(building);
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+		}else if($("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val() == "" & $("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val() != ""){
+			var nodeLabel = "New Node";
+				$("#editRequisitionDownItemSecond input[name=editRequisitionNodeLabel]").val(nodeLabel);
+			var foreignId = $("#hiddenForm input[name=foreignIds]").val();
+				$("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val(foreignId);
+			var building = $("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val();
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+		}else if($("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val() != "" & $("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val() == ""){
+			var nodeLabel = "New Node";
+				$("#editRequisitionDownItemSecond input[name=editRequisitionNodeLabel]").val(nodeLabel);
+			var foreignId = $("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val();
+			var building = foreignSource;
+				$("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val(building);
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+		}else if($("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val() != "" & $("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val() != ""){
+			var nodeLabel = "New Node";
+				$("#editRequisitionDownItemSecond input[name=editRequisitionNodeLabel]").val(nodeLabel);
+			var foreignId = $("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val();
+				$("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val(foreignId);
+			var building = $("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val();
+				$("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val(building);
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+		}
+	}else if($("#editRequisitionDownItemSecond input[name=editRequisitionNodeLabel]").val() != ""){
+		if($("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val() == "" & $("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val() == ""){
+			var nodeLabel = $("#editRequisitionDownItemSecond input[name=editRequisitionNodeLabel]").val();
+			var foreignId = $("#hiddenForm input[name=foreignIds]").val();
+				$("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val(foreignId);
+			var building = foreignSource;
+				$("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val(building);
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+		}else if($("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val() == "" & $("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val() != ""){
+			var nodeLabel = $("#editRequisitionDownItemSecond input[name=editRequisitionNodeLabel]").val();
+			var foreignId = $("#hiddenForm input[name=foreignIds]").val();
+				$("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val(foreignId);
+			var building = $("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val();
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+		}else if($("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val() != "" & $("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val() == ""){
+			var nodeLabel = $("#editRequisitionDownItemSecond input[name=editRequisitionNodeLabel]").val();
+			var foreignId = $("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val();
+			var building = foreignSource;
+				$("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val(building);
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+		}else if($("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val() != "" & $("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val() != ""){
+			var nodeLabel = $("#editRequisitionDownItemSecond input[name=editRequisitionNodeLabel]").val();
+			var foreignId = $("#editRequisitionDownItemSecond input[name=editRequisitionForeignId]").val();
+			var building = $("#editRequisitionDownItemSecond input[name=editRequisitionBuilding]").val();
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+		}
+	}
 }
 
 function showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource){
-	var str = "{\"model-import\":[{\"node-label\":\"" + nodeLabel + "\"" +
-			", \"foreign-id\":\"" + foreignId + "\"" +
-			", \"building\":\"" + building + "\"}]}";
+	var str = "{\"node\":[{\"node-label\": \"" + nodeLabel + "\",\"foreign-id\": \"" + foreignId + "\",\"building\": \"" + building + "\"}]}"; 
 	$.ajax({
 		type : 'post',
 		url : '/' + version + '/requisitions/' + foreignSource + '/nodes',
@@ -207,93 +262,191 @@ function showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignS
 			alert('새로운 노드추가 실패');
 		},
 		success : function(data) {
-			showTableToFinishRequisitionPop(nodeLabel, foreignId, building, foreignSource);
+			getNodeListInfoAjax(NodeListInfo, foreignSource);
 		}
-	}); 
-}
-
-function showTableToFinishRequisitionPop(nodeLabel, foreignId, building, foreignSource){
-	var str = getTableToFinishRequisitionPop(nodeLabel, foreignId, building);
-	$('#requisitionListTable').empty();
-	$('#requisitionListTable').append(str);
+	});
 }
 
 function NodeListInfo(jsonObj){
 	var str = getTableToEditRequisitionPop(jsonObj);
-	$('#requisitionListTable').empty();
-	$('#requisitionListTable').append(str);
-}
-/********************************************************* view String edit ********************************************************************/
-function getTableToFinishRequisitionPop(nodeLabel, foreignId, building){
-	var str = "";
-	str += '<tr id="editRequisitionItem">';
-	str += '<td>Node</td>';
-	str += '<td><b>\'' + nodeLabel +'\'</b></td>';
-	str += '<td>ForeignId</td>';
-	str += '<td><b>\'' + foreignId + '\'</b></td>';
-	str += '<td>Site</td>';
-	str += '<td><b>\'' + building + '\'</b></td>';
-	str += '<td><a type="button" class="btn btn-primary" onclick="showSaveRequisitionPopList(\'' + foreignId + '\')">Interface 추가</a></td>';
-	str += '<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">Node Category 추가</a></td>';
-	str += '<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">Node Asset 추가</a></td>';
-	str += '</tr>';
-	str += '<tr id="editRequisitionDownItem1">';
-	str += '</tr>';
-	return str;
+	$("#requisitionListTable").empty();
+	$("#requisitionListTable").append(str);
 }
 
-//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 팝업창 안의 리스트
-function getTableToEditRequisitionPop(jsonObj, foreignId){
-	console.log('--------pys------');
-	console.log(jsonObj);
+function modifyRequisitionPopList(jsonObj, foreignId, nodeLabel, inputForeignId){
+	$('#' + foreignId + '').hide();
+	var trDisplay = document.getElementById(inputForeignId);
+	trDisplay.style.display = '';
+}
+
+function returnCancelRequisitionPopList(jsonObj, foreignSource, foreignId, nodeLabel, inputForeignId){
+	$('#' + foreignId + '').show();
+	$('#' + inputForeignId + '').hide();
+}
+
+function updateSaveRequisitionPopList(foreignSource, inputForeignId, foreignIdFirst){
+	if($('#' + inputForeignId + '' + '\ input[name=editRequisitionNodeLabelFirst]').val() == ""){
+		if($('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val() == "" & $('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val() == ""){
+			var nodeLabel = "New Node";
+				$('#' + inputForeignId + '' + '\ input[name=editRequisitionNodeLabelFirst]').val(nodeLabel);
+			var foreignId = $("#hiddenForm input[name=foreignIds]").val();
+				$('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val(foreignId);
+			var building = foreignSource;
+				$('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val(building);
+			delRequisitionPopList(foreignIdFirst);
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+			getNodeListInfoAjax(NodeListInfo, foreignSource);
+		}else if($('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val() == "" & $('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val() != ""){
+			var nodeLabel = "New Node";
+				$('#' + inputForeignId + '' + '\ input[name=editRequisitionNodeLabelFirst]').val(nodeLabel);
+			var foreignId = $("#hiddenForm input[name=foreignIds]").val();
+				$('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val(foreignId);
+			var building = $('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val();
+			delRequisitionPopList(foreignIdFirst);
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+			getNodeListInfoAjax(NodeListInfo, foreignSource);
+		}else if($('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val() != "" & $('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val() == ""){
+			var nodeLabel = "New Node";
+				$('#' + inputForeignId + '' + '\ input[name=editRequisitionNodeLabelFirst]').val(nodeLabel);
+			var foreignId = $('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val();
+			var building = foreignSource;
+				$('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val(building);
+			delRequisitionPopList(foreignIdFirst);
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+			getNodeListInfoAjax(NodeListInfo, foreignSource);
+		}else if($('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val() != "" & $('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val() != ""){
+			var nodeLabel = "New Node";
+				$('#' + inputForeignId + '' + '\ input[name=editRequisitionNodeLabelFirst]').val(nodeLabel);
+			var foreignId = $('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val();
+				$('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val(foreignId);
+			var building = $('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val();
+				$('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val(building);
+			delRequisitionPopList(foreignIdFirst);	
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+			getNodeListInfoAjax(NodeListInfo, foreignSource);
+		}
+	}else if($('#' + inputForeignId + '' + '\ input[name=editRequisitionNodeLabelFirst]').val() != ""){
+		if($('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val() == "" & $('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val() == ""){
+			var nodeLabel = $('#' + inputForeignId + '' + '\ input[name=editRequisitionNodeLabelFirst]').val();
+			var foreignId = $('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val();
+			var building = foreignSource;
+				$('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val(building);
+			delRequisitionPopList(foreignIdFirst);
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+			getNodeListInfoAjax(NodeListInfo, foreignSource);
+		}else if($('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val() == "" & $('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val() != ""){
+			var nodeLabel = $('#' + inputForeignId + '' + '\ input[name=editRequisitionNodeLabelFirst]').val();
+			var foreignId = $("#hiddenForm input[name=foreignIds]").val();
+			$('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val(foreignId);
+			var building = $('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val();
+			delRequisitionPopList(foreignIdFirst);	
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+			getNodeListInfoAjax(NodeListInfo, foreignSource);
+		}else if($('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val() != "" & $('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val() == ""){
+			var nodeLabel = $('#' + inputForeignId + '' + '\ input[name=editRequisitionNodeLabelFirst]').val();
+			var foreignId = $('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val();
+			var building = foreignSource;
+				$('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val(building);
+			delRequisitionPopList(foreignIdFirst);
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+			getNodeListInfoAjax(NodeListInfo, foreignSource);
+		}else if($('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val() != "" & $('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val() != ""){
+			var nodeLabel = $('#' + inputForeignId + '' + '\ input[name=editRequisitionNodeLabelFirst]').val();
+			var foreignId = $('#' + inputForeignId + '' + '\ input[name=editRequisitionForeignIdFirst]').val();
+			var building = $('#' + inputForeignId + '' + '\ input[name=editRequisitionBuildingFirst]').val();
+			delRequisitionPopList(foreignIdFirst);
+			showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignSource);
+			getNodeListInfoAjax(NodeListInfo, foreignSource);
+		}
+	}
+}
+
+function addInterface(){
+	
+}
+
+function addNodeCategory(){
+	
+}
+
+function addNodeAsset(){
+	
+}
+/********************************************************* view String edit ********************************************************************/
+//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 팝업창 안의 하위 리스트
+function getTableToEditRequisitionPop(jsonObj){
+	var foreignSource = $("#hiddenForm input[name=foreignSource]").val();
+	var nodeObj = jsonObj["node"];
 	var str = "";
-	if(jsonObj["@count"] == 1){
-		var nodeObj = jsonObj["node"];
-		str += '<tr id="editRequisitionItem">';
-		str += '<td>Node</td>';
-		str += '<td>\'' + nodeObj["@node-label"] + '\'</td>';
-		str += '<td>ForeignId</td>';
-		str += '<td>\'' + nodeObj["@foreign-id"] + '\'</td>';
-		str += '<td>Site</td>';
-		str += '<td>\'' + nodeObj["@building"] + '\'</td>';
-		str += '<td><a type="button" class="btn btn-primary" onclick="showSaveRequisitionPopList(\'' + foreignId + '\')">저장</a></td>';
-		str += '<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">취소</a></td>';
-		str += '</tr>';
-	}else if(jsonObj["@count"] > 1){
-		var nodeObj = jsonObj["node"];
-		for(var i in nodeObj){
-			str += '<tr id="editRequisitionItem">';
-			str += '<td>Node</td>';
-			str += '<td>\'' + nodeObj[i]["@node-label"] + '\'</td>';
-			str += '<td>ForeignId</td>';
-			str += '<td>\'' + nodeObj[i]["@foreign-id"] + '\'</td>';
-			str += '<td>Site</td>';
-			str += '<td>\'' + nodeObj[i]["@building"] + '\'</td>';
-			str += '<td><a type="button" class="btn btn-primary" onclick="showSaveRequisitionPopList(\'' + foreignId + '\')">저장</a></td>';
-			str += '<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">취소</a></td>';
+	if(jsonObj["node"] != undefined){
+		if(jsonObj["node"]["@foreign-id"] == undefined){	
+			for(var i in nodeObj){
+				var inputForeignId = Math.floor(Math.random() * Math.pow(10,13));
+				str += '<tr id=\'' + nodeObj[i]["@foreign-id"] + '\'>';
+				str += '	<td>Node</td>';
+				str += '	<td>\'' + nodeObj[i]["@node-label"] + '\'</td>';
+				str += '	<td>ForeignId</td>';
+				str += '	<td>\'' + nodeObj[i]["@foreign-id"] + '\'</td>';
+				str += '	<td>Site</td>';
+				str += '	<td>\'' + nodeObj[i]["@building"] + '\'</td>';
+				str += '	<td><a type="button" class="btn btn-primary" onclick="modifyRequisitionPopList(\'' + jsonObj + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + nodeObj[i]["@node-label"] + '\',\'' + inputForeignId + '\')">수정</a></td>';
+				str += '	<td><a type="button" class="btn btn-primary" onclick="delRequisitionPopList(\'' + nodeObj[i]["@foreign-id"] + '\')">삭제</a></td>';
+				str += '	<td><a type="button" class="btn btn-primary" onclick="addInterface(\'' + nodeObj[i]["@foreign-id"] + '\')">Add Interface</a></td>';
+				str += '	<td><a type="button" class="btn btn-primary" onclick="addNodeCategory(\'' + nodeObj[i]["@foreign-id"] + '\')">Add Node Category</a></td>';
+				str += '	<td><a type="button" class="btn btn-primary" onclick="addNodeAsset(\'' + nodeObj[i]["@foreign-id"] + '\')">Add Node Asset</a></td>';
+				str += '</tr>';
+				str += '<tr style="display:none" id=\'' + inputForeignId + '\'>';
+				str += '	<td>Node</td>';
+				str += '	<td><input name="editRequisitionNodeLabelFirst" type="text" placeholder=\'' + nodeObj[i]["@node-label"] + '\' style="margin-left: -15px;width : 100px;"/></td>';
+				str += '	<td>ForeignId</td>';
+				str += '	<td><input name="editRequisitionForeignIdFirst" type="text" placeholder=\'' + nodeObj[i]["@foreign-id"] + '\' style="margin-left: -15px;width : 100px"/></td>';
+				str += '	<td>Site</td>';
+				str += '	<td><input name="editRequisitionBuildingFirst" type="text" placeholder="\'' + nodeObj[i]["@building"] + '\'" style="margin-left: -15px;width : 100px"/></td>';
+				str += '	<td><a type="button" class="btn btn-primary" onclick="updateSaveRequisitionPopList(\'' + foreignSource + '\',\'' + inputForeignId + '\',\'' + nodeObj[i]["@foreign-id"] + '\')">저장</a></td>';
+				str += '	<td><a type="button" class="btn btn-danger" onclick="returnCancelRequisitionPopList(\'' + jsonObj + '\',\'' + foreignSource + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + nodeObj[i]["@node-label"] + '\',\'' + inputForeignId + '\')">취소</a></td>';
+				str += '</tr>';
+			}
+		}else{
+			var inputForeignId = Math.floor(Math.random() * Math.pow(10,13));
+			str += '<tr id=\'' + nodeObj["@foreign-id"] + '\'>';
+			str += '	<td>Node</td>';
+			str += '	<td>\'' + nodeObj["@node-label"] + '\'</td>';
+			str += '	<td>ForeignId</td>';
+			str += '	<td>\'' + nodeObj["@foreign-id"] + '\'</td>';
+			str += '	<td>Site</td>';
+			str += '	<td>\'' + nodeObj["@building"] + '\'</td>';
+			str += '	<td><a type="button" class="btn btn-primary" onclick="modifyRequisitionPopList(\'' + jsonObj + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + nodeObj["@node-label"] + '\',\'' + inputForeignId + '\')">수정</a></td>';
+			str += '	<td><a type="button" class="btn btn-danger" onclick="delRequisitionPopList(\'' + nodeObj["@foreign-id"] + '\')">삭제</a></td>';
+			str += '</tr>';
+			str += '<tr style="display:none" id=\'' + inputForeignId + '\'>';
+			str += '	<td>Node</td>';
+			str += '	<td><input name="editRequisitionNodeLabelFirst" type="text" placeholder=\'' + nodeObj["@node-label"] + '\' style="margin-left: -15px;width: 338px;"/></td>';
+			str += '	<td>ForeignId</td>';
+			str += '	<td><input name="editRequisitionForeignIdFirst" type="text" placeholder=\'' + nodeObj["@foreign-id"] + '\' style="margin-left: -15px;"/></td>';
+			str += '	<td>Site</td>';
+			str += '	<td><input name="editRequisitionBuildingFirst" type="text" placeholder="\'' + nodeObj["@building"] + '\'" style="margin-left: -15px;"/></td>';
+			str += '	<td><a type="button" class="btn btn-primary" onclick="updateSaveRequisitionPopList(\'' + foreignSource + '\',\'' + inputForeignId + '\',\'' + nodeObj["@foreign-id"] + '\')">저장</a></td>';
+			str += '	<td><a type="button" class="btn btn-danger" onclick="returnCancelRequisitionPopList(\'' + jsonObj + '\',\'' + foreignSource + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + nodeObj["@node-label"] + '\',\'' + inputForeignId + '\')">취소</a></td>';
 			str += '</tr>';
 		}
-	}else{
-		
 	}
 	return str;
 }
 
-//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 팝업창 안의 하위 리스트
-function getTableToEditRequisitionJsonObj(jsonObj){
+function getTableToEditRequisitionJsonObj(jsonObj, foreignSource, foreignId){
 	var str = "";
-	str += '<tr id="editRequisitionDownItem2">';
-	str += '<td>Nodeq</td>';
-	str += '<td><input name="editRequisitionNodeLabel" type="text" placeholder="New Node" style="margin-left: -15px;width: 338px;"></td>';
-	str += '<td>ForeignId</td>';
-	str += '<td><input name="editRequisitionForeignId" type="text" placeholder="Foreign ID" style="margin-left: -15px;"></td>';
-	str += '<td>Site</td>';
-	str += '<td><input name="editRequisitionBuilding" type="text" placeholder="Site" style="margin-left: -15px;"></td>';
-	str += '<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">취소</a></td>';
+	str += '<tr id="editRequisitionDownItemSecond">';
+	str += '	<td>Node</td>';
+	str += '	<td><input name="editRequisitionNodeLabel" type="text" placeholder="New Node" style="margin-left: -15px;width : 100px"/></td>';
+	str += '	<td>ForeignId</td>';
+	str += '	<td><input name="editRequisitionForeignId" type="text" placeholder=\'' + foreignId + '\' style="margin-left: -15px;width : 100px"/></td>';
+	str += '	<td>Site</td>';
+	str += '	<td><input name="editRequisitionBuilding" type="text" placeholder="\'' + foreignSource + '\'" style="margin-left: -15px;width : 100px"/></td>';
+	str += '	<td><a type="button" class="btn btn-primary" onclick="showSaveRequisitionPopList(\'' + foreignSource + '\')">저장</a></td>';
+	str += '	<td><a type="button" class="btn btn-danger" onclick="showCancelRequisitionPopList()">취소</a></td>';
 	str += '</tr>';
 	return str;
 }
-
 //메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 사 새로 생성된 하단부 리스트
 function getTableToRequisitionsJsonObj(jsonObj) {
 	var requisitionObj = jsonObj["model-import"];
@@ -319,13 +472,13 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 			str += "<tr>";
 			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">노드 삭제</button></td>';
 			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-832px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
-			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj["@foreign-source"] +'\')">편집</button>';
+			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj["@foreign-source"] + '\')">편집</button>';
 			str += "</tr>";
 		}else{
 			str += "<tr>";
-			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">요구 삭제</button></td>';
+			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">노드 삭제</button></td>';
 			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-832px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
-			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj["@foreign-source"] +'\')">편집</button>';
+			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj["@foreign-source"] + '\')">편집</button>';
 			str += "</tr>";
 		}
 		str += "<tr>";
@@ -348,8 +501,7 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		for (var i in requisitionObj){
 			var nullStrLastImport =nullCheckJsonObject(jsonObj["model-import"][i], ["@last-import"]);
 			var nullStrNode =nullCheckJsonObject(jsonObj["model-import"][i], ["node"]);
-			if(nullStrNode.length >1)
-			{
+			if(nullStrNode.length >1){
 				nodeStr = nullStrNode.length;
 			}
 			else if(nullStrNode == ""){
@@ -368,13 +520,13 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 				str += "<tr>";
 				str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">노드 삭제</button></td>';
 				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-832px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
-				str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj[i]["@foreign-source"] +'\')">편집</button>';
+				str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj[i]["@foreign-source"] + '\')">편집</button>';
 				str += '</tr>';
 			}else{
 				str += "<tr>";
-				str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">요구 삭제</button></td>';
+				str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">노드 삭제</button></td>';
 				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-832px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
-				str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj[i]["@foreign-source"] +'\')">편집</button>';
+				str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj[i]["@foreign-source"] + '\')">편집</button>';
 				str += '</tr>';
 			}
 			str += "<tr>";
@@ -385,7 +537,7 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 			str += "</tr>";
 			if(nullStrLastImport == ""){
 				str += "<tr>";
-				str += "	<td>최근 동기화: <b>최근 동기화를 하지 않았습니다. </b></td>";
+				str += "	<td>최근 동기화: <b>최근 동기화를 하지 않았습니다.  </b></td>";
 				str += "</tr>";
 			}else{
 				str += "<tr>";
@@ -394,7 +546,6 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 			}
 			str += "<tr><td style='width:1000px;'><hr/></td></tr>";
 		}	
-		
 	}else{
 		str += "<tr>";
 		str += "	<td class='text-info'>";
@@ -404,32 +555,23 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		str += "	</td>";
 		str += "</tr>";
 	}
-	
 	return str;
-	
 }
 
-/** 이벤트 정보를 table 테그 Str로 만들어준다. 
+/** 이벤트 정보를 table 테그 Str로 만들어준다.  
  * @param jsonObj
  */
 function getOptionTagToRequisitionJsonObj(jsonObj){
-	
 	var requisitionObj = jsonObj["model-import"];
-	
 	var str = "";
 	if(jsonObj["@count"] > 0){
 		if(jsonObj["@count"] > 1){
-		
 			for ( var i in requisitionObj) {
-
 				str += "<option value="+requisitionObj[i]["@foreign-source"]+">"+requisitionObj[i]["@foreign-source"]+"</option>";
-				
 			}
-			
 		}else{
 			str += "<option value="+requisitionObj["@foreign-source"]+">"+requisitionObj["@foreign-source"]+"</option>";
 		}
-		
 	}
 	return str;
 }

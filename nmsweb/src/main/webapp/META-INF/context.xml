@@ -3,6 +3,6 @@
 
 		<Resource name="jdbc/postgres" auth="Container"
           type="javax.sql.DataSource" driverClassName="org.postgresql.Driver"
-          url="jdbc:postgresql://192.168.0.10:5432/opennms"
+          url="jdbc:postgresql://192.168.0.7:5432/opennms"
           username="opennms" password="opennms" maxActive="20" maxIdle="10"	maxWait="-1"/>
 	</Context>
