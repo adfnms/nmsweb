@@ -71,7 +71,23 @@
 	<div class="container">
 <!-- hidden -->	
 		<form id="hiddenForm">
-			<input type="hidden" id="hiddenValue" name="foreignId" placeholder="" value="" > 
+			<input type="hidden" id="foreignIdValue" name="foreignId" placeholder="" value="" >
+			<input type="hidden" id="foreignSourceValue" name="foreignSource" placeholder="" value="" >
+			<input type="hidden" id="foreignIdsValue" name="foreignIds" placeholder="" value="" >
+			<input type="hidden" id="interfacesValue" name="interfaces" placeholder="" value="" >
+			<input type="hidden" id="interfaceValue" name="interface" placeholder="" value="" >
+			<input type="hidden" id="categoriesValue" name="categories" placeholder="" value="" >
+			<input type="hidden" id="categoryValue" name="category" placeholder="" value="" >
+			<input type="hidden" id="assetsValue" name="assets" placeholder="" value="" >
+			<input type="hidden" id="assetValue" name="asset" placeholder="" value="" >
+			<input type="hidden" id="interfacesFirstValue" name="interfacesFirst" placeholder="" value="" >
+			<input type="hidden" id="interfaceFirstValue" name="interfaceFirst" placeholder="" value="" >
+			<input type="hidden" id="categoriesFirstValue" name="categoriesFirst" placeholder="" value="" >
+			<input type="hidden" id="categoryFirstValue" name="categoryFirst" placeholder="" value="" >
+			<input type="hidden" id="assetsFirstValue" name="assetsFirst" placeholder="" value="" >
+			<input type="hidden" id="assetFirstValue" name="assetFirst" placeholder="" value="" >
+			<input type="hidden" id="getAddServiceValue" name="getAddService" placeholder="" value="" >
+			<input type="hidden" id="getAddServiceFirstValue" name="getAddServiceFirst" placeholder="" value="" >
 		</form>
 <!-- hidden -->		
 		<jsp:include page="/include/menu.jsp" />
@@ -89,12 +105,14 @@
 		<div class="row-fluid">
 			<div class="span12 well well-small">
 				<div class="row-fluid">
-					<div class="span10">
+					<div class="span8">
 						<h4 id="nodeCount">노드&nbsp;목록&nbsp;[0]</h4>
 					</div>
 					<div class="span2">
-						<button type="button" class="btn btn-primary span12" title="노드 추가"
-							onclick="javascript:addNodePop();">+&nbsp;노드 추가</button>
+						<button type="button" class="btn btn-primary span12" title="노드 추가" onclick="javascript:addNodePop();">+&nbsp;노드 추가</button>
+					</div>
+					<div class="span2">
+						<button type="button" class="btn btn-primary span12" title="노드 추가" onclick="javascript:addProvisioningRequisition();">노드 그룹 설정</button>
 					</div>
 				</div>
 				<div class="row-fluid">
@@ -139,24 +157,23 @@
 </body>
 <!-- modal -->
 <div id="editRequisitionPop" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" 
-style="display: none; width: 1137px; margin-left: -571px;margin-top: 42px;height: 651px;">
+style="display: none; width: 1365px; margin-left: -685px;margin-top: -9px;height: 745px;">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">닫기</button>
 		<h3 id="editRequisitionPopTitle"><!-- 제목 부분--></h3>
 	</div>
-	<div class="modal-body" style="width: 1106px;height: 532px;">
+	<div class="modal-body" style="width: 1336px;height: 600px;">
 		<div>
 			<div class="accordion" id="accordion3">
 				<div class="accordion-group">
-					<div id="collapseOne" class="accordion-body collapse in" style="height: 510px;overflow-y: auto">
+					<div id="collapseOne" class="accordion-body collapse in" style="height: 578px;overflow-y: auto">
 						<div class="accordion-inner">
 							 <div class="span8" style="margin-left: -14px;" data-toggle="collapse">
 								<form id="memberInfoFrm" name="memberInfoFrm" method="post">
-									<a type="button" class="btn btn-primary" style="margin-right:27px;margin-top:-9px;">실행&nbsp;완료</a>
-									<a type="button" class="btn btn-primary" style="margin-top:-9px;" onclick="showEditRequisitionPopList()">노드&nbsp;추가</a>
-									<table class="table table-hover" style="background-color: #BAD1DB;width: 1103px;" id="requisitionListTable">
+									<a type="button" class="btn btn-primary" style="margin-top:-9px;" onclick="showEditRequisitionPopList()">+&nbsp;노드&nbsp;추가</a>
+									<div style="width: 1334px;" id="requisitionListTable">
 									<!-- 리스트 부분-->
-									</table>
+									</div>
 								</form>
 							</div>
 						</div>
