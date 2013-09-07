@@ -110,7 +110,7 @@ function regRequisitionAjax(text){
 }
 
 //메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성된 하단부 창의 기본외부소스 초기화 버튼
-function resetRequisition() {
+function resetRequisitionAjax(callback) {
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/foreignSources/default',
@@ -120,8 +120,15 @@ function resetRequisition() {
 		},
 		success : function(data) {
 			getTotalRequisitionsList(getTotalRequisitions);
+			if (typeof callback == "function") {
+				callback(data);
+			}
 		}
 	});
+}
+
+function resetRequisition(){
+	resetRequisitionAjax(editDefaultDetectors);
 }
 
 //메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성된 하단부 창의 동기화 버튼
@@ -157,10 +164,9 @@ function delRequisitionPopList(foreignId){
 
 function showEditRequisitionPopList(){
 	var foreignSource = $("#hiddenForm input[name=foreignSource]").val();
-	
+
 	/*랜덤하게 값 생성*/
 	var foreignId = Math.floor(Math.random() * Math.pow(10,9)) + 1377 * Math.pow(10,9);
-	
 	$("#hiddenForm input[name=foreignIds]").val(foreignId);
 	getTotalNodesList(editRequisitionList, foreignSource, foreignId);
 }
@@ -431,7 +437,10 @@ function cancelIpInterface(tripInterface){
 	$('#' + tripInterface + '').remove();
 }
 
-function motifyInterfaces(interfaces, interfacesFirst){
+function modifyInterfaces(interfaces, interfacesFirst){
+	if(!confirm("수정하면 기존의 인터페이스 정보가 지워질 수 있습니다. 계속하시겠습니까?")){
+		return;
+	}
 	$('#' + interfacesFirst + '').hide();
 	$('#' + interfaces + '').show();
 }
@@ -441,7 +450,10 @@ function cancelInterfaces(interfaces, interfacesFirst){
 	$('#' + interfaces + '').hide();
 }
 
-function motifyInterface(interface, interfaceFirst){
+function modifyInterface(interface, interfaceFirst){
+	if(!confirm("수정하면 기존의 인터페이스 정보가 지워질 수 있습니다. 계속하시겠습니까?")){
+		return;
+	}
 	$('#' + interfaceFirst + '').hide();
 	$('#' + interface + '').show();
 }
@@ -451,7 +463,7 @@ function cancelInterface(interface, interfaceFirst){
 	$('#' + interface + '').hide();
 }
 
-function motifyCategories(categories, categoriesFirst){
+function modifyCategories(categories, categoriesFirst){
 	$('#' + categoriesFirst + '').hide();
 	$('#' + categories + '').show();
 }
@@ -461,7 +473,7 @@ function cancelCategories(categories, categoriesFirst){
 	$('#' + categories + '').hide();
 }
 
-function motifyCategory(category, categoryFirst){
+function modifyCategory(category, categoryFirst){
 	$('#' + categoryFirst + '').hide();
 	$('#' + category + '').show();
 }
@@ -471,7 +483,7 @@ function cancelCategory(category, categoryFirst){
 	$('#' + category + '').hide();
 }
 
-function motifyAssets(assets, assetsFirst){
+function modifyAssets(assets, assetsFirst){
 	$('#' + assetsFirst + '').hide();
 	$('#' + assets + '').show();
 }
@@ -481,7 +493,7 @@ function cancelAssets(assets, assetsFirst){
 	$('#' + assets + '').hide();
 }
 
-function motifyAsset(asset, assetFirst){
+function modifyAsset(asset, assetFirst){
 	$('#' + assetFirst + '').hide();
 	$('#' + asset + '').show();
 }
@@ -491,17 +503,16 @@ function cancelAsset(asset, assetFirst){
 	$('#' + asset + '').hide();
 }
 
-function addService(interfacesFirst){
-	var str = getAddService();
+function addService(interfacesFirst, foreignId, ipAddr){
+	var str = getAddService(interfacesFirst, foreignId, ipAddr);
 	$('#' + interfacesFirst + '').append(str);
 }
 
-function cancelGetAddService(getAddService, getAddServiceFirst){
-	$('#' + getAddServiceFirst + '').show();
-	$('#' + getAddService + '').hide();
+function cancelGetAddService(getAddService){
+	$('#' + getAddService + '').remove();
 }
 
-function motifyServices(services, servicesFirst){
+function modifyServices(services, servicesFirst){
 	$('#' + servicesFirst + '').hide();
 	$('#' + services + '').show();
 }
@@ -511,7 +522,7 @@ function cancelServices(services, servicesFirst){
 	$('#' + services + '').hide();
 }
 
-function motifyService(service, serviceFirst){
+function modifyService(service, serviceFirst){
 	$('#' + serviceFirst + '').hide();
 	$('#' + service + '').show();
 }
@@ -519,6 +530,10 @@ function motifyService(service, serviceFirst){
 function cancelService(service, serviceFirst){
 	$('#' + serviceFirst + '').show();
 	$('#' + service + '').hide();
+}
+
+function cancelDetectors(gAD1){
+	$('#' + gAD1 + '').remove();
 }
 
 function delInterface(interface, foreignId, ipAddr){
@@ -670,7 +685,7 @@ function saveAddNodeAsset(trId, foreignId){
 		contentType : 'application/json',
 		data : str,
 		error : function() {
-			alert('새로운 인터페이스 ID 추가 실패');
+			alert('새로운 노드 Asset 추가 실패');
 		},
 		success : function(data) {
 			var str = getTableToFinishAddNodeAsset(foreignId, assetValue, assetName);
@@ -679,18 +694,158 @@ function saveAddNodeAsset(trId, foreignId){
 		}
 	});
 }
-/********************************************************* view String edit ********************************************************************/
+
+function saveAssets(assets, foreignId, assetsName, assetsFirst){
+	var assetValue = $('#' + assets + '' + '\ select').val();
+	var assetNm = $('#' + assets + '' + '\ input[name=assetsValue]').val();
+	var foreignSource = $('#hiddenForm input[name=foreignSource]').val();
+	var str = "{\"asset\":[{\"value\": \"" + assetValue + "\",\"name\": \"" + assetNm + "\"}]}"; 
+	if($('#' + assets + '' + '\ input[name=assetsValue]').val() == ""){
+		alert("assetValue를 입력하십시오.");
+		return;
+	}
+	
+	$.ajax({
+		type : 'post',
+		url : '/' + version + '/requisitions/' + foreignSource + '/nodes/' + foreignId + '/assets',
+		contentType : 'application/json',
+		data : str,
+		error : function() {
+			alert('새로운 Asset 저장 실패');
+		},
+		success : function(data) {
+			$.ajax({
+				type : 'delete',
+				url : '/' + version + '/requisitions/' + foreignSource + '/nodes/' + foreignId + '/assets/' + assetsName,
+				contentType : 'application/json',
+				dataType : 'json',
+				error : function(data) {
+					alert("Asset 삭제 실패");
+				},
+				success : function(data) {
+					var str = getTableToFinishAddNodeCategory(foreignId, assetNm);
+					$('#' + assetsFirst + '').append(str);
+					getNodeListInfoAjax(NodeListInfo, foreignSource);
+				}
+			});
+		}
+	});
+}
+
+function saveToGetAddService(getAddService, interfaceFirst, foreignId, ipAddr){
+	var getAddServiceValue = $('#' + getAddService + '' + '\ select').val();
+	var foreignSource = $('#hiddenForm input[name=foreignSource]').val();
+	var str = "{\"monitored-service\":[{\"service-name\": \"" + getAddServiceValue + "\"}]}";
+	$.ajax({
+		type : 'post',
+		url : '/' + version + '/requisitions/' + foreignSource + '/nodes/' + foreignId + '/interfaces/' + ipAddr + '/services',
+		contentType : 'application/json',
+		data : str,
+		error : function() {
+			alert('새로운 서비스 추가 실패');
+		},
+		success : function(data) {
+			var str = getTableToFinishAddService(foreignId, getAddServiceValue);
+			$('#' + getAddService + '').append(str);
+			getNodeListInfoAjax(NodeListInfo, foreignSource);
+		}
+	});
+}
+
+function saveGetAddService(services, foreignId, ipAddr, servicesFirst, serviceNm){
+	var serviceValue = $('#' + services + '' + '\ select').val();
+	var foreignSource = $('#hiddenForm input[name=foreignSource]').val();
+	var str = "{\"monitored-service\":[{\"service-name\": \"" + serviceValue + "\"}]}"; 
+	$.ajax({
+		type : 'post',
+		url : '/' + version + '/requisitions/' + foreignSource + '/nodes/' + foreignId + '/interfaces/' + ipAddr + '/services',
+		contentType : 'application/json',
+		data : str,
+		error : function() {
+			alert('새로운 서비스 추가 실패');
+		},
+		success : function(data) {
+			$.ajax({
+				type : 'delete',
+				url : '/' + version + '/requisitions/' + foreignSource + '/nodes/' + foreignId + '/interfaces/' + ipAddr + '/services/' + serviceNm,
+				contentType : 'application/json',
+				dataType : 'json',
+				error : function(data) {
+					alert("서비스 삭제 실패");
+				},
+				success : function(data) {
+					var str = getTableToFinishAddService(foreignId, serviceValue);
+					$('#' + servicesFirst + '').append(str);
+					getNodeListInfoAjax(NodeListInfo, foreignSource);
+				}
+			});
+		}
+	});
+}
+
+/****************************************************************************************Foreign Source Name: default***********************************************************************************/
+function editDefaultDetectors(jsonObj){
+	var str = getTableToDetectors(jsonObj);
+	$('#defaultRequisitionListTable1').empty();
+	$('#defaultRequisitionListTable1').append(str);
+}
+
+function editDefaultPolicies(jsonObj){
+	var row = getTableToPolicies(jsonObj);
+	$('#defaultRequisitionListTable2').empty();
+	$('#defaultRequisitionListTable2').append(row);
+}
+
+function editDefaultRequisition(){
+	getDefaultForeignSourceNameAjax(editDefaultDetectors);
+	getDefaultForeignSourceNameAjax(editDefaultPolicies);
+}
+
+function getDefaultForeignSourceNameAjax(callback){
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/foreignSources/default',
+		contentType : 'application/json',
+		dataType : 'json',
+		error : function(data) {
+			alert('기본외부소스 가져오기 실패');
+		},
+		success : function(data) {
+			getTotalRequisitionsList(getTotalRequisitions);
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+}
+
+/******************************************************************************************************* view String edit *******************************************************************************************************/
 function getTableToFinishAddNodeAsset(foreignId, assetValue, assetName){
 	var addAsset = Math.floor(Math.random() * Math.pow(10,15));
 	var str = '';
 		str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + addAsset + '\'>';
 		str += '	<li>';
 		str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-		str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyAssets()">수정</a>';
+		str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyAssets()">수정</a>';
 		str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delAssets()">삭제</a>';
 		str += '		<font size="2" style="margin-left: 10px;">asset</font>';
 		str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="assetKey" value=\'' + assetValue + '\'/>';
 		str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="assetsValue" value=\'' + assetName + '\'/>';
+		str += '	</li>';
+		str += '</ul>';
+	return str;
+}
+
+function getTableToFinishAddService(foreignId, getAddServiceValue){
+	var addAsset = Math.floor(Math.random() * Math.pow(10,15));
+	var str = '';
+		str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + addAsset + '\'>';
+		str += '	<li>';
+		str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
+		str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyAssets()">수정</a>';
+		str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delAssets()">삭제</a>';
+		str += '		<font size="2" style="margin-left: 10px;">Service</font>';
+		str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="assetKey" value=\'' + getAddServiceValue + '\'/>';
 		str += '	</li>';
 		str += '</ul>';
 	return str;
@@ -808,7 +963,7 @@ function getTableToFinishAddNodeCategory(foreignId, categoryName){
 		str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + addNodeCategory + '\'>';
 		str += '	<li>';
 		str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-		str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyCategories(\'' + categories + '\',\'' + categoriesFirst + '\')">수정</a>';
+		str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyCategories(\'' + categories + '\',\'' + categoriesFirst + '\')">수정</a>';
 		str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delNodeCategory(\'' + categories + '\',\'' + categoriesFirst + '\')">삭제</a>';
 		str += '		<font size="2" style="margin-left: 10px;">Node Category</font>';
 		str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="categories" value=\'' + categoryName + '\'/>';
@@ -816,7 +971,7 @@ function getTableToFinishAddNodeCategory(foreignId, categoryName){
 	return str;
 }
 
-function getAddService(){
+function getAddService(interfaceFirst, foreignId, ipAddr){
 	var getAddService = Math.floor(Math.random() * Math.pow(10,15));
 	var getAddServiceFirst = Math.floor(Math.random() * Math.pow(10,15));
 	$("#hiddenForm input[name=getAddService]").val(getAddService);
@@ -824,7 +979,7 @@ function getAddService(){
 	var str = '';
 		str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + getAddService + '\'>';
 		str += '	<li>';
-		str += '		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
+		str += '		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
 		str += '		<font size="2" style="margin-left: 10px;">Service</font>';
 		str += '		<select id="getAddService" name="getAddService" style="margin-bottom: 0px;" type="text">';
 		str += '			<option value="DNS" selected="selected">DNS</option>';
@@ -859,14 +1014,14 @@ function getAddService(){
 		str += '			<option value="Telnet">Telnet</option>';
 		str += '			<option value="Windows-Task-Scheduler">Windows-Task-Scheduler</option>';
 		str += '		</select>';
-		str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService()">저장</a>';
-		str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelGetAddService(\'' + getAddService + '\',\'' + getAddServiceFirst + '\')">취소</a>';
+		str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveToGetAddService(\'' + getAddService + '\',\'' + interfaceFirst+ '\',\'' + foreignId + '\',\'' + ipAddr + '\')">저장</a>';
+		str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelGetAddService(\'' + getAddService + '\')">취소</a>';
 		str += '	</li>';
 		str += '</ul>';
 		str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px; display:none;" id=\'' + getAddServiceFirst + '\'>';
 		str += '	<li>';
-		str += '		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
-		str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyGetAddService()">수정</a>';
+		str += '		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
+		str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyGetAddService()">수정</a>';
 		str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delGetAddService(\'' + getAddServiceFirst + '\')">삭제</a>';
 		str += '		<font size="2" style="margin-left: 10px;">Service</font>';
 		str += '		<select id="getAddService" name="getAddService" style="margin-bottom: 0px;" type="text">';
@@ -964,9 +1119,9 @@ function getTableToEditRequisitionPop(jsonObj){
 					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" value=\'' + nodeObj[i]["@foreign-id"] + '\'/>';
 					str += '		<font size="2" style="margin-left: 10px;">Site</font>';
 					str += '		<input style="border:0; background: lightgrey; width: 80px; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" value=\'' + nodeObj[i]["@building"] + '\'/>';
-					str += '		<a href="#" onclick="javascript:addInterface(\'' + trId + '\',\'' + nodeObj[i]["@building"] + '\',\'' + nodeObj[i]["@foreign-id"] + '\')"><font size="1">[Add Interface]&nbsp;</font></a>';
-					str += '		<a href="#" onclick="javascript:addNodeCategory(\'' + trId + '\',\'' + nodeObj[i]["@foreign-id"] + '\')"><font size="1">[Add Node Category]&nbsp;</font></a>';
-					str += '		<a href="#" onclick="javascript:addNodeAsset(\'' + trId + '\',\'' + nodeObj[i]["@foreign-id"] + '\')"><font size="1">[Add Node Asset]</font></a>';
+					str += '		<a href="#" onclick="javascript:addInterface(\'' + trId + '\',\'' + nodeObj[i]["@building"] + '\',\'' + nodeObj[i]["@foreign-id"] + '\')"><font size="1" color="black" color="black">[Add Interface]&nbsp;</font></a>';
+					str += '		<a href="#" onclick="javascript:addNodeCategory(\'' + trId + '\',\'' + nodeObj[i]["@foreign-id"] + '\')"><font size="1" color="black" color="black">[Add Node Category]&nbsp;</font></a>';
+					str += '		<a href="#" onclick="javascript:addNodeAsset(\'' + trId + '\',\'' + nodeObj[i]["@foreign-id"] + '\')"><font size="1" color="black">[Add Node Asset]</font></a>';
 					str += '	</li>';
 					str += '</ul>';
 					str += '<ul style="display:none; list-style:none; padding: 0px;margin: 0px;" id=\'' + inputForeignId + '\'>';
@@ -991,15 +1146,15 @@ function getTableToEditRequisitionPop(jsonObj){
 								str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + interfacesFirst +'\'>';
 								str += '	<li>';
 								str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-								str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyInterfaces(\'' + interfaces + '\',\'' + interfacesFirst+'\')">수정</a>';
-								str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delInterface(\'' + interfaces + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\')">삭제</a>';
+								str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyInterfaces(\'' + interfaces + '\',\'' + interfacesFirst+'\')">수정</a>';
+								str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delInterface(\'' + interfaces + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[q]['@ip-addr'] + '\')">삭제</a>';
 								str += '		<font size="2" style="margin-left: 10px;">IP Interface</font>';
 								str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="ipInterface" value=\'' + interfaceObj[q]['@ip-addr'] + '\'/>';
 								str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">Description</font>';
 								str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="description" value=\'' + interfaceObj[q]['@descr'] + '\'/>';
 								str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">SNMP Primary</font>';
 								str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;width: 50px;" readonly="readonly" type="text" name="snmpPrimary" value=\'' + interfaceObj[q]['@snmp-primary'] + '\'/>';
-								str += '		<a href="#" onclick="javascript:addService(\'' + interfacesFirst +'\')"><font size="1">Add Service</font></a>';
+								str += '		<a href="#" onclick="javascript:addService(\'' + interfacesFirst +'\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[q]['@ip-addr'] + '\')"><font size="1" color="black">Add Service</font></a>';
 								str += '	</li>';
 								str += '</ul>';
 								str += '<ul style="display:inline;display:none;padding: 0px;margin: 0px;" id=\'' + interfaces + '\'>';
@@ -1025,16 +1180,14 @@ function getTableToEditRequisitionPop(jsonObj){
 											var services = Math.floor(Math.random() * Math.pow(10,15));
 											var servicesFirst = Math.floor(Math.random() * Math.pow(10,15));
 												str += '<ul style="padding: 0px;margin: 0px;" id=\'' + servicesFirst +'\'>';
-												str += '	&nbsp;&nbsp;&nbsp;';
 												str += '	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
-												str += '	<a type="button" class="btn btn-primary btn-mini" onclick="motifyServices(\'' + services + '\',\'' + servicesFirst+'\')">수정</a>';
+												str += '	<a type="button" class="btn btn-primary btn-mini" onclick="modifyServices(\'' + services + '\',\'' + servicesFirst+'\')">수정</a>';
 												str += '	<a type="button" class="btn btn-danger btn-mini" onclick="delService(\'' + services + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[q]['@ip-addr'] + '\',\'' + interfaceObj[q]["monitored-service"][w]['@service-name'] + '\')">삭제</a>';
 												str += '	<font size="2" style="margin-left: 10px;">Service</font>';
 												str += '	<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="description" value=\'' + interfaceObj[q]["monitored-service"][w]['@service-name'] + '\'/>';
 												str += '</ul>';
 												str += '<ul style="display:inline; list-style:none; display:none;padding: 0px;margin: 0px;" id=\'' + services + '\'>';
 												str += '	<li>';
-												str += '		&nbsp;&nbsp;&nbsp;';
 												str += '		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
 												str += '		<font size="2" style="margin-left: 10px;">Service</font>';
 												str += '		<select id="getAddService" name="getAddService" style="margin-bottom: 0px;" type="text">';
@@ -1070,7 +1223,7 @@ function getTableToEditRequisitionPop(jsonObj){
 												str += '			<option value="Telnet">Telnet</option>';
 												str += '			<option value="Windows-Task-Scheduler">Windows-Task-Scheduler</option>';
 												str += '		</select>';
-												str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService()">저장</a>';
+												str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService(\'' + services + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[q]['@ip-addr'] + '\',\'' + servicesFirst + '\',\'' + interfaceObj[q]["monitored-service"][w]['@service-name'] + '\')">저장</a>';
 												str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelServices(\'' + services + '\',\'' + servicesFirst+'\')">취소</a>';
 												str += '	</li>';
 												str += '</ul>';
@@ -1080,7 +1233,7 @@ function getTableToEditRequisitionPop(jsonObj){
 										var serviceFirst =  Math.floor(Math.random() * Math.pow(10,15));
 											str += '<ul style="padding: 0px;margin: 0px;" id=\'' + serviceFirst +'\'>';
 											str += '	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
-											str += '	<a type="button" class="btn btn-primary btn-mini" onclick="motifyService(\'' + service + '\',\'' + serviceFirst+'\')">수정</a>';
+											str += '	<a type="button" class="btn btn-primary btn-mini" onclick="modifyService(\'' + service + '\',\'' + serviceFirst+'\')">수정</a>';
 											str += '	<a type="button" class="btn btn-danger btn-mini" onclick="delService(\'' + service + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[q]['@ip-addr'] + '\',\'' + interfaceObj[q]["monitored-service"]['@service-name'] + '\')">삭제</a>';
 											str += '	<font size="2" style="margin-left: 10px;">Service</font>';
 											str += '	<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="service" value=\'' + interfaceObj[q]["monitored-service"]['@service-name'] + '\'/>';
@@ -1122,7 +1275,7 @@ function getTableToEditRequisitionPop(jsonObj){
 											str += '			<option value="Telnet">Telnet</option>';
 											str += '			<option value="Windows-Task-Scheduler">Windows-Task-Scheduler</option>';
 											str += '		</select>';
-											str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService()">저장</a>';
+											str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService(\'' + service + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[q]['@ip-addr'] + '\',\'' + serviceFirst + '\',\'' + interfaceObj[q]["monitored-service"]['@service-name'] + '\')">저장</a>';
 											str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelService(\'' + service + '\',\'' + serviceFirst+'\')">취소</a>';
 											str += '	</li>';
 											str += '</ul>';
@@ -1137,14 +1290,15 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" style="display:none" id=\'' + interfaceFirst + '\'>';
 							str += '	<li>';
 							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyInterface(\'' + interface + '\',\'' + interfaceFirst+'\')">수정</a>';
-							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delInterface(\'' + interface + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\')">삭제</a></td>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyInterface(\'' + interface + '\',\'' + interfaceFirst+'\')">수정</a>';
+							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delInterface(\'' + interface + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\')">삭제</a></td>';
 							str += '		<font size="2" style="margin-left: 10px;">IP Interface</font>';
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="ipInterface" value=\'' + interfaceObj['@ip-addr'] + '\'/>';
 							str += '		<font size="2" style="margin-left: 10px;">Description</font>';
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="description" value=\'' + interfaceObj['@descr'] + '\'/>';
 							str += '		<font size="2" style="margin-left: 10px;">SNMP Primary</font>';
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;width: 50px;" readonly="readonly" type="text" name="snmpPrimary" value=\'' + interfaceObj['@snmp-primary'] + '\'';
+							str += '		<a href="#" onclick="javascript:addService(\'' + interfaceFirst +'\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\')"><font size="1" color="black">Add Service</font></a>';
 							str += '	</li>';
 							str += '</ul>';
 							str += '<ul style="display:inline;display:none;padding: 0px;margin: 0px;" id=\'' + interface + '\'>';
@@ -1171,7 +1325,7 @@ function getTableToEditRequisitionPop(jsonObj){
 										var servicesFirst = Math.floor(Math.random() * Math.pow(10,15));
 											str += '<ul style="padding: 0px;margin: 0px;" id=\'' + servicesFirst +'\'>';
 											str += '	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
-											str += '	<a type="button" class="btn btn-primary btn-mini" onclick="motifyServices(\'' + services + '\',\'' + servicesFirst+'\')">수정</a>';
+											str += '	<a type="button" class="btn btn-primary btn-mini" onclick="modifyServices(\'' + services + '\',\'' + servicesFirst+'\')">수정</a>';
 											str += '	<a type="button" class="btn btn-danger btn-mini" onclick="delService(\'' + services + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\',\'' + interfaceObj["monitored-service"][q]['@service-name'] + '\')">삭제</a>';
 											str += '	<font size="2" style="margin-left: 10px;">Service</font>';
 											str += '	<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="description" value=\'' + interfaceObj["monitored-service"][q]['@service-name'] + '\'/>';
@@ -1213,7 +1367,7 @@ function getTableToEditRequisitionPop(jsonObj){
 											str += '			<option value="Telnet">Telnet</option>';
 											str += '			<option value="Windows-Task-Scheduler">Windows-Task-Scheduler</option>';
 											str += '		</select>';
-											str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService()">저장</a>';
+											str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService(\'' + services + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\',\'' + servicesFirst + '\',\'' + interfaceObj["monitored-service"][q]['@service-name'] + '\')">저장</a>';
 											str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelServices(\'' + services + '\',\'' + servicesFirst+'\')">취소</a>';
 											str += '	</li>';
 											str += '</ul>';
@@ -1223,7 +1377,7 @@ function getTableToEditRequisitionPop(jsonObj){
 									var serviceFirst =  Math.floor(Math.random() * Math.pow(10,15));
 										str += '<ul style="padding: 0px;margin: 0px;" id=\'' + serviceFirst +'\'>';
 										str += '	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
-										str += '	<a type="button" class="btn btn-primary btn-mini" onclick="motifyService(\'' + service + '\',\'' + serviceFirst+'\')">수정</a>';
+										str += '	<a type="button" class="btn btn-primary btn-mini" onclick="modifyService(\'' + service + '\',\'' + serviceFirst+'\')">수정</a>';
 										str += '	<a type="button" class="btn btn-danger btn-mini" onclick="delService(\'' + service + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\',\'' + interfaceObj["monitored-service"]['@service-name'] + '\')">삭제</a>';
 										str += '	<font size="2" style="margin-left: 10px;">Service</font>';
 										str += '	<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="service" value=\'' + interfaceObj["monitored-service"]['@service-name'] + '\'/>';
@@ -1266,7 +1420,7 @@ function getTableToEditRequisitionPop(jsonObj){
 										str += '			<option value="Telnet">Telnet</option>';
 										str += '			<option value="Windows-Task-Scheduler">Windows-Task-Scheduler</option>';
 										str += '		</select>';
-										str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService()">저장</a>';
+										str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService(\'' + service + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\',\'' + serviceFirst + '\',\'' + interfaceObj["monitored-service"]['@service-name'] + '\')">저장</a>';
 										str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelService(\'' + service + '\',\'' + serviceFirst+'\')">취소</a>';
 										str += '	</li>';
 										str += '</ul>';
@@ -1284,7 +1438,7 @@ function getTableToEditRequisitionPop(jsonObj){
 								str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + categoriesFirst + '\'>';
 								str += '	<li>';
 								str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-								str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyCategories(\'' + categories + '\',\'' + categoriesFirst+ '\')">수정</a>';
+								str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyCategories(\'' + categories + '\',\'' + categoriesFirst+ '\')">수정</a>';
 								str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delNodeCategory(\'' + categories + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + categoryObj[q]['@name'] + '\')">삭제</a>';
 								str += '		<font size="2" style="margin-left: 10px;">Node Category</font>';
 								str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="categories" value=\'' + categoryObj[q]['@name'] + '\'/>';
@@ -1315,7 +1469,7 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + categoryFirst + '\'>';
 							str += '	<li>';
 							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyCategory(\'' + category + '\',\'' + categoryFirst + '\')">수정</a>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyCategory(\'' + category + '\',\'' + categoryFirst + '\')">수정</a>';
 							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delNodeCategory(\'' + category + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + categoryObj['@name'] + '\')">삭제</a>';
 							str += '		<font size="2" style="margin-left: 10px;">Node Category</font>';
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="category" value=\'' + categoryObj['@name'] + '\'/>';
@@ -1349,7 +1503,7 @@ function getTableToEditRequisitionPop(jsonObj){
 								str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + assetsFirst + '\'>';
 								str += '	<li>';
 								str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-								str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyAssets(\'' + assets + '\',\'' + assetsFirst + '\')">수정</a>';
+								str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyAssets(\'' + assets + '\',\'' + assetsFirst + '\')">수정</a>';
 								str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delAssets(\'' + assets + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + assetObj[q]['@name'] + '\')">삭제</a>';
 								str += '		<font size="2" style="margin-left: 10px;">asset</font>';
 								str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="assetKey" value=\'' + assetObj[q]['@value'] + '\'/>';
@@ -1428,7 +1582,7 @@ function getTableToEditRequisitionPop(jsonObj){
 								str += '			<option value="zip">zip</option>';
 								str += '		</select>';
 								str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="assetsValue" value=""/>';
-								str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveAssets(\'' + nodeObj[i]["@foreign-id"] + '\')">저장</a>';
+								str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveAssets(\'' + assets + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + assetObj[q]['@name'] + '\',\'' + assetsFirst + '\')">저장</a>';
 								str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelAssets(\'' + assets + '\',\'' + assetsFirst + '\')">취소</a>';
 								str += '	</li>';
 								str += '</ul>';
@@ -1441,7 +1595,7 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + assetFirst + '\'>';
 							str += '	<li>';
 							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyAsset(\'' + asset + '\',\'' + assetFirst + '\')">수정</a>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyAsset(\'' + asset + '\',\'' + assetFirst + '\')">수정</a>';
 							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delAssets(\'' + asset + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + assetObj['@name'] + '\')">삭제</a>';
 							str += '		<font size="2" style="margin-left: 10px;">asset</font>';
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="assetKey" value=\'' + assetObj['@value'] + '\'/>';
@@ -1520,7 +1674,7 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '			<option value="zip">zip</option>';
 							str += '		</select>';
 							str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="assetValue" value=""/>';
-							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveAssets(\'' + nodeObj[i]["@foreign-id"] + '\')">저장</a>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveAssets(\'' + asset + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + assetObj['@name'] + '\',\'' + assetFirst + '\'))">저장</a>';
 							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelAsset(\'' + asset + '\',\'' + assetFirst + '\')">취소</a>';
 							str += '	</li>';
 							str += '</ul>';
@@ -1543,9 +1697,9 @@ function getTableToEditRequisitionPop(jsonObj){
 				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" value=\'' + nodeObj["@foreign-id"] + '\'/>';
 				str += '		<font size="2" style="margin-left: 10px;">Site</font>';
 				str += '		<input style="border:0; background: lightgrey; width: 80px; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" value=\'' + nodeObj["@building"] + '\'/>';
-				str += '		<a href="#" onclick="javascript:addInterface(\'' + trId + '\',\'' + nodeObj["@building"] + '\',\'' + nodeObj["@foreign-id"] + '\')"><font size="1">[Add Interface]&nbsp;</font></a>';
-				str += '		<a href="#" onclick="javascript:addNodeCategory(\'' + trId + '\',\'' + nodeObj["@foreign-id"] + '\')"><font size="1">[Add Node Category]&nbsp;</font></a>';
-				str += '		<a href="#" onclick="javascript:addNodeAsset(\'' + trId + '\',\'' + nodeObj["@foreign-id"] + '\')"><font size="1">[Add Node Asset]</font></a>';
+				str += '		<a href="#" onclick="javascript:addInterface(\'' + trId + '\',\'' + nodeObj["@building"] + '\',\'' + nodeObj["@foreign-id"] + '\')"><font size="1" color="black">[Add Interface]&nbsp;</font></a>';
+				str += '		<a href="#" onclick="javascript:addNodeCategory(\'' + trId + '\',\'' + nodeObj["@foreign-id"] + '\')"><font size="1" color="black">[Add Node Category]&nbsp;</font></a>';
+				str += '		<a href="#" onclick="javascript:addNodeAsset(\'' + trId + '\',\'' + nodeObj["@foreign-id"] + '\')"><font size="1" color="black">[Add Node Asset]</font></a>';
 				str += '	</li>';
 				str += '</ul>';
 				str += '<ul style="display:none; list-style:none; padding: 0px;margin: 0px;" id=\'' + inputForeignId + '\'>';
@@ -1570,7 +1724,7 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + interfacesFirst +'\'>';
 							str += '	<li>';
 							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyInterfaces(\'' + interfaces + '\',\'' + interfacesFirst + '\')">수정</a>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyInterfaces(\'' + interfaces + '\',\'' + interfacesFirst + '\')">수정</a>';
 							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delInterface(\'' + interfaces + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\')">삭제</a>';
 							str += '		<font size="2" style="margin-left: 10px;">IP Interface</font>';
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="ipInterface" value=\'' + interfaceObj[i]['@ip-addr'] + '\'/>';
@@ -1578,7 +1732,7 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="description" value=\'' + interfaceObj[i]['@descr'] + '\'/>';
 							str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">SNMP Primary</font>';
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;width: 50px;" readonly="readonly" type="text" name="snmpPrimary" value=\'' + interfaceObj[i]['@snmp-primary'] + '\'/>';
-							str += '		<a href="#" onclick="javascript:addService(\'' + interfacesFirst +'\')"><font size="1">Add Service</font></a>';
+							str += '		<a href="#" onclick="javascript:addService(\'' + interfacesFirst +'\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\')"><font size="1" color="black">Add Service</font></a>';
 							str += '	</li>';
 							str += '</ul>';
 							str += '<ul style="display:inline;display:none;padding: 0px;margin: 0px;" id=\'' + interfaces + '\'>';
@@ -1606,7 +1760,7 @@ function getTableToEditRequisitionPop(jsonObj){
 											str += '<ul style="padding: 0px;margin: 0px;" id=\'' + servicesFirst +'\'>';
 											str += '	&nbsp;&nbsp;&nbsp;';
 											str += '	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
-											str += '	<a type="button" class="btn btn-primary btn-mini" onclick="motifyServices(\'' + services + '\',\'' + servicesFirst+'\')">수정</a>';
+											str += '	<a type="button" class="btn btn-primary btn-mini" onclick="modifyServices(\'' + services + '\',\'' + servicesFirst+'\')">수정</a>';
 											str += '	<a type="button" class="btn btn-danger btn-mini" onclick="delService(\'' + services + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\',\'' + interfaceObj[i]["monitored-service"][q]['@service-name'] + '\')">삭제</a>';
 											str += '	<font size="2" style="margin-left: 10px;">Service</font>';
 											str += '	<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="description" value=\'' + interfaceObj[i]["monitored-service"][q]['@service-name'] + '\'/>';
@@ -1649,7 +1803,7 @@ function getTableToEditRequisitionPop(jsonObj){
 											str += '			<option value="Telnet">Telnet</option>';
 											str += '			<option value="Windows-Task-Scheduler">Windows-Task-Scheduler</option>';
 											str += '		</select>';
-											str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService()">저장</a>';
+											str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService(\'' + services + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\',\'' + servicesFirst + '\',\'' + interfaceObj[i]["monitored-service"][q]['@service-name'] + '\')">저장</a>';
 											str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelServices(\'' + services + '\',\'' + servicesFirst+'\')">취소</a>';
 											str += '	</li>';
 											str += '</ul>';
@@ -1659,7 +1813,7 @@ function getTableToEditRequisitionPop(jsonObj){
 									var serviceFirst =  Math.floor(Math.random() * Math.pow(10,15));
 										str += '<ul style="padding: 0px;margin: 0px;" id=\'' + serviceFirst +'\'>';
 										str += '	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
-										str += '	<a type="button" class="btn btn-primary btn-mini" onclick="motifyService(\'' + service + '\',\'' + serviceFirst+'\')">수정</a>';
+										str += '	<a type="button" class="btn btn-primary btn-mini" onclick="modifyService(\'' + service + '\',\'' + serviceFirst+'\')">수정</a>';
 										str += '	<a type="button" class="btn btn-danger btn-mini" onclick="delService(\'' + service + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\',\'' + interfaceObj[i]["monitored-service"]['@service-name'] + '\')">삭제</a>';
 										str += '	<font size="2" style="margin-left: 10px;">Service</font>';
 										str += '	<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="service" value=\'' + interfaceObj[i]["monitored-service"]['@service-name'] + '\'/>';
@@ -1701,7 +1855,7 @@ function getTableToEditRequisitionPop(jsonObj){
 										str += '			<option value="Telnet">Telnet</option>';
 										str += '			<option value="Windows-Task-Scheduler">Windows-Task-Scheduler</option>';
 										str += '		</select>';
-										str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService()">저장</a>';
+										str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService(\'' + service + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\',\'' + serviceFirst + '\',\'' + interfaceObj[i]["monitored-service"]['@service-name'] + '\')">저장</a>';
 										str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelService(\'' + service + '\',\'' + serviceFirst+'\')">취소</a>';
 										str += '	</li>';
 										str += '</ul>';
@@ -1716,7 +1870,7 @@ function getTableToEditRequisitionPop(jsonObj){
 						str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" style="display:none" id=\'' + interfaceFirst + '\'>';
 						str += '	<li>';
 						str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyInterface(\'' + interface + '\',\'' + interfaceFirst+'\')">수정</a>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyInterface(\'' + interface + '\',\'' + interfaceFirst+'\')">수정</a>';
 						str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delInterface(\'' + interface + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\')">삭제</a></td>';
 						str += '		<font size="2" style="margin-left: 10px;">IP Interface</font>';
 						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="ipInterface" value=\'' + interfaceObj['@ip-addr'] + '\'/>';
@@ -1724,6 +1878,7 @@ function getTableToEditRequisitionPop(jsonObj){
 						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="description" value=\'' + interfaceObj['@descr'] + '\'/>';
 						str += '		<font size="2" style="margin-left: 10px;">SNMP Primary</font>';
 						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;width: 50px;" readonly="readonly" type="text" name="snmpPrimary" value=\'' + interfaceObj['@snmp-primary'] + '\'';
+						str += '		<a href="#" onclick="javascript:addService(\'' + interfaceFirst +'\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\')"><font size="1" color="black">Add Service</font></a>';
 						str += '	</li>';
 						str += '</ul>';
 						str += '<ul style="display:inline;display:none;padding: 0px;margin: 0px;" id=\'' + interface + '\'>';
@@ -1749,15 +1904,15 @@ function getTableToEditRequisitionPop(jsonObj){
 									var services = Math.floor(Math.random() * Math.pow(10,15));
 									var servicesFirst = Math.floor(Math.random() * Math.pow(10,15));
 										str += '<ul style="padding: 0px;margin: 0px;" id=\'' + servicesFirst +'\'>';
-										str += '	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
-										str += '	<a type="button" class="btn btn-primary btn-mini" onclick="motifyServices(\'' + services + '\',\'' + servicesFirst+'\')">수정</a>';
+										str += '	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
+										str += '	<a type="button" class="btn btn-primary btn-mini" onclick="modifyServices(\'' + services + '\',\'' + servicesFirst+'\')">수정</a>';
 										str += '	<a type="button" class="btn btn-danger btn-mini" onclick="delService(\'' + services + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\',\'' + interfaceObj["monitored-service"][q]['@service-name'] + '\')">삭제</a>';
 										str += '	<font size="2" style="margin-left: 10px;">Service</font>';
 										str += '	<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="description" value=\'' + interfaceObj["monitored-service"][q]['@service-name'] + '\'/>';
 										str += '</ul>';
 										str += '<ul style="display:inline; list-style:none; display:none;padding: 0px;margin: 0px;" id=\'' + services + '\'>';
 										str += '	<li>';
-										str += '		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
+										str += '		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
 										str += '		<font size="2" style="margin-left: 10px;">Service</font>';
 										str += '		<select id="getAddService" name="getAddService" style="margin-bottom: 0px;" type="text">';
 										str += '			<option value="DNS" selected="selected">DNS</option>';
@@ -1792,7 +1947,7 @@ function getTableToEditRequisitionPop(jsonObj){
 										str += '			<option value="Telnet">Telnet</option>';
 										str += '			<option value="Windows-Task-Scheduler">Windows-Task-Scheduler</option>';
 										str += '		</select>';
-										str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService()">저장</a>';
+										str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService(\'' + services + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\',\'' + servicesFirst + '\',\'' + interfaceObj["monitored-service"][q]['@service-name'] + '\')">저장</a>';
 										str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelServices(\'' + services + '\',\'' + servicesFirst+'\')">취소</a>';
 										str += '	</li>';
 										str += '</ul>';
@@ -1801,15 +1956,15 @@ function getTableToEditRequisitionPop(jsonObj){
 								var service = Math.floor(Math.random() * Math.pow(10,15));
 								var serviceFirst =  Math.floor(Math.random() * Math.pow(10,15));
 									str += '<ul style="padding: 0px;margin: 0px;" id=\'' + serviceFirst +'\'>';
-									str += '	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
-									str += '	<a type="button" class="btn btn-primary btn-mini" onclick="motifyService(\'' + service + '\',\'' + serviceFirst+'\')">수정</a>';
+									str += '	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
+									str += '	<a type="button" class="btn btn-primary btn-mini" onclick="modifyService(\'' + service + '\',\'' + serviceFirst+'\')">수정</a>';
 									str += '	<a type="button" class="btn btn-danger btn-mini" onclick="delService(\'' + service + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\',\'' + interfaceObj["monitored-service"]['@service-name'] + '\')">삭제</a>';
 									str += '	<font size="2" style="margin-left: 10px;">Service</font>';
 									str += '	<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="service" value=\'' + interfaceObj["monitored-service"]['@service-name'] + '\'/>';
 									str += '</ul>';
 									str += '<ul style="display:inline; list-style:none; padding: 0px;display:none;margin: 0px;" id=\'' + service + '\'>';
 									str += '	<li>';
-									str += '		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
+									str += '		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
 									str += '		<font size="2" style="margin-left: 10px;">Service</font>';
 									str += '		<select id="getAddService" name="getAddService" style="margin-bottom: 0px;" type="text">';
 									str += '			<option value="DNS" selected="selected">DNS</option>';
@@ -1844,7 +1999,7 @@ function getTableToEditRequisitionPop(jsonObj){
 									str += '			<option value="Telnet">Telnet</option>';
 									str += '			<option value="Windows-Task-Scheduler">Windows-Task-Scheduler</option>';
 									str += '		</select>';
-									str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService()">저장</a>';
+									str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService(\'' + service + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\',\'' + serviceFirst + '\',\'' + interfaceObj["monitored-service"]['@service-name'] + '\')">저장</a>';
 									str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelService(\'' + service + '\',\'' + serviceFirst+'\')">취소</a>';
 									str += '	</li>';
 									str += '</ul>';
@@ -1862,8 +2017,8 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + categoriesFirst + '\'>';
 							str += '	<li>';
 							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyCategories(\'' + categories + '\',\'' + categoriesFirst+ '\')">수정</a>';
-							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delNodeCategory(\'' + categories + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + categoryObj[i]['@name'] + '\')">삭제</a>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyCategories(\'' + categories + '\',\'' + categoriesFirst+ '\')">수정</a>';
+							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delNodeCategory(\'' + categories + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + categoryObj[i]['@name'] + '\')">삭제</a>';
 							str += '		<font size="2" style="margin-left: 10px;">Node Category</font>';
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="categories" value=\'' + categoryObj[i]['@name'] + '\'/>';
 							str += '	</li>';
@@ -1880,7 +2035,7 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '			<option value="Switches">Switches</option>';
 							str += '			<option value="Test">Test</option>';
 							str += '		</select>';
-							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveCategory(\'' + categories + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + categoriesFirst + '\',\'' + categoryObj['@name'] + '\')">저장</a>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveCategory(\'' + categories + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + categoriesFirst + '\',\'' + categoryObj['@name'] + '\')">저장</a>';
 							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelCategories(\'' + categories + '\',\'' + categoriesFirst+ '\')">취소</a>';
 							str += '	</li>';
 							str += '</ul>';
@@ -1893,7 +2048,7 @@ function getTableToEditRequisitionPop(jsonObj){
 						str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + categoryFirst + '\'>';
 						str += '	<li>';
 						str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyCategory(\'' + category + '\',\'' + categoryFirst + '\')">수정</a>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyCategory(\'' + category + '\',\'' + categoryFirst + '\')">수정</a>';
 						str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delNodeCategory(\'' + category + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + categoryObj['@name'] + '\')">삭제</a>';
 						str += '		<font size="2" style="margin-left: 10px;">Node Category</font>';
 						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="category" value=\'' + categoryObj['@name'] + '\'/>';
@@ -1927,8 +2082,8 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + assetsFirst + '\'>';
 							str += '	<li>';
 							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyAssets(\'' + assets + '\',\'' + assetsFirst + '\')">수정</a>';
-							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delAssets(\'' + assets + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + assetObj[i]['@name'] + '\')">삭제</a>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyAssets(\'' + assets + '\',\'' + assetsFirst + '\')">수정</a>';
+							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delAssets(\'' + assets + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + assetObj[i]['@name'] + '\')">삭제</a>';
 							str += '		<font size="2" style="margin-left: 10px;">asset</font>';
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="assetsKey" value=\'' + assetObj[i]['@value'] + '\'/>';
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="assetsValue" value=\'' + assetObj[i]['@name'] + '\'/>';
@@ -2006,7 +2161,7 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '			<option value="zip">zip</option>';
 							str += '		</select>';
 							str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="assetsValue" value=""/>';
-							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveAssets(\'' + nodeObj[i]["@foreign-id"] + '\')">저장</a>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveAssets(\'' + assets + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + assetObj[i]['@name'] + '\',\'' + assetsFirst + '\'))">저장</a>';
 							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelAssets(\'' + assets + '\',\'' + assetsFirst + '\')">취소</a>';
 							str += '	</li>';
 							str += '</ul>';
@@ -2019,7 +2174,7 @@ function getTableToEditRequisitionPop(jsonObj){
 						str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + assetFirst + '\'>';
 						str += '	<li>';
 						str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="motifyAsset(\'' + asset + '\',\'' + assetFirst + '\')">수정</a>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyAsset(\'' + asset + '\',\'' + assetFirst + '\')">수정</a>';
 						str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delAssets(\'' + asset + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + assetObj['@name'] + '\')">삭제</a>';
 						str += '		<font size="2" style="margin-left: 10px;">asset</font>';
 						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="assetKey" value=\'' + assetObj['@value'] + '\'/>';
@@ -2098,7 +2253,7 @@ function getTableToEditRequisitionPop(jsonObj){
 						str += '			<option value="zip">zip</option>';
 						str += '		</select>';
 						str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="assetValue" value=""/>';
-						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveAssets(\'' + nodeObj["@foreign-id"] + '\')">저장</a>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveAssets(\'' + asset + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + assetObj['@name'] + '\',\'' + assetFirst + '\'))">저장</a>';
 						str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelAsset(\'' + asset + '\',\'' + assetFirst + '\')">취소</a>';
 						str += '	</li>';
 						str += '</ul>';
@@ -2253,3 +2408,35 @@ function getOptionTagToRequisitionJsonObj(jsonObj){
 	}
 	return str;
 }
+
+/***************************************************************************************Foreign Source Name: default**********************************************************************************************/
+function getTableToDetectors(jsonObj){
+	console.log('---------------------detectorsJsonObj---------------------------');
+	console.log(jsonObj['detectors']);
+}
+
+function getTableToPolicies(jsonObj){
+	console.log('---------------------policiesJsonObj-----------------------------');
+	console.log(jsonObj['policies']);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

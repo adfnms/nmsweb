@@ -88,6 +88,22 @@
 			<input type="hidden" id="assetFirstValue" name="assetFirst" placeholder="" value="" >
 			<input type="hidden" id="getAddServiceValue" name="getAddService" placeholder="" value="" >
 			<input type="hidden" id="getAddServiceFirstValue" name="getAddServiceFirst" placeholder="" value="" >
+			<input type="hidden" id="rAP1_1" name="rAP1_1" placeholder="" value="" >
+			<input type="hidden" id="rAP1_2" name="rAP1_2" placeholder="" value="" >
+			<input type="hidden" id="rAP1_3" name="rAP1_3" placeholder="" value="" >
+			<input type="hidden" id="rAP1_4" name="rAP1_4" placeholder="" value="" >
+			<input type="hidden" id="rAP1_5" name="rAP1_5" placeholder="" value="" >
+			<input type="hidden" id="rAP1_6" name="rAP1_6" placeholder="" value="" >
+			<input type="hidden" id="rAP2_1" name="rAP2_1" placeholder="" value="" >
+			<input type="hidden" id="rAP2_2" name="rAP2_2" placeholder="" value="" >
+			<input type="hidden" id="rAP2_3" name="rAP2_3" placeholder="" value="" >
+			<input type="hidden" id="rAP2_4" name="rAP2_4" placeholder="" value="" >
+			<input type="hidden" id="rAP2_5" name="rAP2_5" placeholder="" value="" >
+			<input type="hidden" id="rAP2_6" name="rAP2_6" placeholder="" value="" >
+			<input type="hidden" id="gTTD1_1" name="gTTD1_1" placeholder="" value="" >
+			<input type="hidden" id="gTTD1_2" name="gTTD1_2" placeholder="" value="" >
+			<input type="hidden" id="gTTD2_1" name="gTTD2_1" placeholder="" value="" >
+			<input type="hidden" id="gTTD2_2" name="gTTD2_2" placeholder="" value="" >
 		</form>
 <!-- hidden -->		
 		<jsp:include page="/include/menu.jsp" />
@@ -137,7 +153,7 @@
 						<button type="button" class="btn btn-primary" style="width:220px" title="" onclick="javascript:addRequisition();">새로운 요구추가</button>
 					</div>
 					<div class="span3">
-						<button type="button" class="btn btn-primary " style="width:220px" title="" onclick="javascript:editRequisition();">기본외부소스 편집</button>
+						<button type="button" class="btn btn-primary " style="width:220px" title="" data-toggle="modal" href="#defaultRequisitionPop" onclick="javascript:editDefaultRequisition();">기본외부소스 편집</button>
 					</div>
 					<div class="span3">
 						<button type="button" class="btn btn-primary" style="width:220px" title="" onclick="javascript:resetRequisition();">기본외부소스 초기화</button>
@@ -172,6 +188,51 @@ style="display: none; width: 1365px; margin-left: -685px;margin-top: -9px;height
 								<form id="memberInfoFrm" name="memberInfoFrm" method="post">
 									<a type="button" class="btn btn-primary" style="margin-top:-9px;" onclick="showEditRequisitionPopList()">+&nbsp;노드&nbsp;추가</a>
 									<div style="width: 1334px;" id="requisitionListTable">
+									<!-- 리스트 부분-->
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- modal -->
+<!-- modal -->
+<div id="defaultRequisitionPop" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" 
+style="display: none; width: 1365px; margin-left: -685px;margin-top: -9px;height: 745px;">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">닫기</button>
+		<h3 id="editDefaultRequisitionPopTitle">Foreign Source Name: default</h3>
+	</div>
+	<div class="modal-body" style="width: 1336px;height: 600px;">
+		<div>
+			<div class="accordion" id="accordion3">
+				<div class="accordion-group">
+					<div id="collapseOne" class="accordion-body collapse in" style="height: 578px;overflow-y: auto">
+						<div class="accordion-inner">
+							 <div class="span8" style="margin-left: -14px;" data-toggle="collapse">
+								<form id="memberInfoFrm" name="memberInfoFrm" method="post">
+									<table>	
+										<tr>	
+											<td><h4 id="editDefaultRequisitionTitle1">Detectors</h4></td>
+											<td><a type="button" class="btn btn-primary btn-mini" style="margin-top:0px;margin-left: 10px;" onclick="addDetector()">Add Detector</a></td>
+										</tr>
+									</table>
+									<div style="width: 1334px;" id="defaultRequisitionListTable1">
+									<!-- 리스트 부분-->
+									</div>
+								</form>
+								<form id="memberInfoFrm" name="memberInfoFrm" method="post">
+									<table>	
+										<tr>	
+											<td><h4 id="editDefaultRequisitionTitle2">Policies</h4></td>
+											<td><a type="button" class="btn btn-primary btn-mini" style="margin-top:0px;margin-left: 10px;" onclick="addPolicy()">Add Policy</a></td>
+										</tr>
+									</table>
+									<div style="width: 1334px;" id="defaultRequisitionListTable2">
 									<!-- 리스트 부분-->
 									</div>
 								</form>
