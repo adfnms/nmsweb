@@ -88,22 +88,6 @@
 			<input type="hidden" id="assetFirstValue" name="assetFirst" placeholder="" value="" >
 			<input type="hidden" id="getAddServiceValue" name="getAddService" placeholder="" value="" >
 			<input type="hidden" id="getAddServiceFirstValue" name="getAddServiceFirst" placeholder="" value="" >
-			<input type="hidden" id="rAP1_1" name="rAP1_1" placeholder="" value="" >
-			<input type="hidden" id="rAP1_2" name="rAP1_2" placeholder="" value="" >
-			<input type="hidden" id="rAP1_3" name="rAP1_3" placeholder="" value="" >
-			<input type="hidden" id="rAP1_4" name="rAP1_4" placeholder="" value="" >
-			<input type="hidden" id="rAP1_5" name="rAP1_5" placeholder="" value="" >
-			<input type="hidden" id="rAP1_6" name="rAP1_6" placeholder="" value="" >
-			<input type="hidden" id="rAP2_1" name="rAP2_1" placeholder="" value="" >
-			<input type="hidden" id="rAP2_2" name="rAP2_2" placeholder="" value="" >
-			<input type="hidden" id="rAP2_3" name="rAP2_3" placeholder="" value="" >
-			<input type="hidden" id="rAP2_4" name="rAP2_4" placeholder="" value="" >
-			<input type="hidden" id="rAP2_5" name="rAP2_5" placeholder="" value="" >
-			<input type="hidden" id="rAP2_6" name="rAP2_6" placeholder="" value="" >
-			<input type="hidden" id="gTTD1_1" name="gTTD1_1" placeholder="" value="" >
-			<input type="hidden" id="gTTD1_2" name="gTTD1_2" placeholder="" value="" >
-			<input type="hidden" id="gTTD2_1" name="gTTD2_1" placeholder="" value="" >
-			<input type="hidden" id="gTTD2_2" name="gTTD2_2" placeholder="" value="" >
 		</form>
 <!-- hidden -->		
 		<jsp:include page="/include/menu.jsp" />

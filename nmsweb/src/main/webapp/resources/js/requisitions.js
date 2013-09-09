@@ -532,10 +532,6 @@ function cancelService(service, serviceFirst){
 	$('#' + service + '').hide();
 }
 
-function cancelDetectors(gAD1){
-	$('#' + gAD1 + '').remove();
-}
-
 function delInterface(interface, foreignId, ipAddr){
 	var foreignSource = $('#hiddenForm input[name=foreignSource]').val();
 	$.ajax({
@@ -817,6 +813,191 @@ function getDefaultForeignSourceNameAjax(callback){
 			}
 		}
 	});
+}
+
+function addPolicy(){
+	var str = addPolicyTab();
+	$('#defaultRequisitionListTable2').append(str);
+}
+
+function addDetector(){
+	var str = addDetectorTab();
+	$('#defaultRequisitionListTable1').append(str);
+}
+
+function cancelPolicies(ulId){
+	$('#' + ulId + '').remove();
+}
+
+function cancelDetectors(ulId){
+	$('#' + ulId + '').remove();
+}
+
+//공백 제거 함수
+function trim(str){
+	str = str.replaceAll(' ', '');
+	return str;
+}
+
+function savePolicies(ulId, policiesName){
+	var policyName = trim($('#' + ulId + '' + '\ input[name=policiesName]').val());
+	var policiesNm = trim(policiesName);
+	var policyClass = $('#' + ulId + '' + '\ select').val();
+	var policyKey1 = 'action';
+	var policyKey2 = 'matchBehavior';
+	var policyValue1 = 'DISABLE_COLLECTION'; 
+	var policyValue2 = 'ALL_PARAMETERS';
+	var str = "{\"policy\":[{\"class\": \"" + policyClass + "\",\"name\": \"" + policyName + "\",\"parameter\":[{\"value\": \"" + policyValue1 + "\",\"key\": \"" + policyKey1 + "\"},{\"value\": \"" + policyValue2 + "\",\"key\": \"" + policyKey2 + "\"}]}]}"; 
+	$.ajax({
+		type : 'post',
+		url : '/' + version + '/foreignSources/default/policies',
+		contentType : 'application/json',
+		data : str,
+		error : function() {
+			alert('새로운 policies 추가 실패');
+		},
+		success : function(data) {
+			$.ajax({
+				type : 'delete',
+				url : '/' + version + '/foreignSources/default/policies/' + policiesNm,
+				datatype : 'json',
+				contentType : 'application/json',
+				error : function(data) {
+					alert("policy 삭제 실패");
+				},
+				success : function(data) {
+					getDefaultForeignSourceNameAjax(editDefaultDetectors);
+					getDefaultForeignSourceNameAjax(editDefaultPolicies);
+				}
+			});
+		}
+	});
+}
+
+function saveDetectors(ulId, detectorsName){
+	var detectorName = trim($('#' + ulId + '' + '\ input[name=detectorsName]').val());
+	var detectorsNm = trim(detectorsName);
+	var detectorClass = $('#' + ulId + '' + '\ select').val();
+	var str = "{\"detector\":[{\"class\": \"" + detectorClass + "\",\"name\": \"" + detectorName + "\"}]}"; 
+	$.ajax({
+		type : 'post',
+		url : '/' + version + '/foreignSources/default/detectors',
+		contentType : 'application/json',
+		data : str,
+		error : function() {
+			alert('새로운 detectors 추가 실패');
+		},
+		success : function(data) {
+			$.ajax({
+				type : 'delete',
+				url : '/' + version + '/foreignSources/default/detectors/' + detectorsNm,
+				datatype : 'json',
+				contentType : 'application/json',
+				error : function(data) {
+					alert("detector 삭제 실패");
+				},
+				success : function(data) {
+					getDefaultForeignSourceNameAjax(editDefaultDetectors);
+					getDefaultForeignSourceNameAjax(editDefaultPolicies);
+				}
+			});
+		}
+	});
+}
+
+function savePolicy(ulId){
+	var policyName = $('#' + ulId + '' + '\ input[name=policiesName]').val();
+	var policyClass = $('#' + ulId + '' + '\ select').val();
+	var policyKey1 = 'action';
+	var policyKey2 = 'matchBehavior';
+	var policyValue1 = 'DISABLE_COLLECTION'; 
+	var policyValue2 = 'ALL_PARAMETERS';
+	var str = "{\"policy\":[{\"class\": \"" + policyClass + "\",\"name\": \"" + policyName + "\",\"parameter\":[{\"value\": \"" + policyValue1 + "\",\"key\": \"" + policyKey1 + "\"},{\"value\": \"" + policyValue2 + "\",\"key\": \"" + policyKey2 + "\"}]}]}"; 
+	$.ajax({
+		type : 'post',
+		url : '/' + version + '/foreignSources/default/policies',
+		contentType : 'application/json',
+		data : str,
+		error : function() {
+			alert('새로운 policies 추가 실패');
+		},
+		success : function(data) {
+			getDefaultForeignSourceNameAjax(editDefaultDetectors);
+			getDefaultForeignSourceNameAjax(editDefaultPolicies);
+		}
+	});
+}
+
+function saveDetector(ulId){
+	var detectorName = $('#' + ulId + '' + '\ input[name=detectorsName]').val();
+	var detectorClass = $('#' + ulId + '' + '\ select').val();
+	var str = "{\"detector\":[{\"class\": \"" + detectorClass + "\",\"name\": \"" + detectorName + "\"}]}"; 
+	$.ajax({
+		type : 'post',
+		url : '/' + version + '/foreignSources/default/detectors',
+		contentType : 'application/json',
+		data : str,
+		error : function() {
+			alert('새로운 detectors 추가 실패');
+		},
+		success : function(data) {
+			getDefaultForeignSourceNameAjax(editDefaultDetectors);
+			getDefaultForeignSourceNameAjax(editDefaultPolicies);
+		}
+	});
+}
+
+function delDetector(detectorName){
+	$.ajax({
+		type : 'delete',
+		url : '/' + version + '/foreignSources/default/detectors/' + detectorName,
+		datatype : 'json',
+		contentType : 'application/json',
+		error : function(data) {
+			alert("detector 삭제 실패");
+		},
+		success : function(data) {
+			getDefaultForeignSourceNameAjax(editDefaultDetectors);
+			getDefaultForeignSourceNameAjax(editDefaultPolicies);
+		}
+	});
+}
+
+
+function delPolicy(policyName){
+	$.ajax({
+		type : 'delete',
+		url : '/' + version + '/foreignSources/default/policies/' + policyName,
+		datatype : 'json',
+		contentType : 'application/json',
+		error : function(data) {
+			alert("policy 삭제 실패");
+		},
+		success : function(data) {
+			getDefaultForeignSourceNameAjax(editDefaultDetectors);
+			getDefaultForeignSourceNameAjax(editDefaultPolicies);
+		}
+	});
+}
+
+function modifyDetector(detectorBefore, detectorAfter){
+	$('#' + detectorBefore + '').hide();
+	$('#' + detectorAfter + '').show();
+}
+
+function modifyPolicy(policyBefore, policyAfter){
+	$('#' + policyBefore + '').hide();
+	$('#' + policyAfter + '').show();
+}
+
+function cancelPolicy(policyBefore, policyAfter){
+	$('#' + policyBefore + '').show();
+	$('#' + policyAfter + '').hide();
+}
+
+function cancelDetector(detectorBefore, detectorAfter){
+	$('#' + detectorBefore + '').show();
+	$('#' + detectorAfter + '').hide();
 }
 
 /******************************************************************************************************* view String edit *******************************************************************************************************/
@@ -2410,14 +2591,830 @@ function getOptionTagToRequisitionJsonObj(jsonObj){
 }
 
 /***************************************************************************************Foreign Source Name: default**********************************************************************************************/
+function modifySubDetector(){
+	
+}
+
+function modifySubPolicy(){
+	
+}
+
+//=======================================================================================
+function addPolicyTab(){
+	var str = '';
+	var addPolicyTab = Math.floor(Math.random() * Math.pow(10,20));
+		str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + addPolicyTab + '\'>';
+		str += '	<li>';
+		str += '		<font size="2" style="margin-left: 10px;">name</font>';
+		str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="policiesName" value=""/>';
+		str += '		<font size="2" style="margin-left: 10px;">class</font>';
+		str += '		<select id="policyClass" name="policyClass" style="width: 190px;margin-bottom: 0px;" type="text">';
+		str += '			<option value="org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy" selected="selected">Match IP Interface</option>';
+		str += '			<option value="org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy">Match SNMP Interface</option>';
+		str += '			<option value="org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy">Set Node Category</option>';
+		str += '		</select>';
+		str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="savePolicy(\'' + addPolicyTab + '\')">저장</a>';
+		str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicies(\'' + addPolicyTab + '\')">취소</a>';
+		str += '	</li>';
+		str += '</ul>';
+	return str;
+}
+//===================================================
+function addDetectorTab(){
+	var str = '';
+	var addDetectorTab = Math.floor(Math.random() * Math.pow(10,20));
+		str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + addDetectorTab + '\'>';
+		str += '	<li>';
+		str += '		<font size="2" style="margin-left: 10px;">name</font>';
+		str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="detectorsName" value="" placeholder="New Detector"/>';
+		str += '		<font size="2" style="margin-left: 10px;">class</font>';
+		str += '		<select id="detectorClass" name="detectorClass" style="width: 250px;margin-bottom: 0px;">';
+		str += '			<option value="org.opennms.netmgt.provision.detector.snmp.BgpSessionDetector" selected="selected">BGP_Session</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.bsf.BSFDetector">BSF</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.CitrixDetector">CITRIX</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.snmp.CiscoIpSlaDetector">Cisco_IP_SLA</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.datagram.DnsDetector">DNS</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.snmp.OpenManageChassisDetector">Dell_OpenManageChassis</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.snmp.DiskUsageDetector">DiskUsage</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.DominoIIOPDetector">DominoIIOP</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.FtpDetector">FTP</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.snmp.HostResourceSWRunDetector">HOST-RESOURCES</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.HttpDetector">HTTP</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.HttpsDetector">HTTPS</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.icmp.IcmpDetector">ICMP</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.ImapDetector">IMAP</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.jmx.JBossDetector">JBoss</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcDetector">JDBC</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.jmx.Jsr160Detector">JSR160</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcQueryDetector">JdbcQueryDetector</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcStoredProcedureDetector">JdbcStoredProcedureDetector</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.LdapDetector">LDAP</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.LdapsDetector">LDAPS</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.loop.LoopDetector">LOOP</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.msexchange.MSExchangeDetector">MSExchange</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.jmx.MX4JDetector">MX4J</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.MemcachedDetector">Memcached</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.NotesHttpDetector">NOTES</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.NrpeDetector">NRPE</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.datagram.NtpDetector">NTP</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.snmp.OmsaStorageDetector">OMSAStorage</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.snmp.PercDetector">PERC</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.Pop3Detector">POP3</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.smb.SmbDetector">SMB</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.sms.SmsDetector">SMS</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.SmtpDetector">SMTP</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.snmp.SnmpDetector">SNMP</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.ssh.SshDetector">SSH</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.TcpDetector">TCP</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.simple.TrivialTimeDetector">TrivialTime</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.web.WebDetector">WEB</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.wmi.WmiDetector">WMI</option>';
+		str += '			<option value="org.opennms.netmgt.provision.detector.snmp.Win32ServiceDetector">Win32Service</option>';
+		str += '		</select>';
+		str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveDetector(\'' + addDetectorTab + '\')">저장</a>';
+		str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelDetectors(\'' + addDetectorTab + '\')">취소</a>';
+		str += '	</li>';
+		str += '</ul>';
+	return str;
+}
+
 function getTableToDetectors(jsonObj){
-	console.log('---------------------detectorsJsonObj---------------------------');
+	console.log('---------------------detectors---------------------------');
 	console.log(jsonObj['detectors']);
+	var str = '';
+	if(jsonObj['detectors'] != null){
+		var detectorsObj = jsonObj['detectors'];
+		if(detectorsObj['detector']['@class'] == null){
+			for(var i in detectorsObj['detector']){
+				if(typeof detectorsObj['detector'][i]['parameter'] == 'object'){
+					if(detectorsObj['detector'][i]['parameter']['@key'] == null){
+						//수정 버튼 전 탭
+						var detectorBefore = Math.floor(Math.random() * Math.pow(10,20));
+						var detectorAfter = Math.floor(Math.random() * Math.pow(10,20));
+						str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + detectorBefore + '\'>';
+						str += '	<li>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyDetector(\'' + detectorBefore + '\',\'' + detectorAfter + '\')">수정</a>';
+						str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delDetector(\'' + detectorsObj['detector'][i]['@name'] + '\')">삭제</a>';
+						str += '		<font size="2" style="margin-left: 10px;">name</font>';
+						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorsName" value=\'' + detectorsObj['detector'][i]['@name'] + '\'/>';
+						str += '		<font size="2" style="margin-left: 10px;">class</font>';
+						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px; width: 580px;" readonly="readonly" type="text" name="detectorsClass" value=\'' + detectorsObj['detector'][i]['@class'] + '\'/>';
+						str += '		<a href="#" onclick="javascript:addDetectorParameter()"><font size="1" color="black">[Add Parameter]</font></a>';
+						str += '	</li>';
+						str += '</ul>';
+						//수정 버튼 후 탭
+						str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px; display:none;" id=\'' + detectorAfter + '\'>';
+						str += '	<li>';
+						str += '		<font size="2" style="margin-left: 10px;">name</font>';
+						str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="detectorsName" value="" placeholder="New Detector"/>';
+						str += '		<font size="2" style="margin-left: 10px;">class</font>';
+						str += '		<select id="detectorClass" name="detectorClass" style="width: 250px;margin-bottom: 0px;">';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.BgpSessionDetector" selected="selected">BGP_Session</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.bsf.BSFDetector">BSF</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.CitrixDetector">CITRIX</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.CiscoIpSlaDetector">Cisco_IP_SLA</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.datagram.DnsDetector">DNS</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.OpenManageChassisDetector">Dell_OpenManageChassis</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.DiskUsageDetector">DiskUsage</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.DominoIIOPDetector">DominoIIOP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.FtpDetector">FTP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.HostResourceSWRunDetector">HOST-RESOURCES</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.HttpDetector">HTTP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.HttpsDetector">HTTPS</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.icmp.IcmpDetector">ICMP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.ImapDetector">IMAP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.jmx.JBossDetector">JBoss</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcDetector">JDBC</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.jmx.Jsr160Detector">JSR160</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcQueryDetector">JdbcQueryDetector</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcStoredProcedureDetector">JdbcStoredProcedureDetector</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.LdapDetector">LDAP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.LdapsDetector">LDAPS</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.loop.LoopDetector">LOOP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.msexchange.MSExchangeDetector">MSExchange</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.jmx.MX4JDetector">MX4J</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.MemcachedDetector">Memcached</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.NotesHttpDetector">NOTES</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.NrpeDetector">NRPE</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.datagram.NtpDetector">NTP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.OmsaStorageDetector">OMSAStorage</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.PercDetector">PERC</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.Pop3Detector">POP3</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.smb.SmbDetector">SMB</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.sms.SmsDetector">SMS</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.SmtpDetector">SMTP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.SnmpDetector">SNMP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.ssh.SshDetector">SSH</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.TcpDetector">TCP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.TrivialTimeDetector">TrivialTime</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.web.WebDetector">WEB</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.wmi.WmiDetector">WMI</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.Win32ServiceDetector">Win32Service</option>';
+						str += '		</select>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveDetectors(\'' + detectorAfter + '\',\'' + detectorsObj['detector'][i]['@name'] + '\')">저장</a>';
+						str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelDetector(\'' + detectorBefore + '\',\'' + detectorAfter + '\')">취소</a>';
+						str += '	</li>';
+						str += '</ul>';
+						for(var q in detectorsObj['detector'][i]['parameter']){
+							//수정 버튼 전 하위 탭
+							var subDetectorBefore1 = Math.floor(Math.random() * Math.pow(10,20));
+							var subDetectorAfter1 = Math.floor(Math.random() * Math.pow(10,20));
+							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subDetectorBefore1 + '\'>';
+							str += '	<li>';
+							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubDetector()">수정</a>';
+							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubDetector()">삭제</a>';
+							str += '		<font size="2" style="margin-left: 10px;">key</font>';
+							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorKey" value=\'' + detectorsObj['detector'][i]['parameter'][q]['@key'] + '\'/>';
+							str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorValue" value=\'' + detectorsObj['detector'][i]['parameter'][q]['@value'] + '\'/>';
+							str += '	</li>';
+							str += '</ul>';
+							//수정 버튼 후 하위 탭
+							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px; display:none;" id=\'' + subDetectorAfter1 + '\'>';
+							str += '	<li>';
+							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
+							str += '		<font size="2" style="margin-left: 10px;">key</font>';
+							str += '		<select id="detectorKey" name="detectorKey" style="width: 190px;margin-bottom: 0px;">';
+							str += '			<option value="agentConfigFactory" selected="selected">agentConfigFactory</option>';
+							str += '			<option value="forceVersion">forceVersion</option>';
+							str += '			<option value="oid">oid</option>';
+							str += '			<option value="port">port</option>';
+							str += '			<option value="retries">retries</option>';
+							str += '			<option value="serviceName">serviceName</option>';
+							str += '			<option value="timeout">timeout</option>';
+							str += '			<option value="vbvalue">vbvalue</option>';
+							str += '		</select>';
+							str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+							str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="detectorKey" value="value"/>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveDetectors(\'' + subDetectorAfter1 + '\',\'' + detectorsObj['detector'][i]['@name'] + '\')">저장</a>';
+							str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelDetector(\'' + subDetectorBefore1 + '\',\'' + subDetectorAfter1 + '\')">취소</a>';
+							str += '	</li>';
+							str += '</ul>';
+						}
+					}else{
+						//수정 버튼 전 탭
+						var detectorBefore = Math.floor(Math.random() * Math.pow(10,20));
+						var detectorAfter = Math.floor(Math.random() * Math.pow(10,20));
+						str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + detectorBefore + '\'>';
+						str += '	<li>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyDetector(\'' + detectorBefore + '\',\'' + detectorAfter + '\')">수정</a>';
+						str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delDetector(\'' + detectorsObj['detector'][i]['@name'] + '\')">삭제</a>';
+						str += '		<font size="2" style="margin-left: 10px;">name</font>';
+						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorsName" value=\'' + detectorsObj['detector'][i]['@name'] + '\'/>';
+						str += '		<font size="2" style="margin-left: 10px;">class</font>';
+						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px; width: 580px;" readonly="readonly" type="text" name="detectorsClass" value=\'' + detectorsObj['detector'][i]['@class'] + '\'/>';
+						str += '		<a href="#" onclick="javascript:addDetectorParameter()"><font size="1" color="black">[Add Parameter]</font></a>';
+						str += '	</li>';
+						str += '</ul>';
+						//수정 버튼 후 탭
+						str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px; display:none;" id=\'' + detectorAfter + '\'>';
+						str += '	<li>';
+						str += '		<font size="2" style="margin-left: 10px;">name</font>';
+						str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="detectorsName" value="" placeholder="New Detector"/>';
+						str += '		<font size="2" style="margin-left: 10px;">class</font>';
+						str += '		<select id="detectorClass" name="detectorClass" style="width: 250px;margin-bottom: 0px;">';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.BgpSessionDetector" selected="selected">BGP_Session</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.bsf.BSFDetector">BSF</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.CitrixDetector">CITRIX</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.CiscoIpSlaDetector">Cisco_IP_SLA</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.datagram.DnsDetector">DNS</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.OpenManageChassisDetector">Dell_OpenManageChassis</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.DiskUsageDetector">DiskUsage</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.DominoIIOPDetector">DominoIIOP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.FtpDetector">FTP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.HostResourceSWRunDetector">HOST-RESOURCES</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.HttpDetector">HTTP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.HttpsDetector">HTTPS</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.icmp.IcmpDetector">ICMP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.ImapDetector">IMAP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.jmx.JBossDetector">JBoss</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcDetector">JDBC</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.jmx.Jsr160Detector">JSR160</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcQueryDetector">JdbcQueryDetector</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcStoredProcedureDetector">JdbcStoredProcedureDetector</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.LdapDetector">LDAP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.LdapsDetector">LDAPS</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.loop.LoopDetector">LOOP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.msexchange.MSExchangeDetector">MSExchange</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.jmx.MX4JDetector">MX4J</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.MemcachedDetector">Memcached</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.NotesHttpDetector">NOTES</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.NrpeDetector">NRPE</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.datagram.NtpDetector">NTP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.OmsaStorageDetector">OMSAStorage</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.PercDetector">PERC</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.Pop3Detector">POP3</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.smb.SmbDetector">SMB</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.sms.SmsDetector">SMS</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.SmtpDetector">SMTP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.SnmpDetector">SNMP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.ssh.SshDetector">SSH</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.TcpDetector">TCP</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.simple.TrivialTimeDetector">TrivialTime</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.web.WebDetector">WEB</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.wmi.WmiDetector">WMI</option>';
+						str += '			<option value="org.opennms.netmgt.provision.detector.snmp.Win32ServiceDetector">Win32Service</option>';
+						str += '		</select>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveDetectors(\'' + detectorAfter + '\',\'' + detectorsObj['detector'][i]['@name'] + '\')">저장</a>';
+						str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelDetector(\'' + detectorBefore + '\',\'' + detectorAfter + '\')">취소</a>';
+						str += '	</li>';
+						str += '</ul>';
+							//수정 버튼 후 하위 탭
+							var subDetectorBefore1 = Math.floor(Math.random() * Math.pow(10,20));
+							var subDetectorAfter1 = Math.floor(Math.random() * Math.pow(10,20));
+							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subDetectorBefore1 + '\'>';
+							str += '	<li>';
+							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubDetector()">수정</a>';
+							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubDetector()">삭제</a>';
+							str += '		<font size="2" style="margin-left: 10px;">key</font>';
+							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorKey" value=\'' + detectorsObj['detector'][i]['parameter']['@key'] + '\'/>';
+							str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorValue" value=\'' + detectorsObj['detector'][i]['parameter']['@value'] + '\'/>';
+							str += '	</li>';
+							str += '</ul>';
+							//수정 버튼 후 하위 탭
+							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px; display:none;" id=\'' + subDetectorAfter1 + '\'>';
+							str += '	<li>';
+							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
+							str += '		<font size="2" style="margin-left: 10px;">key</font>';
+							str += '		<select id="detectorKey" name="detectorKey" style="width: 190px;margin-bottom: 0px;">';
+							str += '			<option value="agentConfigFactory" selected="selected">agentConfigFactory</option>';
+							str += '			<option value="forceVersion">forceVersion</option>';
+							str += '			<option value="oid">oid</option>';
+							str += '			<option value="port">port</option>';
+							str += '			<option value="retries">retries</option>';
+							str += '			<option value="serviceName">serviceName</option>';
+							str += '			<option value="timeout">timeout</option>';
+							str += '			<option value="vbvalue">vbvalue</option>';
+							str += '		</select>';
+							str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+							str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="detectorKey" value="value"/>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveDetectors(\'' + subDetectorAfter1 + '\',\'' + detectorsObj['detector'][i]['@name'] + '\')">저장</a>';
+							str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelDetector(\'' + subDetectorBefore1 + '\',\'' + subDetectorAfter1 + '\')">취소</a>';
+							str += '	</li>';
+							str += '</ul>';
+					}
+				}else{
+					//수정 버튼 전 탭
+					var detectorBefore = Math.floor(Math.random() * Math.pow(10,20));
+					var detectorAfter = Math.floor(Math.random() * Math.pow(10,20));
+					str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + detectorBefore + '\'>';
+					str += '	<li>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyDetector(\'' + detectorBefore + '\',\'' + detectorAfter + '\')">수정</a>';
+					str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delDetector(\'' + detectorsObj['detector'][i]['@name'] + '\')">삭제</a>';
+					str += '		<font size="2" style="margin-left: 10px;">name</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorsName" value=\'' + detectorsObj['detector'][i]['@name'] + '\'/>';
+					str += '		<font size="2" style="margin-left: 10px;">class</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px; width: 580px;" readonly="readonly" type="text" name="detectorsClass" value=\'' + detectorsObj['detector'][i]['@class'] + '\'/>';
+					str += '		<a href="#" onclick="javascript:addDetectorParameter()"><font size="1" color="black">[Add Parameter]</font></a>';
+					str += '	</li>';
+					str += '</ul>';
+					//수정 버튼 후 탭
+					str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px; display:none;" id=\'' + detectorAfter + '\'>';
+					str += '	<li>';
+					str += '		<font size="2" style="margin-left: 10px;">name</font>';
+					str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="detectorsName" value="" placeholder="New Detector"/>';
+					str += '		<font size="2" style="margin-left: 10px;">class</font>';
+					str += '		<select id="detectorClass" name="detectorClass" style="width: 250px;margin-bottom: 0px;">';
+					str += '			<option value="org.opennms.netmgt.provision.detector.snmp.BgpSessionDetector" selected="selected">BGP_Session</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.bsf.BSFDetector">BSF</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.CitrixDetector">CITRIX</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.snmp.CiscoIpSlaDetector">Cisco_IP_SLA</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.datagram.DnsDetector">DNS</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.snmp.OpenManageChassisDetector">Dell_OpenManageChassis</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.snmp.DiskUsageDetector">DiskUsage</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.DominoIIOPDetector">DominoIIOP</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.FtpDetector">FTP</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.snmp.HostResourceSWRunDetector">HOST-RESOURCES</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.HttpDetector">HTTP</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.HttpsDetector">HTTPS</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.icmp.IcmpDetector">ICMP</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.ImapDetector">IMAP</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.jmx.JBossDetector">JBoss</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcDetector">JDBC</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.jmx.Jsr160Detector">JSR160</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcQueryDetector">JdbcQueryDetector</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcStoredProcedureDetector">JdbcStoredProcedureDetector</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.LdapDetector">LDAP</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.LdapsDetector">LDAPS</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.loop.LoopDetector">LOOP</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.msexchange.MSExchangeDetector">MSExchange</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.jmx.MX4JDetector">MX4J</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.MemcachedDetector">Memcached</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.NotesHttpDetector">NOTES</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.NrpeDetector">NRPE</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.datagram.NtpDetector">NTP</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.snmp.OmsaStorageDetector">OMSAStorage</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.snmp.PercDetector">PERC</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.Pop3Detector">POP3</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.smb.SmbDetector">SMB</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.sms.SmsDetector">SMS</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.SmtpDetector">SMTP</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.snmp.SnmpDetector">SNMP</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.ssh.SshDetector">SSH</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.TcpDetector">TCP</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.simple.TrivialTimeDetector">TrivialTime</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.web.WebDetector">WEB</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.wmi.WmiDetector">WMI</option>';
+					str += '			<option value="org.opennms.netmgt.provision.detector.snmp.Win32ServiceDetector">Win32Service</option>';
+					str += '		</select>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveDetectors(\'' + detectorAfter + '\',\'' + detectorsObj['detector'][i]['@name'] + '\')">저장</a>';
+					str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelDetector(\'' + detectorBefore + '\',\'' + detectorAfter + '\')">취소</a>';
+					str += '	</li>';
+					str += '</ul>';
+				}
+			}
+		}else{
+			//수정 버튼 전 탭
+			var detectorBefore = Math.floor(Math.random() * Math.pow(10,20));
+			var detectorAfter = Math.floor(Math.random() * Math.pow(10,20));
+			str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + detectorBefore + '\'>';
+			str += '	<li>';
+			str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyDetector(\'' + detectorBefore + '\',\'' + detectorAfter + '\')">수정</a>';
+			str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delDetector(\'' + detectorsObj['detector']['@name'] + '\')">삭제</a>';
+			str += '		<font size="2" style="margin-left: 10px;">name</font>';
+			str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorsName" value=\'' + detectorsObj['detector']['@name'] + '\'/>';
+			str += '		<font size="2" style="margin-left: 10px;">class</font>';
+			str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px; width: 580px;" readonly="readonly" type="text" name="detectorsClass" value=\'' + detectorsObj['detector']['@class'] + '\'/>';
+			str += '		<a href="#" onclick="javascript:addDetectorParameter()"><font size="1" color="black">[Add Parameter]</font></a>';
+			str += '	</li>';
+			str += '</ul>';
+			//수정 버튼 후 탭
+			str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px; display:none;" id=\'' + detectorAfter + '\'>';
+			str += '	<li>';
+			str += '		<font size="2" style="margin-left: 10px;">name</font>';
+			str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="detectorsName" value="" placeholder="New Detector"/>';
+			str += '		<font size="2" style="margin-left: 10px;">class</font>';
+			str += '		<select id="detectorClass" name="detectorClass" style="width: 250px;margin-bottom: 0px;">';
+			str += '			<option value="org.opennms.netmgt.provision.detector.snmp.BgpSessionDetector" selected="selected">BGP_Session</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.bsf.BSFDetector">BSF</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.CitrixDetector">CITRIX</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.snmp.CiscoIpSlaDetector">Cisco_IP_SLA</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.datagram.DnsDetector">DNS</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.snmp.OpenManageChassisDetector">Dell_OpenManageChassis</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.snmp.DiskUsageDetector">DiskUsage</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.DominoIIOPDetector">DominoIIOP</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.FtpDetector">FTP</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.snmp.HostResourceSWRunDetector">HOST-RESOURCES</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.HttpDetector">HTTP</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.HttpsDetector">HTTPS</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.icmp.IcmpDetector">ICMP</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.ImapDetector">IMAP</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.jmx.JBossDetector">JBoss</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcDetector">JDBC</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.jmx.Jsr160Detector">JSR160</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcQueryDetector">JdbcQueryDetector</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.jdbc.JdbcStoredProcedureDetector">JdbcStoredProcedureDetector</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.LdapDetector">LDAP</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.LdapsDetector">LDAPS</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.loop.LoopDetector">LOOP</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.msexchange.MSExchangeDetector">MSExchange</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.jmx.MX4JDetector">MX4J</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.MemcachedDetector">Memcached</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.NotesHttpDetector">NOTES</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.NrpeDetector">NRPE</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.datagram.NtpDetector">NTP</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.snmp.OmsaStorageDetector">OMSAStorage</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.snmp.PercDetector">PERC</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.Pop3Detector">POP3</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.smb.SmbDetector">SMB</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.sms.SmsDetector">SMS</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.SmtpDetector">SMTP</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.snmp.SnmpDetector">SNMP</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.ssh.SshDetector">SSH</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.TcpDetector">TCP</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.simple.TrivialTimeDetector">TrivialTime</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.web.WebDetector">WEB</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.wmi.WmiDetector">WMI</option>';
+			str += '			<option value="org.opennms.netmgt.provision.detector.snmp.Win32ServiceDetector">Win32Service</option>';
+			str += '		</select>';
+			str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveDetectors(\'' + detectorAfter + '\',\'' + detectorsObj['detector']['@name'] + '\')">저장</a>';
+			str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelDetector(\'' + detectorBefore + '\',\'' + detectorAfter + '\')">취소</a>';
+			str += '	</li>';
+			str += '</ul>';
+			for(var i in detectorsObj['detector']['parameter']){
+				//수정 버튼 전 하위 탭
+				var subDetectorBefore1 = Math.floor(Math.random() * Math.pow(10,20));
+				var subDetectorAfter1 = Math.floor(Math.random() * Math.pow(10,20));
+				str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subDetectorBefore1 + '\'>';
+				str += '	<li>';
+				str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
+				str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubDetector()">수정</a>';
+				str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubDetector()">삭제</a>';
+				str += '		<font size="2" style="margin-left: 10px;">key</font>';
+				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorKey" value=\'' + detectorsObj['detector']['parameter'][i]['@key'] + '\'/>';
+				str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorValue" value=\'' + detectorsObj['detector']['parameter'][i]['@value'] + '\'/>';
+				str += '	</li>';
+				str += '</ul>';
+				//수정 버튼 후 하위 탭
+				str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px; display:none;" id=\'' + subDetectorAfter1 + '\'>';
+				str += '	<li>';
+				str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
+				str += '		<font size="2" style="margin-left: 10px;">key</font>';
+				str += '		<select id="detectorKey" name="detectorKey" style="width: 190px;margin-bottom: 0px;">';
+				str += '			<option value="agentConfigFactory" selected="selected">agentConfigFactory</option>';
+				str += '			<option value="forceVersion">forceVersion</option>';
+				str += '			<option value="oid">oid</option>';
+				str += '			<option value="port">port</option>';
+				str += '			<option value="retries">retries</option>';
+				str += '			<option value="serviceName">serviceName</option>';
+				str += '			<option value="timeout">timeout</option>';
+				str += '			<option value="vbvalue">vbvalue</option>';
+				str += '		</select>';
+				str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+				str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="detectorKey" value="value"/>';
+				str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveDetectors(\'' + subDetectorAfter1 + '\',\'' + detectorsObj['detector']['@name'] + '\')">저장</a>';
+				str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelDetector(\'' + subDetectorBefore1 + '\',\'' + subDetectorAfter1 + '\')">취소</a>';
+				str += '	</li>';
+				str += '</ul>';
+			}
+		}
+	}else{
+		str += '<ul><li>Detector가 없습니다.</li></ul>';
+	}
+	return str;
 }
 
 function getTableToPolicies(jsonObj){
-	console.log('---------------------policiesJsonObj-----------------------------');
+	console.log('---------------------policies-----------------------------');
 	console.log(jsonObj['policies']);
+	var str = '';
+	if(jsonObj['policies'] != null){
+		var policiesObj = jsonObj['policies'];
+		if(policiesObj['policy']['parameter'] == null){
+			for(var i in policiesObj['policy']){
+				//수정 버튼 전 탭
+				var policyBefore = Math.floor(Math.random() * Math.pow(10,20));
+				var policyAfter = Math.floor(Math.random() * Math.pow(10,20));
+				str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + policyBefore + '\'>';
+				str += '	<li>';
+				str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyPolicy(\'' + policyBefore + '\',\'' + policyAfter + '\')">수정</a>';
+				str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delPolicy(\'' + policiesObj['policy'][i]['@name'] + '\')">삭제</a>';
+				str += '		<font size="2" style="margin-left: 10px;">name</font>';
+				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policiesName" value=\'' + policiesObj['policy'][i]['@name'] + '\'/>';
+				str += '		<font size="2" style="margin-left: 10px;">class</font>';
+				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px; width: 580px;" readonly="readonly" type="text" name="policiesClass" value=\'' + policiesObj['policy'][i]['@class'] + '\'/>';
+				if(policiesObj['policy'][i]['parameter'].length < 4){
+					str += '		<a href="#" onclick="javascript:addPolicyParameter()"><font size="1" color="black">[Add Parameter]</font></a>';
+				}
+				str += '	</li>';
+				str += '</ul>';
+				//수정 버튼 후 탭
+				str += '<ul style="display:inline; list-style:none; display:none; padding: 0px; margin: 0px;" id=\'' + policyAfter + '\'>';
+				str += '	<li>';
+				str += '		<font size="2" style="margin-left: 10px;">name</font>';
+				str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="policiesName" value=""/>';
+				str += '		<font size="2" style="margin-left: 10px;">class</font>';
+				str += '		<select id="policyClass" name="policyClass" style="width: 190px;margin-bottom: 0px;" type="text">';
+				str += '			<option value="org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy" selected="selected">Match IP Interface</option>';
+				str += '			<option value="org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy">Match SNMP Interface</option>';
+				str += '			<option value="org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy">Set Node Category</option>';
+				str += '		</select>';
+				str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="savePolicies(\'' + policyAfter + '\',\'' + policiesObj['policy'][i]['@name'] + '\')">저장</a>';
+				str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + policyBefore + '\',\'' + policyAfter + '\')">취소</a>';
+				str += '	</li>';
+				str += '</ul>';
+					//수정 버튼 전 하위 탭
+					var subPolicyBefore1 = Math.floor(Math.random() * Math.pow(10,20));
+					var subPolicyAfter1 = Math.floor(Math.random() * Math.pow(10,20));
+					str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore1 + '\'>';
+					str += '	<li>';
+					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+					str += '		<font size="2" style="margin-left: 10px;">key</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy'][i]['parameter'][0]['@key'] + '\'/>';
+					str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy'][i]['parameter'][0]['@value'] + '\'/>';
+					str += '	</li>';
+					str += '</ul>';
+					//수정 버튼 후 하위 탭
+					str += '<ul style="display:inline; list-style:none; padding: 0px; display:none; margin: 0px;" id=\'' + subPolicyAfter1 + '\'>';
+					str += '	<li>';
+					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
+					str += '		<font size="2" style="margin-left: 10px;">key</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy'][i]['parameter'][0]['@key'] + '\'/>';
+					str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+					str += '		<select id="policyClass" name="policyClass" style="width: 210px; margin-bottom: 0px;" type="text">';
+					str += '			<option value="DISABLE_COLLECTION" selected="selected">DISABLE_COLLECTION</option>';
+					str += '			<option value="DISABLE_SNMP_POLL">DISABLE_SNMP_POLL</option>';
+					str += '			<option value="DO_NOT_PERSIST">DO_NOT_PERSIST</option>';
+					str += '			<option value="ENABLE_COLLECTION">ENABLE_COLLECTION</option>';
+					str += '			<option value="ENABLE_SNMP_POLL">ENABLE_SNMP_POLL</option>';
+					str += '			<option value="MANAGE">MANAGE</option>';
+					str += '			<option value="UNMANAGE">UNMANAGE</option>';
+					str += '		</select>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="savePolicies(\'' + subPolicyAfter1 + '\',\'' + policiesObj['policy'][i]['@name'] + '\')">저장</a>';
+					str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + subPolicyBefore1 + '\',\'' + subPolicyAfter1 + '\')">취소</a>';
+					str += '	</li>';
+					str += '</ul>';
+					//수정 버튼 전 하위 탭
+					var subPolicyBefore2 = Math.floor(Math.random() * Math.pow(10,20));
+					var subPolicyAfter2 = Math.floor(Math.random() * Math.pow(10,20));
+					str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore2 + '\'>';
+					str += '	<li>';
+					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+					str += '		<font size="2" style="margin-left: 10px;">key</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy'][i]['parameter'][1]['@key'] + '\'/>';
+					str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy'][i]['parameter'][1]['@value'] + '\'/>';
+					str += '	</li>';
+					str += '</ul>';
+					//수정 버튼 후 하위 탭
+					str += '<ul style="display:inline; list-style:none; padding: 0px; display:none; margin: 0px;" id=\'' + subPolicyAfter2 + '\'>';
+					str += '	<li>';
+					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
+					str += '		<font size="2" style="margin-left: 10px;">key</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy'][i]['parameter'][1]['@key'] + '\'/>';
+					str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+					str += '		<select id="policyClass" name="policyClass" style="width: 210px; margin-bottom: 0px;" type="text">';
+					str += '			<option value="DISABLE_COLLECTION" selected="selected">DISABLE_COLLECTION</option>';
+					str += '			<option value="DISABLE_SNMP_POLL">DISABLE_SNMP_POLL</option>';
+					str += '			<option value="DO_NOT_PERSIST">DO_NOT_PERSIST</option>';
+					str += '			<option value="ENABLE_COLLECTION">ENABLE_COLLECTION</option>';
+					str += '			<option value="ENABLE_SNMP_POLL">ENABLE_SNMP_POLL</option>';
+					str += '			<option value="MANAGE">MANAGE</option>';
+					str += '			<option value="UNMANAGE">UNMANAGE</option>';
+					str += '		</select>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="savePolicies(\'' + subPolicyAfter2 + '\',\'' + policiesObj['policy'][i]['@name'] + '\')">저장</a>';
+					str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + subPolicyBefore2 + '\',\'' + subPolicyAfter2 + '\')">취소</a>';
+					str += '	</li>';
+					str += '</ul>';
+				try{
+					if(typeof policiesObj['policy'][i]['parameter'][2]['@key'] != 'undefined'){
+						//수정 버튼 전 하위 탭
+						var subPolicyBefore3 = Math.floor(Math.random() * Math.pow(10,20));
+						var subPolicyAfter3 = Math.floor(Math.random() * Math.pow(10,20));
+						str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore3 + '\'>';
+						str += '	<li>';
+						str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+						str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubPolicy()">삭제</a>';
+						str += '		<font size="2" style="margin-left: 10px;">key</font>';
+						str += '		<input style="border:0; background: lightgrey; height: 13px; width: 340px; margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy'][i]['parameter'][2]['@key'] + '\'/>';
+						str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy'][i]['parameter'][2]['@value'] + '\'/>';
+						str += '	</li>';
+						str += '</ul>';
+						//수정 버튼 후 하위 탭
+						str += '<ul style="display:inline; list-style:none; display:none; padding: 0px;margin: 0px;" id=\'' + subPolicyAfter3 + '\'>';
+						str += '	<li>';
+						str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
+						str += '		<font size="2" style="margin-left: 10px;">key</font>';
+						str += '		<select id="policyClass" name="policyClass" style="width: 130px; margin-bottom: 0px;" type="text">';
+						str += '			<option value="hostName" selected="selected">hostName</option>';
+						str += '		</select>';
+						str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value="value"/>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="savePolicies(\'' + subPolicyAfter3 + '\',\'' + policiesObj['policy'][i]['@name'] + '\')">저장</a>';
+						str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + subPolicyBefore3 + '\',\'' + subPolicyAfter3 + '\')">취소</a>';
+						str += '	</li>';
+						str += '</ul>';
+					}
+				}catch(e){}
+				try{
+					if(typeof policiesObj['policy'][i]['parameter'][3]['@key'] != 'undefined'){
+						//수정 버튼 전 하위 탭
+						var subPolicyBefore4 = Math.floor(Math.random() * Math.pow(10,20));
+						var subPolicyAfter4 = Math.floor(Math.random() * Math.pow(10,20));
+						str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore4 + '\'>';
+						str += '	<li>';
+						str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+						str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubPolicy()">삭제</a>';
+						str += '		<font size="2" style="margin-left: 10px;">key</font>';
+						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px; width: 340px; margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy'][i]['parameter'][3]['@key'] + '\'/>';
+						str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy'][i]['parameter'][3]['@value'] + '\'/>';
+						str += '	</li>';
+						str += '</ul>';
+						//수정 버튼 후 하위 탭
+						str += '<ul style="display:inline; list-style:none; padding: 0px; display:none; margin: 0px;" id=\'' + subPolicyAfter4 + '\'>';
+						str += '	<li>';
+						str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
+						str += '		<font size="2" style="margin-left: 10px;">key</font>';
+						str += '		<select id="policyClass" name="policyClass" style="width: 130px; margin-bottom: 0px;" type="text">';
+						str += '			<option value="hostName" selected="selected">hostName</option>';
+						str += '		</select>';
+						str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value="value"/>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="savePolicies(\'' + subPolicyAfter4 + '\',\'' + policiesObj['policy'][i]['@name'] + '\')">저장</a>';
+						str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + subPolicyBefore4 + '\',\'' + subPolicyAfter4 + '\')">취소</a>';
+						str += '	</li>';
+						str += '</ul>';
+					}
+				}catch(e){}
+			}
+		}else{
+			//수정 버튼 전 탭
+			var policyBefore = Math.floor(Math.random() * Math.pow(10,20));
+			var policyAfter = Math.floor(Math.random() * Math.pow(10,20));
+			str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + policyBefore + '\'>';
+			str += '	<li>';
+			str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyPolicy(\'' + policyBefore + '\',\'' + policyAfter + '\')">수정</a>';
+			str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delPolicy(\'' + policiesObj['policy']['@name'] + '\')">삭제</a>';
+			str += '		<font size="2" style="margin-left: 10px;">name</font>';
+			str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policiesName" value=\'' + policiesObj['policy']['@name'] + '\'/>';
+			str += '		<font size="2" style="margin-left: 10px;">class</font>';
+			str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px; width: 580px;" readonly="readonly" type="text" name="policiesClass" value=\'' + policiesObj['policy']['@class'] + '\'/>';
+			if(policiesObj['policy']['parameter'].length < 4){
+				str += '		<a href="#" onclick="javascript:addPolicyParameter()"><font size="1" color="black">[Add Parameter]</font></a>';
+			}
+			str += '	</li>';
+			str += '</ul>';
+			//수정 버튼 후 탭
+			str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px; display:none;" id=\'' + policyAfter + '\'>';
+			str += '	<li>';
+			str += '		<font size="2" style="margin-left: 10px;">name</font>';
+			str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="policiesName" value=""/>';
+			str += '		<font size="2" style="margin-left: 10px;">class</font>';
+			str += '		<select id="policyClass" name="policyClass" style="width: 190px;margin-bottom: 0px;" type="text">';
+			str += '			<option value="org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy" selected="selected">Match IP Interface</option>';
+			str += '			<option value="org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy">Match SNMP Interface</option>';
+			str += '			<option value="org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy">Set Node Category</option>';
+			str += '		</select>';
+			str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="savePolicies(\'' + policyAfter + '\',\'' + policiesObj['policy']['@name'] + '\')">저장</a>';
+			str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + policyBefore + '\',\'' + policyAfter + '\')">취소</a>';
+			str += '	</li>';
+			str += '</ul>';
+				//수정 버튼 전 하위 탭
+				var subPolicyBefore1 = Math.floor(Math.random() * Math.pow(10,20));
+				var subPolicyAfter1 = Math.floor(Math.random() * Math.pow(10,20));
+				str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore1 + '\'>';
+				str += '	<li>';
+				str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
+				str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+				str += '		<font size="2" style="margin-left: 10px;">key</font>';
+				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy']['parameter'][0]['@key'] + '\'/>';
+				str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy']['parameter'][0]['@value'] + '\'/>';
+				str += '	</li>';
+				str += '</ul>';
+				//수정 버튼 후 하위 탭
+				str += '<ul style="display:inline; list-style:none; padding: 0px; display:none; margin: 0px;" id=\'' + subPolicyAfter1 + '\'>';
+				str += '	<li>';
+				str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
+				str += '		<font size="2" style="margin-left: 10px;">key</font>';
+				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy']['parameter'][0]['@key'] + '\'/>';
+				str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+				str += '		<select id="policyClass" name="policyClass" style="width: 210px; margin-bottom: 0px;" type="text">';
+				str += '			<option value="DISABLE_COLLECTION" selected="selected">DISABLE_COLLECTION</option>';
+				str += '			<option value="DISABLE_SNMP_POLL">DISABLE_SNMP_POLL</option>';
+				str += '			<option value="DO_NOT_PERSIST">DO_NOT_PERSIST</option>';
+				str += '			<option value="ENABLE_COLLECTION">ENABLE_COLLECTION</option>';
+				str += '			<option value="ENABLE_SNMP_POLL">ENABLE_SNMP_POLL</option>';
+				str += '			<option value="MANAGE">MANAGE</option>';
+				str += '			<option value="UNMANAGE">UNMANAGE</option>';
+				str += '		</select>';
+				str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="savePolicies(\'' + subPolicyAfter1 + '\',\'' + policiesObj['policy']['@name'] + '\')">저장</a>';
+				str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + subPolicyBefore1 + '\',\'' + subPolicyAfter1 + '\')">취소</a>';
+				str += '	</li>';
+				str += '</ul>';
+				//수정 버튼 전 하위 탭
+				var subPolicyBefore2 = Math.floor(Math.random() * Math.pow(10,20));
+				var subPolicyAfter2 = Math.floor(Math.random() * Math.pow(10,20));
+				str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore2 + '\'>';
+				str += '	<li>';
+				str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
+				str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+				str += '		<font size="2" style="margin-left: 10px;">key</font>';
+				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy']['parameter'][1]['@key'] + '\'/>';
+				str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy']['parameter'][1]['@value'] + '\'/>';
+				str += '	</li>';
+				str += '</ul>';
+				//수정 버튼 후 하위 탭
+				str += '<ul style="display:inline; list-style:none; padding: 0px; display:none; margin: 0px;" id=\'' + subPolicyAfter2 + '\'>';
+				str += '	<li>';
+				str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
+				str += '		<font size="2" style="margin-left: 10px;">key</font>';
+				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy']['parameter'][1]['@key'] + '\'/>';
+				str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+				str += '		<select id="policyClass" name="policyClass" style="width: 210px; margin-bottom: 0px;" type="text">';
+				str += '			<option value="DISABLE_COLLECTION" selected="selected">DISABLE_COLLECTION</option>';
+				str += '			<option value="DISABLE_SNMP_POLL">DISABLE_SNMP_POLL</option>';
+				str += '			<option value="DO_NOT_PERSIST">DO_NOT_PERSIST</option>';
+				str += '			<option value="ENABLE_COLLECTION">ENABLE_COLLECTION</option>';
+				str += '			<option value="ENABLE_SNMP_POLL">ENABLE_SNMP_POLL</option>';
+				str += '			<option value="MANAGE">MANAGE</option>';
+				str += '			<option value="UNMANAGE">UNMANAGE</option>';
+				str += '		</select>';
+				str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="savePolicies(\'' + subPolicyAfter2 + '\',\'' + policiesObj['policy']['@name'] + '\')">저장</a>';
+				str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + subPolicyBefore2 + '\',\'' + subPolicyAfter2 + '\')">취소</a>';
+				str += '	</li>';
+				str += '</ul>';
+			try{
+				if(typeof policiesObj['policy']['parameter'][2]['@key'] != 'undefined'){
+					//수정 버튼 전 탭
+					var subPolicyBefore3 = Math.floor(Math.random() * Math.pow(10,20));
+					var subPolicyAfter3 = Math.floor(Math.random() * Math.pow(10,20));
+					str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore3 + '\'>';
+					str += '	<li>';
+					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+					str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubPolicy()">삭제</a>';
+					str += '		<font size="2" style="margin-left: 10px;">key</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy']['parameter'][2]['@key'] + '\'/>';
+					str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy']['parameter'][2]['@value'] + '\'/>';
+					str += '	</li>';
+					str += '</ul>';
+					//수정 버튼 후 하위 탭
+					str += '<ul style="display:inline; list-style:none; display:none; padding: 0px;margin: 0px;" id=\'' + subPolicyAfter3 + '\'>';
+					str += '	<li>';
+					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
+					str += '		<font size="2" style="margin-left: 10px;">key</font>';
+					str += '		<select id="policyClass" name="policyClass" style="width: 130px; margin-bottom: 0px;" type="text">';
+					str += '			<option value="hostName" selected="selected">hostName</option>';
+					str += '		</select>';
+					str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value="value"/>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="savePolicies(\'' + subPolicyAfter3 + '\',\'' + policiesObj['policy']['@name'] + '\')">저장</a>';
+					str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + subPolicyBefore3 + '\',\'' + subPolicyAfter3 + '\')">취소</a>';
+					str += '	</li>';
+					str += '</ul>';
+				}
+			}catch(e){}
+			try{
+				if(typeof policiesObj['policy']['parameter'][3]['@key'] != 'undefined'){
+					//수정 버튼 전 하위 탭
+					var subPolicyBefore4 = Math.floor(Math.random() * Math.pow(10,20));
+					var subPolicyAfter4 = Math.floor(Math.random() * Math.pow(10,20));
+					str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore4 + '\'>';
+					str += '	<li>';
+					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+					str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubPolicy()">삭제</a>';
+					str += '		<font size="2" style="margin-left: 10px;">key</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy']['parameter'][3]['@key'] + '\'/>';
+					str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy']['parameter'][3]['@value'] + '\'/>';
+					str += '	</li>';
+					str += '</ul>';
+					//수정 버튼 후 하위 탭
+					str += '<ul style="display:inline; list-style:none; padding: 0px; display:none; margin: 0px;" id=\'' + subPolicyAfter4 + '\'>';
+					str += '	<li>';
+					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
+					str += '		<font size="2" style="margin-left: 10px;">key</font>';
+					str += '		<select id="policyClass" name="policyClass" style="width: 130px; margin-bottom: 0px;" type="text">';
+					str += '			<option value="hostName" selected="selected">hostName</option>';
+					str += '		</select>';
+					str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value="value"/>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="savePolicies(\'' + subPolicyAfter4 + '\',\'' + policiesObj['policy']['@name'] + '\')">저장</a>';
+					str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + subPolicyBefore4 + '\',\'' + subPolicyAfter4 + '\')">취소</a>';
+					str += '	</li>';
+					str += '</ul>';
+				}
+			}catch(e){}
+		}
+	}else{
+		str += '<ul><li>Policy가 없습니다.</li></ul>';
+	}
+	return str;
 }
 
 
