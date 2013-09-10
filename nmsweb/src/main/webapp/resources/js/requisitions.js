@@ -1000,6 +1000,26 @@ function cancelDetector(detectorBefore, detectorAfter){
 	$('#' + detectorAfter + '').hide();
 }
 
+function modifySubDetector(subDetectorBefore, subDetectorAfter){
+	$('#' + subDetectorBefore + '').hide();
+	$('#' + subDetectorAfter + '').show();
+}
+
+function modifySubPolicy(subPolicyBefore, subPolicyAfter){
+	$('#' + subPolicyBefore + '').hide();
+	$('#' + subPolicyAfter + '').show();
+}
+
+function addDetectorParameter(detectorBefore){
+	var str = getDetectorParameter();
+	$('#' + detectorBefore + '').append(str);
+}
+
+function addPolicyParameter(policyBefore){
+	var str = getPolicyParameter();
+	$('#' + policyBefore + '').append(str);
+}
+
 /******************************************************************************************************* view String edit *******************************************************************************************************/
 function getTableToFinishAddNodeAsset(foreignId, assetValue, assetName){
 	var addAsset = Math.floor(Math.random() * Math.pow(10,15));
@@ -2591,15 +2611,66 @@ function getOptionTagToRequisitionJsonObj(jsonObj){
 }
 
 /***************************************************************************************Foreign Source Name: default**********************************************************************************************/
-function modifySubDetector(){
+function delSubDetector(){
 	
 }
 
-function modifySubPolicy(){
+function delSubPolicy(){
 	
 }
 
 //=======================================================================================
+function getDetectorParameter(){
+	var subCancelDetector = Math.floor(Math.random() * Math.pow(10,20));
+	var str ='';
+		str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subCancelDetector + '\'>';
+		str += '	<li>';
+		str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
+		str += '		<font size="2" style="margin-left: 10px;">key</font>';
+		str += '		<select id="detectorKey" name="detectorKey" style="width: 190px;margin-bottom: 0px;">';
+		str += '			<option value="agentConfigFactory" selected="selected">agentConfigFactory</option>';
+		str += '			<option value="forceVersion">forceVersion</option>';
+		str += '			<option value="oid">oid</option>';
+		str += '			<option value="port">port</option>';
+		str += '			<option value="retries">retries</option>';
+		str += '			<option value="serviceName">serviceName</option>';
+		str += '			<option value="timeout">timeout</option>';
+		str += '			<option value="vbvalue">vbvalue</option>';
+		str += '		</select>';
+		str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+		str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="detectorKey" value="value"/>';
+		str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveDetectors()">저장</a>';
+		str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelDetectors(\'' + subCancelDetector + '\')">취소</a>';
+		str += '	</li>';
+		str += '</ul>';
+	return str;
+}
+
+function getPolicyParameter(){
+	var subCancelPolicy = Math.floor(Math.random() * Math.pow(10,20));;
+	var str = '';
+		str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + subCancelPolicy + '\'>';
+		str += '	<li>';
+		str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
+		str += '		<font size="2" style="margin-left: 10px;">key</font>';
+		str += '		<input style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" name="policyKey" value=""/>';
+		str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
+		str += '		<select id="policyClass" name="policyClass" style="width: 210px; margin-bottom: 0px;" type="text">';
+		str += '			<option value="DISABLE_COLLECTION" selected="selected">DISABLE_COLLECTION</option>';
+		str += '			<option value="DISABLE_SNMP_POLL">DISABLE_SNMP_POLL</option>';
+		str += '			<option value="DO_NOT_PERSIST">DO_NOT_PERSIST</option>';
+		str += '			<option value="ENABLE_COLLECTION">ENABLE_COLLECTION</option>';
+		str += '			<option value="ENABLE_SNMP_POLL">ENABLE_SNMP_POLL</option>';
+		str += '			<option value="MANAGE">MANAGE</option>';
+		str += '			<option value="UNMANAGE">UNMANAGE</option>';
+		str += '		</select>';
+		str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="savePolicies()">저장</a>';
+		str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicies(\'' + subCancelPolicy + '\')">취소</a>';
+		str += '	</li>';
+		str += '</ul>';
+	return str;
+}
+
 function addPolicyTab(){
 	var str = '';
 	var addPolicyTab = Math.floor(Math.random() * Math.pow(10,20));
@@ -2619,7 +2690,7 @@ function addPolicyTab(){
 		str += '</ul>';
 	return str;
 }
-//===================================================
+
 function addDetectorTab(){
 	var str = '';
 	var addDetectorTab = Math.floor(Math.random() * Math.pow(10,20));
@@ -2699,7 +2770,7 @@ function getTableToDetectors(jsonObj){
 						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorsName" value=\'' + detectorsObj['detector'][i]['@name'] + '\'/>';
 						str += '		<font size="2" style="margin-left: 10px;">class</font>';
 						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px; width: 580px;" readonly="readonly" type="text" name="detectorsClass" value=\'' + detectorsObj['detector'][i]['@class'] + '\'/>';
-						str += '		<a href="#" onclick="javascript:addDetectorParameter()"><font size="1" color="black">[Add Parameter]</font></a>';
+						str += '		<a href="#" onclick="javascript:addDetectorParameter(\'' + detectorBefore + '\')"><font size="1" color="black">[Add Parameter]</font></a>';
 						str += '	</li>';
 						str += '</ul>';
 						//수정 버튼 후 탭
@@ -2762,7 +2833,7 @@ function getTableToDetectors(jsonObj){
 							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subDetectorBefore1 + '\'>';
 							str += '	<li>';
 							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubDetector()">수정</a>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubDetector(\'' + subDetectorBefore1 + '\',\'' + subDetectorAfter1 + '\')">수정</a>';
 							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubDetector()">삭제</a>';
 							str += '		<font size="2" style="margin-left: 10px;">key</font>';
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorKey" value=\'' + detectorsObj['detector'][i]['parameter'][q]['@key'] + '\'/>';
@@ -2804,7 +2875,7 @@ function getTableToDetectors(jsonObj){
 						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorsName" value=\'' + detectorsObj['detector'][i]['@name'] + '\'/>';
 						str += '		<font size="2" style="margin-left: 10px;">class</font>';
 						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px; width: 580px;" readonly="readonly" type="text" name="detectorsClass" value=\'' + detectorsObj['detector'][i]['@class'] + '\'/>';
-						str += '		<a href="#" onclick="javascript:addDetectorParameter()"><font size="1" color="black">[Add Parameter]</font></a>';
+						str += '		<a href="#" onclick="javascript:addDetectorParameter(\'' + detectorBefore + '\')"><font size="1" color="black">[Add Parameter]</font></a>';
 						str += '	</li>';
 						str += '</ul>';
 						//수정 버튼 후 탭
@@ -2866,7 +2937,7 @@ function getTableToDetectors(jsonObj){
 							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subDetectorBefore1 + '\'>';
 							str += '	<li>';
 							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubDetector()">수정</a>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubDetector(\'' + subDetectorBefore1 + '\',\'' + subDetectorAfter1 + '\')">수정</a>';
 							str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubDetector()">삭제</a>';
 							str += '		<font size="2" style="margin-left: 10px;">key</font>';
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorKey" value=\'' + detectorsObj['detector'][i]['parameter']['@key'] + '\'/>';
@@ -2908,7 +2979,7 @@ function getTableToDetectors(jsonObj){
 					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorsName" value=\'' + detectorsObj['detector'][i]['@name'] + '\'/>';
 					str += '		<font size="2" style="margin-left: 10px;">class</font>';
 					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px; width: 580px;" readonly="readonly" type="text" name="detectorsClass" value=\'' + detectorsObj['detector'][i]['@class'] + '\'/>';
-					str += '		<a href="#" onclick="javascript:addDetectorParameter()"><font size="1" color="black">[Add Parameter]</font></a>';
+					str += '		<a href="#" onclick="javascript:addDetectorParameter(\'' + detectorBefore + '\')"><font size="1" color="black">[Add Parameter]</font></a>';
 					str += '	</li>';
 					str += '</ul>';
 					//수정 버튼 후 탭
@@ -2978,7 +3049,7 @@ function getTableToDetectors(jsonObj){
 			str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorsName" value=\'' + detectorsObj['detector']['@name'] + '\'/>';
 			str += '		<font size="2" style="margin-left: 10px;">class</font>';
 			str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px; width: 580px;" readonly="readonly" type="text" name="detectorsClass" value=\'' + detectorsObj['detector']['@class'] + '\'/>';
-			str += '		<a href="#" onclick="javascript:addDetectorParameter()"><font size="1" color="black">[Add Parameter]</font></a>';
+			str += '		<a href="#" onclick="javascript:addDetectorParameter(\'' + detectorBefore + '\')"><font size="1" color="black">[Add Parameter]</font></a>';
 			str += '	</li>';
 			str += '</ul>';
 			//수정 버튼 후 탭
@@ -3041,7 +3112,7 @@ function getTableToDetectors(jsonObj){
 				str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subDetectorBefore1 + '\'>';
 				str += '	<li>';
 				str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-				str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubDetector()">수정</a>';
+				str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubDetector(\'' + subDetectorBefore1 + '\',\'' + subDetectorAfter1 + '\')">수정</a>';
 				str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubDetector()">삭제</a>';
 				str += '		<font size="2" style="margin-left: 10px;">key</font>';
 				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorKey" value=\'' + detectorsObj['detector']['parameter'][i]['@key'] + '\'/>';
@@ -3098,7 +3169,7 @@ function getTableToPolicies(jsonObj){
 				str += '		<font size="2" style="margin-left: 10px;">class</font>';
 				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px; width: 580px;" readonly="readonly" type="text" name="policiesClass" value=\'' + policiesObj['policy'][i]['@class'] + '\'/>';
 				if(policiesObj['policy'][i]['parameter'].length < 4){
-					str += '		<a href="#" onclick="javascript:addPolicyParameter()"><font size="1" color="black">[Add Parameter]</font></a>';
+					str += '		<a href="#" onclick="javascript:addPolicyParameter(\'' + policyBefore + '\')"><font size="1" color="black">[Add Parameter]</font></a>';
 				}
 				str += '	</li>';
 				str += '</ul>';
@@ -3123,7 +3194,7 @@ function getTableToPolicies(jsonObj){
 					str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore1 + '\'>';
 					str += '	<li>';
 					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
-					str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy(\'' + subPolicyBefore1 + '\',\'' + subPolicyAfter1 + '\')">수정</a>';
 					str += '		<font size="2" style="margin-left: 10px;">key</font>';
 					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy'][i]['parameter'][0]['@key'] + '\'/>';
 					str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
@@ -3156,7 +3227,7 @@ function getTableToPolicies(jsonObj){
 					str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore2 + '\'>';
 					str += '	<li>';
 					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
-					str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy(\'' + subPolicyBefore2 + '\',\'' + subPolicyAfter2 + '\')">수정</a>';
 					str += '		<font size="2" style="margin-left: 10px;">key</font>';
 					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy'][i]['parameter'][1]['@key'] + '\'/>';
 					str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
@@ -3191,7 +3262,7 @@ function getTableToPolicies(jsonObj){
 						str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore3 + '\'>';
 						str += '	<li>';
 						str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy(\'' + subPolicyBefore3 + '\',\'' + subPolicyAfter3 + '\')">수정</a>';
 						str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubPolicy()">삭제</a>';
 						str += '		<font size="2" style="margin-left: 10px;">key</font>';
 						str += '		<input style="border:0; background: lightgrey; height: 13px; width: 340px; margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy'][i]['parameter'][2]['@key'] + '\'/>';
@@ -3223,7 +3294,7 @@ function getTableToPolicies(jsonObj){
 						str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore4 + '\'>';
 						str += '	<li>';
 						str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy(\'' + subPolicyBefore4 + '\',\'' + subPolicyAfter4 + '\')">수정</a>';
 						str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubPolicy()">삭제</a>';
 						str += '		<font size="2" style="margin-left: 10px;">key</font>';
 						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px; width: 340px; margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy'][i]['parameter'][3]['@key'] + '\'/>';
@@ -3261,7 +3332,7 @@ function getTableToPolicies(jsonObj){
 			str += '		<font size="2" style="margin-left: 10px;">class</font>';
 			str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px; width: 580px;" readonly="readonly" type="text" name="policiesClass" value=\'' + policiesObj['policy']['@class'] + '\'/>';
 			if(policiesObj['policy']['parameter'].length < 4){
-				str += '		<a href="#" onclick="javascript:addPolicyParameter()"><font size="1" color="black">[Add Parameter]</font></a>';
+				str += '		<a href="#" onclick="javascript:addPolicyParameter(\'' + policyBefore + '\')"><font size="1" color="black">[Add Parameter]</font></a>';
 			}
 			str += '	</li>';
 			str += '</ul>';
@@ -3286,7 +3357,7 @@ function getTableToPolicies(jsonObj){
 				str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore1 + '\'>';
 				str += '	<li>';
 				str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
-				str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+				str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy(\'' + subPolicyBefore1 + '\',\'' + subPolicyAfter1 + '\')">수정</a>';
 				str += '		<font size="2" style="margin-left: 10px;">key</font>';
 				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy']['parameter'][0]['@key'] + '\'/>';
 				str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
@@ -3319,7 +3390,7 @@ function getTableToPolicies(jsonObj){
 				str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore2 + '\'>';
 				str += '	<li>';
 				str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
-				str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+				str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy(\'' + subPolicyBefore2 + '\',\'' + subPolicyAfter2 + '\')">수정</a>';
 				str += '		<font size="2" style="margin-left: 10px;">key</font>';
 				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy']['parameter'][1]['@key'] + '\'/>';
 				str += '		<font size="2" style="margin-left: 10px; height: 13px;margin-left: 0px;margin-bottom: 0px;">value</font>';
@@ -3354,7 +3425,7 @@ function getTableToPolicies(jsonObj){
 					str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore3 + '\'>';
 					str += '	<li>';
 					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-					str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy(\'' + subPolicyBefore3 + '\',\'' + subPolicyAfter3 + '\')">수정</a>';
 					str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubPolicy()">삭제</a>';
 					str += '		<font size="2" style="margin-left: 10px;">key</font>';
 					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy']['parameter'][2]['@key'] + '\'/>';
@@ -3386,7 +3457,7 @@ function getTableToPolicies(jsonObj){
 					str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore4 + '\'>';
 					str += '	<li>';
 					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
-					str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy()">수정</a>';
+					str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifySubPolicy(\'' + subPolicyBefore4 + '\',\'' + subPolicyAfter4 + '\')">수정</a>';
 					str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delSubPolicy()">삭제</a>';
 					str += '		<font size="2" style="margin-left: 10px;">key</font>';
 					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyKey" value=\'' + policiesObj['policy']['parameter'][3]['@key'] + '\'/>';
