@@ -12,4 +12,5 @@
 	<sqlMap resource="sqls/nms/system.xml" />
 	<sqlMap resource="sqls/nms/assets.xml" />
 	<sqlMap resource="sqls/nms/surveillance.xml" />
+	<sqlMap resource="sqls/nms/service.xml" />
 </sqlMapConfig>

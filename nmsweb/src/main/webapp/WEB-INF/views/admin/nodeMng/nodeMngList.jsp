@@ -88,6 +88,7 @@
 			<input type="hidden" id="assetFirstValue" name="assetFirst" placeholder="" value="" >
 			<input type="hidden" id="getAddServiceValue" name="getAddService" placeholder="" value="" >
 			<input type="hidden" id="getAddServiceFirstValue" name="getAddServiceFirst" placeholder="" value="" >
+			<input type="hidden" id="setServiceTotalItemValue" name="setServiceTotalItem" placeholder="" value="" >
 		</form>
 <!-- hidden -->		
 		<jsp:include page="/include/menu.jsp" />

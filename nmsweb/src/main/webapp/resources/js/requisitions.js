@@ -504,7 +504,11 @@ function cancelAsset(asset, assetFirst){
 }
 
 function addService(interfacesFirst, foreignId, ipAddr){
-	var str = getAddService(interfacesFirst, foreignId, ipAddr);
+	getServiceTotalList(addServices, interfacesFirst, foreignId, ipAddr);
+}
+
+function addServices(jsonObj, interfacesFirst, foreignId, ipAddr){
+	var str = getAddServices(jsonObj, interfacesFirst, foreignId, ipAddr);
 	$('#' + interfacesFirst + '').append(str);
 }
 
@@ -779,6 +783,23 @@ function saveGetAddService(services, foreignId, ipAddr, servicesFirst, serviceNm
 	});
 }
 
+function getServiceTotalList(callback, interfacesFirst, foreignId, ipAddr){
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/getServiceCategories.do',
+		contentType : 'application/json',
+		dataType : 'json',
+		error : function(data) {
+			alert('서비스 리스트 가져오기 실패');
+		},
+		success : function(data) {
+			if (typeof callback == "function") {
+				callback(data, interfacesFirst, foreignId, ipAddr);
+			}
+		}
+	});
+}
+
 /****************************************************************************************Foreign Source Name: default***********************************************************************************/
 function editDefaultDetectors(jsonObj){
 	var str = getTableToDetectors(jsonObj);
@@ -833,15 +854,8 @@ function cancelDetectors(ulId){
 	$('#' + ulId + '').remove();
 }
 
-//공백 제거 함수
-function trim(str){
-	str = str.replaceAll(' ', '');
-	return str;
-}
-
 function savePolicies(ulId, policiesName){
-	var policyName = trim($('#' + ulId + '' + '\ input[name=policiesName]').val());
-	var policiesNm = trim(policiesName);
+	var policyName = $('#' + ulId + '' + '\ input[name=policiesName]').val();
 	var policyClass = $('#' + ulId + '' + '\ select').val();
 	var policyKey1 = 'action';
 	var policyKey2 = 'matchBehavior';
@@ -859,7 +873,7 @@ function savePolicies(ulId, policiesName){
 		success : function(data) {
 			$.ajax({
 				type : 'delete',
-				url : '/' + version + '/foreignSources/default/policies/' + policiesNm,
+				url : '/' + version + '/foreignSources/default/policies/' + policiesName,
 				datatype : 'json',
 				contentType : 'application/json',
 				error : function(data) {
@@ -962,7 +976,6 @@ function delDetector(detectorName){
 		}
 	});
 }
-
 
 function delPolicy(policyName){
 	$.ajax({
@@ -1172,7 +1185,7 @@ function getTableToFinishAddNodeCategory(foreignId, categoryName){
 	return str;
 }
 
-function getAddService(interfaceFirst, foreignId, ipAddr){
+function getAddServices(jsonObj, interfaceFirst, foreignId, ipAddr){
 	var getAddService = Math.floor(Math.random() * Math.pow(10,15));
 	var getAddServiceFirst = Math.floor(Math.random() * Math.pow(10,15));
 	$("#hiddenForm input[name=getAddService]").val(getAddService);
@@ -1183,37 +1196,9 @@ function getAddService(interfaceFirst, foreignId, ipAddr){
 		str += '		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
 		str += '		<font size="2" style="margin-left: 10px;">Service</font>';
 		str += '		<select id="getAddService" name="getAddService" style="margin-bottom: 0px;" type="text">';
-		str += '			<option value="DNS" selected="selected">DNS</option>';
-		str += '			<option value="Dell-OpenManage">Dell-OpenManage</option>';
-		str += '			<option value="FTP">FTP</option>';
-		str += '			<option value="HP Insight Manager">HP Insight Manager</option>';
-		str += '			<option value="HTTP">HTTP</option>';
-		str += '			<option value="HTTP-8000">HTTP-8000</option>';
-		str += '			<option value="HTTP-8000">HTTP-8000</option>';
-		str += '			<option value="HTTPS">HTTPS</option>';
-		str += '			<option value="HypericAgent">HypericAgent</option>';
-		str += '			<option value="HypericHQ">HypericHQ</option>';
-		str += '			<option value="ICMP">ICMP</option>';
-		str += '			<option value="IMAP">IMAP</option>';
-		str += '			<option value="LDAP">LDAP</option>';
-		str += '			<option value="MSExchange">MSExchange</option>';
-		str += '			<option value="MySQL">MySQL</option>';
-		str += '			<option value="NRPE">NRPE</option>';
-		str += '			<option value="NRPE-NoSSL">NRPE-NoSSL</option>';
-		str += '			<option value="New Detector">New Detector</option>';
-		str += '			<option value="OpenNMS-JVM">OpenNMS-JVM</option>';
-		str += '			<option value="Oracle">Oracle</option>';
-		str += '			<option value="POP3">POP3</option>';
-		str += '			<option value="Postgres">Postgres</option>';
-		str += '			<option value="Router">Router</option>';
-		str += '			<option value="SMTP">SMTP</option>';
-		str += '			<option value="SNMP">SNMP</option>';
-		str += '			<option value="SQLServer">SQLServer</option>';
-		str += '			<option value="SSH">SSH</option>';
-		str += '			<option value="SVC">SVC</option>';
-		str += '			<option value="StrafePing">StrafePing</option>';
-		str += '			<option value="Telnet">Telnet</option>';
-		str += '			<option value="Windows-Task-Scheduler">Windows-Task-Scheduler</option>';
+		for(var i in jsonObj['ServicesItem']){
+			str += '			<option value=\'' + jsonObj['ServicesItem'][i]['servicename'] + '\'>\'' + jsonObj['ServicesItem'][i]['servicename'] + '\'</option>';
+		}
 		str += '		</select>';
 		str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveToGetAddService(\'' + getAddService + '\',\'' + interfaceFirst+ '\',\'' + foreignId + '\',\'' + ipAddr + '\')">저장</a>';
 		str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelGetAddService(\'' + getAddService + '\')">취소</a>';
@@ -1488,7 +1473,7 @@ function getTableToEditRequisitionPop(jsonObj){
 							$("#hiddenForm input[name=interface]").val(interface);
 							var interfaceFirst = Math.floor(Math.random() * Math.pow(10,15));
 							$("#hiddenForm input[name=interfacesFirst]").val(interfaceFirst);
-							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" style="display:none" id=\'' + interfaceFirst + '\'>';
+							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + interfaceFirst + '\'>';
 							str += '	<li>';
 							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
 							str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyInterface(\'' + interface + '\',\'' + interfaceFirst+'\')">수정</a>';
@@ -2068,7 +2053,7 @@ function getTableToEditRequisitionPop(jsonObj){
 						$("#hiddenForm input[name=interface]").val(interface);
 						var interfaceFirst = Math.floor(Math.random() * Math.pow(10,15));
 						$("#hiddenForm input[name=interfacesFirst]").val(interfaceFirst);
-						str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" style="display:none" id=\'' + interfaceFirst + '\'>';
+						str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + interfaceFirst + '\'>';
 						str += '	<li>';
 						str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
 						str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyInterface(\'' + interface + '\',\'' + interfaceFirst+'\')">수정</a>';
@@ -2078,7 +2063,7 @@ function getTableToEditRequisitionPop(jsonObj){
 						str += '		<font size="2" style="margin-left: 10px;">Description</font>';
 						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="description" value=\'' + interfaceObj['@descr'] + '\'/>';
 						str += '		<font size="2" style="margin-left: 10px;">SNMP Primary</font>';
-						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;width: 50px;" readonly="readonly" type="text" name="snmpPrimary" value=\'' + interfaceObj['@snmp-primary'] + '\'';
+						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;width: 50px;" readonly="readonly" type="text" name="snmpPrimary" value=\'' + interfaceObj['@snmp-primary'] + '\'>';
 						str += '		<a href="#" onclick="javascript:addService(\'' + interfaceFirst +'\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\')"><font size="1" color="black">Add Service</font></a>';
 						str += '	</li>';
 						str += '</ul>';
@@ -2469,14 +2454,14 @@ function getTableToEditRequisitionJsonObj(jsonObj, foreignSource, foreignId){
 	var str = "";
 		str += '<ul style="display:inline;" id="editRequisitionDownItemSecond">';
 		str += '	<li>';
-		str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="showSaveRequisitionPopList(\'' + foreignSource + '\')">저장</a>';
-		str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="showCancelRequisitionPopList()">취소</a>';
 		str += '		<font size="2" style="margin-left: 10px;">Node</font>';
 		str += '		<input name="editRequisitionNodeLabel" style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" placeholder="New Node"/>';
 		str += '		<font size="2" style="margin-left: 10px;">ForeignId</font>';
 		str += '		<input name="editRequisitionForeignId" style="height: 13px;margin-left: 0px;margin-bottom: 0px;" type="text" placeholder=\'' + foreignId + '\'/>';
 		str += '		<font size="2" style="margin-left: 10px;">Site</font>';
 		str += '		<input name="editRequisitionBuilding" type="text" style="height: 13px;width: 80px;margin-left: 0px;margin-bottom: 0px;" placeholder=\'' + foreignSource + '\'/>';
+		str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="showSaveRequisitionPopList(\'' + foreignSource + '\')">저장</a>';
+		str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="showCancelRequisitionPopList()">취소</a>';
 		str += '	</li>';
 		str += '</ul>';
 	return str;
@@ -2750,8 +2735,6 @@ function addDetectorTab(){
 }
 
 function getTableToDetectors(jsonObj){
-	console.log('---------------------detectors---------------------------');
-	console.log(jsonObj['detectors']);
 	var str = '';
 	if(jsonObj['detectors'] != null){
 		var detectorsObj = jsonObj['detectors'];
@@ -3150,8 +3133,6 @@ function getTableToDetectors(jsonObj){
 }
 
 function getTableToPolicies(jsonObj){
-	console.log('---------------------policies-----------------------------');
-	console.log(jsonObj['policies']);
 	var str = '';
 	if(jsonObj['policies'] != null){
 		var policiesObj = jsonObj['policies'];
@@ -3487,8 +3468,6 @@ function getTableToPolicies(jsonObj){
 	}
 	return str;
 }
-
-
 
 
 
