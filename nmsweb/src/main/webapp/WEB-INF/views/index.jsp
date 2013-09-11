@@ -67,13 +67,14 @@
 		}
 	}
 	function showRegNodeList(data,nodeId,nodelabel,categoryId){
+		var categoryids = categoryId + 100;
 		if(data["@totalCount"]>1){
 			
 			for( var i in data['outage']){
 				
 				if(data['outage'][i]['serviceLostEvent']['@severity'] == "MAJOR" || data['outage'][i]['serviceLostEvent']['@severity'] == "CRITICAL"){
-					 $('#'+categoryId+'').empty();
-					 $('#'+categoryId+'').append("<img src='<c:url value="/resources/images/" />red.jpg' />");
+					 $('#'+categoryids+'').empty();
+					 $('#'+categoryids+'').append("<img src='<c:url value="/resources/images/" />red.jpg' />");
 				}else{
 					
 				}
@@ -82,8 +83,8 @@
 		}else if(data["@totalCount"] == 1){
 			
 			if(data['outage']['serviceLostEvent']['@severity'] == "MAJOR" || data['outage']['serviceLostEvent']['@severity'] == "CRITICAL"){
-				 $('#'+categoryId+'').empty();
-				 $('#'+categoryId+'').append("<img src='<c:url value="/resources/images/" />red.jpg' />");
+				 $('#'+categoryids+'').empty();
+				 $('#'+categoryids+'').append("<img src='<c:url value="/resources/images/" />red.jpg' />");
 			}else{
 				
 			}
