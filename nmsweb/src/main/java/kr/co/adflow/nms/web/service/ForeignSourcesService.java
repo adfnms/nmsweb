@@ -1,5 +1,6 @@
 package kr.co.adflow.nms.web.service;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 import kr.co.adflow.nms.web.Handler;
@@ -360,7 +361,7 @@ public class ForeignSourcesService {
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
-			hash.put(URL, ipAddr + "/foreignSources/"+name+"/detectors/"+dec);
+			hash.put(URL, ipAddr + "/foreignSources/"+name+"/detectors/"+ URLEncoder.encode(dec));
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "DELETE");
 			

@@ -44,8 +44,7 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 
 			String userPassword = map.get("username") + ":"
 					+ map.get("password");
-			String encoding = new sun.misc.BASE64Encoder().encode(userPassword
-					.getBytes());
+			String encoding = new sun.misc.BASE64Encoder().encode(userPassword.getBytes());
 			conn.setRequestProperty("Authorization", "Basic " + encoding);
 
 			if (map.containsKey("data")) {

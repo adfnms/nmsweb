@@ -19,7 +19,6 @@ function getTotalEvenstList(callback,data,notiId, ipAddrs, serviceNm) {
 			}
 		}
 	});
-
 }
 
 /** Get a list of events For dashboard

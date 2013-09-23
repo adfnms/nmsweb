@@ -63,7 +63,7 @@ function getTotalRequisitionsListForNodes(callback){
 	getTotalRequisitionsList(callback);
 }
 
-//메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성된 하단부 창의 요구 삭제 버
+//메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성된 하단부 창의 요구 삭제 버튼
 function delRequisition(foreignSource) {
 	//동기화 실행 스크립트
 	synRequisition(foreignSource);
@@ -369,7 +369,7 @@ function addInterface(trId, foreignSource, foreignId){
 	$('#' + trId + '').append(str);
 }
 
-function saveIpInterfaces(foreignSource, foreignId, trId, ipAddr){
+function saveIpInterfaces(foreignSource, foreignId, trId, ipAddr, descr, snmpPrimary){
 	var ipInterface = $('#' + trId + '' + '\ input[name=ipInterface]').val();
 	var description = $('#' + trId + '' + '\ input[name=description]').val();
 	var snmpPrimary = $('#' + trId + '' + '\ select').val();
@@ -382,6 +382,16 @@ function saveIpInterfaces(foreignSource, foreignId, trId, ipAddr){
 	
 	if($('#' + trId + '' + '\ input[name=description]').val() == ""){
 		alert("Description을 입력하십시오.");
+		return;
+	}
+	
+	if($('#' + trId + '' + '\ input[name=ipInterface]').val() == ipAddr){
+		alert("다른 IP Interface를 입력하십시오.");
+		return;
+	}
+	
+	if($('#' + trId + '' + '\ input[name=description]').val() == descr){
+		alert("다른 Description을 입력하십시오.");
 		return;
 	}
 	
@@ -401,7 +411,7 @@ function saveIpInterfaces(foreignSource, foreignId, trId, ipAddr){
 				datatype : 'json',
 				contentType : 'application/json',
 				error : function(data) {
-					alert("인터페이스 삭제 실패");
+					alert('기본외부소스 초기화 실패');
 				},
 				success : function(data) {
 					getNodeListInfoAjax(NodeListInfo, foreignSource);
@@ -418,7 +428,7 @@ function getToAddInterface(callback, foreignSource, foreignId){
 		dataType : 'json',
 		contentType : 'application/json',
 		error : function(data) {
-			alert('기본외부소스 초기화 실패');
+			alert('인터페이스 추가 실패');
 		},
 		success : function(data) {
 			if (typeof callback == "function") {
@@ -685,7 +695,7 @@ function saveAddNodeAsset(trId, foreignId){
 		contentType : 'application/json',
 		data : str,
 		error : function() {
-			alert('새로운 노드 Asset 추가 실패');
+			alert("assetValue를 입력하십시오.");
 		},
 		success : function(data) {
 			var str = getTableToFinishAddNodeAsset(foreignId, assetValue, assetName);
@@ -711,7 +721,7 @@ function saveAssets(assets, foreignId, assetsName, assetsFirst){
 		contentType : 'application/json',
 		data : str,
 		error : function() {
-			alert('새로운 Asset 저장 실패');
+			alert('�덈줈●Asset 저장 �ㅽ뙣');
 		},
 		success : function(data) {
 			$.ajax({
@@ -889,8 +899,8 @@ function savePolicies(ulId, policiesName){
 }
 
 function saveDetectors(ulId, detectorsName){
-	var detectorName = trim($('#' + ulId + '' + '\ input[name=detectorsName]').val());
-	var detectorsNm = trim(detectorsName);
+	var detectorName = $('#' + ulId + '' + '\ input[name=detectorsName]').val();
+	var detectorsNm = detectorsName;
 	var detectorClass = $('#' + ulId + '' + '\ select').val();
 	var str = "{\"detector\":[{\"class\": \"" + detectorClass + "\",\"name\": \"" + detectorName + "\"}]}"; 
 	$.ajax({
@@ -933,7 +943,7 @@ function savePolicy(ulId){
 		contentType : 'application/json',
 		data : str,
 		error : function() {
-			alert('새로운 policies 추가 실패');
+			alert('새로운 detectors 추가 실패');
 		},
 		success : function(data) {
 			getDefaultForeignSourceNameAjax(editDefaultDetectors);
@@ -961,10 +971,12 @@ function saveDetector(ulId){
 	});
 }
 
-function delDetector(detectorName){
+function delDetector(detectorName)
+{
+	var url = '/' + version + '/foreignSources/default/detectors/' + encodeURIComponent(detectorName);
 	$.ajax({
 		type : 'delete',
-		url : '/' + version + '/foreignSources/default/detectors/' + detectorName,
+		url : url,
 		datatype : 'json',
 		contentType : 'application/json',
 		error : function(data) {
@@ -1203,20 +1215,6 @@ function getAddServices(jsonObj, interfaceFirst, foreignId, ipAddr){
 		str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveToGetAddService(\'' + getAddService + '\',\'' + interfaceFirst+ '\',\'' + foreignId + '\',\'' + ipAddr + '\')">저장</a>';
 		str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelGetAddService(\'' + getAddService + '\')">취소</a>';
 		str += '	</li>';
-		str += '</ul>';
-		str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px; display:none;" id=\'' + getAddServiceFirst + '\'>';
-		str += '	<li>';
-		str += '		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
-		str += '		<a type="button" class="btn btn-primary btn-mini" onclick="modifyGetAddService()">수정</a>';
-		str += '		<a type="button" class="btn btn-danger btn-mini" onclick="delGetAddService(\'' + getAddServiceFirst + '\')">삭제</a>';
-		str += '		<font size="2" style="margin-left: 10px;">Service</font>';
-		str += '		<select id="getAddService" name="getAddService" style="margin-bottom: 0px;" type="text">';
-		str += '			<option value="N">N</option>';
-		str += '			<option value="S">S</option>';
-		str += '			<option value="P" selected="selected">P</option>';
-		str += '		</select>';
-		str += '	</li>';
-		str += '</ul>';
 	return str;
 }
 
@@ -1356,7 +1354,7 @@ function getTableToEditRequisitionPop(jsonObj){
 								str += '			<option value="S">S</option>';
 								str += '			<option value="P" selected="selected">P</option>';
 								str += '		</select>';
-								str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveIpInterfaces(\'' + foreignSource + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaces + '\',\'' + interfaceObj[q]['@ip-addr'] + '\')">저장</a>';
+								str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveIpInterfaces(\'' + foreignSource + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaces + '\',\'' + interfaceObj[q]['@ip-addr'] + '\',\'' + interfaceObj[q]['@descr'] + '\',\'' + interfaceObj[q]['@snmp-primary'] + '\')">저장</a>';
 								str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelInterfaces(\'' + interfaces + '\',\'' + interfacesFirst+'\')">취소</a>';
 								str += '	</li>';
 								str += '</ul>';
@@ -1483,7 +1481,7 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '		<font size="2" style="margin-left: 10px;">Description</font>';
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="description" value=\'' + interfaceObj['@descr'] + '\'/>';
 							str += '		<font size="2" style="margin-left: 10px;">SNMP Primary</font>';
-							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;width: 50px;" readonly="readonly" type="text" name="snmpPrimary" value=\'' + interfaceObj['@snmp-primary'] + '\'';
+							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;width: 50px;" readonly="readonly" type="text" name="snmpPrimary" value=\'' + interfaceObj['@snmp-primary'] + '\'>';
 							str += '		<a href="#" onclick="javascript:addService(\'' + interfaceFirst +'\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj['@ip-addr'] + '\')"><font size="1" color="black">Add Service</font></a>';
 							str += '	</li>';
 							str += '</ul>';
@@ -1500,7 +1498,7 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '			<option value="S">S</option>';
 							str += '			<option value="P" selected="selected">P</option>';
 							str += '		</select>';
-							str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveInterfaces()">저장</a>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveIpInterfaces(\'' + foreignSource + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interface + '\',\'' + interfaceObj['@ip-addr'] + '\',\'' + interfaceObj['@descr'] + '\',\'' + interfaceObj['@snmp-primary'] + '\')">저장</a>';
 							str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelInterface(\'' + interface + '\',\'' + interfaceFirst+'\')">취소</a>';
 							str += '	</li>';
 							str += '</ul>';
@@ -1934,7 +1932,7 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '			<option value="S">S</option>';
 							str += '			<option value="P" selected="selected">P</option>';
 							str += '		</select>';
-							str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveInterfaces()">저장</a>';
+							str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveIpInterfaces(\'' + foreignSource + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaces + '\',\'' + interfaceObj[i]['@ip-addr'] + '\',\'' + interfaceObj[i]['@descr'] + '\',\'' + interfaceObj[i]['@snmp-primary'] + '\')">저장</a>';
 							str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelInterfaces(\'' + interfaces + '\',\'' + interfacesFirst+'\')">취소</a>';
 							str += '	</li>';
 							str += '</ul>';
@@ -1947,7 +1945,7 @@ function getTableToEditRequisitionPop(jsonObj){
 											str += '	&nbsp;&nbsp;&nbsp;';
 											str += '	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
 											str += '	<a type="button" class="btn btn-primary btn-mini" onclick="modifyServices(\'' + services + '\',\'' + servicesFirst+'\')">수정</a>';
-											str += '	<a type="button" class="btn btn-danger btn-mini" onclick="delService(\'' + services + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\',\'' + interfaceObj[i]["monitored-service"][q]['@service-name'] + '\')">삭제</a>';
+											str += '	<a type="button" class="btn btn-danger btn-mini" onclick="delService(\'' + services + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\',\'' + interfaceObj[i]["monitored-service"][q]['@service-name'] + '\')">삭제</a>';
 											str += '	<font size="2" style="margin-left: 10px;">Service</font>';
 											str += '	<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="description" value=\'' + interfaceObj[i]["monitored-service"][q]['@service-name'] + '\'/>';
 											str += '</ul>';
@@ -1989,7 +1987,7 @@ function getTableToEditRequisitionPop(jsonObj){
 											str += '			<option value="Telnet">Telnet</option>';
 											str += '			<option value="Windows-Task-Scheduler">Windows-Task-Scheduler</option>';
 											str += '		</select>';
-											str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService(\'' + services + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\',\'' + servicesFirst + '\',\'' + interfaceObj[i]["monitored-service"][q]['@service-name'] + '\')">저장</a>';
+											str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService(\'' + services + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\',\'' + servicesFirst + '\',\'' + interfaceObj[i]["monitored-service"][q]['@service-name'] + '\')">저장</a>';
 											str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelServices(\'' + services + '\',\'' + servicesFirst+'\')">취소</a>';
 											str += '	</li>';
 											str += '</ul>';
@@ -2000,7 +1998,7 @@ function getTableToEditRequisitionPop(jsonObj){
 										str += '<ul style="padding: 0px;margin: 0px;" id=\'' + serviceFirst +'\'>';
 										str += '	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●';
 										str += '	<a type="button" class="btn btn-primary btn-mini" onclick="modifyService(\'' + service + '\',\'' + serviceFirst+'\')">수정</a>';
-										str += '	<a type="button" class="btn btn-danger btn-mini" onclick="delService(\'' + service + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\',\'' + interfaceObj[i]["monitored-service"]['@service-name'] + '\')">삭제</a>';
+										str += '	<a type="button" class="btn btn-danger btn-mini" onclick="delService(\'' + service + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\',\'' + interfaceObj[i]["monitored-service"]['@service-name'] + '\')">삭제</a>';
 										str += '	<font size="2" style="margin-left: 10px;">Service</font>';
 										str += '	<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="service" value=\'' + interfaceObj[i]["monitored-service"]['@service-name'] + '\'/>';
 										str += '</ul>';
@@ -2041,7 +2039,7 @@ function getTableToEditRequisitionPop(jsonObj){
 										str += '			<option value="Telnet">Telnet</option>';
 										str += '			<option value="Windows-Task-Scheduler">Windows-Task-Scheduler</option>';
 										str += '		</select>';
-										str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService(\'' + service + '\',\'' + nodeObj[i]["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\',\'' + serviceFirst + '\',\'' + interfaceObj[i]["monitored-service"]['@service-name'] + '\')">저장</a>';
+										str += '		<a type="button" class="btn btn-primary btn-mini" onclick="saveGetAddService(\'' + service + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + interfaceObj[i]['@ip-addr'] + '\',\'' + serviceFirst + '\',\'' + interfaceObj[i]["monitored-service"]['@service-name'] + '\')">저장</a>';
 										str += '		<a type="button" class="btn btn-danger btn-mini" onclick="cancelService(\'' + service + '\',\'' + serviceFirst+'\')">취소</a>';
 										str += '	</li>';
 										str += '</ul>';
@@ -2080,7 +2078,7 @@ function getTableToEditRequisitionPop(jsonObj){
 						str += '			<option value="S">S</option>';
 						str += '			<option value="P" selected="selected">P</option>';
 						str += '		</select>';
-						str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveInterfaces()">저장</a>';
+						str += '		<a type="button" class="btn btn-primary btn-mini" style="margin-left: 5px;" onclick="saveIpInterfaces(\'' + foreignSource + '\',\'' + nodeObj["@foreign-id"] + '\',\'' + interface + '\',\'' + interfaceObj['@ip-addr'] + '\',\'' + interfaceObj['@descr'] + '\',\'' + interfaceObj['@snmp-primary'] + '\')">저장</a>';
 						str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelInterface(\'' + interface + '\',\'' + interfaceFirst+'\')">취소</a>';
 						str += '	</li>';
 						str += '</ul>';
@@ -2211,7 +2209,7 @@ function getTableToEditRequisitionPop(jsonObj){
 							str += '</ul>';
 							str += '<ul style="display:inline; list-style:none; display:none;padding: 0px;margin: 0px;" id=\'' + categories + '\'>';
 							str += '	<li>';
-							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
+							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●/font>';
 							str += '		<font size="2" style="margin-left: 10px;">Node Category</font>';
 							str += '		<select id="getAddService" name="getAddService" style="margin-bottom: 0px;" type="text">';
 							str += '			<option value="Development" selected="selected">Development</option>';
@@ -2508,7 +2506,7 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		str += "</tr>";
 		if(nullStrLastImport == ""){
 			str += "<tr>";
-			str += "	<td>최근 동기화: <b>최근 동기화를 하지 않았습니다. </b></td>";
+			str += "	<td>최근 동기화: <b>理쒓렐 �숆린�붾� �섏� �딆븯�듬땲● </b></td>";
 			str += "</tr>";
 		}else{
 			str += "<tr>";
@@ -2556,7 +2554,7 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 			str += "</tr>";
 			if(nullStrLastImport == ""){
 				str += "<tr>";
-				str += "	<td>최근 동기화: <b>최근 동기화를 하지 않았습니다.  </b></td>";
+				str += "	<td>최근 동기화: <b>최근 동기화를 하지 않았습니다. </b></td>";
 				str += "</tr>";
 			}else{
 				str += "<tr>";
@@ -2568,7 +2566,7 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 	}else{
 		str += "<tr>";
 		str += "	<td class='text-info'>";
-		str	+= "		<h3>Requisition을 등록해주세요.</h3>";
+		str	+= "		<h3>Requisition●�깅줉�댁＜�몄슂.</h3>";
 		str += "	</td>";
 		str += "	<td>";
 		str += "	</td>";
@@ -2742,7 +2740,7 @@ function getTableToDetectors(jsonObj){
 			for(var i in detectorsObj['detector']){
 				if(typeof detectorsObj['detector'][i]['parameter'] == 'object'){
 					if(detectorsObj['detector'][i]['parameter']['@key'] == null){
-						//수정 버튼 전 탭
+						
 						var detectorBefore = Math.floor(Math.random() * Math.pow(10,20));
 						var detectorAfter = Math.floor(Math.random() * Math.pow(10,20));
 						str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + detectorBefore + '\'>';
@@ -2756,7 +2754,7 @@ function getTableToDetectors(jsonObj){
 						str += '		<a href="#" onclick="javascript:addDetectorParameter(\'' + detectorBefore + '\')"><font size="1" color="black">[Add Parameter]</font></a>';
 						str += '	</li>';
 						str += '</ul>';
-						//수정 버튼 후 탭
+						
 						str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px; display:none;" id=\'' + detectorAfter + '\'>';
 						str += '	<li>';
 						str += '		<font size="2" style="margin-left: 10px;">name</font>';
@@ -2810,7 +2808,7 @@ function getTableToDetectors(jsonObj){
 						str += '	</li>';
 						str += '</ul>';
 						for(var q in detectorsObj['detector'][i]['parameter']){
-							//수정 버튼 전 하위 탭
+							
 							var subDetectorBefore1 = Math.floor(Math.random() * Math.pow(10,20));
 							var subDetectorAfter1 = Math.floor(Math.random() * Math.pow(10,20));
 							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subDetectorBefore1 + '\'>';
@@ -2824,7 +2822,7 @@ function getTableToDetectors(jsonObj){
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorValue" value=\'' + detectorsObj['detector'][i]['parameter'][q]['@value'] + '\'/>';
 							str += '	</li>';
 							str += '</ul>';
-							//수정 버튼 후 하위 탭
+							
 							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px; display:none;" id=\'' + subDetectorAfter1 + '\'>';
 							str += '	<li>';
 							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
@@ -2847,7 +2845,7 @@ function getTableToDetectors(jsonObj){
 							str += '</ul>';
 						}
 					}else{
-						//수정 버튼 전 탭
+						
 						var detectorBefore = Math.floor(Math.random() * Math.pow(10,20));
 						var detectorAfter = Math.floor(Math.random() * Math.pow(10,20));
 						str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + detectorBefore + '\'>';
@@ -2861,7 +2859,7 @@ function getTableToDetectors(jsonObj){
 						str += '		<a href="#" onclick="javascript:addDetectorParameter(\'' + detectorBefore + '\')"><font size="1" color="black">[Add Parameter]</font></a>';
 						str += '	</li>';
 						str += '</ul>';
-						//수정 버튼 후 탭
+						
 						str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px; display:none;" id=\'' + detectorAfter + '\'>';
 						str += '	<li>';
 						str += '		<font size="2" style="margin-left: 10px;">name</font>';
@@ -2914,7 +2912,7 @@ function getTableToDetectors(jsonObj){
 						str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelDetector(\'' + detectorBefore + '\',\'' + detectorAfter + '\')">취소</a>';
 						str += '	</li>';
 						str += '</ul>';
-							//수정 버튼 후 하위 탭
+							
 							var subDetectorBefore1 = Math.floor(Math.random() * Math.pow(10,20));
 							var subDetectorAfter1 = Math.floor(Math.random() * Math.pow(10,20));
 							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subDetectorBefore1 + '\'>';
@@ -2928,7 +2926,7 @@ function getTableToDetectors(jsonObj){
 							str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorValue" value=\'' + detectorsObj['detector'][i]['parameter']['@value'] + '\'/>';
 							str += '	</li>';
 							str += '</ul>';
-							//수정 버튼 후 하위 탭
+							
 							str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px; display:none;" id=\'' + subDetectorAfter1 + '\'>';
 							str += '	<li>';
 							str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
@@ -2951,7 +2949,7 @@ function getTableToDetectors(jsonObj){
 							str += '</ul>';
 					}
 				}else{
-					//수정 버튼 전 탭
+					
 					var detectorBefore = Math.floor(Math.random() * Math.pow(10,20));
 					var detectorAfter = Math.floor(Math.random() * Math.pow(10,20));
 					str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + detectorBefore + '\'>';
@@ -2965,7 +2963,7 @@ function getTableToDetectors(jsonObj){
 					str += '		<a href="#" onclick="javascript:addDetectorParameter(\'' + detectorBefore + '\')"><font size="1" color="black">[Add Parameter]</font></a>';
 					str += '	</li>';
 					str += '</ul>';
-					//수정 버튼 후 탭
+					
 					str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px; display:none;" id=\'' + detectorAfter + '\'>';
 					str += '	<li>';
 					str += '		<font size="2" style="margin-left: 10px;">name</font>';
@@ -3021,7 +3019,7 @@ function getTableToDetectors(jsonObj){
 				}
 			}
 		}else{
-			//수정 버튼 전 탭
+			
 			var detectorBefore = Math.floor(Math.random() * Math.pow(10,20));
 			var detectorAfter = Math.floor(Math.random() * Math.pow(10,20));
 			str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + detectorBefore + '\'>';
@@ -3035,7 +3033,7 @@ function getTableToDetectors(jsonObj){
 			str += '		<a href="#" onclick="javascript:addDetectorParameter(\'' + detectorBefore + '\')"><font size="1" color="black">[Add Parameter]</font></a>';
 			str += '	</li>';
 			str += '</ul>';
-			//수정 버튼 후 탭
+			
 			str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px; display:none;" id=\'' + detectorAfter + '\'>';
 			str += '	<li>';
 			str += '		<font size="2" style="margin-left: 10px;">name</font>';
@@ -3089,7 +3087,7 @@ function getTableToDetectors(jsonObj){
 			str += '	</li>';
 			str += '</ul>';
 			for(var i in detectorsObj['detector']['parameter']){
-				//수정 버튼 전 하위 탭
+				
 				var subDetectorBefore1 = Math.floor(Math.random() * Math.pow(10,20));
 				var subDetectorAfter1 = Math.floor(Math.random() * Math.pow(10,20));
 				str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subDetectorBefore1 + '\'>';
@@ -3103,7 +3101,7 @@ function getTableToDetectors(jsonObj){
 				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="detectorValue" value=\'' + detectorsObj['detector']['parameter'][i]['@value'] + '\'/>';
 				str += '	</li>';
 				str += '</ul>';
-				//수정 버튼 후 하위 탭
+				
 				str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px; display:none;" id=\'' + subDetectorAfter1 + '\'>';
 				str += '	<li>';
 				str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</font>';
@@ -3127,7 +3125,7 @@ function getTableToDetectors(jsonObj){
 			}
 		}
 	}else{
-		str += '<ul><li>Detector가 없습니다.</li></ul>';
+		str += '<ul><li>Detector媛●놁뒿�덈떎.</li></ul>';
 	}
 	return str;
 }
@@ -3138,7 +3136,7 @@ function getTableToPolicies(jsonObj){
 		var policiesObj = jsonObj['policies'];
 		if(policiesObj['policy']['parameter'] == null){
 			for(var i in policiesObj['policy']){
-				//수정 버튼 전 탭
+				
 				var policyBefore = Math.floor(Math.random() * Math.pow(10,20));
 				var policyAfter = Math.floor(Math.random() * Math.pow(10,20));
 				str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + policyBefore + '\'>';
@@ -3154,7 +3152,7 @@ function getTableToPolicies(jsonObj){
 				}
 				str += '	</li>';
 				str += '</ul>';
-				//수정 버튼 후 탭
+				
 				str += '<ul style="display:inline; list-style:none; display:none; padding: 0px; margin: 0px;" id=\'' + policyAfter + '\'>';
 				str += '	<li>';
 				str += '		<font size="2" style="margin-left: 10px;">name</font>';
@@ -3169,7 +3167,7 @@ function getTableToPolicies(jsonObj){
 				str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + policyBefore + '\',\'' + policyAfter + '\')">취소</a>';
 				str += '	</li>';
 				str += '</ul>';
-					//수정 버튼 전 하위 탭
+					
 					var subPolicyBefore1 = Math.floor(Math.random() * Math.pow(10,20));
 					var subPolicyAfter1 = Math.floor(Math.random() * Math.pow(10,20));
 					str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore1 + '\'>';
@@ -3182,7 +3180,7 @@ function getTableToPolicies(jsonObj){
 					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy'][i]['parameter'][0]['@value'] + '\'/>';
 					str += '	</li>';
 					str += '</ul>';
-					//수정 버튼 후 하위 탭
+					
 					str += '<ul style="display:inline; list-style:none; padding: 0px; display:none; margin: 0px;" id=\'' + subPolicyAfter1 + '\'>';
 					str += '	<li>';
 					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
@@ -3202,7 +3200,7 @@ function getTableToPolicies(jsonObj){
 					str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + subPolicyBefore1 + '\',\'' + subPolicyAfter1 + '\')">취소</a>';
 					str += '	</li>';
 					str += '</ul>';
-					//수정 버튼 전 하위 탭
+					
 					var subPolicyBefore2 = Math.floor(Math.random() * Math.pow(10,20));
 					var subPolicyAfter2 = Math.floor(Math.random() * Math.pow(10,20));
 					str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore2 + '\'>';
@@ -3215,7 +3213,7 @@ function getTableToPolicies(jsonObj){
 					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy'][i]['parameter'][1]['@value'] + '\'/>';
 					str += '	</li>';
 					str += '</ul>';
-					//수정 버튼 후 하위 탭
+					
 					str += '<ul style="display:inline; list-style:none; padding: 0px; display:none; margin: 0px;" id=\'' + subPolicyAfter2 + '\'>';
 					str += '	<li>';
 					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
@@ -3237,7 +3235,7 @@ function getTableToPolicies(jsonObj){
 					str += '</ul>';
 				try{
 					if(typeof policiesObj['policy'][i]['parameter'][2]['@key'] != 'undefined'){
-						//수정 버튼 전 하위 탭
+						
 						var subPolicyBefore3 = Math.floor(Math.random() * Math.pow(10,20));
 						var subPolicyAfter3 = Math.floor(Math.random() * Math.pow(10,20));
 						str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore3 + '\'>';
@@ -3251,7 +3249,7 @@ function getTableToPolicies(jsonObj){
 						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy'][i]['parameter'][2]['@value'] + '\'/>';
 						str += '	</li>';
 						str += '</ul>';
-						//수정 버튼 후 하위 탭
+						
 						str += '<ul style="display:inline; list-style:none; display:none; padding: 0px;margin: 0px;" id=\'' + subPolicyAfter3 + '\'>';
 						str += '	<li>';
 						str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
@@ -3269,7 +3267,7 @@ function getTableToPolicies(jsonObj){
 				}catch(e){}
 				try{
 					if(typeof policiesObj['policy'][i]['parameter'][3]['@key'] != 'undefined'){
-						//수정 버튼 전 하위 탭
+						
 						var subPolicyBefore4 = Math.floor(Math.random() * Math.pow(10,20));
 						var subPolicyAfter4 = Math.floor(Math.random() * Math.pow(10,20));
 						str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore4 + '\'>';
@@ -3283,7 +3281,7 @@ function getTableToPolicies(jsonObj){
 						str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy'][i]['parameter'][3]['@value'] + '\'/>';
 						str += '	</li>';
 						str += '</ul>';
-						//수정 버튼 후 하위 탭
+						
 						str += '<ul style="display:inline; list-style:none; padding: 0px; display:none; margin: 0px;" id=\'' + subPolicyAfter4 + '\'>';
 						str += '	<li>';
 						str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
@@ -3301,7 +3299,7 @@ function getTableToPolicies(jsonObj){
 				}catch(e){}
 			}
 		}else{
-			//수정 버튼 전 탭
+			
 			var policyBefore = Math.floor(Math.random() * Math.pow(10,20));
 			var policyAfter = Math.floor(Math.random() * Math.pow(10,20));
 			str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px;" id=\'' + policyBefore + '\'>';
@@ -3317,7 +3315,7 @@ function getTableToPolicies(jsonObj){
 			}
 			str += '	</li>';
 			str += '</ul>';
-			//수정 버튼 후 탭
+			
 			str += '<ul style="display:inline; list-style:none; padding: 0px; margin: 0px; display:none;" id=\'' + policyAfter + '\'>';
 			str += '	<li>';
 			str += '		<font size="2" style="margin-left: 10px;">name</font>';
@@ -3332,7 +3330,7 @@ function getTableToPolicies(jsonObj){
 			str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + policyBefore + '\',\'' + policyAfter + '\')">취소</a>';
 			str += '	</li>';
 			str += '</ul>';
-				//수정 버튼 전 하위 탭
+				
 				var subPolicyBefore1 = Math.floor(Math.random() * Math.pow(10,20));
 				var subPolicyAfter1 = Math.floor(Math.random() * Math.pow(10,20));
 				str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore1 + '\'>';
@@ -3345,7 +3343,7 @@ function getTableToPolicies(jsonObj){
 				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy']['parameter'][0]['@value'] + '\'/>';
 				str += '	</li>';
 				str += '</ul>';
-				//수정 버튼 후 하위 탭
+				
 				str += '<ul style="display:inline; list-style:none; padding: 0px; display:none; margin: 0px;" id=\'' + subPolicyAfter1 + '\'>';
 				str += '	<li>';
 				str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
@@ -3365,7 +3363,7 @@ function getTableToPolicies(jsonObj){
 				str += '		<a type="button" class="btn btn-danger btn-mini" style="margin-left: 5px;" onclick="cancelPolicy(\'' + subPolicyBefore1 + '\',\'' + subPolicyAfter1 + '\')">취소</a>';
 				str += '	</li>';
 				str += '</ul>';
-				//수정 버튼 전 하위 탭
+				
 				var subPolicyBefore2 = Math.floor(Math.random() * Math.pow(10,20));
 				var subPolicyAfter2 = Math.floor(Math.random() * Math.pow(10,20));
 				str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore2 + '\'>';
@@ -3378,7 +3376,7 @@ function getTableToPolicies(jsonObj){
 				str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy']['parameter'][1]['@value'] + '\'/>';
 				str += '	</li>';
 				str += '</ul>';
-				//수정 버튼 후 하위 탭
+				
 				str += '<ul style="display:inline; list-style:none; padding: 0px; display:none; margin: 0px;" id=\'' + subPolicyAfter2 + '\'>';
 				str += '	<li>';
 				str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
@@ -3400,7 +3398,7 @@ function getTableToPolicies(jsonObj){
 				str += '</ul>';
 			try{
 				if(typeof policiesObj['policy']['parameter'][2]['@key'] != 'undefined'){
-					//수정 버튼 전 탭
+					
 					var subPolicyBefore3 = Math.floor(Math.random() * Math.pow(10,20));
 					var subPolicyAfter3 = Math.floor(Math.random() * Math.pow(10,20));
 					str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore3 + '\'>';
@@ -3414,7 +3412,7 @@ function getTableToPolicies(jsonObj){
 					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy']['parameter'][2]['@value'] + '\'/>';
 					str += '	</li>';
 					str += '</ul>';
-					//수정 버튼 후 하위 탭
+					
 					str += '<ul style="display:inline; list-style:none; display:none; padding: 0px;margin: 0px;" id=\'' + subPolicyAfter3 + '\'>';
 					str += '	<li>';
 					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
@@ -3432,7 +3430,7 @@ function getTableToPolicies(jsonObj){
 			}catch(e){}
 			try{
 				if(typeof policiesObj['policy']['parameter'][3]['@key'] != 'undefined'){
-					//수정 버튼 전 하위 탭
+					
 					var subPolicyBefore4 = Math.floor(Math.random() * Math.pow(10,20));
 					var subPolicyAfter4 = Math.floor(Math.random() * Math.pow(10,20));
 					str += '<ul style="display:inline; list-style:none; padding: 0px;margin: 0px;" id=\'' + subPolicyBefore4 + '\'>';
@@ -3446,7 +3444,7 @@ function getTableToPolicies(jsonObj){
 					str += '		<input style="border:0; background: lightgrey; height: 13px;margin-left: 0px;margin-bottom: 0px;" readonly="readonly" type="text" name="policyValue" value=\'' + policiesObj['policy']['parameter'][3]['@value'] + '\'/>';
 					str += '	</li>';
 					str += '</ul>';
-					//수정 버튼 후 하위 탭
+					
 					str += '<ul style="display:inline; list-style:none; padding: 0px; display:none; margin: 0px;" id=\'' + subPolicyAfter4 + '\'>';
 					str += '	<li>';
 					str += '		<font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>';
@@ -3464,10 +3462,36 @@ function getTableToPolicies(jsonObj){
 			}catch(e){}
 		}
 	}else{
-		str += '<ul><li>Policy가 없습니다.</li></ul>';
+		str += '<ul><li>PolicyPolicy가 없습니다.</li></ul>';
 	}
 	return str;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
