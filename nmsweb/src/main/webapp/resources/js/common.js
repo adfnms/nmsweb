@@ -1,6 +1,6 @@
 var version = getVersion();
 /**
- * URlÀ» ÀÌ¿ëÇÏ¿© ÇöÀçÀÇ ¹öÁ¯À» °¡Á®¿Â´Ù
+ * URlì„ ì´ìš©í•˜ì—¬ í˜„ì¬ì˜ ë²„ì ¼ì„ ê°€ì ¸ì˜¨ë‹¤
  * 
  * @returns
  */
@@ -21,7 +21,7 @@ String.prototype.replaceAll = function(str1, str2) {
 	return result;
 };
 /**
- * ÆÄ¶ó¹ÌÅÍ ¬¿¡ "/"¸¦ ³Ö¾îÁÜ
+ * íŒŒë¼ë¯¸í„° ë§Ÿì— "/"ë¥¼ ë„£ì–´ì¤Œ
  * 
  * @param urlData
  * @returns {String}
@@ -40,15 +40,15 @@ function setUrlData(urlData) {
 
 /**
  * @param jsonObj
- *            ÆäÀÌÂ¡À» ³ÖÀ» json object
+ *            í˜ì´ì§•ì„ ë„£ì„ json object
  * @param totalCount
- *            ÃÑ °¹¼ö
+ *            ì´ ê°¯ìˆ˜
  * @param crruntPageNm
- *            ÇöÀç ÆäÀÌÁö ¹øÈ£
+ *            í˜„ì¬ í˜ì´ì§€ ë²ˆí˜¸
  * @param rowSize
- *            ÇÑ¹ø¿¡ º¸¿©Áú °¹¼ö
+ *            í•œë²ˆì— ë³´ì—¬ì§ˆ ê°¯ìˆ˜
  * @param pageBlockSize
- *            ÆäÀÌÂ¡¿¡¼­ º¸¿©Áú °¹¼ö
+ *            í˜ì´ì§•ì—ì„œ ë³´ì—¬ì§ˆ ê°¯ìˆ˜
  */
 function getPagingHtml(jsonObj, callback, totalCount, crruntPageNm, rowSize,
 		pageBlockSize) {
@@ -101,7 +101,7 @@ function getPagingHtml(jsonObj, callback, totalCount, crruntPageNm, rowSize,
 }
 
 /**
- * valueÀÇ °ªÀÌ ÀÖ´Â ÆÄ¶ó¹ÌÅÍ¸¸ serialize
+ * valueì˜ ê°’ì´ ìˆëŠ” íŒŒë¼ë¯¸í„°ë§Œ serialize
  * 
  * @param frm :
  *            json Object
@@ -133,13 +133,13 @@ function getFromToInputValue(frm) {
 }
 
 /**
- * ³¯ÀÚ Æ÷¸äÀ» º¯°æ ÇÑ´Ù params - f : date Ç¥½Ã format auth : byun
+ * ë‚ ì í¬ë©§ì„ ë³€ê²½ í•œë‹¤ params - f : date í‘œì‹œ format auth : byun
  */
 Date.prototype.format = function(f) {
 	if (!this.valueOf())
 		return " ";
 
-	var weekName = [ "ÀÏ¿äÀÏ", "¿ù¿äÀÏ", "È­¿äÀÏ", "¼ö¿äÀÏ", "¸ñ¿äÀÏ", "±İ¿äÀÏ", "Åä¿äÀÏ" ];
+	var weekName = [ "ì¼ìš”ì¼", "ì›”ìš”ì¼", "í™”ìš”ì¼", "ìˆ˜ìš”ì¼", "ëª©ìš”ì¼", "ê¸ˆìš”ì¼", "í† ìš”ì¼" ];
 	var d = this;
 
 	return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function($1) {
@@ -163,7 +163,7 @@ Date.prototype.format = function(f) {
 		case "ss":
 			return d.getSeconds().zf(2);
 		case "a/p":
-			return d.getHours() < 12 ? "¿ÀÀü" : "¿ÀÈÄ";
+			return d.getHours() < 12 ? "ì˜¤ì „" : "ì˜¤í›„";
 		default:
 			return $1;
 		}
@@ -214,7 +214,7 @@ function nullCheckJsonObject(parentObj, childname) {
 }
 
 
-/** »óÅÂ¿¡ ´ëÇÑ ¸Ş¼¼Áö¾Ë·ÁÁØ´Ù.
+/** ìƒíƒœì— ëŒ€í•œ ë©”ì„¸ì§€ì•Œë ¤ì¤€ë‹¤.
  * @param code
  * @returns {String}
  */
@@ -223,7 +223,7 @@ function statsToStringFromStatoCode(code){
 
 	switch(code){
 		case 'N':
-			statsStr ="¸ğ´ÏÅÍ¸µ µÇÁö ¾ÊÀ½";
+			statsStr ="ëª¨ë‹ˆí„°ë§ ë˜ì§€ ì•ŠìŒ";
 			break;
 		case 'R':
 			statsStr ="Rescan to Resume";
@@ -232,14 +232,14 @@ function statsToStringFromStatoCode(code){
 			statsStr ="Forced Unmanaged";
 			break;
 		default:
-			statsStr ="¸ğ´ÏÅÍ¸µ Áß";
+			statsStr ="ëª¨ë‹ˆí„°ë§ ì¤‘";
 			break;
 	}
 
 	return statsStr;
 }
 
-/**»óÅÂ¿¡ ´ëÇÏ¿© ¸Ş¼¼Áö¸¦ ¾Ë·ÁÁØ´Ù.
+/**ìƒíƒœì— ëŒ€í•˜ì—¬ ë©”ì„¸ì§€ë¥¼ ì•Œë ¤ì¤€ë‹¤.
  * @param code
  * @param avail
  * @returns {String}
@@ -248,7 +248,7 @@ function availToStringFromStatoCode(code,avail){
 	var statsStr = "";
 	
 	statsStr =statsToStringFromStatoCode(code);
-	statsStr = statsStr == "¸ğ´ÏÅÍ¸µ Áß" ? avail+"%" : statsStr;
+	statsStr = statsStr == "ëª¨ë‹ˆí„°ë§ ì¤‘" ? avail+"%" : statsStr;
 
 	return statsStr;
 }
@@ -276,15 +276,15 @@ function dateDiff(FromTime, ToTime){
 	secAfter = Math.floor(secAfter);
 	
 	if(daysAfter > 1){
-		_return = Math.round(daysAfter) + "ÀÏ"; // Áö³­ ³¯Â¥ Ãâ·Â	
+		_return = Math.round(daysAfter) + "ì¼"; // ì§€ë‚œ ë‚ ì§œ ì¶œë ¥
 	}else if(daysAfter == 1){
-		_return = hourAfter + "½Ã°£"; // Áö³­ ½Ã°£ Ãâ·Â	
+		_return = hourAfter + "ì‹œê°„"; // ì§€ë‚œ ì‹œê°„ ì¶œë ¥	
 	}else if(hourAfter < 24 && hourAfter != 0){
-		_return = hourAfter + "½Ã°£"; // Áö³­ ½Ã°£ Ãâ·Â	
+		_return = hourAfter + "ì‹œê°„"; // ì§€ë‚œ ì‹œê°„ ì¶œë ¥	
 	}else if(minAfter < 60){
-		_return = minAfter + "ºĞ"; // Áö³­ ºĞ Ãâ·Â
+		_return = minAfter + "ë¶„"; // ì§€ë‚œ ë¶„ ì¶œë ¥
 	}else{
-		_return = secAfter + "ÃÊ"; // Áö³­ ÃÊ Ãâ·Â	
+		_return = secAfter + "ì´ˆ"; // ì§€ë‚œ ì´ˆ ì¶œë ¥	
 	}
 	return _return;
 	
@@ -305,7 +305,7 @@ function getSecDateDiff(FromTime, ToTime){
 	return secAfter;
 }
 
-/**»óÅÂ Á¤º¸
+/**ìƒíƒœ ì •ë³´
  * @param level
  * @returns {String}
  */
@@ -423,7 +423,7 @@ function yesterday(){
     if(yesterM < 10)    { yesterM = "0" + yesterM; }
     if(yesterD < 10)    { yesterD = "0" + yesterD; }
     
-    var yesterdate = yesterY + "³â" + yesterM + "¿ù" + yesterD+"ÀÏ";
+    var yesterdate = yesterY + "ë…„" + yesterM + "ì›”" + yesterD+"ì¼";
     
     return yesterdate;
 	
@@ -443,7 +443,7 @@ function beforeOneWeek(){
 	if(m < 10) { m = "0" + m; }
 	if(d < 10) { d = "0" + d; }
 
-	var resultDate = y + "³â" + m + "¿ù" + d+"ÀÏ";
+	var resultDate = y + "ë…„" + m + "ì›”" + d+"ì¼";
 	return resultDate;
 	
 }
@@ -461,7 +461,7 @@ function beforeOneMonth(){
     
     if(m < 10)    { m = "0" + m; }
     
-    var resultDate = y + "³â" + m+ "¿ù" + d+"ÀÏ";
+    var resultDate = y + "ë…„" + m + "ì›”" + d+"ì¼";
     return resultDate;
 	
 }
@@ -477,6 +477,6 @@ function beforeOneyear(){
     var m = changeDate.getMonth();
     var d = changeDate.getDate();
     
-    var resultDate = y + "³â" + m+ "¿ù" + d+"ÀÏ";
+    var resultDate = y + "ë…„" + m + "ì›”" + d+"ì¼";
     return resultDate;
 }
