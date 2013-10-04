@@ -251,7 +251,6 @@ function getInterfacesFromNodeId(callback, nodeId) {
 		alert("노드 ID가 없습니다.");
 		return;
 	}
-	console.log('/' + version + '/nodes/' + nodeId + '/ipinterfaces');
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/nodes/' + nodeId + '/ipinterfaces',
@@ -1028,7 +1027,6 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 					}
 				} else {
 					/**********************************************************************************************************************************************************************************************/
-					console.log("=======================else==jsonObj=======================");
 					TABLEobj.attr("class", "table table-striped").append(
 							TRobj.clone().append(
 								TDobj.clone().append(
@@ -1154,5 +1152,209 @@ function getSearchSelectJsonObj(jsonObj) {
 	return optionlabelStr;
 	
 }*/
+
+
+
+
+
+
+
+function nodeListPop(){
+	var foreignSource = $('#hiddenForm input[name=foreignSource]').val();
+	var url = "/" + version + "/admin/addNodeList.pop?param=" + foreignSource;
+	var settings ="toolbar=no, resizable=no, width=620, height=373, directories=no, " +
+				"status=no, scrollbars=no, menubar=no";
+	var winObject = window.open(url, 'popup', settings);
+	winObject.focus();	
+}
+
+function getTableToNodeList(foreignSource, data){
+	var dataObj = data['node'];
+	var str = '';
+		str += '<tr>';
+		str += '	<td><b>ID</b></td>';
+		str += '	<td><b>노드명</b></td>';
+		str += '	<td><b>생성 시간</b></td>';
+		str += '	<td><b>외부 아이디</b></td>';
+		str += '	<td><b>추가</b></td>';
+		str += '	<td></td>';
+		str += '</tr>';
+		if(data['node'] != undefined){
+			for(var i in dataObj){
+				str += '<tr>';
+				str += '	<td>' + dataObj[i]['@id'] + '</td>';
+				str += '	<td>' + dataObj[i]['@label'] + '</td>';
+				str += '	<td>' + new Date(dataObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss') + '</td>';
+				str += '	<td>' + dataObj[i]['@foreignId'] + '</td>';
+				if(dataObj[i]['@foreignSource'] == foreignSource){
+					str += '	<td><input type="checkbox" style="margin:0px" name="chk" checked="checked" value=\'' + dataObj[i]['@foreignId'] + '\',\'' + dataObj[i]['@label'] + '\'/></td>';
+				}else{
+					str += '	<td><input type="checkbox" style="margin:0px" name="chk" value=\'' + dataObj[i]['@foreignId'] + ',' + dataObj[i]['@label'] + '\'/></td>';
+				}
+				str += '	<td><button type="button" class="btn btn-danger btn-mini" onclick="javascript:goNodePage(\'' + dataObj[i]['@id'] + '\');">수정</button></td>';
+				str += '</tr>';
+			}
+		}else{
+			str += '<tr>';
+			str += '	<td>노드가 없습니다.</td>';
+			str += '	<td></td>';
+			str += '	<td></td>';
+			str += '	<td></td>';
+			str += '	<td></td>';
+			str += '	<td></td>';
+			str += '</tr>';
+		}
+	return str;
+}
+
+function goNodePage(nodeId){
+	var openNewWindow = window.open("about:blank");
+	openNewWindow.location.href ="/"+version+"/admin/node/nodeMng.do?nodeId="+nodeId;
+}
+
+function savesAjax(data){
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/nodes',
+		dataType : 'json',
+		data : data,
+		async : false,
+		contentType : 'application/json',
+		error : function(data) {
+			alert('모든 노드 리스트 가져오기 실패');
+		},
+		success : function(data) {
+			paramNodes(saveNodes, data);
+		}
+	});
+}
+
+function paramNodesCallback(data){
+	savesAjax(data);
+}
+
+function saveNodes(foreignSource, data){
+	var chkObj = $('#nodeFrm input[type=checkbox]');
+	$.each(chkObj, function(i){
+		var chk = $('#nodeFrm input[type=checkbox]:eq('+i+')');
+		if($(chk).attr("checked") != "checked"){
+			$(chk).change(function(){
+				$(chk).attr("disabled",true);
+				saveNodeList(data['node'][i]['@label'], data['node'][i]['@foreignId'], foreignSource, foreignSource);
+			});
+		}else{
+			$(chk).change(function(){
+				$(chk).attr("disabled",true);
+				delnodeList(foreignSource, data['node'][i]['@foreignId']);
+			});
+		}
+	});
+	window.opener.location.reload();
+	//window.close();명령 실행 시 저장 및 삭제 에러 발생
+}
+
+function saveNodeList(nodeLabel, foreignId, building, foreignSource){
+	var str = "{\"node\":[{\"node-label\": \"" + nodeLabel + "\",\"foreign-id\": \"" + foreignId + "\",\"building\": \"" + building + "\"}]}"; 
+	$.ajax({
+		type : 'post',
+		url : '/' + version + '/requisitions/' + foreignSource + '/nodes',
+		contentType : 'application/json',
+		data : str,
+		error : function(data) {alert('저장 실패');},
+		success : function(data) {/*do nothing*/}
+	});
+}
+
+function delnodeList(foreignSource, foreignId){
+	$.ajax({
+		type : 'delete',
+		url : '/' + version + '/requisitions/' + foreignSource + '/nodes/' + foreignId,
+		datatype : 'json',
+		contentType : 'application/json',
+		error : function(data) {alert('삭제 실패');},
+		success : function(data) {/*do nothing*/}
+	});
+}
+
+function saveAjax(callback, data){
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/nodes',
+		dataType : 'json',
+		data : data,
+		async : false,
+		contentType : 'application/json',
+		error : function(data) {
+			alert('모든 노드 리스트 가져오기 실패');
+		},
+		success : function(data) {
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+}
+
+function saves(foreignSource, data){
+	var str = getTableToNodeList(foreignSource, data);
+	$('#getNodeList').append(str);
+}
+
+function save(data){
+	paramNodes(saves, data);
+}
+
+//URL로부터 파라미터값 가져오기
+function paramNodes(callback, data){
+	var Request = function(){
+		this.getParameter = function(name){
+			var rtnval = '';
+			var IpAddress = unescape(location.href);
+			var params = (IpAddress.slice(IpAddress.indexOf('?')+1,IpAddress.length)).split('&');
+			for(var i=0 ; i < params.length ; i++){
+				var varNm = params[i].split('=')[0];
+				if(varNm.toUpperCase() == name.toUpperCase()){
+					rtnval = params[i].split('=')[1];
+				break;
+				}
+			}
+			if (typeof callback == "function") {
+				callback(rtnval, data);
+			}
+		};
+	};
+	var request = new Request();
+	request.getParameter('param');
+}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

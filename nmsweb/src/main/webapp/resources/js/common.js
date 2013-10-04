@@ -203,7 +203,7 @@ function nullCheckJsonObject(parentObj, childname) {
 		
 		if(parentObj[childName] != null || (typeof parentObj[childName] != "undefined")){
 			
-			strValue = parentObj['childName'];
+			strValue = parentObj[childName];
 		
 		}else{
 			

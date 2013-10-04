@@ -22,6 +22,8 @@
 	
 	//자원별 노드목록
 	function addGraphsList(jsonObj){
+		console.log(jsonObj["records"]);
+		
 		var str = "";
 		if(jsonObj["total"]==0){
 			

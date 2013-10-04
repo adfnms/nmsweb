@@ -177,11 +177,11 @@ function editRequisitionList(jsonObj, foreignSource, foreignId){
 }
 
 function showEditRequisitionInfoDivTitle(foreignSource){
-	getNodeListInfo(foreignSource);
+	nodeListAjax(foreignSource);
 	synRequisition(foreignSource);
 	$('#hiddenForm input[name=foreignSource]').val(foreignSource);
 	$('#editRequisitionPopTitle').empty();
-	$('#editRequisitionPopTitle').append("Requisitioned Nodes: " + foreignSource);
+	$('#editRequisitionPopTitle').append(foreignSource);
 }
 
 function showCancelRequisitionPopList(){
@@ -265,13 +265,28 @@ function showSaveRequisitionPopListAjax(nodeLabel, foreignId, building, foreignS
 		}
 	});
 }
-
-function NodeListInfo(jsonObj){
+//================================================================================================================================================================================
+function nodeListInfo(jsonObj){
 	var str = getTableToEditRequisitionPop(jsonObj);
 	$("#requisitionListTable").empty();
 	$("#requisitionListTable").append(str);
 }
 
+function nodeListAjax(foreignSource){
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/requisitions/' + foreignSource + '/nodes',
+		dataType : 'json',
+		contentType : 'application/json',
+		error : function(data) {
+			alert('노드 리스트 가져오기 서비스 실패');
+		},
+		success : function(data) {
+			nodeListInfo(data);
+		}
+	});
+}
+//================================================================================================================================================================================
 function modifyRequisitionPopList(nodeObj, trId, nodeLabel, inputForeignId){
 	if(!confirm("수정하면 기존의 노드 정보가 지워질 수 있습니다. 계속하시겠습니까?")){
 		return;
@@ -1282,7 +1297,46 @@ function getTableToAddInterface(trId, foreignSource, foreignId){
 
 //메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 시 새로 생성된 하단부 리스트의 편집 버튼 클릭 시 새로 생성된 팝업창 안의 하위 리스트
 function getTableToEditRequisitionPop(jsonObj){
-	var foreignSource = $("#hiddenForm input[name=foreignSource]").val();
+	console.log(jsonObj);
+	var nodeObj = jsonObj["node"];
+	var str = "";
+		str += '<tr>';
+		str += '	<td><b>노드명</b></td>';
+		str += '	<td><b>외부 아이디</b></td>';
+		str += '</tr>';
+			if(nodeObj != undefined){
+				if(nodeObj['@foreign-id'] == undefined){
+					for(var i in nodeObj){	
+						str += '<tr>';
+						str += '	<td>' + nodeObj[i]['@node-label'] + '</td>';
+						str += '	<td>' + nodeObj[i]['@foreign-id'] + '</td>';
+						str += '</tr>';
+					}
+				}else{
+					str += '<tr>';
+					str += '	<td>' + nodeObj['@node-label'] + '</td>';
+					str += '	<td>' + nodeObj['@foreign-id'] + '</td>';
+					str += '</tr>';
+				}
+			}else{
+				str += '<tr>';
+				str += '	<td>노드가 없습니다.</td>';
+				str += '	<td></td>';
+				str += '</tr>';
+			}
+	return str;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+/*	var foreignSource = $("#hiddenForm input[name=foreignSource]").val();
 	var nodeObj = jsonObj["node"];
 	var str = "";
 	if(jsonObj["node"] != undefined){
@@ -2445,7 +2499,7 @@ function getTableToEditRequisitionPop(jsonObj){
 			}
 		}
 	}
-	return str;
+	return str;*/
 }
 
 function getTableToEditRequisitionJsonObj(jsonObj, foreignSource, foreignId){
@@ -2487,15 +2541,15 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		str += "</tr>";
 		if(nodeStr > 0){
 			str += "<tr>";
-			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">노드 삭제</button></td>';
-			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-832px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
-			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj["@foreign-source"] + '\')">편집</button>';
+			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">노드 그룹 삭제</button></td>';
+			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-796px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
+			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-713px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj["@foreign-source"] + '\')">편집</button>';
 			str += "</tr>";
 		}else{
 			str += "<tr>";
-			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">노드 삭제</button></td>';
-			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-832px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
-			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj["@foreign-source"] + '\')">편집</button>';
+			str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj["@foreign-source"] + '\');">노드 그룹 삭제</button></td>';
+			str += '	<td><button type="button" class="btn btn-primary" style="margin-left:-796px" title="" onclick="javascript:synRequisition(\'' + requisitionObj["@foreign-source"] +'\');">동기화</button></td>';
+			str += '	<td><button type="button" class="btn btn-info" style="margin-left:-713px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj["@foreign-source"] + '\')">편집</button>';
 			str += "</tr>";
 		}
 		str += "<tr>";
@@ -2506,7 +2560,7 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		str += "</tr>";
 		if(nullStrLastImport == ""){
 			str += "<tr>";
-			str += "	<td>최근 동기화: <b>理쒓렐 �숆린�붾� �섏� �딆븯�듬땲● </b></td>";
+			str += "	<td>최근 동기화: <b>최근 동기화를 하지 않았습니다. </b></td>";
 			str += "</tr>";
 		}else{
 			str += "<tr>";
@@ -2535,15 +2589,15 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 			str += "</tr>";
 			if(nodeStr > 0){
 				str += "<tr>";
-				str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">노드 삭제</button></td>';
-				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-832px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
-				str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj[i]["@foreign-source"] + '\')">편집</button>';
+				str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">노드 그룹 삭제</button></td>';
+				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-796px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
+				str += '	<td><button type="button" class="btn btn-info" style="margin-left:-713px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj[i]["@foreign-source"] + '\')">편집</button>';
 				str += '</tr>';
 			}else{
 				str += "<tr>";
-				str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">노드 삭제</button></td>';
-				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-832px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
-				str += '	<td><button type="button" class="btn btn-info" style="margin-left:-750px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj[i]["@foreign-source"] + '\')">편집</button>';
+				str += '	<td><button type="button" class="btn btn-primary" style="" title="" onclick="javascript:delRequisition(\'' + requisitionObj[i]["@foreign-source"] + '\');">노드 그룹 삭제</button></td>';
+				str += '	<td><button type="button" class="btn btn-primary" style=";margin-left:-796px" title="" onclick="javascript:synRequisition(\'' + requisitionObj[i]["@foreign-source"] +'\');">동기화</button></td>';
+				str += '	<td><button type="button" class="btn btn-info" style="margin-left:-713px" data-toggle="modal" href="#editRequisitionPop" onclick="javascript:showEditRequisitionInfoDivTitle(\'' + requisitionObj[i]["@foreign-source"] + '\')">편집</button>';
 				str += '</tr>';
 			}
 			str += "<tr>";
@@ -2566,7 +2620,7 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 	}else{
 		str += "<tr>";
 		str += "	<td class='text-info'>";
-		str	+= "		<h3>Requisition●�깅줉�댁＜�몄슂.</h3>";
+		str	+= "		<h3>노드 그룹이 없습니다.</h3>";
 		str += "	</td>";
 		str += "	<td>";
 		str += "	</td>";
@@ -3125,7 +3179,7 @@ function getTableToDetectors(jsonObj){
 			}
 		}
 	}else{
-		str += '<ul><li>Detector媛●놁뒿�덈떎.</li></ul>';
+		str += '<ul><li>Detector가 없습니다.</li></ul>';
 	}
 	return str;
 }
@@ -3462,13 +3516,10 @@ function getTableToPolicies(jsonObj){
 			}catch(e){}
 		}
 	}else{
-		str += '<ul><li>PolicyPolicy가 없습니다.</li></ul>';
+		str += '<ul><li>Policy가 없습니다.</li></ul>';
 	}
 	return str;
 }
-
-
-
 
 
 

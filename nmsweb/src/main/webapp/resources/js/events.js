@@ -578,9 +578,6 @@ function getTabletagToServiceEventJsonObj(jsonObj, serviceNm){
  * @param jsonObj
  */
 function getEventinfoBox(jsonObj){
-	console.log("------이벤트 정보------");
-	console.log(jsonObj);
-	var good = "ok";
 	small= jsonObj["event"]["@severity"].toLowerCase();
 	/*var eventInfoStr = 	'<div class="row-fluid">'+
 						'	<div class="span12">'+
@@ -598,7 +595,7 @@ function getEventinfoBox(jsonObj){
 	var MTDobj = $("<td></td>");
 	var Aobj = $("<a></a>");
 	var FONTobj = $("<font></font>");
-	
+	var nullCheckJsonObj = nullCheckJsonObject(jsonObj["event"], ["serviceType"]["name"]);
 	var eventInfoStr = DIVobj.attr("class", "row-fluid").append(
 							MDIVobj.attr("class", "span12 well well-small").clone().append(
 								TABLEobj.attr("class", "table table-striped").clone().append(
@@ -631,7 +628,7 @@ function getEventinfoBox(jsonObj){
 									TRobj.clone().append(
 										THobj.text("서비스"),
 										TDobj.clone().append(
-											Aobj.clone().attr("href", "/" + version + "/search/service/serviceDesc?nodeId=" + jsonObj["event"]["nodeId"] + "&intf=" + jsonObj["event"]["nodeId"] + "&serviceNm=" + nullCheckJsonObject(jsonObj["event"]["serviceType"], ["name"])).clone().text(nullCheckJsonObject(jsonObj["event"]["serviceType"], ["name"]))
+											Aobj.clone().attr("href", "/" + version + "/search/service/serviceDesc?nodeId=" + jsonObj["event"]["nodeId"] + "&intf=" + jsonObj["event"]["nodeId"] + "&serviceNm=" + nullCheckJsonObj).clone().text(nullCheckJsonObj)
 										),
 										TDobj.clone().text(""),
 										TDobj.clone().text(""),
@@ -703,8 +700,6 @@ function getEventinfoBox(jsonObj){
  */
 function getEventLogBox(jsonObj){
 
-	console.log("------이벤트 로그 메시지------");
-	console.log(jsonObj);
 	/**********************************************/
 	var DIVobj = $("<div></div>");
 	var MDIVobj = $("<div></div>");
@@ -716,7 +711,7 @@ function getEventLogBox(jsonObj){
 						)
 					);
 					DIVobj.attr("class", "row-fluid").append(
-						MDIVobj.attr("class", "span12 well well-small").text(jsonObj["event"]["logMessage"])	
+						MDIVobj.attr("class", "span12 well well-small").text(removePtag(jsonObj["event"]["logMessage"]))	
 					);
 	/**********************************************/
 	/*var eventLogStr = 	'<div class="row-fluid">'+
@@ -734,6 +729,12 @@ function getEventLogBox(jsonObj){
 
 }
 
+function removePtag(str){
+	str = str.replace('<p>', '');
+	str = str.replace('</p>', '');
+	return str;
+}
+
 /** 이벤트 정보를 div 형태로 만들어줌 
  * 
  * 메뉴의 [DashBoard] -> [이벤트 목록]의 [이벤트ID]를 클릭 시 새로 이동하는 [이벤트 정보] 화면단의 3번째 박스
@@ -741,21 +742,21 @@ function getEventLogBox(jsonObj){
  */
 function getEventDescBox(jsonObj){
 
-	console.log("------이벤트 설명------");
-	console.log(jsonObj);
-	
 	/**********************************************/
 	var DIVobj = $("<div></div>");
 	var MDIVobj = $("<div></div>");
 	var H5obj = $("<h5></h5>");
+	var PREobj = $("<pre></pre>");
 	
 	var eventDescStr = DIVobj.attr("class", "row-fluid").append(
 						MDIVobj.attr("class", "span12").attr("style", "margin-left:0px").clone().append(
 							H5obj.text("설명")	
 						)
 					);
-					DIVobj.attr("class", "row-fluid").append(
-						MDIVobj.attr("class", "span12 well well-small").text(jsonObj["event"]["description"])	
+					PREobj.append(
+						DIVobj.attr("class", "row-fluid").append(
+							MDIVobj.attr("class", "span12 well well-small").text(removePtag(jsonObj["event"]["description"]))	
+						)
 					);
 	/**********************************************/
 	/*var eventDescStr = 	'<div class="row-fluid">'+

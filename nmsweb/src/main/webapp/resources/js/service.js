@@ -40,7 +40,6 @@ function getServiceFromNodeidIpaddress(callback, nodeId, ipAddress){
 			alert("[" + ipAddress + '] 아이피 정보 검색 실패');
 		},
 		success : function(data) {
-
 			// 콜백함수
 			if (typeof callback == "function") {
 				callback(data, nodeId, ipAddress);

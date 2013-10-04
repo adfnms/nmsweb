@@ -23,8 +23,7 @@
 	function addNodeResult(data){
 		console.log(data);
 		
-		if(data.result == "success")
-		{
+		if(data.result == "success"){
 			alert("추가되었습니다.");
 			self.close();
 		}else{

@@ -51,11 +51,19 @@ function getCount(callback,data){
 function countStr(jsonObj,categoryid,categoryname){
 	var categoryids = categoryid + 100;
 	var str = ""; 
-	str += '	<tr>';
-	str += '		<td class="text "><a href=/'+version+'/surveillanceNode.do?categoryid='+categoryids+'&categoryname=' + categoryname + '>' + categoryname + '</a></td>';
-	str += '		<td class="text ">&nbsp;&nbsp;&nbsp;&nbsp;'+ jsonObj["CategoriesCount"] + '개</td>';
-	str += '		<td class="text-error" id="'+categoryids+'"></td>';
-	str += '	</tr>';
+	if(categoryname != ''){
+		str += '	<tr>';
+		str += '		<td class="text "><a href=/'+version+'/surveillanceNode.do?categoryid='+categoryids+'&categoryname=' + categoryname + '>' + categoryname + '</a></td>';
+		str += '		<td class="text ">&nbsp;&nbsp;&nbsp;&nbsp;'+ jsonObj["CategoriesCount"] + '개</td>';
+		str += '		<td class="text-error" id="'+categoryids+'"></td>';
+		str += '	</tr>';
+	}else{
+		str += '	<tr>';
+		str += '		<td class="text "><a href=/'+version+'/surveillanceNode.do?categoryid='+categoryids+'&categoryname=' + categoryname + '>empty</a></td>';
+		str += '		<td class="text ">&nbsp;&nbsp;&nbsp;&nbsp;'+ jsonObj["CategoriesCount"] + '개</td>';
+		str += '		<td class="text-error" id="'+categoryids+'"></td>';
+		str += '	</tr>';
+	}
 	return str;
 }
 

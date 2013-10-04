@@ -128,7 +128,6 @@
 	
 	/*//service info (getServiceFromNodeidIpaddress) Callback */
 	function addServiceInfo(jsonObj, nodeId, ipAddress){
-		
 		var str ="";
 		
 			if(jsonObj["@count"] > 0){

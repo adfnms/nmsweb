@@ -52,6 +52,16 @@ public class NodeManagerController {
 		return model;
 	}
 	
+	@RequestMapping(value = "/admin/addNodeList")
+	public ModelAndView addNodeList(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		
+		ModelAndView model =  new ModelAndView();
+		
+		model.setViewName("/admin/nodeMng/addNodeList");
+		
+		return model;
+	}
+	
 	@RequestMapping(value = "/admin/changeNodeLabel")
 	public ModelAndView changeNodeLabel(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			@RequestParam(value = "nodeId", required = false)String nodeId) {
