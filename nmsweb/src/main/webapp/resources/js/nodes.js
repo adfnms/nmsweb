@@ -1158,7 +1158,7 @@ function getSearchSelectJsonObj(jsonObj) {
 
 
 
-
+/*2013-10-04*/
 function nodeListPop(){
 	var foreignSource = $('#hiddenForm input[name=foreignSource]').val();
 	var url = "/" + version + "/admin/addNodeList.pop?param=" + foreignSource;
@@ -1239,18 +1239,26 @@ function saveNodes(foreignSource, data){
 		var chk = $('#nodeFrm input[type=checkbox]:eq('+i+')');
 		if($(chk).attr("checked") != "checked"){
 			$(chk).change(function(){
-				$(chk).attr("disabled",true);
-				saveNodeList(data['node'][i]['@label'], data['node'][i]['@foreignId'], foreignSource, foreignSource);
+				if($(chk).attr("checked") == "checked"){
+					//alert('노드명[' + data['node'][i]['@label'] + '] : ' + '저장');
+					saveNodeList(data['node'][i]['@label'], data['node'][i]['@foreignId'], foreignSource, foreignSource);
+				}else{
+					//alert('노드명[' + data['node'][i]['@label'] + '] : ' + '삭제');
+					delnodeList(foreignSource, data['node'][i]['@foreignId']);
+				}
 			});
 		}else{
 			$(chk).change(function(){
-				$(chk).attr("disabled",true);
-				delnodeList(foreignSource, data['node'][i]['@foreignId']);
+				if($(chk).attr("checked") == "checked"){
+					//alert('노드명[' + data['node'][i]['@label'] + '] : ' + '저장');
+					saveNodeList(data['node'][i]['@label'], data['node'][i]['@foreignId'], foreignSource, foreignSource);
+				}else{
+					//alert('노드명[' + data['node'][i]['@label'] + '] : ' + '삭제');
+					delnodeList(foreignSource, data['node'][i]['@foreignId']);
+				}
 			});
 		}
 	});
-	window.opener.location.reload();
-	//window.close();명령 실행 시 저장 및 삭제 에러 발생
 }
 
 function saveNodeList(nodeLabel, foreignId, building, foreignSource){
@@ -1326,7 +1334,6 @@ function paramNodes(callback, data){
 	var request = new Request();
 	request.getParameter('param');
 }	
-
 
 
 

@@ -17,7 +17,6 @@ $(document).ready(function(){
 function rePositionSideBar(){
 	var conWidth = $(".container").width();
 	var	width  = conWidth + ( ($(document).width() -conWidth) /2 ); 
-	
 	$("#sideBar").css("left",width+26);
 	$("#sideBarOutageList").css("margin-right",-35);
 	$("#sideBarOutageList").css("margin-left",-35);
