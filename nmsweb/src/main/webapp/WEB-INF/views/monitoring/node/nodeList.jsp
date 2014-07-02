@@ -64,10 +64,10 @@
 		</div>
 		<form id="searchNodeFrm" name="searchNodeFrm">
 			<div class="row-fluid">
-				<div class="span12 well well-small">
+				<div class="span12 well well-small" style="height: 38px;">
 					<div class="row-fluid">
 						<div class="span12">
-							<h4>노드&nbsp;목록</h4>
+							<h5 style="margin-top: 0px;">노드&nbsp;목록</h5>
 						</div>
 					</div>
 				</div>

@@ -77,7 +77,7 @@ function searchField(){
 	<input type="hidden" name="fieldValue" value=""  protect="true" />
 </form>
 
-	<div class="container">
+	<div class="container" style="margin-top: -20px;">
 
 		<jsp:include page="/include/menu.jsp" />
 		
@@ -204,7 +204,7 @@ function searchField(){
 										<a type="button" class="btn" title="" href="javascript:searchField()">Search</a>
 									</div>
 								</div>
-								<div class="span12" style ="margin-top: 33px; margin-left: -13px;">
+								<div class="span12" style ="margin-top: 4px; margin-left: -5px;">
 									<a href="javascript:searchCategoryList()"><label class="text-center span5 control-label">All nodes with asset info</label></a>
 								</div>
 							</div>

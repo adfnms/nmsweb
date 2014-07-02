@@ -268,7 +268,8 @@
 				</div>
 			</div>
 		</div>
-		<hr>
+		
+		<hr/>
 	</div>
 	<!-- /container -->
 </body>

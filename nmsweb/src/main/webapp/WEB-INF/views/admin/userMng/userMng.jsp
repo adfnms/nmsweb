@@ -141,7 +141,7 @@
 		<input type="hidden" id ="user-id" name="user-id" value="" />
 	</form>
 
-	<div class="container">
+	<div class="container" style="margin-top: -20px;">
 
 		<jsp:include page="/include/menu.jsp" />
 
@@ -159,28 +159,37 @@
 
 		<div class="row-fluid">
 			<div class="span12 well well-small">
-			
+				<ul class="inline">
+					<li>
+						<h4>사용자&nbsp;ID</h4>
+					</li>
+					<li style="margin-left: 17px;">
+						<h4>이름(FullName)</h4>
+					</li>
+					<li style="margin-left: 29px;">
+						<h4>소개</h4>
+					</li>
+					<li>
+						<a type="button" class="btn btn-primary"
+							style="margin-left: 514px;margin-top: 0px;" title=""
+							href="/v1/admin/userMng/userReg.do">+ 사용자 추가</a>
+					</li>
+				</ul>
 				<table class="table table-striped table-hover table-condensed " id="userListTable" >
 					<colgroup>
 						<col class="span2"/>
 						<col class="span3"/>
 						<col class="span4"/>
 					</colgroup>
-					<thead>
-						<tr>
-							<th><h4>사용자&nbsp;ID</h4></th>
-							<th><h4>이름(FullName)</h4></th>
-							<th><h4>소개</h4></th>
-						</tr>
-					</thead>
+						
 				</table>
 			</div>
 				<div class="row-fluid">
 					<div class="span12">
 					<div class="span10"></div>
-						<div class="span2 ">
+						<!-- <div class="span2" style="margin-top: 18px;">
 							<a type="button" class="btn btn-primary" title="" href="/v1/admin/userMng/userReg.do">+ 사용자 추가</a>
-						</div>
+						</div> -->
 					</div>
 					
 				</div>

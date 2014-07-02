@@ -40,8 +40,8 @@
 
 	/* Node base info Callback */
 	function addNodeDesc(jsonObj) {
-
-		$('#nodeLabel').append("[ " + jsonObj["@label"] + " ]");
+		var str = "<a href='/" + version + "/search/node/nodeDesc.do?nodeId=" + jsonObj['@id'] + "'>" + jsonObj['@label']+ "</a>";
+		$('#nodeLabel').append(str);
 	
 		/* Surveillance Category Memberships */
 		//addCategories(jsonObj["categories"]);
@@ -62,7 +62,7 @@
 	function addOutages(jsonObj) {
 
 		var str = getTabletagToOutageJsonObj(jsonObj,"${nodeId}");
-		$('#rightUnderDiv').append(str);
+		$('#rightUnderDiv2').append(str);
 
 	}
 	/*//Recent Outages */
@@ -106,7 +106,7 @@
 					
 					//인터페이스 가용성
 					var interfaceAvail = Number(getInterfaceAvailability("${nodeId}", ipAddrs)).toFixed(3)+"%";
-					 var headStr = '<h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>'; 
+					 var headStr = '<td><h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5></td><td style="position: relative;left: 10%;top: 0px;">'+statsToStringFromStatoCode(jsonObj["@isManaged"])+'</hd>'; 
 					//var headStr = '<h5><a href="javascript:InterfaceInfo(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>';
 					//서비스 가용성
 					var serviceAvailSte = getTabletagToAvailJsonObj("${nodeId}", ipAddrs);
@@ -122,7 +122,7 @@
 				var ipAddrs =jsonObj["ipInterface"]["ipAddress"];
 				//인터페이스 가용성
  				var interfaceAvail = Number(getInterfaceAvailability("${nodeId}", ipAddrs)).toFixed(3)+"%";
- 				var headStr = '<h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>'; 
+ 				var headStr = '<td><h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5></td><td style="position: relative;left: 10%;top: 0px;">'+statsToStringFromStatoCode(jsonObj["@isManaged"])+'</td>'; 
  				//var headStr = '<h5><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne"  onclick=\"show();\">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5>';
  				
  				//서비스 가용성
@@ -191,9 +191,9 @@ function addInterfaceInfo(jsonObj) {
 	
 		/* Recent Outages Callback For Interface*/
 	function addOutagesForInterface(jsonObj ,nodeId ,ipAddrs) {
-		$('#rightUnderDiv').empty();
+		$('#rightUnderDiv2').empty();
 		var str = getTabletagToInterfaceOutageJsonObj(jsonObj,nodeId, ipAddrs);
-		$('#rightUnderDiv').append(str);
+		$('#rightUnderDiv2').append(str);
 
 	}
 	/*//Recent Outages Callback For Interface */
@@ -201,9 +201,9 @@ function addInterfaceInfo(jsonObj) {
 	/* Recent Events Callback ForInterface */
 	function addEventsForInterface(jsonObj, notiId, ipAddress, serviceNm) {
 		
-		$('#rightUnderDiv2').empty();
+		$('#rightUnderDiv').empty();
 		var str = getTabletagToInterfaceEventJsonObj(jsonObj, notiId, ipAddress, serviceNm);
-		$('#rightUnderDiv2').append(str);
+		$('#rightUnderDiv').append(str);
 
 	}
 	/*//Recent Events Callback For Interface*/
@@ -223,18 +223,18 @@ function goServiceDiv(nodeId,intf,serviceNm){
 	/* Recent Outages Callback For Service*/
 function addOutagesForService(jsonObj ,ipaddr,nodeId , serviceNm) {
 	
-	$('#rightUnderDiv').empty();
+	$('#rightUnderDiv2').empty();
 	var str = getTabletagToServiceOutageJsonObj(jsonObj,serviceNm);
-	$('#rightUnderDiv').append(str);
+	$('#rightUnderDiv2').append(str);
 
 }
 /*//Recent Outages Callback For Service*/
 
 /* Recent Events Callback For Service*/
 function addEventsForService(jsonObj,notiId, ipaddr, serviceNm) {
-	$('#rightUnderDiv2').empty();
+	$('#rightUnderDiv1').empty();
 	var str = getTabletagToServiceEventJsonObj(jsonObj, serviceNm);
-	$('#rightUnderDiv2').append(str);
+	$('#rightUnderDiv1').append(str);
 
 }
 /*//Recent Events Callback For Service*/
@@ -264,37 +264,39 @@ function addEventsForService(jsonObj,notiId, ipaddr, serviceNm) {
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
 		<div class="row-fluid">
-			<div class="span12 well well-small">
 				<div class="row-fluid">
-					<div class="span3">
-						<h5 id="nodeLabel">노드정보</h5>
-					</div>
-					<div class="span9">
-						<jsp:include page="/include/statsBar.jsp" />
+					<div class="span12">
+						<ul class="breadcrumb well well-small" style="height: 0px;">
+							<li class="span4"><h5 style="margin-top: 0px;" id="nodeLabel"></h5></li>
+							<li class="span8"><h5 style="margin-top: 0px;margin-left: -6px;" id="availNode"></h5></li>
+							<!-- <li class="span2"><h5 style="margin-top: 0px;" id="availNode"></h5></li> -->
+						</ul>
+						<div style="width: 478px;position: relative;left: 514px;top:-40px">
+							<jsp:include page="/include/statsBar.jsp"/>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>​
-		<div class="row-fluid">
+		</div>
+				​
+		<div class="row-fluid" style="margin-top: -55px;">
 			<div class="span4">
-				<div class="row-fluid" style="margin-top: -10px;">
+				<!-- <div class="row-fluid" style="margin-top: -10px;">
 					<h5 class="span12 well well-small" id="availNode"></h5>
-				</div>
+				</div> -->
 				<div class="row-fluid">
 					<h5>인터페이스</h5>
 				</div>
 				<div class="row-fluid">
 					<div class="span12 well well-small" id="leftDiv"></div>
 				</div>
-				<div class="row-fluid">
+				<!-- <div class="row-fluid">
 					<div class="span12 well well-small" id="collapsible"></div>
-				</div>
-				
-				<div class="row-fluid">
+				</div> -->
+				<!-- <div class="row-fluid">
 					<h5>서비스&nbsp;목록</h5>
-				</div>
+				</div> -->
 				<div class="row-fluid">
-					<div class="span12 well well-small" id="leftUnderDiv" style="margin-left: 0px;"></div>
+					<div class="span12 well well-small" id="leftUnderDiv" style="margin-left: 0px;height: 498px;margin-top: 21px;"></div>
 				</div>
 			</div>
 			
@@ -315,7 +317,7 @@ function addEventsForService(jsonObj,notiId, ipaddr, serviceNm) {
 				</div>
               </div> -->
               <div class="span8" id="rightUnderDiv"></div>
-                <div class="span8" id="rightUnderDiv2"></div>
+              <div class="span8" id="rightUnderDiv2"></div>
 		</div>
 
 	</div>

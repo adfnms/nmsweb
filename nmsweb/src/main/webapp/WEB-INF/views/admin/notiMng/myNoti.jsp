@@ -166,7 +166,7 @@ var encodeTime = encodeURI(time);
 		</form>
 		<div class="row-fluid">
 			<div class="span12">
-				<ul class="breadcrumb well well-small">
+				<ul class="breadcrumb well well-small" style="margin-top: -10px;">
 					<li>알림<span class="divider">/</span></li>
 					<li><a href="/v1/admin/notimng/allnoti.do">모든 알림 보기</a><span class="divider">/</span></li>
 					<li>나의 알림 보기<span class="divider">/</span></li>
@@ -196,6 +196,9 @@ var encodeTime = encodeURI(time);
 								<th class="span6"><h4>Message</h4></th>
 							</tr> -->
 						</table>
+						<div class="span2" style="width: 16.529915%;">
+						<a type="button" class="btn btn-primary" style="margin-top: -10px;margin-left: 797px;width: 132px;" title="" href="/v1/admin/notimng/configureNotification.do">configure notification</a>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -203,9 +206,9 @@ var encodeTime = encodeURI(time);
 		<div class="row-fluid">
 				<div class="span12">
 				<div class="span9" style="width: 80.358974%;"></div>
-					<div class="span2" style="width: 16.529915%;">
-						<a type="button" class="btn btn-primary" title="" href="/v1/admin/notimng/configureNotification.do">configure notification</a>
-					</div>
+					<!-- <div class="span2" style="width: 16.529915%;">
+						<a type="button" class="btn btn-primary" style="margin-top: 20px;" title="" href="/v1/admin/notimng/configureNotification.do">configure notification</a>
+					</div> -->
 				</div>
 			</div>
 		</div>

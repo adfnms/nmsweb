@@ -126,17 +126,18 @@
 			
 			<div class="span12 well well-small">
 			
+						
+							<div class="span1"><h3>status</h3></div>
+							<div class="span3" style="margin-left: 50px;"><h3>notification</h3></div>
+							<div class="span3" style="margin-left: 56px;"><h3>uei</h3></div>
+							<div class="span1"  style="">
+								<a type="button" style="width: 77px;margin-left: 222px;margin-top: 18px;" class="btn btn-primary" title="" href="/v1/admin/notimng/addEvent.do">+ 공지 추가</a>
+							</div>
+						
+				
 				<table class="table table-striped table-hover table-condensed" id="notificationTable" >
 				
-					<thead>
-						<tr>
-							<th><h3>status</h3></th>
-							<th><h3>notification</h3></th>
-							<th><h3>uei</h3></th>
-							<th></th>
-							<th></th>
-						</tr>
-					</thead>
+					
 				</table>
 			</div>
 				
@@ -146,9 +147,7 @@
 		<div class="row-fluid">
 				<div class="span12">
 				<div class="span11"></div>
-					<div class="span1"  style="margin-left: -20px; margin-top: -5px;">
-						<a type="button" style="width: 77px;" class="btn btn-primary" title="" href="/v1/admin/notimng/addEvent.do">+ 공지 추가</a>
-					</div>
+					
 				</div>
 				
 			</div>

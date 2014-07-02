@@ -186,7 +186,7 @@
 				<input type="hidden" id ="name" name="name" value="" />
 			</form>
 		<div class="row-fluid">
-			<div class="span12">
+			<div class="span12" style="margin-top: -10px;">
 				<ul class="breadcrumb well well-small">
 					<li><a href="#">Home</a> <span class="divider">/</span></li>
 					<li><a href="#">운영관리</a> <span class="divider">/</span></li>
@@ -199,9 +199,19 @@
 			
 		<div class="row-fluid">
 			<div class="span12 well well-small">
-			
-			
-				
+				<ul class="inline">
+				<li><h4>
+						<abbr title="그룹 이름">GroupName</abbr>
+					</h4></li>
+				<li style="margin-left: 39px;"><h4>
+						<abbr title="그룹 설명">GroupComments</abbr>
+					</h4></li>
+				<li>&nbsp;</li>
+				<li style="margin-left: 525px;margin-top:0px;">
+							<abbr title="새 그룹 등록 버튼"><a type="button" class="btn btn-primary" title="" href="#popupRegMethod" data-toggle="modal">새 그룹 등록</a></abbr>
+					</li>
+				</ul>
+
 				<table class="table table-striped table-hover table-condensed" id="groupTable" >
 					
 					
@@ -218,9 +228,9 @@
 				<div class="row-fluid">
 					<div class="span12">
 					<div class="span10"></div>
-						<div class="span2 ">
+						<!-- <div class="span2" style="margin-top: 18px;">
 							<abbr title="새 그룹 등록 버튼"><a type="button" class="btn btn-primary" title="" href="#popupRegMethod" data-toggle="modal">새 그룹 등록</a></abbr>
-						</div>
+						</div> -->
 					</div>
 					
 				</div>

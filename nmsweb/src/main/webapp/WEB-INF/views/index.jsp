@@ -32,7 +32,18 @@
 		/*surveillence 정보 갖고오기  */
 		getsurveillanceLabel(searchLabels);
 		
+		/* 24시간 가용률 표시/숨김 이벤트 */
+		$('#_btn').live('click', function(){
+		    if ($('#_availability').css('opacity')=='0'){
+		    	$('#_availability').css({'opacity':'1'});
+		    }else{
+		        $('#_availability').css({'opacity':'0'});
+		    }
+		});
+		
 	});
+	
+	
 	/*surveillence 정보 갖고오기 callback함수 */
 	function searchLabels(jsonObj,categoryid,categoryname){
 		
@@ -225,16 +236,36 @@
 			var outageCount = categoryObj[i]["outageTotalCount"];
 			var serviceCount = categoryObj[i]["serviceTotalCount"];
 			
-			str += '	<tr class='+classStatus+' id="errorstr">';
-			str += '		<th><a href="<c:url value="/category/nodeList?cateNm=" />'+categoryObj[i]["name"]+'">' + categoryObj[i]["name"] + '</a></th>';
-			str += '		<th class="text-error">&nbsp;&nbsp;&nbsp;&nbsp;' + outageCount + ' of ' + serviceCount + '</th>';
-			str += '		<td class=""><div class="progress progress-striped active '+status+' " style="margin-bottom: 0px;width: 202px; ">';
-			str += '		<div class="bar" style="width:' + availwidth + '%">' + avail + '%</div>';
-			str += '		</div></td>';
-			str += '	</tr>';
-			totalAvail += parseInt(avail);
-			outageTotalCount += parseInt(outageCount);
-			serviceTotalCount += parseInt(serviceCount);
+			
+
+				str += '	<tr class='+classStatus+' id="errorstr">';
+				str += '		<th><a href="<c:url value="/category/nodeList?cateNm=" />'+categoryObj[i]["name"]+'">' + categoryObj[i]["name"] + '</a></th>';
+				str += '		<th class="text-error">&nbsp;&nbsp;&nbsp;&nbsp;' + outageCount + ' of ' + serviceCount + '</th>';
+				str += '		<td class=""><div class="progress progress-striped active '+status+' " style="margin-bottom: 0px;width: 202px; ">';
+				
+				
+				if(availwidth < 100){
+					if(avail < 100){
+						str += '		<div class="bar" style="width:' + availwidth + '%">' + avail + '%</div>';
+					}else{
+						str += '		<div class="bar" style="width:' + availwidth + '%">100%</div>';
+					}
+				}else{
+					if(avail < 100){
+						str += '		<div class="bar" style="width: 100%">' + avail + '%</div>';
+					}else{
+						str += '		<div class="bar" style="width: 100%">100%</div>';
+					}
+				}
+				
+				
+				str += '		</div></td>';
+				str += '	</tr>';
+				totalAvail += parseInt(avail);
+				outageTotalCount += parseInt(outageCount);
+				serviceTotalCount += parseInt(serviceCount);
+			
+			
 		}
 		str += '</table>';
 		
@@ -286,16 +317,20 @@
 		tstr += '		<td class=""><div class="progress progress-striped active '+statustotalAvail+' " style="margin-bottom: 0px;width: 317px; ">';
 		tstr += '		<div class="bar" style="width:' + totalAv + '%">' + (totalAvail / categoryObj.length).toFixed(2)  + '%</div>';
 		tstr += '		</div></td>';
-		tstr += '	</tr></table>';
-
+		tstr += '	</tr>';
+		tstr += '</table>';
+		tstr += '<table>';
+		tstr += '	<a id="_btn" href="#" type="button" class="btn btn-mini btn-primary" style="margin-left: 410px; margin-top: -30px;">가동율</a>';
+		tstr += '</table>';
 		$('#totalCategoryInfo').append(tstr); 
+		
 		
 		//GET 장애 목록
 		var outageObj = jsonObj["Outages"];
 		
 		if(outageObj == "null"){
 			
-			$('#outageInfo').append("<strong class=text-error> 현재 장애 목록이 없습니다. </strong> ");
+			$('#outageInfo').append("<strong class=text-error> 현재 장애 목록이 없습니다. </strong><br><strong class=text-error></strong><br><strong class=text-error></strong><br><strong class=text-error></strong>");
 			
 		}else{
 			
@@ -311,7 +346,9 @@
 			}
 		}
 		
-	}//******//24시간 가용률 , 카테고리 정보 ****************/
+	}
+	
+	//******//24시간 가용률 , 카테고리 정보 ****************/
 	
 	
 	/* 장애 정보 POPUP창 */
@@ -396,16 +433,7 @@
 				<div class="row-fluid">
 					<div class="span12">
 						<div class="span3">
-							<div class="row-fluid">
-								<div class="span12">
-									<h4>장애&nbsp;목록</h4>
-								</div> 
-							</div>
-							<div class="well well-small" >
-								<div class="row-fluid">
-									<div class="span12" id="outageInfo"></div>
-								</div>
-							</div> 
+							
 							<div class="row-fluid">
 								<div class="span12">
 									<h4>알림&nbsp;정보</h4>
@@ -420,14 +448,14 @@
 									</div>
 								</div>
 							</div>
-							<div class="row-fluid">
-								<div class="span6">
+							<div class="row-fluid" style="margin-top: -10px;">
+								<div class="span6" style="margin-top: -3px;">
 									<h4>System 분류</h4>
 								</div>
-								<div class="span3" style="margin-top: 7px;">
+								<div class="span3" style="margin-top: 4px;">
 									<a  class="btn btn-mini btn-primary" type="button" href="<c:url value="/surveillancetotal.do" />">+ 전체</a>
 								</div>
-								<div class="span3" style="margin-top: 7px;">
+								<div class="span3" style="margin-top: 4px;">
 									<a  class="btn btn-mini btn-primary" type="button" onclick="javascript:showAddSurveillence()">+ 추가</a>
 								</div>
 							</div>
@@ -439,7 +467,7 @@
 									</div>
 								</form>
 							</div>
-							<div class="span12" style=" height:265px; overflow-y:auto;;">
+							<div class="span12" style=" height:500px; overflow-y:auto;;">
 								<table class="table table-striped table-hover " id="surveillenceLabel">
 								
 									
@@ -449,31 +477,48 @@
 						<div class="span6">
 							<div class="row-fluid">
 								<div class="span12">
-									<h4>24시간&nbsp;가용률</h4>
+									<h4>장애&nbsp;목록</h4>
+								</div>
+							</div>
+							<div class="well well-small">
+								<div class="row-fluid" style="height:48px; overflow-y:auto;">
+									<div class="span12" id="outageInfo"></div>
 								</div>
 							</div>
 							<div class="row-fluid">
-								<div class="span12">
-									<div class="well well-small" style="margin-bottom: 37px;" id="categoryInfo"></div>
+								<div class="row-fluid">
+									<div class="span12">
+										<h4 style="margin-top: 32px;">전체&nbsp;가용률&nbsp;정보</h4>
+									</div>
+								</div>
+								<div class="well well-small" id="totalCategoryInfo"
+									style="height: 99px;"></div>
+							<div id="_availability" style="opacity:0;">	
+										<div class="span12" style="margin-top: 20px;">
+											<h4>24시간&nbsp;가용률</h4>
+										</div>
 									<div class="row-fluid">
-									<div class="span12" >
-										<h4>전체&nbsp;가용률&nbsp;정보</h4>
+										<div class="span12">
+											<div class="well well-small" style="margin-bottom: 37px;"
+												id="categoryInfo"></div>
+										</div>
 									</div>
 							</div>
-									<div class="well well-small" id="totalCategoryInfo" style ="height: 99px;"></div>
-								</div>
-							</div>
+						</div>
 						</div>
 						<div class="span3">
 							<div class="row-fluid">
-								<div class="span9">
+								<div>
 									<h4>감시&nbsp;대상&nbsp;목록</h4>
 								</div>
-								<div class="span3" style="margin-top: 7px;">
-									<a  class="btn btn-mini btn-primary" type="button" href="<c:url value="/monitoring/nodelist.do" />">[More]</a>
+								<div>
+									<a class="btn btn-mini btn-primary" type="button" style="margin-left: 167px;margin-top: -64px;"
+										href="<c:url value="/monitoring/nodelist.do" />">[More]</a>
+								
 								</div>
 							</div>
-							<div class="well well-small" style ="height:510px; overflow-y:auto;" >
+							<div class="well well-small"
+								style="height: 510px; overflow-y: auto;width: 207px;margin-top: -20px;">
 								<div class="row-fluid">
 									<div class="span12" id="indexNodeList"></div>
 								</div>

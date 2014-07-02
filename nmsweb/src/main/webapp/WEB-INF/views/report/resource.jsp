@@ -199,8 +199,9 @@
 		<form id="graphValueFrm" name="graphValueFrm">
 			<input type="hidden" id="graphValue" name="graphValue" value="">
 		</form>
+		
 		<div class="row-fluid">
-			<div class="span12">
+			<div class="span12" style="margin-top: -10px;">
 				<ul class="breadcrumb well well-small">
 					<li><a href="<c:url value='/index.do'/>">Home</a> <span class="divider">/</span></li>
 					<li><a href="<c:url value='/report/resource.do'/>">리포트</a> <span class="divider">/</span></li>
@@ -208,6 +209,7 @@
 					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
 				</ul>
 			</div>
+			
 		</div>
 		
 <!----------------------------------->

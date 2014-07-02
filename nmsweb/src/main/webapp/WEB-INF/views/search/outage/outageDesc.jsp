@@ -52,10 +52,10 @@
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
 		<div class="row-fluid">
-			<div class="span12 well well-small">
+			<div class="span12 well well-small" style="height: 38px;">
 				<div class="row-fluid">
 					<div class="span3">
-						<h4 id="nodeLabel">장애정보</h4>
+						<h5 id="nodeLabel" style="margin-top: 0px;">장애정보</h5>
 					</div>
 					<div class="span9">
 						<jsp:include page="/include/statsBar.jsp" />
