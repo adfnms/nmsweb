@@ -1,5 +1,6 @@
 package com.bluecapsystem.nms.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -47,7 +48,7 @@ public class GroupManagerController  extends BaseController {
 	@RequestMapping(value = "/admin/groupMng/modifyGroup")
 	public ModelAndView modifyGroup(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
 			//@RequestParam(value = "sysId", required = false) String sysId,
-			@RequestParam(value = "name", required = false)String name) 
+			@RequestParam(value = "name", required = false)String name)
 	{
 		boolean isSuccess = false;
 		String errorMessage = "";
@@ -66,8 +67,6 @@ public class GroupManagerController  extends BaseController {
 		//model.setViewName("jsonView");
 		
 		isSuccess = true;
-		
-		
 		
 		model.addObject("name",name);
 		model.setViewName("/admin/groupMng/modifyGroup");
@@ -284,7 +283,7 @@ public class GroupManagerController  extends BaseController {
 	{
 		
 		boolean isSuccess = false;
-		String errorMessage = "";
+		String errorMessage = "권한 그룹 메뉴 등록 성공";
 		
 		ModelAndView model =  new ModelAndView();
 		

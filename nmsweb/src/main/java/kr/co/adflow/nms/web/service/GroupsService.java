@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 @Service
+@SuppressWarnings("unchecked")
 public class GroupsService {
 
 	private static final String METHOD = "method";
@@ -37,6 +38,7 @@ public class GroupsService {
 	private Handler handler;
 
 	// groups
+
 	public String groups() throws HandleException {
 		String result = null;
 		try {
@@ -109,8 +111,7 @@ public class GroupsService {
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
-			hash.put(URL, ipAddr + "/groups/" + groupName + "/users/"
-					+ userName);
+			hash.put(URL, ipAddr + "/groups/" + groupName + "/users/"+ userName);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "PUT");
 

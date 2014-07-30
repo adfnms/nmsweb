@@ -416,11 +416,12 @@ function nodeScan(callback, ipAddress){
 function changeNodeLabel(nodeId, label){
 	
 	var _return = false;
-	
+
 	$.ajax({
 		type : 'put',
 		url : '/' + version + '/nodes/'+nodeId,
-		data: "label="+label,
+		data: 'label='+label,
+		contentType:'application/x-www-form-urlencoded',
 		async: false,
 		error : function(data) {
 			alert("[" + nodeId + '] 노드 라벨 변경 실패');
@@ -858,7 +859,7 @@ function getNodelistJsonObj(jsonObj){
 	var TDobj = $("<td></td>");
 	var Aobj = $("<a></a>");
 	var LIobj = $("<li></li>");
-	var H5obj = $("<h5></h5>");
+	var H5obj = $("<font></font>");
 	
 	if (jsonObj["node"] == null || jsonObj["node"] ==""){
 		

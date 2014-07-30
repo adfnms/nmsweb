@@ -66,7 +66,6 @@ function getTotalRequisitionsListForNodes(callback){
 //메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성된 하단부 창의 요구 삭제 버튼
 function delRequisition(foreignSource) {
 	//동기화 실행 스크립트
-	synRequisition(foreignSource);
 	if(!confirm("정말 삭제하시겠습니까?")){
 		return;
 	}
@@ -79,6 +78,7 @@ function delRequisition(foreignSource) {
 			alert("노드 [" + foreignSource + "] 삭제 실패");
 		},
 		success : function(data) {
+			synRequisition(foreignSource);
 			getTotalRequisitionsList(getTotalRequisitions);
 		}
 	});
@@ -86,11 +86,105 @@ function delRequisition(foreignSource) {
 //메뉴의 운영관리 -> 노드 관리 -> +노드 추가 버튼 클릭시 새로 생성된 하단부 창의 새로운 요구추가 버튼
 function addRequisition() {
 	if($("#requisitionsBox input[name=requisitions]").val() == ""){
-		alert("추가할 노드명을 입력하십시오.");
+		alert("추가할 노드 그룹명을 입력하십시오.");
 		return;
 	}
-		var text = $("#requisitionsBox input[name=requisitions]").val();
+	var text = $("#requisitionsBox input[name=requisitions]").val();
+	if(regRequisitionCheck(text))
+	{
 		regRequisitionAjax(text);
+		addRequisitionCheck(text);
+		getTotalRequisitionsList(getTotalRequisitions);
+	}
+	else
+	{
+		alert("이미 존체하는 노드 그룹명 입니다.");
+		return;
+	}
+}
+
+//메뉴의 운영관리 -> 노드 관리 -> +노드 구릅 설정 > 새로운 노드 그룹 버튼 클릭 시 노드  이름 체크
+function regRequisitionCheck(text)
+{
+	var isText = true;
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/requisitions',
+		contentType : 'application/json',
+		async: false,
+		error : function() {
+			alert('새로운 요구추가 실패');
+		},
+		success : function(data) {
+			var jsonObj = JSON.parse(data);
+			var modelImport ='';
+			
+			if(jsonObj["@count"] != '0')
+			{
+				modelImport = jsonObj["model-import"];
+				
+				if (modelImport instanceof Array)
+					for(var i in modelImport)
+					{
+						isText = !equers(modelImport[i]["@foreign-source"],text);
+						
+						if(isText == false)
+						{
+							break;
+						}
+					}
+				else
+				{
+					isText = !equers(modelImport["@foreign-source"],text);
+				}
+			}				
+		}
+	});
+	
+	return isText;
+}
+
+//메뉴의 운영관리 -> 노드 관리 -> +노드 구릅 설정 > 새로운 노드 그룹 버튼 클릭 시 노드  새로운 노드 그룹 채크
+function addRequisitionCheck(text)
+{
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/requisitions',
+		dataType : 'json',
+		contentType : 'application/json',
+		async: false,
+		error : function(data) {
+			alert('필요조건 리스트 가져오기 서비스 실패');
+		},
+		success : function(data) {
+			var isText = false;
+			var modelImport = data["model-import"];
+			
+			if (modelImport instanceof Array)
+				for(var i in modelImport)
+				{
+					isText = equers(modelImport[i]["@foreign-source"],text);
+					
+					if(isText == true)
+						break;
+				}
+			else
+			{
+				isText = equers(modelImport["@foreign-source"],text);
+			}
+			
+			if(isText == true)
+				alert('등록 성공');
+			else
+				alert('등록 실패');
+		}
+	});
+}
+
+//문자열 비교
+function equers(str1,str2)
+{
+	return str1 == str2;
 }
 
 function regRequisitionAjax(text){
@@ -100,8 +194,11 @@ function regRequisitionAjax(text){
 		url : '/' + version + '/requisitions',
 		contentType : 'application/json',
 		data : str,
-		error : function() {
-			alert('새로운 요구추가 실패');
+		async: false,
+		error: function (error) {
+//            alert('error; ' + eval(error));
+            console.log(error);
+//			alert('새로운 요구추가 실패');
 		},
 		success : function(data) {
 			getTotalRequisitionsList(getTotalRequisitions);
@@ -137,6 +234,7 @@ function synRequisition(foreignSource){
 		type : 'put',
 		url : '/' + version + '/requisitions/' + foreignSource + '/import',
 		data: 'json',
+		async: false,
 		error : function(data) {
 			alert("[" + foreignSource + '] 동기화 실패');
 		},

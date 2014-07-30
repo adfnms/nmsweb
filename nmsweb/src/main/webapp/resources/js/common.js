@@ -480,3 +480,12 @@ function beforeOneyear(){
     var resultDate = y + "년" + m + "월" + d+"일";
     return resultDate;
 }
+
+function serviceSort(a, b) {
+	if(parseInt(a["@id"]) == parseInt(b["@id"]))
+	{
+		return 0;
+	}
+	
+	return  parseInt(a["@id"]) > parseInt(b["@id"]) ? 1 : -1;
+}

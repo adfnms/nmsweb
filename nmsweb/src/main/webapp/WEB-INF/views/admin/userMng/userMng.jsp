@@ -23,11 +23,7 @@
 		/* 사용자 전체 리스트 */
 		/* GETGet a list of users */
 		getUserListTotal(callbackUseList);
-		
-		
-		
 	});
-	
 	
 /**
  * GETGet a list of users
@@ -55,11 +51,6 @@
 				$("#userListTable").append(str);
 			}
 		});   	
-		
-		
-		
-		
-
 	} 
 
 /**
@@ -84,8 +75,6 @@
 		
 		$("#userIdModiFrm").find('[name=user-id]:input').val(userId);
 		
-		
-	
 		var option = confirm(" 삭제 하시겠습니까? ");
 		
 		if(option == true )

@@ -15,34 +15,33 @@ mySelect.prototype={
 			res = new Array();
 			
 			sel_left.find("option:selected").each(function(i){
-				 
 				select_html+="<option value='"+sel_left.find("option:selected").eq(i).attr("value")+"'>"+sel_left.find("option:selected").eq(i).html()+"</option>";
 				
 				/*test*/
 				var obj = document.right.groupMemberListSelect;
 			       
-					for( var i=0 ; i<obj.length ; i++ ){
-			               obj.options[i].selected = true;
-			              
-			               //alert("option값: "+obj.options[i].text);
-			               var group = obj.options[i].text;
-			               var user = $("#left select[name=userListSelect]").val();
-			               
-			              // alert("------user------"+user);
-			              
-			               
-			               if(user == group ){
-								
-			            	   alert("기존에 있습니다. 제거만 가능합니다");
-			            	   return;
-			               }
-			           }
+				for( var i=0 ; i<obj.length ; i++ ){
+	               obj.options[i].selected = true;
+		              
+	               //alert("option값: "+obj.options[i].text);
+	               var group = obj.options[i].text;
+	               var user = $("#left select[name=userListSelect]").val();
+	               
+	              // alert("------user------"+user);
+	              
+	               
+	               if(user == group ){
+						
+	            	   alert("기존에 있습니다. 제거만 가능합니다");
+	            	   return;
+	               }
+	           }
 					
 					regInGroup();
-					/*test*/
-					res[i] = sel_left.find("option:selected").eq(i).val();
-					sel_right.append(select_html);
-					sel_left.find("option:selected").remove();
+				/*test*/
+				res[i] = sel_left.find("option:selected").eq(i).val();
+				sel_right.append(select_html);
+				sel_left.find("option:selected").remove();
 			});
 			
 			this.hiddenvalue();

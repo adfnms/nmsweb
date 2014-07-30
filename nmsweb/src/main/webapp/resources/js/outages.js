@@ -429,9 +429,8 @@ function getTabletagToInterfaceOutageJsonObj(jsonObj, ipAddress) {
  * 메뉴의 검색 -> 노드 검색 -> 노드 목록에서 node를 클릭 시 새로 이동하는 화면단의 서비스 장애 목록
  */
 function getTabletagToServiceOutageJsonObj(jsonObj,serviceNm) {
+	console.log(jsonObj);
 	var outages = jsonObj["outage"];
-	
-	var serviceObj = jsonObj["service"];
 	//var str = "";
 	/*********************************************/
 	var DIVobj = $("<div></div>");
@@ -464,7 +463,7 @@ function getTabletagToServiceOutageJsonObj(jsonObj,serviceNm) {
 					TABLEobj.attr("class", "table table-striped").append(
 						TRobj.clone().append(
 							THobj.clone().append().text("인터페이스"),
-							THobj.clone().append().text("서비스"),
+							THobj.clone().append().text("상태"),
 							THobj.clone().append().text("장애 시간"),
 							THobj.clone().append().text("회복 시간"),
 							THobj.clone().append().text("ID")
@@ -474,9 +473,8 @@ function getTabletagToServiceOutageJsonObj(jsonObj,serviceNm) {
 			);
 		/**********************************************************************************************************************************************/
 		if (jsonObj["@count"] > 1) {
-
 			for ( var i in outages) {
-
+				
 				/*str += "<tr>";
 				str += "<td><a href='/" + version
 						+ "/search/node/interfaceDesc.do?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"]
@@ -509,6 +507,8 @@ function getTabletagToServiceOutageJsonObj(jsonObj,serviceNm) {
 						+ outages[i]["@id"] + "'>" + outages[i]["@id"]
 						+ "</a></td>";
 				str += "</tr>";*/
+				console.log(nullCheckJsonObject(outages[i]["serviceLostEvent"],["name"]));
+				
 				/**********************************************************************************************************************************************/
 				TABLEobj.append(
 					TRobj.clone().append(
@@ -517,7 +517,7 @@ function getTabletagToServiceOutageJsonObj(jsonObj,serviceNm) {
 							//Pobj.clone().attr("class", "text-muted").text(outages[i]["ipAddress"])
 						),
 						TDobj.clone().append(
-							Aobj.clone().attr("href", "/" + version + "/search/service/serviceDesc?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"] + "&intf=" + outages[i]["ipAddress"] + "&serviceNm=" + nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],["name"])).append().text(nullCheckJsonObject(outages[i]["serviceLostEvent"]["serviceType"],"name"))
+							Aobj.clone().attr("href", "/" + version + "/search/service/serviceDesc?nodeId=" + outages[i]["serviceLostEvent"]["nodeId"] + "&intf=" + outages[i]["ipAddress"] + "&serviceNm=" + serviceNm).append().text(nullCheckJsonObject(outages[i]["serviceLostEvent"],"@severity"))
 						),
 						TDobj.clone().append().text(new Date(nullCheckJsonObject(outages[i]["serviceLostEvent"], ["time"])).format('yy-MM-dd hh:mm:ss')),
 						TDobj.clone().append().text(new Date(nullCheckJsonObject(outages[i]["serviceRegainedEvent"], ["time"])).format('yy-MM-dd hh:mm:ss')),
@@ -529,7 +529,6 @@ function getTabletagToServiceOutageJsonObj(jsonObj,serviceNm) {
 				/**********************************************************************************************************************************************/
 				
 			}
-
 		} else {
 			/*str += "<tr>";
 			str += "<td><a href='#'>" + outages["ipAddress"] + "</a></td>";
@@ -547,6 +546,7 @@ function getTabletagToServiceOutageJsonObj(jsonObj,serviceNm) {
 			str += "<td><a href='#'>" + outages["@id"] + "</a></td>";
 			str += "</tr>";*/
 			/**********************************************************************************************************************************************/
+			console.log('6');
 			TABLEobj.append(
 				TRobj.clone().append(
 					TDobj.clone().append(
@@ -562,14 +562,38 @@ function getTabletagToServiceOutageJsonObj(jsonObj,serviceNm) {
 					)
 				)
 			);
+			console.log('7');
 			/**********************************************************************************************************************************************/
 		}
 
 		//str += "</table></div>";
 
 	}else{
+//		DIVobj.attr("class", "row-fluid").append(
+//				H5obj.append(
+//						FONTobj.clone().attr("color", "blue").text(serviceNm),
+//						FONTobj.clone().attr("color", "black").text(" 서비스 장애 목록" + "[" + jsonObj["@count"] + "]")
+//				),
+//				DIVobj.clone().attr("class", "span12 well well-small").attr("style", "margin-left:0px").append(
+//					TABLEobj.attr("class", "table table-striped").append(
+//						TRobj.clone().append(
+//							THobj.clone().append().text("인터페이스"),
+//							THobj.clone().append().text("상태"),
+//							THobj.clone().append().text("장애 시간"),
+//							THobj.clone().append().text("회복 시간"),
+//							THobj.clone().append().text("ID")
+//						)
+//					)
+//				)
+//			);
+		
 		DIVobj.attr("class", "row-fluid").append(
-				H5obj.append().text("서비스 장애 목록" + "[" + jsonObj["@count"] + "]"),
+				H5obj.append(
+						FONTobj.clone().attr("color", "blue").text(serviceNm),
+						FONTobj.clone().attr("color", "black").text(" 서비스 장애 목록" + "[" + jsonObj["@count"] + "]")
+				),
+				
+//				H5obj.append().text("서비스 장애 목록" + "[" + jsonObj["@count"] + "]"),
 				DIVobj.clone().attr("class", "span12 well well-small").attr("style", "margin-left:0px").append(
 					TABLEobj.attr("class", "table table-striped").append(
 						TRobj.clone().append(

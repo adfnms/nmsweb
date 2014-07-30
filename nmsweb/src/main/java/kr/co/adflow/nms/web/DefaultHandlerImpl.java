@@ -3,6 +3,9 @@ package kr.co.adflow.nms.web;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -27,11 +30,15 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 
 	@Override
 	public String handle(HashMap map) throws HandleException {
+		
+		
 		HttpURLConnection conn = null;
 		try {
+			
 			URL url = new URL((String) map.get("url"));
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod((String) map.get("method"));
+			
 
 			if (map.containsKey("accept")) {
 				conn.setRequestProperty("Accept", (String) map.get("accept"));
@@ -50,16 +57,15 @@ public class DefaultHandlerImpl implements Handler<String, HashMap> {
 			if (map.containsKey("data")) {
 
 				conn.setDoOutput(true);
-				DataOutputStream wr = new DataOutputStream(
-						conn.getOutputStream());
+				DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
 				wr.writeBytes((String) map.get("data"));
 			}
 
-			logger.debug("conn :" + conn);
-
+			logger.debug("------------- conn :" + conn);
+			conn.setInstanceFollowRedirects(false);
 			if (conn.getResponseCode() != 200) {
-				throw new HandleException("HTTPErrorCode :"
-						+ conn.getResponseCode());
+				
+				throw new HandleException("HTTPErrorCode :"+ conn.getResponseCode());
 			}
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(

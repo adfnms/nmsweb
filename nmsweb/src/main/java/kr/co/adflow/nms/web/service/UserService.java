@@ -53,14 +53,13 @@ public class UserService {
 	public String Users() throws HandleException {
 		String result = null;
 		try {
-
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/users");
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
-
+			
 			result = (String) handler.handle(hash);
 
 		} catch (Exception e) {
@@ -109,16 +108,13 @@ public class UserService {
 	public String Users(String username) throws HandleException {
 		String result = null;
 		try {
-
-			HashMap hash = new HashMap();
+			HashMap<String, String> hash = new HashMap<String, String>();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
 			hash.put(URL, ipAddr + "/users/" + username);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
-
 			result = (String) handler.handle(hash);
-
 		} catch (Exception e) {
 			throw new HandleException(e);
 		}
@@ -130,7 +126,7 @@ public class UserService {
 	public String UsersDelete(String username) throws HandleException {
 		String result = null;
 		try {
-
+			
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);

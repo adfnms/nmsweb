@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -39,7 +38,8 @@
 		getUserListTotal(userList);
 		
 		/* Get a specific group, by group name*/
-		getGroupMember(getGroupMemberList,"${name}");
+		
+		getGroupMember(getGroupMemberList, encodeURIComponent("${name}"));
 		
 		initMenuTree();
 		
@@ -137,35 +137,38 @@
 function saveMenuItems()
 {
 	
-	var checkItemId = g_menuItems.getAllChecked();
+	var checkItemId = g_menuItems.getAllChecked().toString();
 	var checkItemIds = checkItemId.split(',');
 	
+	if(checkItemId == ''|| checkItemId == null){
+		alert('메뉴 항목 트리의 체크 박스를 선택하십시오.');
+		return;
+	}
+	
 	$("#SaveMenuItemsFrm").children().remove();
+	$("#SaveMenuItemsFrm").append( 
+		     $("<input/>", 
+	    		 {
+			    	name: 'groupName',
+		    	 	type:'hidden', 
+		            value: '${name}'
+		         }
+		    )
+		);
 	
 		for(var i = 0; i < checkItemIds.length; i++)
 		{
-			
-			var tmpTr = $('<tr></tr>');
-			var tmpTd = $('<td><input type="hidden" name="menuId" value="" /></td>'); 
-			var tmpTd2 = $('<td><input type="hidden" name="groupName" value="${name}" /></td>'); 
-			
-			tmpTr.append(tmpTd);
-			tmpTr.append(tmpTd2);
-			
-			tmpTd.find('input[name=menuId]').val(checkItemIds[i]);
-			
-			$("#SaveMenuItemsFrm").append(tmpTr);
-			
+			$("#SaveMenuItemsFrm").append( 
+			     $("<input/>", 
+		    		 {
+			    	name: 'menuId',
+		    	 	type:'hidden', 
+		            value: checkItemIds[i]}
+			    )
+			);
 		}
-		if(checkItemIds.length == 1){
-			alert('메뉴 항목 트리의 체크 박스를 선택하십시오.');	
-		}
-		else {
-			alert('요청이 완료되었습니다.');
-		}
+		
 	var data = $("#SaveMenuItemsFrm").serialize();
-
-	
 	
 	 $.ajax({
       	url : '<c:url value="/admin/groupMng/regGroupMenu.do" />',
@@ -174,16 +177,15 @@ function saveMenuItems()
         data:data,
         error:function(data, status, err){
             alert('Error, service not found');
-            
             $("#SaveMenuItemsFrm").children().remove();
-            
         },
         success:function(res){
-        	if(res.isSuccess == false)
-       		{
-        		alert(res.errorMessage);        		
-        		return;
-       		}
+        	alert(res.errorMessage); 
+//         	if(res.isSuccess == false)
+//        		{
+//         		alert(res.errorMessage);        		
+//         		return;
+//        		}
         	
         }
 	}); 
@@ -263,33 +265,67 @@ function saveMenuItems()
 	/*  var roleTest=new myRoleSelect(); */
 	/****************SelectBox Script*****************/	
 	
-	
-	
-	
-	
-	
 	function regInGroup(){
 		
 		var groupName = ('${name}');// 그룹명
 		var userName = $("#left select[name=userListSelect]").val();//사용자name
 		
-		 
-		 
- 		$.ajax({
-				
-				type : 'put',
-				url : '/' + version + '/groups/'+groupName+'/users/'+userName,
-				contentType : 'application/json',
-				dataType:'json',
-				error : function(data) {
-					alert('그룹등록 실패');
-				},
-				success : function(data) {
-					console.log("그룹등록 성공");
-					regUserTbl(userName,groupName);
-				}
-			});  
+		
+		regInGroupUser(groupName,userName);
+		if(regInGroupUserCheck(groupName,userName) == true)
+		{
+			regUserTbl(userName,groupName);
 		}
+	}
+	
+	function regInGroupUser(groupName,userName)
+	{
+		$.ajax({
+			type : 'put',
+			url : '/' + version + '/groups/'+groupName+'/users/'+userName,
+			contentType : 'application/json',
+			dataType:'json',
+			async: false,
+			error : function(data) {
+			},
+			success : function(data) {
+				console.log("그룹등록 성공");
+			}
+		});
+	}
+	
+	function regInGroupUserCheck(groupName,userName)
+	{
+		var isUserNm = false;
+		$.ajax({
+			type : 'get',
+			url : '/' + version + '/groups/'+groupName,
+			contentType : 'application/json',
+			dataType:'json',
+			async: false,
+			error : function(data) {
+			},
+			success : function(data) {
+				
+				var user = data["user"];
+				
+				if(user == 'undefined' ){
+					return isUserNm;
+				}
+				
+				for ( var i=0 ; i<user.length ; i++){
+					if(user[i] == userName)
+					{
+						isUserNm = true;
+					}
+				}
+				
+				console.log("그룹등록 성공");
+				isUserNm = true;
+			}
+		}); 
+		return isUserNm;
+	}
 	
 	function delInGroup(userName){
 
@@ -308,8 +344,6 @@ function saveMenuItems()
    					deleteUserTbl(userName,groupName);
    				}
    			});  
-		
-		
 	}
 	
 	
@@ -354,55 +388,48 @@ function saveMenuItems()
 			
 		<div class="row-fluid">	
 		<div class=" span6 well">
-			
 			<form  id="groupFrm" name="groupFrm">
 				<input type="hidden" id ="name" name="name" value="${name}" />
 			</form>
-				 <form action="###" method="post" id="left" name ="left">
-					<div class="row-fluid" style="margin-top: -39px; ">
-						<!-- <div class="span2 "></div> -->
-						<div class="span5 ">
-							<h4><abbr title="해당 그룹에 추가시킬 사용자 목록"><a type="text"  title="" href="/v1/admin/userMng.do">Users</a></abbr></h4>
-						</div>
-						<div class="span2 "></div>
-						<div class="span3 ">
-							<h4><abbr title="해당 그룹"><a type="text"  title="" href="/v1/admin/groupMng.do">${name}</a></abbr></h4>
-						</div>
+			 <form action="###" method="post" id="left" name ="left">
+				<div class="row-fluid" style="margin-top: -39px; ">
+					<!-- <div class="span2 "></div> -->
+					<div class="span5 ">
+						<h4><abbr title="해당 그룹에 추가시킬 사용자 목록"><a type="text"  title="" href="/v1/admin/userMng.do">Users</a></abbr></h4>
 					</div>
-		            <div style="float:left;">
-		                 <select id="userListSelect" name="userListSelect" ondblclick="test.movetoright();" multiple="multiple" class="select_left" style="display:block;width:180px;height:290px;overflow:visible;">
-			                <!--------<option str>----------->
-			                <!--------<option str>----------->
-			                <!--------<option str>----------->
-		                </select> 
-		            </div>
-		            </form>
-		            <div style=" float:left; padding:8px;">
-		            	<p style=" padding-bottom:12px;"><input onclick="test.movetoright()" type="button"  class="button_movetoright btn-warning" value="&gt;&gt;" style ="margin-top: 70px;margin-left: 18px;margin-right: 18px;" /></p>
-		                <p><input onclick="test.movetoleft();"  type="button" class="button_movetoleft btn-info" value="&lt;&lt;" style ="margin-top: 50px; margin-left: 18px;margin-right: 18px;"  /></p>
-		            </div>
-		            
-		            
-		            
-		           <form action="###" method="post" id="right" name ="right"> 
-		            <div style=" float:left;">
-		                <select  id="groupMemberListSelect" name="groupMemberListSelect" ondblclick="test.movetoleft();" style=" margin-top: -20px; width:180px ; border:1px solid #ccc; overflow:visible; height:290px;" class="select_right" multiple="multiple">
-			                <!--------<option str>----------->
-			                <!--------<option str>----------->
-			                <!--------<option str>----------->
-		                </select>
-		               <!--  <p>&nbsp;&nbsp;&nbsp;
-		                    <strong><a class="icon-chevron-up" href="javascript:test.top();" title=""></a></strong>&nbsp;&nbsp;&nbsp;
-		                    <strong><a class="icon-arrow-up" href="javascript:test.up();" title=""></a></strong>&nbsp;&nbsp;&nbsp;
-		                    <strong><a class="icon-arrow-down" href="javascript:test.down();" title=""></a></strong>&nbsp;&nbsp;&nbsp;
-		                    <strong><a class="icon-chevron-down" href="javascript:test.bottom();" title=""></a></strong>
-		                </p> -->
-		            </div>
-					<input type="hidden" id="res" name="res" class="select_input">
-		      </form>
-      
-		      
-			</div>
+					<div class="span2 "></div>
+					<div class="span3 ">
+						<h4><abbr title="해당 그룹"><a type="text"  title="" href="/v1/admin/groupMng.do">${name}</a></abbr></h4>
+					</div>
+				</div>
+	            <div style="float:left;">
+	                 <select id="userListSelect" name="userListSelect" ondblclick="test.movetoright();" multiple="multiple" class="select_left" style="display:block;width:180px;height:290px;overflow:visible;">
+	                </select> 
+	            </div>
+            </form>
+            <div style="float:left;">
+            	<p style=" padding-bottom:12px;">
+            		<input onclick="test.movetoright()" type="button"  class="button_movetoright btn-warning" value="&gt;&gt;" style ="margin-top: 70px;margin-left: 18px;margin-right: 18px;" />
+            	</p>
+                <p>
+                	<input onclick="test.movetoleft();"  type="button" class="button_movetoleft btn-info" value="&lt;&lt;" style ="margin-top: 50px; margin-left: 18px;margin-right: 18px;"  />
+                </p>
+            </div>
+           <form action="###" method="post" id="right" name ="right"> 
+           <input type="hidden" id="res" name="res" class="select_input">
+	            <div style="float:right;">
+	                <select  id="groupMemberListSelect" name="groupMemberListSelect" ondblclick="test.movetoleft();" style=" margin-top: -20px; width:180px ; border:1px solid #ccc; overflow:visible; height:290px;" class="select_right" multiple="multiple">
+	                </select>
+	               <!--  <p>&nbsp;&nbsp;&nbsp;
+	                    <strong><a class="icon-chevron-up" href="javascript:test.top();" title=""></a></strong>&nbsp;&nbsp;&nbsp;
+	                    <strong><a class="icon-arrow-up" href="javascript:test.up();" title=""></a></strong>&nbsp;&nbsp;&nbsp;
+	                    <strong><a class="icon-arrow-down" href="javascript:test.down();" title=""></a></strong>&nbsp;&nbsp;&nbsp;
+	                    <strong><a class="icon-chevron-down" href="javascript:test.bottom();" title=""></a></strong>
+	                </p> -->
+	            </div>
+             
+	      </form>
+		</div>
 			
 			<!-- tree -->
 			 <div class="span6 well ">

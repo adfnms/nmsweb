@@ -17,6 +17,8 @@
 <script src="<c:url value="/resources/js/service.js" />"></script>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
 <script src="<c:url value="/resources/js/surveillance.js" />"></script>
+<script src="<c:url value="/resources/js/common.js" />"></script>
+
 <script type="text/javascript">
 	$(document).ready(function() {
 
@@ -337,7 +339,9 @@
 			
 			for ( var i in outageObj) {
 
-				var lostTime = new Date(outageObj[i]["iflostservice"]);
+				var time = outageObj[i]["iflostservice"].substring(0,outageObj[i]["iflostservice"].length-3);
+				var lostTime = new Date(time).format('yyyy-MM-dd hh:mm:ss');
+				alert(lostTime);
 				var current = new Date();
 				var lastTime = dateDiff(lostTime, current);
 				
@@ -512,9 +516,7 @@
 									<h4>감시&nbsp;대상&nbsp;목록</h4>
 								</div>
 								<div>
-									<a class="btn btn-mini btn-primary" type="button" style="margin-left: 167px;margin-top: -64px;"
-										href="<c:url value="/monitoring/nodelist.do" />">[More]</a>
-								
+									<a class="btn btn-mini btn-primary" type="button" style="margin-left: 167px;margin-top: -64px;" href="<c:url value="/monitoring/nodelist.do" />">[More]</a>
 								</div>
 							</div>
 							<div class="well well-small"
@@ -531,8 +533,7 @@
 		<hr>
 	</div>
 	<!-- /container -->
-</body>
-<!-- Modal -->
+	<!-- Modal -->
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -546,4 +547,6 @@
 	</div>
 </div>
 <!-- Modal -->
+</body>
+
 </html>

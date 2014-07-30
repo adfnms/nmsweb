@@ -604,7 +604,7 @@ public class NodeController {
 		// 2013-02-23
 		// Parameter check Method 호추 분기
 		Enumeration eParam = request.getParameterNames();
-
+		
 		if (eParam.hasMoreElements()) {
 			StringBuffer prams = new StringBuffer();
 
@@ -679,19 +679,17 @@ public class NodeController {
 	public @ResponseBody
 	String nodesPut(HttpServletRequest request, @PathVariable String id)
 			throws HandleException, ValidationException {
-
 		String result = null;
 		logger.info(PATH + request.getRequestURI());
-
+		
 		// 2013-02-23
 		// Parameter check Method 호추 분기
-		Enumeration eParam = request.getParameterNames();
-
+		Enumeration<?> eParam = request.getParameterNames();
+		
 		if (eParam.hasMoreElements()) {
 			StringBuffer prams = new StringBuffer();
 
 			String pName = (String) eParam.nextElement();
-
 			if (pName.equals("label")) {
 
 				String label = request.getParameter(pName);
@@ -703,11 +701,6 @@ public class NodeController {
 					logger.error("Failed in processing", e);
 					throw e;
 				}
-
-					
-				
-
-
 			} else {
 
 				logger.error("Must supply the parameter name, set to either 'label'");

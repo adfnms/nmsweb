@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -44,8 +43,6 @@
  	function getGroup(jsonObj) {
 		
 		console.log(jsonObj);
-		
-		
 		var str = groupListStr(jsonObj);
 		
 		$("#groupTable").append(str);
@@ -56,23 +53,38 @@
 	
 	function getGroupInfo(data){
 		
-		var obj = data;
 		
-	 	$("#groupFrm").find('[name=name]:input').val(obj);
-		
-		var frm = document.getElementById("groupFrm");
-		
-		frm.action = "/v1/admin/groupMng/modifyGroup.do";
-		
-		frm.submit(); 
+	 	$("#groupFrm").find('[name=name]:input').val(data);
+		$("#groupFrm").attr('action','<c:url value="/admin/groupMng/modifyGroup.do" />');
+		$("#groupFrm").submit();
 		
 	}
 	
-	 function regGroup(){
-		
+	function regGroupStart()
+	{
 		var groupName = $("#groupInfoFrm input[name=name]").val();
 		var comments = $("#groupInfoFrm input[name=comments]").val();
 		var user = $("#groupInfoFrm input[name=user]").val();
+		if(typeof user == "undefined")
+			user = '';
+		if(regGroupCheck(groupName) == true)
+		{
+			alert('이미 등록된 그룹 이름 입니다.');
+			return;	
+		}
+		regGroup(groupName,comments,user);
+		if(regGroupCheck(groupName) == true)
+		{
+			alert('성공');
+			console.log("그룹 등록 서비스 성공");
+			regGroupTbl(groupName,comments);
+		}
+		else
+			alert('실패');
+		return;
+	}
+	
+	function regGroup(groupName,comments,user){
 		
 		str = groupStr (groupName,comments,user);
 		 $.ajax({
@@ -80,21 +92,40 @@
 			url : '<c:url value="/groups/" />',
 			dataType : 'json',
 			data : str,
-			contentType : 'application/json', 
+			contentType : 'application/json',
+			async: false,
 			error : function(data) {
-				//console.log(data);
-				alert('그룹 등록 서비스 실패');
 			},
 			success : function(data) {
-				
 				console.log("그룹 등록 서비스 성공");
-				
-				regGroupTbl(groupName,comments);
+// 				regGroupTbl(groupName,comments);
 			}
 		}); 
 		
 	} 
 	
+	function regGroupCheck(groupName)
+	{
+		var isGroup = false;
+		var url = '<c:url value="/groups/"/>' + groupName;
+		$.ajax({
+			type : 'get',
+			url : url,
+			dataType : 'json',
+			contentType : 'application/json',
+			async: false,
+			error : function(data) {
+// 				alert('그룹 등록 서비스 실패');
+			},
+			success : function(data) {
+				console.log(data);
+				if(data['name'] == groupName)
+					isGroup = true;
+			}
+		});
+		return isGroup;
+	}
+	 
 	function deleteGroup(name){
 		
 		
@@ -208,20 +239,19 @@
 					</h4></li>
 				<li>&nbsp;</li>
 				<li style="margin-left: 525px;margin-top:0px;">
-							<abbr title="새 그룹 등록 버튼"><a type="button" class="btn btn-primary" title="" href="#popupRegMethod" data-toggle="modal">새 그룹 등록</a></abbr>
+						<abbr title="새 그룹 등록 버튼">
+							<a type="button" class="btn btn-primary" title="" href="#popupRegMethod" data-toggle="modal">새 그룹 등록</a>
+						</abbr>
 					</li>
 				</ul>
 
 				<table class="table table-striped table-hover table-condensed" id="groupTable" >
-					
-					
 						<!-- <tr>
 							<th><h4><abbr title="그룹 이름">GroupName</abbr></h4></th>
 							<th><h4><abbr title="그룹 설명">GroupComments</abbr></h4></th>
 							<th>&nbsp;</th>
 							<th>&nbsp;</th>
 						</tr> -->
-					
 				</table>
 			
 			</div>
@@ -234,8 +264,6 @@
 					</div>
 					
 				</div>
-			
-				
 		</div>
 		
 		<hr>
@@ -269,7 +297,7 @@
 				</div>
 	</form>
 	<div class="modal-footer">
-		<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="javascript:regGroup()">등록</button>
+		<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="javascript:regGroupStart()">등록</button>
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 	</div>
 </div> 

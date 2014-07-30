@@ -30,94 +30,118 @@ try{
 <script type="text/javascript">
 	
 	// Reg User Info
-	function regMember(){
-		
-		//Get userInfo 
-		var userId = $("#userInfoFrm input[name=user-id]").val();
-		
-		if(checkUserId(userId)==false){
-			
-			return;
-			
-		}else{
-			
-			var fullName = $("#userInfoFrm input[name=full-name]").val();
-			var userComments = $("#userInfoFrm input[name=user-comments]").val();
-			var password = $("#userInfoFrm input[name=password]").val();
-			
-		
-			//Post Json Info String url method
-			var str = getJSONStrToUser(userId, fullName, userComments, password);
-		
-			
-			$.ajax({
-		
-				type : 'post',
-				url : '<c:url value="/users"/>',
-				contentType : 'application/json',
-				data : str,
-				error : function() {
-					alert('유저 리스트 가져오기 서비스 실패');
-				},
-				success : function(data) {
-					
-					regToDb(userId,fullName);
-				}
-			});
-			
-		}
-	}
-	
-	
-	function checkUserId(userId){
-		
-		
-		
-		$.ajax({
-			type:'post',
-		 	url:'<c:url value="/admin/userMng/checkUserId.do"/>',
-			data:'user-Id='+userId,
-			dataType:'json',
-			error:function(res){
-				
-				alert("서비스 실패");
-					
-	        },
-	        success: function(res){
-	        	
-	        	if(res.result == false){
-	        	
-	        		alert(res.message);
-	        		
-		   		}else{
-		   			
- 			//------------성공 내용 추가-------------
- 			 	
-		   		}
-			}		
+function regMember(){
+	//Get userInfo 
+	var userId = $("#userInfoFrm input[name=user-id]").val();
+	$.ajax({
+		type:'post',
+	 	url:'<c:url value="/admin/userMng/checkUserId.do"/>',
+		data:'user-Id='+userId,
+		dataType:'json',
+		error:function(res){
+			alert("서비스 실패");
+        },
+        success: function(res){
+        	if(res.result == false){
+        		alert(res.message);	        		
+	   		}else{
+	   			var fullName = $("#userInfoFrm input[name=full-name]").val();
+	 			var userComments = $("#userInfoFrm input[name=user-comments]").val();
+	 			var password = $("#userInfoFrm input[name=password]").val();
+	 			var str = getJSONStrToUser(userId, fullName, userComments, password);
+	   			regToDb();
+	 			//Post Json Info String url method
+	 			
+	   		}
+		}		
 	});
+}
+
+function regToDb(){
+	$.ajax({	
+		type:'post',
+	 	url:'<c:url value="/admin/userMng/regToDb.do"/>',
+		data:$("#userInfoFrm").serialize(),
+		dataType:'json',
+		error:function(res){
+			alert("DB 등록 실패");
+        },
+        success: function(res){
+        	$(location).attr('href', '<c:url value="/admin/userMng.do"/>');
+		}		
+	});
+}
+
+// 	function regMember(){
 		
-	}
-	
-	function regToDb(userId,fullName){
+// 		//Get userInfo 
+// 		var userId = $("#userInfoFrm input[name=user-id]").val();
 		
+// 		if(checkUserId(userId)==false){
+// 			return;
+// 		}else{
+// 			var fullName = $("#userInfoFrm input[name=full-name]").val();
+// 			var userComments = $("#userInfoFrm input[name=user-comments]").val();
+// 			var password = $("#userInfoFrm input[name=password]").val();
+			
+// 			//Post Json Info String url method
+// 			var str = getJSONStrToUser(userId, fullName, userComments, password);
+			
+// 			$.ajax({
 		
-		$.ajax({	
-			type:'post',
-		 	url:'<c:url value="/admin/userMng/regToDb.do"/>',
-			data:'user-Id='+userId+"&fullName="+fullName,
-			dataType:'json',
-			error:function(res){
-				
-				alert("DB 등록 실패");
+// 				type : 'post',
+// 				url : '<c:url value="/users"/>',
+// 				contentType : 'application/json',
+// 				data : str,
+// 				error : function() {
+// 					alert('유저 리스트 가져오기 서비스 실패');
+// 				},
+// 				success : function(data) {
 					
-	        },
-	        success: function(res){
+// 					regToDb(userId,fullName);
+// 				}
+// 			});
+			
+// 		}
+// 	}
+	
+	
+// 	function checkUserId(userId){
+// 		$.ajax({
+// 			type:'post',
+// 		 	url:'<c:url value="/admin/userMng/checkUserId.do"/>',
+// 			data:'user-Id='+userId,
+// 			dataType:'json',
+// 			error:function(res){
+// 				alert("서비스 실패");
+// 	        },
+// 	        success: function(res){
+// 	        	if(res.result == false){
+// 	        		alert(res.message);	        		
+// 		   		}else{
+			 	
+// 		   		}
+// 			}		
+// 		});
+// 	}
+	
+// 	function regToDb(userId,fullName){
+// 		$.ajax({	
+// 			type:'post',
+// 		 	url:'<c:url value="/admin/userMng/regToDb.do"/>',
+// 			data:'user-Id='+userId+"&fullName="+fullName,
+// 			dataType:'json',
+// 			error:function(res){
+				
+// 				alert("DB 등록 실패");
+					
+// 	        },
+// 	        success: function(res){
 	        	
-	        	$(location).attr('href', "/v1/admin/userMng.do");
-			}		
-		});
-	}	
+// 	        	$(location).attr('href', '<c:url value="/admin/userMng.do"/>');
+// 			}		
+// 		});
+// 	}	
 	
 </script>
 </head>

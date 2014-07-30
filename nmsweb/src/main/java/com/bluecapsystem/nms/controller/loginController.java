@@ -42,7 +42,7 @@ public class loginController {
 	 * @param model
 	 * @return	logIn
 	 */
-	@RequestMapping(value = "/login")
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String logIn(Locale locale, Model model) {
 		
 		return "login";
@@ -69,8 +69,7 @@ public class loginController {
 		ModelAndView model = new ModelAndView();
 		
 		//user info json url
-		String dataUrl = "http://"+request.getServerName()+":"+request.getServerPort()+"/"+
-						NMSProperties.getNmswebVersion()+"/users/"+userId;
+		String dataUrl = "http://"+request.getServerName()+":"+request.getServerPort()+"/"+NMSProperties.getNmswebVersion()+"/users/"+userId;
 		String jsonStr = "";
 		
 		_LOGIN:
@@ -100,26 +99,30 @@ public class loginController {
 					
 					//비밀번호 인코딩
 					passWord = UsersUtil.encryptString(passWord);
-					
-					if(Id. equals(userId) && pwd.equals(passWord) ){//logIn Success and Session Process
-						
-						//--------------------------세션 생성-----------------------------
-						request.getSession().setAttribute(Define.USER_ID_KEY, Id); 
-						request.getSession().setAttribute(Define.FULL_NAME_KEY, name);
-						request.getSession().setAttribute(Define.GROUP_ID_KEY, "");
-						//--------------------------세션 생성-----------------------------
-						result = true;
-						
-					}else{
-						
-						logger.error("아이디 및 비밀번호가 일치 하지 않습니다.");
-						
+
+					if(Id.equals(userId) == false)
+					{
+						logger.error("아이디가 없습니다.");
 						result = false;
-						
-						message = "아이디 및 비밀번호가 일치 하지 않습니다.";
-						
+						message = "아이디가 없습니다.";
 						break _LOGIN;
 					}
+					
+					if(pwd.equals(passWord)  == false)
+					{
+						logger.error("비밀번호가 일치 하지 않습니다.");
+						result = false;
+						message = "비밀번호가 일치 하지 않습니다.";
+						break _LOGIN;
+					}
+					
+						
+					//--------------------------세션 생성-----------------------------
+					request.getSession().setAttribute(Define.USER_ID_KEY, Id); 
+					request.getSession().setAttribute(Define.FULL_NAME_KEY, name);
+					request.getSession().setAttribute(Define.GROUP_ID_KEY, "");
+					//--------------------------세션 생성-----------------------------
+					result = true;
 					
 				} catch (Exception e) {
 					result = false;

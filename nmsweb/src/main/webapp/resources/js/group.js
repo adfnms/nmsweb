@@ -9,7 +9,6 @@ function groupStr (name,comments,user){
 
 
 function getGroupDeteil(callback , name){
-	console.log('http://192.168.0.37:8080/' + version + '/groups/?'+name);
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/groups/'+name,
@@ -120,22 +119,22 @@ function groupListStr(jsonObj){
 	/***********************************************************/
 	if (jsonObj["@totalCount"] == 1) {
 	}else if (jsonObj["@totalCount"] > 1){
-			TBODYobj.append(
-				TRobj.clone().append(
-					TDobj.clone().append(
-						H4obj.clone().append(
-							ABBRobj.attr("title", "그룹이름").clone().text("GroupName")
-						)
-					),
-					TDobj.clone().append(
-						H4obj.clone().append(
-							ABBRobj.attr("title", "그룹설명").clone().text("GroupComments")
-						)
-					),
-					TDobj.clone().text(""),
-					TDobj.clone().text("")
-				)
-			);
+//			TBODYobj.append(
+//				TRobj.clone().append(
+//					TDobj.clone().append(
+//						H4obj.clone().append(
+//							ABBRobj.attr("title", "그룹이름").clone().text("GroupName")
+//						)
+//					),
+//					TDobj.clone().append(
+//						H4obj.clone().append(
+//							ABBRobj.attr("title", "그룹설명").clone().text("GroupComments")
+//						)
+//					),
+//					TDobj.clone().text(""),
+//					TDobj.clone().text("")
+//				)
+//			);
 		for ( var i in groupObj) {
 			var groupname = groupObj[i]["name"];
 			
@@ -207,10 +206,10 @@ function groupMemberSelectStr(jsonObj){
 				
 			}else{
 				for ( var i=0 ; i<user.length ; i++){
-						{
-							selectStr += "<option class=\"text-warning\" value=\""+user[i]+"\">"+user[i]+"</option>";
-						}
-					}
+					if(user[i]=='')
+						continue;
+					selectStr += "<option class=\"text-warning\" value=\""+user[i]+"\">"+user[i]+"</option>";
+				}
 			}
 		}
 		

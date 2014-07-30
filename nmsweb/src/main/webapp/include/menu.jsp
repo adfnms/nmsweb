@@ -23,7 +23,7 @@ $(document).ready(function() {
 
 /*****************************Menu Manager**************************************/
 function menuManager(){
-	 
+	
 	$.ajax({
 		type : 'get',
 		url : '<c:url value="/menu/showMenu.do" />',
@@ -33,7 +33,7 @@ function menuManager(){
 		},
 		success : function(data) {
 			if(data.groupNm != "visitor"){
-
+				
 
 				for(var i = 0; i < data.userList.length; i++)
 	       		{

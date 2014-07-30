@@ -60,7 +60,6 @@
 
 	/* Recent Outages Callback */
 	function addOutages(jsonObj) {
-
 		var str = getTabletagToOutageJsonObj(jsonObj,"${nodeId}");
 		$('#rightUnderDiv2').append(str);
 
@@ -92,18 +91,14 @@
 		var str ="";
 		var strcoll ="";
 		
+		alert(jsonObj["@count"]);
 		if(jsonObj["@count"] > 0){
-			
-			
-			
+
 			if(jsonObj["@count"] > 1){
 				interfaceObj = jsonObj["ipInterface"];
 				var ipAddrs = interfaceAvail[i]["ipAddress"];
 				
 				for(var i in interfaceObj){
-					
-					
-					
 					//인터페이스 가용성
 					var interfaceAvail = Number(getInterfaceAvailability("${nodeId}", ipAddrs)).toFixed(3)+"%";
 					 var headStr = '<td><h5><a href="javascript:goInterfaceDescPage(\'${nodeId}\', \''+ipAddrs+'\');">' + ipAddrs + '&nbsp;[&nbsp;'+interfaceAvail+'&nbsp;]&nbsp;</a></h5></td><td style="position: relative;left: 10%;top: 0px;">'+statsToStringFromStatoCode(jsonObj["@isManaged"])+'</hd>'; 
@@ -145,6 +140,7 @@
 			strAv += serviceAvailSte;
 			
 		}
+		
 		$('#collapsible').append(strcoll);
 		$("#leftDiv").append(str);
 		$("#leftUnderDiv").append(strAv);
@@ -213,7 +209,7 @@ function goServiceDiv(nodeId,intf,serviceNm){
 		
 		/* Recent Outages */
 		getOutagesForInterface(addOutagesForService, nodeId, intf,"5", serviceNm);
-
+		
 		/* Recent Events */
 		getEventsForInterface(addEventsForService,nodeId, intf,"5", serviceNm);
 		

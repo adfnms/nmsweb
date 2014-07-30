@@ -835,18 +835,18 @@ public class NodeService {
 		HashMap hash = new HashMap();
 
 		hash.put(USERNAME, loginId);
-		hash.put(PASSWORD, loginPass);
+		hash.put(PASSWORD, loginPass);		
 		hash.put(Accept, "application/xml");
 		hash.put(URL, ipAddr + "/nodes/" + id + "?label="+label);
 		hash.put(METHOD, "PUT");
-
-
+		
 		String result = null;
 
 		try {
 			result = (String) handler.handle(hash);
 			result = "";
 		} catch (Exception e) {
+			System.out.println(e.toString());
 			throw new HandleException(e);
 		}
 

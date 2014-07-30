@@ -45,4 +45,48 @@ public class Util {
 
 	}
 
+	public static String getJsonStrToUrl(String urlStr,String Paramer) throws IOException {
+
+		String dataUrl = urlStr;
+		URL url;
+		URLConnection connection;
+		InputStream is;
+		InputStreamReader isr;
+		BufferedReader br;
+		String strJson = new String();
+		try {
+			url = new URL(dataUrl);
+			connection = url.openConnection();
+			is = connection.getInputStream();
+			isr = new InputStreamReader(is, "utf-8");
+			br = new BufferedReader(isr);
+			String buf = null;
+
+			while (true) {
+				buf = br.readLine();
+				if (buf == null) {
+					break;
+				} else {
+					strJson += buf + "\n";
+				}
+			}
+		} catch (MalformedURLException mue) {
+
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+
+		return strJson;
+	}
+	
+	public static String UserRegInfoJson(String userId,String password, String fullName,String comments)
+	{
+		String str = "{\"user\":[{" +
+				"\"user-id\":\""+userId+"\"," +
+				"\"full-name\":\""+fullName+"\"," +
+				"\"user-comments\":\""+comments+"\"," +
+				"\"password\":\""+password+"\"}]}";
+		
+		return str;
+	}
 }

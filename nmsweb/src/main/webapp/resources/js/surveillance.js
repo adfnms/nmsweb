@@ -49,7 +49,8 @@ function getCount(callback,data){
 }
 
 function countStr(jsonObj,categoryid,categoryname){
-	var categoryids = categoryid + 100;
+//	var categoryids = categoryid + 100;
+	var categoryids = categoryid;
 	var str = ""; 
 	if(categoryname != ''){
 		str += '	<tr>';
@@ -320,10 +321,9 @@ function getSearchAssetsList(callback,categorynm) {
 	} 
 	
 	function FieldStr(jsonObj) {
-
+		
 		var str = "";
 		var FieldList=jsonObj["fieldData"];
-		
 		if (FieldList.length == 0) {
 			str += "<tr>";
 			str += "<td></td>";

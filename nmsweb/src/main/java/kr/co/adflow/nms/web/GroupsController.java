@@ -1,5 +1,7 @@
 package kr.co.adflow.nms.web;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -142,6 +144,7 @@ public class GroupsController {
 		String result = null;
 
 		try {
+			groupname = groupname.replaceAll(" ", "%20");
 			result = (String) service.groupsDelGroupUsers(groupname, username);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
@@ -159,12 +162,15 @@ public class GroupsController {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
 
+		groupname = groupname.replaceAll(" ", "%20");
+
 		try {
 			result = (String) service.groups(groupname);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
 		}
+					
 		logger.debug(RETURNRESULT + result);
 		return result;
 	}

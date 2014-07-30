@@ -9,7 +9,6 @@ myRoleSelect.prototype={
 		var sel_left=$(this.sel_left);			
 		var sel_right=$(this.sel_right);
 		var select_html="";
-		
 		if(sel_left.find("option:selected").size()>0){
 			
 			res = new Array();

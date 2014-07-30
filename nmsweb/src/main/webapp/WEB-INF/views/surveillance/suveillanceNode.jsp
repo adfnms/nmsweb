@@ -110,59 +110,37 @@ function delCategory(){
 		
 		var emptyNode  = $("#nodeListTable input[name=emptyNode]").val();
 		
-		if(!confirm("삭제하시겠습니까?")){
+		if(confirm("삭제하시겠습니까?") == false){
 			return;
-		}else{
-			if(emptyNode=="notEmptyNode"){
-				
-				if(!confirm("등록된 노드가 있습니다. 삭제하시겠습니까?")){
-					return;
-				}
-				
-				var categoryid=("${categoryId}");
-				$.ajax({
-			      	url : '<c:url value="/delCategory.do" />',
-			        type:'post',
-			        dataType:'json',
-			        data:'categoryid='+categoryid,
-			        error:function(data, status, err){
-			            alert('Error, service not found');
-			        },
-			        success:function(res){
-			        	if(res.isSuccess == false)
-			       		{
-			        		alert(res.errorMessage);        		
-			        		return;
-			       		}
-			        	alert("삭제되었습니다. 메인화면으로 이동합니다.");
-			        	$(location).attr('href', "/v1/index.do");
-			        }
-				});  
-				
-			}else{
-				var categoryid=("${categoryId}");
-				
-				
-				$.ajax({
-			      	url : '<c:url value="/delCategory.do" />',
-			        type:'post',
-			        dataType:'json',
-			        data:'categoryid='+categoryid,
-			        error:function(data, status, err){
-			            alert('Error, service not found');
-			        },
-			        success:function(res){
-			        	if(res.isSuccess == false)
-			       		{
-			        		alert(res.errorMessage);        		
-			        		return;
-			       		}
-			        	alert("삭제되었습니다. 메인화면으로 이동합니다.");
-			        	$(location).attr('href', "/v1/index.do");
-			        }
-				});  
+		}
+		
+		if(emptyNode=="notEmptyNode"){
+			
+			if(confirm("등록된 노드가 있습니다. 삭제하시겠습니까?") == false){
+				return;
 			}
 		}
+				
+		var categoryid=("${categoryId}");
+			
+		$.ajax({
+	      	url : '<c:url value="/delCategory.do" />',
+	        type:'post',
+	        dataType:'json',
+	        data:'categoryid='+categoryid,
+	        error:function(data, status, err){
+	            alert('Error, service not found');
+	        },
+	        success:function(res){
+	        	if(res.isSuccess == false)
+	       		{
+	        		alert(res.errorMessage);        		
+	        		return;
+	       		}
+	        	alert("삭제되었습니다. 메인화면으로 이동합니다.");
+	        	$(location).attr('href', "/v1/index.do");
+	        }
+		});  
 	}
 	
 </script>

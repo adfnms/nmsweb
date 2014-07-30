@@ -127,6 +127,7 @@
 			for ( var i in outageObj) {
 				
 				var lostTime = new Date(outageObj[i]["iflostservice"]);
+				
 				var current = new Date();
 				var lastTime = dateDiff(lostTime, current);
 				var sec = getSecDateDiff(lostTime, current);

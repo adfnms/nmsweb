@@ -16,13 +16,14 @@
 <script src="<c:url value="/resources/js/category.js" />"></script>
 <script src="<c:url value="/resources/js/surveillance.js" />"></script>
 
- <script src="<c:url value="/resources/js/common/calendar/ui/ui.core.js" />"></script>
+<script src="<c:url value="/resources/js/common/calendar/ui/ui.core.js" />"></script>
 <script src="<c:url value="/resources/js/common/calendar/ui/ui.datepicker.js" />"></script>
 <script src="<c:url value="/resources/js/common/calendar/ui/ui.datepicker-ko.js" />"></script>
 <link rel="STYLESHEET" type="text/css" href="<c:url value="/resources/js/common/calendar/ui/demos.css"/>">
 <link rel="STYLESHEET" type="text/css" href="<c:url value="/resources/js/common/calendar/themes/base/ui.all.css"/>">
 <script type="text/javascript">
 	
+	var form = $('<form></form>');
 	$(document).ready(function(){
 		
 		/* Node base info */
@@ -51,19 +52,17 @@
 	function addInterfaceInfo(jsonObj){
 		var str ="";
 		if(jsonObj["@count"] == 0){
-			
-
 			str = '<table class="table table-striped">';
 			str += '	<tr>';
 			str += '		<td class ="span4">';
 			str += '		</td>';
 			str += '		<td>';
-			str += '	<h4 class="text-error">  인터페이스 관리 대상이 없습니다.</h4>';
+			str += '		<h4 class="text-error">  인터페이스 관리 대상이 없습니다.</h4>';
 			str += '		</td>';
 			str += '	</tr>';
 			str += '</table>';
 			
-				$('#interfaceButton').hide();
+			$('#interfaceButton').hide();
 			
 			addServiceInfo("${nodeId}");
 			
@@ -116,11 +115,6 @@
 			}
 			
 		}
-
-	
-		
-
-		
 		$('#interfaceInfo').prepend(str);	
 			
 	}
@@ -136,7 +130,9 @@
 					str += "<h5>"+ipAddress+"</h5>";
 					str += '<table class="table table-striped">';
 					str += '	<tr>';
-
+					
+					serviceObj.sort(serviceSort);
+					
 					for(var i in serviceObj){
 						
 						if(i % 6 == 0 && i != 0){
@@ -156,6 +152,7 @@
 					str += '</table>';
 						
 				}else{
+					
 					str += "<h5>"+ipAddress+"</h5>";
 					str += '<table class="table table-striped">';
 					str += '	<tr>';
@@ -271,44 +268,108 @@
 	}
 	/*//SNMP Interface info Callback */
 	
+		/*change Node Label script */
+// 	function chgNodeLabel(){
+// 		var result = changeNodeLabel("${nodeId}", $('#nodeLabel').val());
+// 		if(result == true){alert("변경되었습니다.");}
+		
+// 	}
+	/*//change Node Label script */
+	
 	/*change Node Label script */
 	function chgNodeLabel(){
-		
-		var result = changeNodeLabel("${nodeId}", $('#nodeLabel').val());
-		if(result == true){alert("변경되었습니다.");}
-		
+		var str = '<c:url value="/admin/changeNodeLabel.do"/>';
+		var url = str.split('.')[0] + '.do'; 
+		var nodeId = '${nodeId}';
+		var label = $('#nodeLabel').val();
+
+		$.ajax({
+			type:'post',
+			url: url,
+			data: {
+				nodeId : nodeId,
+				label : label
+			},
+			dataType:'json',
+			error:function(res){
+				console.log(res);				
+				alert("서비스 실패.");
+	        },
+	        success: function(res){
+        		alert(res.message);
+			}		
+		});
 	}
 	/*//change Node Label script */
-
 	
 	/* interface Manage script */
 	function interfaceManage(){
+		
+		var nodeId = '${nodeId}';
 		var select = $('#interfaceInfo select');
-		var result = true; 
+		var str = '<c:url value="/"/>';
+		
 		for(var i = 0 ; i < select.length ; i++){
-			
-			var isManaged = $('#interfaceInfo select:eq('+i+')').val();
 			var ipAddress = $('#interfaceInfo select:eq('+i+')').attr("name");
+			var isManaged = $('#interfaceInfo select:eq('+i+')').val();
 			
-			if(!manageInteface("${nodeId}", ipAddress, isManaged)){
-				result = false;
-			}
+			$(form).empty();
+			form.append( 
+				     $("<input/>", 
+			    		 {
+				    	name: 'isManaged',
+			    	 	type:'text', 
+			            value: isManaged}
+				    )
+				);
 			
+			var url = str + 'admin/ipinterfacesModify/nodeId/'+nodeId+'/ipAddress/'+ipAddress;
+			
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: $(form).serialize(),
+				dataType:'json',
+				error:function(res){
+					console.log(res);				
+					alert("서비스 실패.");
+		        },
+		        success: function(res){
+	        		alert(res.message);
+				}		
+			});
 		}
-		
-		if(result == true){
-			alert("변경되었습니다.");
-		}
-		
 	}
+	
+// 	function interfaceManage(){
+// 		var select = $('#interfaceInfo select');
+// 		var result = true; 
+// 		for(var i = 0 ; i < select.length ; i++){
+			
+// 			var isManaged = $('#interfaceInfo select:eq('+i+')').val();
+// 			var ipAddress = $('#interfaceInfo select:eq('+i+')').attr("name");
+			
+// 			if(!manageInteface("${nodeId}", ipAddress, isManaged)){
+// 				result = false;
+// 			}
+			
+// 		}
+		
+// 		if(result == true){
+// 			alert("변경되었습니다.");
+// 		}
+		
+// 	}
 	/*//interface Manage script */
 	
 	/* interface Manage script */
 	function serviceManage(){
-		
-		var result = true;
 		var chkObj = $('#serviceInfo input[type=checkbox]');
-
+		var nodeId = '${nodeId}';
+		var str = '<c:url value="/"/>';
+		var errMessage = '변경 실패 서비스 : ';
+		var isError = false;
+		
 		for(var i = 0 ; i < chkObj.length ; i++){
 			
 			var chk = $('#serviceInfo input[type=checkbox]:eq('+i+')');
@@ -324,21 +385,90 @@
 			
 			var serviceName = $(chk).attr("id");
 			var ipAddress = $(chk).attr("name");
-		
- 			if(!manageService("${nodeId}", ipAddress, serviceName, status)){
- 				result = false;
- 			}else{
- 				$(chk).val(status);
- 			}
- 			
 			
+			var url = str + 'admin/ipServiceModify/nodeId/'+nodeId+'/ipAddress/'+ipAddress+'/servicesName/'+serviceName;
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: 'status='+status,
+				dataType:'json',
+				async: false,
+				error:function(res){
+					
+	        		errMessage += serviceName;
+	        		if(i != 0)
+						errMessage += ',';
+	        		isError = true;
+	        		
+		        },
+		        success: function(res){
+		        	
+		        	if(Boolean(res.result) == false)
+	        		{
+		        		errMessage += res.servicesName;
+		        		if(i != 0)
+							errMessage += ',';
+		        		isError = true;
+	        		}else
+        			{
+	        			var checkObj = $('#serviceInfo').find('#'+serviceName);
+	        			if(res.servicesStatus == 'R')
+        				{
+	        				$(checkObj).val('R');
+	        				$(checkObj).attr("checked",true);
+        				}
+	        			else
+        				{
+	        				$(checkObj).val('S');
+	        				$('#serviceInfo').find('#'+serviceName).removeAttr("checked");
+        				}
+	        			
+        			}
+		        	
+		        }
+			});			
 		}
-		
-		if(result == true){
+
+		if(isError == true){
+			alert(errMessage +'\r\n'+'실패한 목록외 변경되었습니다.');
+		}else
 			alert("변경되었습니다.");
-		}
-		
 	}
+	
+// 	function serviceManage(){
+		
+// 		var result = true;
+// 		var chkObj = $('#serviceInfo input[type=checkbox]');
+
+// 		for(var i = 0 ; i < chkObj.length ; i++){
+			
+// 			var chk = $('#serviceInfo input[type=checkbox]:eq('+i+')');
+// 			var status = "";
+			
+// 			if($(chk).attr("checked") != "checked"){
+// 				status = "S";
+// 			}else if($(chk).attr("checked") == "checked" && $(chk).val() == "S"){
+// 		 		status = "R";
+// 			}
+			
+// 			if(status == ""){continue;}	
+			
+// 			var serviceName = $(chk).attr("id");
+// 			var ipAddress = $(chk).attr("name");
+			
+//  			if(!manageService("${nodeId}", ipAddress, serviceName, status)){
+//  				result = false;
+//  			}else{
+//  				$(chk).val(status);
+//  			}
+			
+// 		}
+		
+// 		if(result == true){
+// 			alert("변경되었습니다.");
+// 		}
+		
+// 	}
 	/*//interface Manage script */
 	
 	/* snmp Manage script */
@@ -561,7 +691,8 @@ function modifyAssets(){
 									<div class="well well-small">
 										<form class="form-inline" id="serviceInfo">
 											<div class="span11"></div>
-											<button id="serviceButton" type="button" class="btn btn-primary" title="수정" onclick="javascript:serviceManage();">수정</button>
+<!-- 											<button id="serviceButton" type="button" class="btn btn-primary" title="수정" onclick="JavaScript:serviceManage();">수정</button> -->
+												<a id="serviceButton" type="button" class="btn btn-primary" title="수정" href="JavaScript:serviceManage();">수정</a>
 										</form>
 									</div>
 								</div>

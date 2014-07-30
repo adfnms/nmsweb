@@ -45,7 +45,6 @@ public class UsersController {
 	private static final String INVALUE = "invalue:::";
 	private static final String XMLDATA = "xmlData:::";
 	
-
 	// users
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public @ResponseBody
@@ -70,7 +69,6 @@ public class UsersController {
 	public @ResponseBody
 	String usersPost(@RequestBody String data, HttpServletRequest request)
 			throws HandleException, MapperException, UtilException {
-
 		logger.info(PATH + request.getRequestURL());
 		logger.debug(INVALUE + data);
 		String result = null;
@@ -114,7 +112,6 @@ public class UsersController {
 		logger.debug(INVALUE + data);
 		String result = null;
 		User user = new User();
-
 		try {
 			user = tcmapper.userInfoMapping(data);
 		} catch (MapperException e) {
@@ -167,7 +164,6 @@ public class UsersController {
 			throws HandleException {
 		logger.info(PATH + request.getRequestURL());
 		String result = null;
-
 		try {
 			result = (String) service.UsersDelete(username);
 		} catch (HandleException e) {

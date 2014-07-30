@@ -32,6 +32,7 @@ function addNodeListsSideBar(jsonObj) {
 }
 
 function sidebarInfo(jsonObj) {
+	
 	//장애 목록
 	var str = "";
 	var ULobj = $("<ul></ul>");
@@ -45,7 +46,6 @@ function sidebarInfo(jsonObj) {
 	var STRONGobj = $("<strong></strong>");
 	
 	var sideOutageObj = jsonObj["Outages"];
-	
 	if(sideOutageObj=="null"){
 		
 		$('#sideBarOutageList').append(
@@ -55,16 +55,19 @@ function sidebarInfo(jsonObj) {
 			);	
 		
 	}else{
+		var current = new Date();
+		var lostTime = null;
+		var lastTime = null;
 		
 		for ( var i in sideOutageObj) {
 
-			var lostTime = new Date(sideOutageObj[i]["iflostservice"]);
-			var current = new Date();
-			var lastTime = dateDiff(lostTime, current);
+			var timeStr = sideOutageObj[i]["iflostservice"].substring(0,sideOutageObj[i]["iflostservice"].length-3);
+// 			alert(sideOutageObj[i]["iflostservice"]);
+			lostTime = new Date(timeStr);
 			
-			
-			
-			//$('#sideBarOutageList').append("<h5><a class=text-error href='/" + version + "/search/outage/outageDesc.do?outageId="+ sideOutageObj[i]["outageid"]+ "'>" + sideOutageObj[i]["ipaddr"] + "</a> ("+ lastTime + ")<br/></h5>");
+			console.log(Date.parse(sideOutageObj[i]["iflostservice"]));
+			console.log(lostTime);
+			lastTime = dateDiff(lostTime, current);
 			 
 			$('#sideBarOutageList').append(
 				H5obj.clone().append( 
@@ -108,7 +111,6 @@ function addOutageSideInfo(jsonObj){
 		<li class="nav-header" id="sideBarOutageList"></li>
 	</ul>
 </div>
-<html>
 <!-- Modal -->
 <div id="myModalSide" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
   <div class="modal-header">
@@ -123,4 +125,3 @@ function addOutageSideInfo(jsonObj){
   </div>
 </div>
 <!--/.well -->
-</html>

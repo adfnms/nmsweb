@@ -47,25 +47,28 @@
  <script type="text/javascript">
  
  function memberLogIn(){
-	
+ 	var str = '<c:url value="/login.do"/>';
+ 	var url = str.split('.')[0] + '.do'; 
 	var data = $("#form-logIn").serialize();
 
 	$.ajax({
 			type:'post',
-			url:'<c:url value="/login.do" />',
+			url: url,
 			data: data,
 			dataType:'json',
 			error:function(res){
-				
+				console.log(res);				
 				alert("서비스 실패.");
-			
 	        },
 	        success: function(res){
-	        	if(res.result == true){
+	        	if(res.result == false){
+	        		alert(res.message);
+	        		return;
+	        	}
 	        	
-	        		document.location.href = '<c:url value="/index.do" />';
-	        		//document.location.href = '<c:url value="/startscreen.do" />';
-		   		}
+        		var str = '<c:url value="/index.do" />';
+        		document.location.href = str.split('.')[0] + '.do';
+        		//document.location.href = '<c:url value="/startscreen.do" />';
 			}		
 	});
  }
