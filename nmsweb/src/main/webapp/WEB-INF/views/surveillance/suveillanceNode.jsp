@@ -86,6 +86,7 @@ var orderBy = "id";
 	
 	/* 카테고리에 속하는 노드 정보  */
 	function getNodeToSurveillanceInfo(jsonObj,categoryid) {
+	
 		var nodeObj = jsonObj["RegNodeItems"];
 		$('#delNode').empty();
 		var str = NodeToSurveillancePopObj(nodeObj, categoryid );

@@ -1307,12 +1307,12 @@ function pathsNameStr(jsonObj){
 		/*****************************************************************************************************************************************************************************************************************************2013-08-19************/
 		TBODYobj.append(
 			TRobj.clone().append(
-				TDobj.text(pathsObj[i]["name"]),
+				TDobj.text(pathsObj["name"]),
 				TDobj.clone().append(
-					Aobj.attr("type", "button").attr("class", "btn btn-success").attr("data-parent", "#accordion3").attr("onclick", "javascript:modifyPath('"+pathsObj[i]["name"]+"')").attr("href", "#collapseThree").clone().text("수정")
+					Aobj.attr("type", "button").attr("class", "btn btn-success").attr("data-parent", "#accordion3").attr("onclick", "javascript:modifyPath('"+pathsObj["name"]+"')").attr("href", "#collapseThree").clone().text("수정")
 				),
 				TDobj.clone().append(
-					Aobj.attr("type", "button").attr("class", "btn btn-danger").attr("onclick", "javascript:deletePath('"+pathsObj[i]["name"]+"')").clone().text("삭제")
+					Aobj.attr("type", "button").attr("class", "btn btn-danger").attr("onclick", "javascript:deletePath('"+pathsObj["name"]+"')").clone().text("삭제")
 				)
 			)
 		);

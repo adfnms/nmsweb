@@ -768,8 +768,8 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 		str += "</tr>";*/
 		
 	}else if (jsonObj["@totalCount"] > 1 || jsonObj["@count"] > 1) {
-		var TRobjClone = TRobj.clone();
 		for (var i in nodeObj) {
+			var TRobjClone = TRobj.clone();
 			TBODYobj.append(
 					TRobjClone.append(
 						TDobj.clone().append().text(nodeObj[i]["@id"]),

@@ -439,22 +439,12 @@ function  NodeToSurveillancePopObj(nodeObj, categoryid ){
 		
 		var str = "";
 		var totalCount = nodeObj.length;
-		
 		if (totalCount == 0) {
 			str += "<tr>";
 			str += "<td></td>";
 			str += "<td>노드가 없습니다</td>";
 			str += "<td></td>";
-		}else if(totalCount ==1) {
-			str += "<tr>";
-			str += "	<td class=''>";
-			str += "		<label class='checkbox'>";
-			str += "			<input style='margin-left: 0px;;'  value='"+nodeObj["nodeid"]+"' name='nodeid' id='nodeid'  type='checkbox' />"; 
-			str += "		</label>";
-			str += "</td>";
-			str += "	<td class=''><h5>노드아이디 : "+nodeObj["nodeid"]+"</h5></td>";
-			str += "	<td class=''><h5>노드 라벨 :"+nodeObj["nodelabel"] +"</h5></td>";
-		}else if(totalCount >0) {
+		}if(totalCount >0) {
 			for ( var i in nodeObj) {
 				str += "<tr>";
 				str += "	<td class=''>";
