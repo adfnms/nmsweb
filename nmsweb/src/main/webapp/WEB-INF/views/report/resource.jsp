@@ -12,183 +12,274 @@
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/graph.js" />"></script>
+<link
+	href="<c:url value="/resources/bootstrap/css/bootstrap-datetimepicker.min.css" />"
+	rel="stylesheet">
+<script
+	src="<c:url value="/resources/bootstrap/js/bootstrap-datetimepicker.min.js" />"></script>
+
 <script type="text/javascript">
+var startDate = '';
+var endDate = '';
 	$(document).ready(function() {
-		
+
 		getTotalGraphList(addGraphsList);
 		//addGraphsList(null);
-		
+		relativeTimeFormChange();
+		bootstrapCalendar();
 	});
-	
-	//자원별 노드목록
-	function addGraphsList(jsonObj){
-		console.log(jsonObj["records"]);
-		
-		var str = "";
-		if(jsonObj["total"]==0){
+
+	/*부트스크랩 날짜 이용*/
+	function bootstrapCalendar() {
+		var startCalendar = $('#startDate').datetimepicker({
+			format : 'yyyy년MM월dd일',
+			language : 'pt-BR',
+			pickTime : false,
+		}).on('changeDate', function(ev) {
+			var sDate	   = new Date(ev.date).valueOf();
+			var eDate	   = new Date(endCalendar._date).valueOf();
 			
+			if(sDate >= eDate)
+				endCalendar.setDate(new Date(Date.parse(ev.date)+1*1000*60*60*24));
+			
+			endCalendar.setStartDate(new Date(Date.parse(ev.date)+1*1000*60*60*24));
+			startCalendar.hide();
+			
+		}).data('datetimepicker');
+		
+		var endCalendar = $('#endDate').datetimepicker({
+			format : 'yyyy년MM월dd일',
+			language : 'pt-BR',
+			pickTime : false,
+			startDate: new Date(Date.parse(startCalendar._date)+1*1000*60*60*24),
+			
+		}).on('changeDate', function(ev) {
+			endCalendar.hide();
+			
+		}).data('datetimepicker');
+	}
+
+	//자원별 노드목록
+	function addGraphsList(jsonObj) {
+
+		var str = "";
+		if (jsonObj["total"] == 0) {
+
 			str += "<tr>";
 			str += "	<td style=\"text-align: center\">";
 			str += " 				노드리스트가 없습니다.";
 			str += "	</td>";
 			str += "</tr>";
-			
-			
 		}
-		
-		
+
 		var recordObj = jsonObj["records"];
-		
-		
+		recordObj.sort(graphSort);
+
 		var regExp = /[^0-9]/gi;
-		
-		for(var i in recordObj){
-			
-			str += "<tr>";
-			str += "	<td style=\"text-align: center\">";
-			str += '		<a href="javascript:setOption(\''+recordObj[i]["id"].replace(regExp,"")+','+recordObj[i]["value"]+'\');">';			
-			str += 				recordObj[i]["value"];
-			str += "		</a>";
-			str += "	</td>";
-			str += "</tr>";
-			
+
+		var TableObj = $("<table></table>");
+		var TrObj = $("<tr></tr>");
+		var TdObj = $("<td></td>");
+		var FONTobj = $("<font></font>");
+
+		TableObj
+				.attr('class',
+						'table table-striped table-hover table-condensed table-stacked');
+		TableObj.attr('id', 'recodTable');
+
+		for ( var i in recordObj) {
+			var id = recordObj[i]["id"];
+
+// 			TableObj.append(TrObj.clone().attr('onclick','javascript:setOption(\''+ recordObj[i]["id"].replace(regExp, "") + '\',\''+ recordObj[i]["value"] + '\');').append(
+			TableObj.append(TrObj.clone().attr('onclick','javascript:setOption(\''+ recordObj[i]["id"] + '\',\''+ recordObj[i]["value"] + '\');').append(
+				TdObj.clone().attr('style', 'text-align: center;').append(
+// 					AObj.clone().attr('href','javascript:setOption(\''+recordObj[i]["id"].replace(regExp,"")+'\',\''+recordObj[i]["value"]+'\');').text(recordObj[i]["value"])
+					FONTobj.clone().attr("color", "blue").text(recordObj[i]["value"].replace("Node:", "")),
+					FONTobj.clone().attr("color", "black").text(" [ "),
+					FONTobj.clone().attr("color", "black").text("노드 ID : "),
+					FONTobj.clone().attr("color", "black").text(id.substring(id.indexOf('[') + 1,id.length - 1)),
+					FONTobj.clone().attr("color", "black").text(" ]"))
+			));
 		}
-		$('#recodTable').empty();
-		$('#recodTable').append(str);
+
+		$('#recodDiv').empty();
+		$('#recodDiv').append(TableObj);
 	}
-	
-	
+
 	//자원별 그래프목록
-	function setOption(nodeId){
-		
-		var nodeIdsp=nodeId.split(",");
-		
-			
-			var id = nodeIdsp[0];
-			var value = nodeIdsp[1];
-		
-		$("#nodeInfo").html("<div class=\"span12 text-success\"><h5>"+value+"</h5></div>");
-		
+	function setOption(nodeId, nodeValue) {
+
+		var id = nodeId;
+
+		var value = nodeValue;
+
+		$("#nodeInfo").find('h5').empty();
+		$("#nodeInfo").find('h5').append(value.replace('Node:', ''));
+
 		var graphObj = getGraphInfoToNodeId(id);
-		
-		/* var jsonObj = '{"total":"3","records":[{"id":"node[129].nodeSnmp[]","value":"Node-levelPerformanceData","type":"SNMPNodeData"},{"id":"node[129].interfaceSnmp[Embedded_Ethernet_Controller__10_100_Mbps__v1_0__UTP_RJ_45__connector_A1__100_full_duplex-001599771ae7]","value":"EmbeddedEthernetController,10/100Mbps,v1.0,UTPRJ-45,connectorA1,100fullduplex(192.168.0.27,100Mbps)","type":"SNMPInterfaceData"},{"id":"node[129].responseTime[192.168.0.37]","value":"192.168.0.37","type":"ResponseTime"}]}';
-		graphObj = JSON.parse(jsonObj); */
-		
-		
+
 		var records = graphObj["records"];
-		
+
 		var str = "";
-		
-		for( var i in records){
-			str += "<tr>";
-			str += "	<th style=\"text-align: center\">";
-			str += records[i]["type"];
-			str += "	</th>";
-			str += "</tr>";
+
+		for ( var i in records) {
 			str += "<tr>";
 			str += "	<td style=\"text-align: center\">";
-			str += "		<a href='javascript:setGraphUrls(\""+records[i]["id"]+","+records[i]["value"]+"\");'>";
-			str += 				records[i]["value"];
+			str += "		<a href='javascript:setGraphUrls(\"" + records[i]["id"]+ "," + records[i]["value"] + "\");'>";
+			str += records[i]["value"];
 			str += "		</a>";
 			str += "	</td>";
 			str += "</tr>";
 		}
-		
-		
-	 	var now = new Date();
-		var year= now.getFullYear();
-		var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
-		var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
-		
-		$("#fromDate").html("<div class=\"span12\" ><h5 id=\"fromDate\" class=\"text-success\">FromDate :"+year+'년'+mon+'월'+day+'일'+"</h5></div>");
-		var beforeOneDay=yesterday(); //하루전
-		$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeOneDay+"</h5></div>");
-		
+
 		$('#trHide').hide();
 		$('#recodInfoTable').empty();
 		$('#recodInfoTable').append(str);
+
 		$("#deth2").show("show");
-		
+		$("#ResourceInfo").find('h5').html('-');
+		$("#graphValueFrm input[name=graphValue]").val('');
+		$('#grephDiv').empty();
+
 	}
 	//그래프 목록
-	function setGraphUrls(val){
-			var valsp=val.split(",");
-			var val = valsp[0];
-			var resource = valsp[1];
-			var dayString="day";
-			
-			$("select[name=rtstatus] option[value="+dayString+"]").attr("selected",true);
-			var beforeOneDay=yesterday(); //하루전
-			$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeOneDay+"</h5></div>");
-			
-			$("#ResourceInfo").html("<div class=\"span12\"><h5 class=\"text-success\">Resource : "+resource+"</h5>");
-			$('#timePeriod').show();
-		
-			var graphUrlObj = getGraphUrls(val);
-		
-			$('#graphValueFrm input[name=graphValue]').val(val);
-			
-			var str = "";
-			
-			if(graphUrlObj.length == 0){
-				
-				var str = "";
-			
+	function setGraphUrls(val) {
+
+		var valsp = val.split(",");
+		var val = valsp[0];
+		var resource = valsp[1];
+		var dayString = "day";
+
+		$("select[name=rtstatus] option[value=" + dayString + "]").attr(
+				"selected", true);
+		$("#ResourceInfo").find('h5').html(resource);
+
+		var graphUrlObj = getGraphUrls(val);
+
+		$('#graphValueFrm input[name=graphValue]').val(val);
+
+		var str = "";
+
+		if (graphUrlObj.length == 0) {
+
 			str += "<h1  class=\"text-error text-center\">NO DATA</h1>";
-				$('#grephDiv').empty();
-				$('#grephDiv').append(str);
-			}else{
-				for(var i in graphUrlObj){
+			$('#grephDiv').empty();
+			$('#grephDiv').append(str);
+		} else {
+			
+			for ( var i in graphUrlObj) {
 				str += "<img src='"+graphUrlObj[i]+"'/>";
 			}
-		$('#grephDiv').empty();
-		$('#grephDiv').append(str);
+
+			$('#grephDiv').empty();
+			$('#grephDiv').append(str);
+		}
+	}
+
+	function relativeTimeFormChange() {
+
+		if ($('#rtstatus').val() == '')
+			return;
+		
+		var value = $('#rtstatus').val();
+
+		$('#endDateValue').attr('disabled', 'disabled');
+		$('#endDateICon').hide();
+
+		$('#startDateValue').attr('disabled', 'disabled');
+		$('#startDateICon').hide();
+
+		$('#customSearchBtn').hide();
+		if (value == 'custom') {
+			$('#endDateValue').removeAttr('disabled');
+			$('#endDateICon').show();
+
+			$('#startDateValue').removeAttr('disabled');
+			$('#startDateICon').show();
+			
+			$('#customSearchBtn').show();
+		}
+
+		var now = new Date();
+		var year = now.getFullYear();
+		var mon = (now.getMonth() + 1) > 9 ? '' + (now.getMonth() + 1) : '0'
+				+ (now.getMonth() + 1);
+		var day = now.getDate() > 9 ? '' + now.getDate() : '0' + now.getDate();
+
+		$("#endDateValue").val(year + '년' + mon + '월' + day + '일');
+
+		var time = relativeTime(value);
+		
+		$("#startDateValue").val(time);
+
+		
+		goRelativeTime(value);
+	}
+	
+	function goRelativeTime(relativeTime) {
+
+		if ($("#graphValueFrm input[name=graphValue]").val() == '')
+			return;
+		
+
+		if($('#rtstatus').val() == 'custom')
+			return;
+
+		var graphVal = $("#graphValueFrm input[name=graphValue]").val();
+		var graphUrlObj = getTimePeriodGraphUrls(graphVal, relativeTime);
+		var str = "";
+
+		if (graphUrlObj.length == 0) {
+			str += "<h1  class=\"text-error text-center\">NO DATA</h1>";
+
+		} else {
+			for ( var i in graphUrlObj) {
+				
+				str += "<img src='"+graphUrlObj[i]+"'/>";
+			}
+			
+			$('#grephDiv').empty();
+			$('#grephDiv').append(str);
 		}
 	}
 	
-	function relativeTimeFormChange() {
+	function replaceCalendar(str)
+	{
+		return str.replace('년',':').replace('월',':').replace('일',':') + '01';
+	}
+	
+	
+	function searchGraphUrls()
+	{
+		if ($("#graphValueFrm input[name=graphValue]").val() == '')
+		{
+			alert('노드 및 리소스를 선택해주세요');
+			return;
+		}
+		
+		var graphVal = $("#graphValueFrm input[name=graphValue]").val();
+		var endDate = replaceCalendar($('#endDateValue').val());
+		var startDate = replaceCalendar($('#startDateValue').val());
+		var relativeTime = $('#rtstatus').val();
+		
+		var graphUrlObj = getTimePeriodGraphUrlsCustom(graphVal, relativeTime,startDate,endDate);
 
-		for (i = 0; i < document.reltimeform.rtstatus.length; i++) {
-            if (document.reltimeform.rtstatus[i].selected) {
-               
-            	var value = document.reltimeform.rtstatus[i].value;
-                var beforeOneDay=yesterday(); //하루전
-                var beforeWeek=beforeOneWeek(); //일주일전
-        		var beforeMonth=beforeOneMonth(); //한달전
-        		var beforeyear=beforeOneyear(); //일년전
-               
-        		if(value=="day"){
-        			$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeOneDay+"</h5></div>");
-        		}else if(value=="week"){
-        			$("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeWeek+"</h5></div>");
-        		}else if(value=="month"){
-        			 $("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeMonth+"</h5></div>");
-        		}else if(value=="year"){
-        			 $("#toDate").html("<div class=\"span12\" ><h5 id=\"toDate\" class=\"text-success\">ToDate :"+beforeyear+"</h5></div>");
-        		}
-               goRelativeTime(value);
-            }
-        }
-    }
-	 function goRelativeTime(relativeTime) {
-		 var graphVal = $("#graphValueFrm input[name=graphValue]").val();
-		 var graphUrlObj =getTimePeriodGraphUrls(graphVal,relativeTime);
-		 var str = "";
-		 
-		 if(graphUrlObj.length == 0){
-				var str = "";
-					str += "<h1  class=\"text-error text-center\">NO DATA</h1>";
-			 
-		 }else{
-			 for(var i in graphUrlObj){
-					str += "<img src='"+graphUrlObj[i]+"'/>";
-				}
+		var str = "";
+
+		if (graphUrlObj.length == 0) {
+			str += "<h1  class=\"text-error text-center\">NO DATA</h1>";
+
+		} else {
+			for ( var i in graphUrlObj) {
+				
+				str += "<img src='"+graphUrlObj[i]+"'/>";
+			}
+			
 			$('#grephDiv').empty();
 			$('#grephDiv').append(str);
-			
-		 }
-	    }
-
+		}
+		
+	}
 </script>
 </head>
 
@@ -199,111 +290,132 @@
 		<form id="graphValueFrm" name="graphValueFrm">
 			<input type="hidden" id="graphValue" name="graphValue" value="">
 		</form>
-		
+
 		<div class="row-fluid">
 			<div class="span12" style="margin-top: -10px;">
 				<ul class="breadcrumb well well-small">
-					<li><a href="<c:url value='/index.do'/>">Home</a> <span class="divider">/</span></li>
-					<li><a href="<c:url value='/report/resource.do'/>">리포트</a> <span class="divider">/</span></li>
+					<li><a href="<c:url value='/index.do'/>">Home</a> <span
+						class="divider">/</span></li>
+					<li><a href="<c:url value='/report/resource.do'/>">리포트</a> <span
+						class="divider">/</span></li>
 					<li class="active">자원별&nbsp;리포트<span class="divider">/</span></li>
-					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span class="divider">/</span></li>
+					<li><a href="#" onclick="javascript:beforeUrl()">이전 화면</a><span
+						class="divider">/</span></li>
 				</ul>
 			</div>
-			
-		</div>
-		
-<!----------------------------------->
 
-		<div class="row-fluid">	
-		<div class=" span6 well">
+		</div>
+
+		<!----------------------------------->
+
 		<div class="row-fluid">
+			<div class=" span6 well">
+				<div class="row-fluid">
 					<div class="span12 text-center">
 						<h4 id="nodeLabel">Node&nbsp;List</h4>
 					</div>
 				</div>
-			<div class="span12 well well-small" style=" height:152px; overflow-y:auto;">
-				
-				<div class="row-fluid" >
-					<div class="span12 text-center" id="recodDiv">
-						<table class="table table-striped table-hover table-condensed table-stacked" id="recodTable" ></table>
+				<div class="span12 well well-small"
+					style="height: 152px; overflow-y: auto;">
+
+					<div class="row-fluid">
+						<div class="span12 text-center" id="recodDiv"></div>
 					</div>
 				</div>
-			</div>
-			<div class="row-fluid">
+				<div class="row-fluid">
 					<div class="span12 text-center">
 						<h4 id="nodeLabel">Resource&nbsp;List</h4>
 					</div>
 				</div>
-			 <div class="span12 well well-small" style=" height:180px; overflow-y:auto;">
-				<div class="row-fluid">
-					<div class="span12" id="recodInfoDiv">
-						<table class="table table-striped table-hover table-condensed table-stacked" id="recodInfoTable">
-							<tr id = "trHide">
-								
-								<td><h4 class="text-error text-center">Node&nbsp;List를&nbsp;선택해&nbsp;주세요.</h4></td>
-							</tr>
-						</table>
+				<div class="span12 well well-small"
+					style="height: 180px; overflow-y: auto;">
+					<div class="row-fluid">
+						<div class="span12" id="recodInfoDiv">
+							<table
+								class="table table-striped table-hover table-condensed table-stacked"
+								id="recodInfoTable">
+								<tr id="trHide">
+
+									<td><h4 class="text-error text-center">Node&nbsp;List를&nbsp;선택해&nbsp;주세요.</h4></td>
+								</tr>
+							</table>
+						</div>
 					</div>
 				</div>
-			</div>
 			</div>
 			<!-- tree -->
-			 <div class="span6 well ">
-			 <div class="span12 well well-small">
-		 		<div class="span12 text-center">
-					<h4 id="nodeLabel">Node&nbsp;노드</h4>
-				</div>
-				<div class="row-fluid text-center" id="nodeInfo">
-				</div>
-				<div class="span12 text-center" style="margin-left: 0px;">
-					<h4 id="nodeLabel">선택한&nbsp;Resource</h4>
-				</div>
-				<div class="row-fluid text-center" id="ResourceInfo">
-				</div>
-				<div class="span12 text-center"  style="margin-left: 0px;" id="nodeLabel">
-					<h4 id="nodeLabel">오늘&nbsp;날짜</h4>
-				</div>
-				<div class="row-fluid text-center" id="fromDate">
-				</div>
-				<div class="span12 text-center"  style="margin-left: 0px;">
-					<h4 id="nodeLabel">검색&nbsp;날짜</h4>
-				</div>
-				<div class="row-fluid text-center" id="toDate">
-				</div>
-				<div class="span12 text-center"  style="margin-left: 0px;">
-					<h4 id="nodeLabel">조건&nbsp;기간</h4>
-				</div>
-				<div class="row-fluid span12"  style="display:none" id="timePeriod">
-					<div class="span2">
-						<label class="control-label"></label>
+			<div class="span6 well " style="padding-bottom: 8px;">
+				<div class="span13 well " style="padding-bottom: 20px; margin-bottom: 2px;">
+					<div class="span12 text-center">
+						<h4 id="nodeLabel">Node&nbsp;명</h4>
 					</div>
-					<div class="span4">
-						<label class="control-label" style="margin-left: 14px;">Time period  :</label>
+					<div class="row-fluid text-center">
+						<div class="span12 text-success" id="nodeInfo">
+							<h5>-</h5>
+						</div>
 					</div>
-					<form name="reltimeform" action="">
-						<select style =" width: 145px; margin-left: -31px; " id="rtstatus" name="rtstatus" onchange="relativeTimeFormChange();">
+
+					<div class="span12 text-center" style="margin-left: 0px;">
+						<h4 id="nodeLabel">Select&nbsp;Resource</h4>
+					</div>
+					<div class="row-fluid text-center" id="ResourceInfo">
+						<div class="span12">
+							<h5 class="text-success">-</h5>
+						</div>
+
+						<div class="span12 text-center" style="margin-left: 0px;">
+							<h4 id="nodeLabel">기간&nbsp; 설정</h4>
+						</div>
+
+						<div class="span12" id="timePeriod">
+							<form name="reltimeform" action="" style="height: 0px;">
+								<select style="width: 145px;" id="rtstatus" name="rtstatus"
+									onchange="relativeTimeFormChange();">
 									<option value="day" selected>Last Day</option>
 									<option value="week">Last Week</option>
-									<option value="month" >Last Month</option>
-									<option value="year" >Last Year</option>
-						</select>
-					</form>
+									<option value="month">Last Month</option>
+									<option value="year">Last Year</option>
+									<option value="custom">custom</option>
+								</select>
+							</form>
+						</div>
+
+						<div class="span12 text-center" style="margin-left: 0px;"
+							id="nodeLabel">
+							<h4 id="nodeLabel">시작&nbsp; 날짜</h4>
+						</div>
+						<div class="row-fluid text-center" id="startDate">
+							<input class="text-center" id="startDateValue" type="text"
+								disabled="disabled" value=""> <span class="add-on"
+								id="startDateICon" style="display: none;"> <i
+								data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
+							</span>
+						</div>
+
+						<div class="span12 text-center" style="margin-left: 0px;">
+							<h4 id="nodeLabel">종료&nbsp; 날짜</h4>
+						</div>
+						<div class="row-fluid text-center" id="endDate">
+							<input class="text-center" id="endDateValue" type="text"
+								disabled="disabled" value=""> <span class="add-on"
+								id="endDateICon" style="display: none;"> <i
+								data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
+							</span>
+						</div>
+						
+					</div>
+			
 				</div>
-			</div>
-		      </div>  
-			
-			<!-- tree -->
-			
-			
+				<div class="span1" style="width: 100%; height: 20px; padding-right: 0px; padding-left: 0px; margin-left: 0px;">
+					<button type="button" id="customSearchBtn" style="display:none;" class="btn btn-primary span12" title="날짜 검색" onclick="javascript:searchGraphUrls();">검색</button>
+				</div>
+				<!-- tree -->
 			</div>
 
+			<!----------------------------------->
 
-<!----------------------------------->
-		
-		
-		
-		<div class="row-fluid">
-			<!-- <div class="span12 well well-small">
+			<div class="row-fluid">
+				<!-- <div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12 text-center">
 						<h4 id="nodeLabel">자원별&nbsp;노드&nbsp;목록</h4>
@@ -315,9 +427,9 @@
 					</div>
 				</div>
 			</div> -->
-		</div>
-		<div class="row-fluid">
-			<!-- <div class="span12 well well-small">
+			</div>
+			<div class="row-fluid">
+				<!-- <div class="span12 well well-small">
 				<div class="row-fluid">
 					<div class="span12 text-center">
 						<h4 id="nodeLabel">자원별&nbsp;그래프&nbsp;목록</h4>
@@ -329,10 +441,10 @@
 					</div>
 				</div>
 			</div> -->
-		</div>
-		<div class="row-fluid">
-			<div class="span12 well well-small">
-				<!--  <div class="row-fluid text-center">
+			</div>
+			<div class="row-fluid">
+				<div class="span12 well well-small">
+					<!--  <div class="row-fluid text-center">
 					<div class="span3" ></div>
 					<div class="span6 " id="nodeInfo"><h5></h5></div>
 					<div class="span3" ></div>
@@ -368,20 +480,20 @@
 						</select>
 					</form>
 				</div> -->
-				<div class="row-fluid">
-					<div class="span12">
-						<h4 id="nodeLabel"></h4>
+					<div class="row-fluid">
+						<div class="span12">
+							<h4 id="nodeLabel"></h4>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span3"></div>
+						<div class="span6" id="grephDiv"></div>
+						<div class="span3"></div>
 					</div>
 				</div>
-				<div class="row-fluid">
-					<div class="span3" ></div>
-					<div class="span6" id="grephDiv"></div>
-					<div class="span3" ></div>
-				</div> 
 			</div>
 		</div>
-	</div>
-	<hr>
-	<!-- /container -->
+		<hr>
+		<!-- /container -->
 </body>
 </html>

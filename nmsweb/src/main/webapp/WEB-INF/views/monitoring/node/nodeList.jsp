@@ -25,25 +25,29 @@
 	function addNodeLists(jsonObj) {
 		$('#nodeListTable').empty();
 		
-		$.ajax({
-			type : 'get',
-			url : '<c:url value="/menu/showMenu.do" />',
-			contentType : 'application/json', 
-			error : function(data) {
-				alert('사용자 그룹 menu리스트 서비스 실패');
-			},
-			success : function(data) {
-				console.log(data);
+		
+		var str = getTabletagToSearchJsonObj(jsonObj,"<c:out value='${GROUP_NM}'/>");
 				
-				for(var i = 0; i < data.userList.length; i++)
-	       		{
-	        		var	groupName= data.userList[i].groupNm;
-	       		}
-				var str = getTabletagToSearchJsonObj(jsonObj,groupName);
+		$('#nodeListTable').append(str);
+// 		$.ajax({
+// 			type : 'get',
+// 			url : '<c:url value="/menu/showMenu.do" />',
+// 			contentType : 'application/json', 
+// 			error : function(data) {
+// 				alert('사용자 그룹 menu리스트 서비스 실패');
+// 			},
+// 			success : function(data) {
+// 				console.log(data);
 				
-				$('#nodeListTable').append(str);
-			}
-		});   	
+// 				for(var i = 0; i < data.userList.length; i++)
+// 	       		{
+// 	        		var	groupName= data.userList[i].groupNm;
+// 	       		}
+// 				var str = getTabletagToSearchJsonObj(jsonObj,groupName);
+				
+// 				$('#nodeListTable').append(str);
+// 			}
+// 		});   	
 	}
 </script>
 </head>

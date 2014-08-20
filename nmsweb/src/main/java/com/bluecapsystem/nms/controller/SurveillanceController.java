@@ -13,14 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bluecapsystem.nms.define.Define;
 import com.bluecapsystem.nms.dto.CategoriesTbl;
 import com.bluecapsystem.nms.dto.CategoryNodeTbl;
-import com.bluecapsystem.nms.dto.MenuGroupTbl;
 import com.bluecapsystem.nms.service.SurveillanceService;
 
 
@@ -149,9 +146,8 @@ public class SurveillanceController
 	
 	@RequestMapping(value = "/regNodePop")
 	public ModelAndView regNodePop(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
-			@RequestParam(value = "categoryid", required = false)Integer[] categoryid,
-			@RequestParam(value = "nodeid", required = false)Integer[] nodeid,
-			@ModelAttribute("CategoryNodeTbl") CategoryNodeTbl categoryNodeTbl) 
+			@RequestParam(value = "categoryid", required = false)Integer categoryid,
+			@RequestParam(value = "nodeid", required = false)Integer[] nodeid) 
 			
 	{
 		
@@ -163,7 +159,7 @@ public class SurveillanceController
 		 _REG_NODE :
 		{
 				try{
-					if(surveillanceService.regNodePop(categoryid, nodeid, categoryNodeTbl) == false)
+					if(surveillanceService.regNodePop(categoryid, nodeid) == false)
 					{
 						errorMessage = "surveillance 등록 실패";
 						break _REG_NODE;
@@ -184,6 +180,39 @@ public class SurveillanceController
 		return model;
 	}
 
+	@RequestMapping(value = "/delNodePop")
+	public ModelAndView delNodePop(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
+			@RequestParam(value = "categoryid", required = false)Integer categoryid,
+			@RequestParam(value = "nodeid", required = false)Integer[] nodeid) 
+			
+	{
+		
+		boolean isSuccess = false;
+		String errorMessage = "";
+		
+		ModelAndView model =  new ModelAndView();
+		
+		 _REG_NODE :
+		{
+			try{
+				if(surveillanceService.delNodePop(categoryid, nodeid) == false)
+				{
+					errorMessage = "surveillance 삭제 실패";
+					break _REG_NODE;
+				}
+			
+				isSuccess = true;
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		model.setViewName("jsonView");
+		model.addObject("isSuccess", isSuccess);
+		model.addObject("errorMessage", errorMessage);
+		//model.setViewName("/admin/groupMng/groupMng");
+		
+		return model;
+	}
 	
 	@RequestMapping(value = "/regSurveillenceName")
 	public ModelAndView regSurveillenceName(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
@@ -224,9 +253,7 @@ public class SurveillanceController
 	
 	@RequestMapping(value = "/delCategory")
 	public ModelAndView delCategory(HttpServletRequest request, HttpServletResponse response, HttpSession session, Locale locale,
-			@RequestParam(value = "categoryid", required = false)Integer categoryid,
-			@ModelAttribute("CategoriesTbl") CategoriesTbl categoriesTbl,
-			@ModelAttribute("CategoryNodeTbl") CategoryNodeTbl categoryNodeTbl) 
+			@RequestParam(value = "categoryid", required = false)Integer categoryid) 
 			
 	{
 		
@@ -234,17 +261,21 @@ public class SurveillanceController
 		String errorMessage = "";
 		
 		ModelAndView model =  new ModelAndView();
+		CategoriesTbl categoriesTbl = new CategoriesTbl();
+		CategoryNodeTbl categoryNodeTbl = new CategoryNodeTbl();
 		
 		 _REG_NODE :
 		{
 				try{
+					categoryNodeTbl.setCategoryid(categoryid);
 					if(surveillanceService.delNodePop(categoryid, categoryNodeTbl) == false)
 					{
 						errorMessage = "surveillance 등록 실패";
 						break _REG_NODE;
 					}
 					
-					if(surveillanceService.delCategory(categoryid, categoriesTbl) == false)
+					categoriesTbl.setCategoryid(categoryid);
+					if(surveillanceService.delCategory(categoriesTbl) == false)
 					{
 						errorMessage = "surveillance 등록 실패";
 						break _REG_NODE;

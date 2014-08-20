@@ -70,5 +70,16 @@
     	WHERE user_id=#userId#
     </update>
   	
+	<select id="userInfo" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.UserTbl">
+
+		SELECT 
+			USER_ID AS userId,
+			USER_NM AS userNm,
+			GROUP_NM AS groupNm
+		FROM 
+			USER_TBL
+		WHERE 
+			USER_ID = #userId#
+	</select>
 
 </sqlMap>

@@ -59,7 +59,7 @@
  	
  	FROM 
  		
- 		categories;
+ 		categories
 
 	</select>
 	
@@ -69,32 +69,30 @@
 		SELECT DISTINCT
 			nd.nodeid,
 			nd.nodelabel
-			
 		FROM 
 			category_node cn
-
-			
 		INNER 
 			JOIN node nd ON nd.nodeid = cn.nodeid
-			
-			where cn.categoryid=#categoryid#;
+		where cn.categoryid=#categoryid#
+		order by nd.nodelabel asc
 
 	</select>
 	
 
-	<delete id="delNodePop"  parameterClass="java.lang.Integer" >
+	<delete id="delNodePop"  parameterClass="com.bluecapsystem.nms.dto.CategoryNodeTbl" >
 
 		DELETE FROM CATEGORY_NODE
-
-		WHERE CATEGORYID = $categoryid$;
-
+		WHERE CATEGORYID = $categoryid$
+		<dynamic>
+			<isNotEmpty prepend="AND" property="nodeid">
+				NODEID = #nodeid#
+			</isNotEmpty> 
+		</dynamic>
 	</delete>
+	
 	<delete id="delCategory"  parameterClass="com.bluecapsystem.nms.dto.CategoriesTbl">
-
 		DELETE FROM CATEGORIES
-
-		WHERE CATEGORYID = #categoryid#;
-
+		WHERE CATEGORYID = #categoryid#
 	</delete>
 	
 	<insert id="regNodePop" parameterClass="com.bluecapsystem.nms.dto.CategoryNodeTbl" >
@@ -110,28 +108,20 @@
 				#categoryid#, 
 				
 				#nodeid#
-		);
+		)
 
 	</insert>
 	
 <insert id="regSurveillenceName" parameterClass="com.bluecapsystem.nms.dto.CategoriesTbl" >
 
 		INSERT INTO 
-		
-					CATEGORIES(
-						
-						categoryid,
-						
-						categoryname
-						
-						)VALUES (
-  				
-			    			nextval('catnxtid'),
-			    			
-			    			#categoryname#
-			    			
-			    			);
-
+		CATEGORIES(
+			categoryid,
+			categoryname
+		)VALUES (
+  			nextval('catnxtid'),
+  			#categoryname#
+ 		)
 
 	</insert> 
 	

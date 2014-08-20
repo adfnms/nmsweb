@@ -30,27 +30,30 @@
  * 사용자 리스트 전체가져오기
  */
  	function callbackUseList(jsonObj) {
-		console.log(jsonObj);
 		
-		$.ajax({
-			type : 'get',
-			url : '<c:url value="/menu/showMenu.do" />',
-			contentType : 'application/json', 
-			error : function(data) {
-				alert('사용자 그룹 menu리스트 서비스 실패');
-			},
-			success : function(data) {
-				console.log(data);
+ 		var str = userListStr(jsonObj,"<c:out value='${GROUP_NM}'/>");
+		
+		$("#userListTable").append(str);
+		
+// 		$.ajax({
+// 			type : 'get',
+// 			url : '<c:url value="/menu/showMenu.do" />',
+// 			contentType : 'application/json', 
+// 			error : function(data) {
+// 				alert('사용자 그룹 menu리스트 서비스 실패');
+// 			},
+// 			success : function(data) {
+// 				console.log(data);
 				
-				for(var i = 0; i < data.userList.length; i++)
-	       		{
-	        		var	groupName= data.userList[i].groupNm;
-	       		}
-				var str = userListStr(jsonObj,groupName);
+// 				for(var i = 0; i < data.userList.length; i++)
+// 	       		{
+// 	        		var	groupName= data.userList[i].groupNm;
+// 	       		}
+// 				var str = userListStr(jsonObj,groupName);
 				
-				$("#userListTable").append(str);
-			}
-		});   	
+// 				$("#userListTable").append(str);
+// 			}
+// 		});   	
 	} 
 
 /**

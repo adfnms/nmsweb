@@ -28,6 +28,7 @@ function menuManager(){
 		type : 'get',
 		url : '<c:url value="/menu/showMenu.do" />',
 		contentType : 'application/json', 
+		async: false,
 		error : function(data) {
 			alert('사용자 그룹 menu리스트 서비스 실패');
 		},

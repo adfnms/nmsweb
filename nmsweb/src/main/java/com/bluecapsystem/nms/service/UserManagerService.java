@@ -1,5 +1,7 @@
 package com.bluecapsystem.nms.service;
 
+import java.util.Map;
+
 import com.bluecapsystem.nms.dto.UserTbl;
 
 public interface UserManagerService {
@@ -39,5 +41,10 @@ public interface UserManagerService {
 	 */
 	public boolean regUserTbl(UserTbl userTbl);
 	
-	
+	/**
+	 * USER INFO TO DATABASE
+	 * @param params
+	 * @return
+	 */
+	public UserTbl userInfo(Map<String, Object> params);
 }

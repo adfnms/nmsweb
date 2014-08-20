@@ -71,7 +71,7 @@ public class AssetsTbl {
 	private String	snmpcommunity;
 	private String	rackunitheight;
 	
-	
+	private String assetsSearchVal;
 	@Override
 	public String toString()
 	{
@@ -789,8 +789,13 @@ public class AssetsTbl {
 	}
 
 
-	
-	
-	
+	public String getAssetsSearchVal() {
+		return assetsSearchVal;
+	}
+
+
+	public void setAssetsSearchVal(String assetsSearchVal) {
+		this.assetsSearchVal = assetsSearchVal;
+	}
 	
 }

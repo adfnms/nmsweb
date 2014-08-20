@@ -1,6 +1,7 @@
 package com.bluecapsystem.nms.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,7 +129,25 @@ public class UserManagerServiceImpl  extends BaseService implements UserManagerS
 		}
 		return ret;
 	}
-
+	
+	@Override
+	public UserTbl userInfo(Map<String, Object> params)
+	{
+		UserTbl ret = null;
+		try
+		{
+			ret = userManagerDao.userInfo(params);
+			
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}finally
+		{
+			
+		}
+		
+		return ret;
+	}
 }
 
 	

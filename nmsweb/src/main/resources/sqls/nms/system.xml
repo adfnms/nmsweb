@@ -56,7 +56,7 @@
 		WHERE 
 			USER_ID = #userId#
 	</select>
-
+	
 	<insert id="regGroupTbl" parameterClass="com.bluecapsystem.nms.dto.GroupTbl">
 
 		INSERT INTO USER_GROUP_TBL (
@@ -94,6 +94,50 @@
 		WHERE GROUP_NM = #groupNm#
 
 	</delete>
+	
+	<select id="searchNodeList" parameterClass="java.util.Map" resultClass="com.bluecapsystem.nms.dto.NodeTbl">
 
+		SELECT 
+			nodeid, 
+			nodelabel,
+			nodecreatetime 
+		FROM node
+		
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="nodeLabel">
+				nodelabel like '%' ||#nodeLabel# || '%'
+			</isNotEmpty>
+			 <isNotEmpty prepend="AND" property="nodeId">
+			 	nodeid = #nodeId#
+			 </isNotEmpty>
+			<isNotEmpty prepend="AND" property="serviceId">
+				nodeid in (SELECT nodeid FROM ifservices WHERE status != 'D' AND serviceid = #serviceId# GROUP BY nodeid)
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="ipAddress">
+				nodeid in (SELECT nodeid  FROM ipinterface WHERE iplike(ipaddr,#ipAddress#) AND ismanaged = 'M')
+			</isNotEmpty>
+		</dynamic> 
+		order by nodeid asc
+	</select>
+	
+	<update id="nodeIdUpdate" parameterClass="java.util.Map">
+		UPDATE node set nodeid = #oldNodeid# where nodeid = #nodeid#
+	</update>
+	
+	<update id="interfaceNodeIdUpdate" parameterClass="java.util.Map">
+		UPDATE ipinterface set nodeid = #oldNodeid# where nodeid = #nodeid#
+	</update>
+	
+	<update id="serviceNodeIdUpdate" parameterClass="java.util.Map">
+		UPDATE ifservices set nodeid = #oldNodeid# where nodeid = #nodeid#
+	</update>
+	
+	<update id="nodeRequisitionsUpdate" parameterClass="kr.co.adflow.nms.web.vo.requisition.RequisitionsNodes">
+		UPDATE node set 
+			foreignsource = #building#,
+  			foreignid = #foreignid# 
+  		where nodeid = #nodeid#
+	</update>
+	
 </sqlMap>
 	

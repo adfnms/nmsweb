@@ -344,17 +344,17 @@ public class NodeController {
 	
 	@RequestMapping(value = "/nodes/searchIp/{iplike:.+}", method = RequestMethod.GET)
 	public @ResponseBody
-	String nodeSearchIp(HttpServletRequest request, @PathVariable String iplike)
-			throws HandleException {
+	String nodeSearchIp(HttpServletRequest request, @PathVariable String iplike) throws HandleException {
 
 		String result = null;
+		
 		logger.info(PATH + request.getRequestURI());
 
 		try {
 			result = (String) service.nodeSearchIp(iplike);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
-			throw e;
+//			throw e;
 		}
 
 		logger.debug(RETURNRESULT + result);
@@ -367,7 +367,9 @@ public class NodeController {
 	// /// POST /////
 	@RequestMapping(value = "/nodes/scan/{ip:.+}", method = RequestMethod.POST)
 	public @ResponseBody
-	String nodeIpPost(HttpServletRequest request, @PathVariable String ip)
+	String nodeIpPost(HttpServletRequest request, 
+				@PathVariable String ip
+			)
 			throws HandleException {
 
 		String result = null;

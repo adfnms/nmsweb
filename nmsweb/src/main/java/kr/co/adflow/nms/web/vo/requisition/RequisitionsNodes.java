@@ -18,6 +18,8 @@ public class RequisitionsNodes {
 	
 	protected String building;
 
+	protected Integer nodeid;
+	
 	public String getNodelabel() {
 		return nodelabel;
 	}
@@ -35,6 +37,12 @@ public class RequisitionsNodes {
 	}
 	public void setBuilding(String building) {
 		this.building = building;
+	}
+	public Integer getNodeid() {
+		return nodeid;
+	}
+	public void setNodeid(Integer nodeid) {
+		this.nodeid = nodeid;
 	}
 
 	

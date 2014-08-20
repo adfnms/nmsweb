@@ -31,7 +31,7 @@ function getTotalGraphList(callback){
 function getGraphInfoToNodeId(nodeId){
 	
 	var _return = "";
-	console.log('/' + version + '/graph/'+nodeId);
+	
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/graph/'+nodeId,
@@ -43,7 +43,7 @@ function getGraphInfoToNodeId(nodeId){
 		},
 		success : function(data) {
 			
-			console.log(data);
+			
 			_return = data;
 		}
 	});
@@ -58,8 +58,6 @@ function getGraphInfoToNodeId(nodeId){
  * ex)/v1/graph/resource/node[135].responseTime[192.168.0.200]
  */
 function getGraphUrls(val){
-	
-	console.log(val);
 	 
 	var _return = "";
 	
@@ -76,7 +74,7 @@ function getGraphUrls(val){
 			/*data length == 0 일때*/
 		},
 		success : function(data) {
-			console.log(data);
+			
 			_return = data;
 		}
 	});
@@ -103,7 +101,7 @@ function getTimePeriodGraphUrls(graphVal,relativeTime){
 			//alert('그래프 정보 가져오기 실패');
 		},
 		success : function(data) {
-			console.log(data);
+			
 			_return = data;
 		}
 	});
@@ -112,3 +110,26 @@ function getTimePeriodGraphUrls(graphVal,relativeTime){
 	
 }
 
+function getTimePeriodGraphUrlsCustom(graphVal,relativeTime,startDate,endDate){
+	
+	var _return = "";
+	
+	$.ajax({
+		type : 'get',
+		url : '/' + version + '/graph/resource/'+graphVal+'/'+relativeTime+'/'+startDate+'/'+endDate,
+		dataType : 'json',
+		async : false,
+		contentType : 'application/json',
+		error : function(data) {
+			
+			console.log(data);
+			//alert('그래프 정보 가져오기 실패');
+		},
+		success : function(data) {
+			_return = data;
+		}
+	});
+	
+	return _return;
+	
+}

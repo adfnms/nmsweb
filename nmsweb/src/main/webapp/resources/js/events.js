@@ -73,22 +73,25 @@ function getEventsForNode(callback,nodeId,recentCount) {
  * @param nodeId
  * @param recentCount
  */
-function getEventsForInterface(callback, nodeId, ipAddress, recentCount, serviceNm) {
+function getEventsForInterface(callback, nodeId, ipAddress, recentCount, serviceNm,serviceId) {
 	if(nodeId == null){
 		alert("노드 아이디가 없습니다.");
 		return;
 	}
 	
 	//var data = "query=this_.nodeId = '"+nodeId+"' AND this_.iflostservice > '"+new Date().format("yyyy-MM-ddTHH:MM:ss")+"'";
-	var query = encodeURI("query=this_.nodeId = '"+nodeId+"' AND this_.ipaddr = '"+ipAddress+"'");
+//	var query = encodeURI("query=this_.nodeId='"+nodeId+"' AND this_.ipaddr='"+ipAddress+"' AND this._serviceid="+serviceId + "'");
+	var query = "query=this_.nodeId='"+nodeId+"' AND this_.ipaddr='"+ipAddress+"'";
+	if(serviceId != null && serviceId != '' )
+	{
+		query += " AND this_.serviceid='"+serviceId+"'";
+	}
+	
 	var filter ="&orderBy=eventTime&order=desc&limit="+recentCount;
 	var notiId = null;
 	getTotalEvenstList(callback,query+filter, notiId, ipAddress,serviceNm);
 	
 }
-
-
-
 
 
 /************************** view String edit *****************************/
@@ -113,6 +116,7 @@ function getTabletagToEventJsonObj(jsonObj){
 	var COLobj = $("<col></col>");
 	var H5obj = $("<h5></h5>");
 	var Aobj = $("<a></a>");
+	var FONTobj = $("<font></font>");
 	/*********************************************/
 	if (jsonObj["@count"] > 0) {
 			
@@ -130,21 +134,31 @@ function getTabletagToEventJsonObj(jsonObj){
 				+ "			<colgroup><col width='15%'/><col  width='25%'/><col  width='15%'/><col  width='45%'/></colgroup>"
 				+ "			<tbody>";*/
 		/*****************************************************************************************************************************************************************/
-		MainDIVObj.attr("class", "row-fluid").append(
-			H5obj.append().text("이벤트 목록" + "[" + jsonObj["@count"] + "]"),
-			DIVobj.clone().attr("class", "span12 well well-small").attr("style", "margin-left:0px").append(
-				TABLEobj.attr("class", "table").append(
-					COLGROUPobj.clone().append(
-						COLobj.clone().attr("width", "15%").append(),
-						COLobj.clone().attr("width", "25%").append(),
-						COLobj.clone().attr("width", "15%").append(),
-						COLobj.clone().attr("width", "45%").append()
-					),
-					TRobj.clone().append(
-						THobj.clone().append().text("이벤트ID"),
-						THobj.clone().append().text("시간"),
-						THobj.clone().append().text("상태"),
-						THobj.clone().append().text("메세지")
+//		DIVobj.attr("class", "row-fluid").append(
+		MainDIVObj.attr("class", "accordion-group").append(
+				
+//			H5obj.append().text("이벤트 목록" + "[" + jsonObj["@count"] + "]"),
+			DIVobj.clone().attr("class", "accordion-heading").append(
+				Aobj.clone().attr("class","accordion-toggle").attr("href", "#eventInfoCollapse").attr("data-toggle","collapse").attr("data-parent","#collapse").append(
+					FONTobj.clone().attr("color", "black").text("이벤트 목록" + "[" + jsonObj["@count"] + "]")			
+				)
+			),
+			
+			DIVobj.clone().attr("class", "row-fluid collapse").attr("id","eventInfoCollapse").append(
+				DIVobj.clone().attr("class", "span12 well well-small").attr("style", "margin-bottom: 0px; margin-left: 0px;").append(
+					TABLEobj.attr("class", "table").append(
+						COLGROUPobj.clone().append(
+							COLobj.clone().attr("width", "15%").append(),
+							COLobj.clone().attr("width", "25%").append(),
+							COLobj.clone().attr("width", "15%").append(),
+							COLobj.clone().attr("width", "45%").append()
+						),
+						TRobj.clone().append(
+							THobj.clone().append().text("이벤트ID"),
+							THobj.clone().append().text("시간"),
+							THobj.clone().append().text("상태"),
+							THobj.clone().append().text("메세지")
+						)
 					)
 				)
 			)
@@ -199,7 +213,9 @@ function getTabletagToEventJsonObj(jsonObj){
 					),
 					TRobj.clone().append(
 						TDobj.clone().append(
-							Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+ "").append().text(events[i]["@id"])
+//							Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+ "").append().text(events[i]["@id"])
+							Aobj.clone().attr("href", "javascript:popupEventInfo('"+events[i]["@id"]+ "')").append().text(events[i]["@id"])
+								
 						),
 						TDobj.clone().append().text(new Date(events[i]["createTime"]).format('yy-MM-dd hh:mm:ss')),
 						TDobj.clone().attr("class", "").append(
@@ -232,7 +248,8 @@ function getTabletagToEventJsonObj(jsonObj){
 				),	
 				TRobj.clone().append(
 					TDobj.clone().append(
-						Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"").append().text(events["@id"])
+//						Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"").append().text(events["@id"])
+						Aobj.clone().attr("href", "javascript:popupEventInfo('"+events["@id"]+ "')").append().text(events["@id"])
 					),
 					TDobj.clone().append().text(new Date(events["createTime"]).format('yy-MM-dd hh:mm:ss')),
 					THobj.clone().attr("class", ""+events["@severity"].toLowerCase()+"").append().text(events["@severity"]),
@@ -244,6 +261,31 @@ function getTabletagToEventJsonObj(jsonObj){
 
 		
 		//str += "</tbody></table></div></div>";
+	}else{
+//		DIVobj.attr("class", "row-fluid").append(
+		DIVobj.attr("class", "accordion-group").append(
+//				H5obj.append().text("서비스 장애 목록" + "[" + jsonObj["@count"] + "]"),
+			
+			DIVobj.clone().attr("class", "accordion-heading").append(
+					Aobj.clone().attr("class","accordion-toggle").attr("href", "#eventInfoCollapse").attr("data-toggle","collapse").attr("data-parent","#collapse").append(
+						FONTobj.clone().attr("color", "black").text("이벤트 목록" + "[" + jsonObj["@count"] + "]")	
+					)
+				),
+			DIVobj.clone().attr("class", "row-fluid collapse").attr("id","eventInfoCollapse").append(
+				DIVobj.clone().attr("class", "span12 well well-small").attr("style", "margin-bottom: 0px;margin-left:0px").append(
+					TABLEobj.attr("class", "table table-striped").append(
+						TRobj.clone().append(
+							THobj.clone().append().text("이벤트ID"),
+							THobj.clone().append().text("시간"),
+							THobj.clone().append().text("상태"),
+							THobj.clone().append().text("메세지")
+							
+						),
+						TRobj.clone().text("이벤트 목록이 없습니다.")
+					)
+				)
+			)
+		);
 	}
 
 	//return str;
@@ -286,24 +328,32 @@ function getTabletagToInterfaceEventJsonObj(jsonObj, notiId, ipAddress){
 				+ "			<colgroup><col width='10%'/><col  width='15%'/><col  width='15%'/><col  width='62%'/></colgroup>"
 				+ "			<tbody>";*/
 		/*****************************************************************************************************************************************************************/
-		MainDIVObj.attr("class", "row-fluid").append(
-				H5obj.append(
-						FONTobj.clone().attr("color", "blue").text(ipAddress),
-						FONTobj.clone().attr("color", "black").text(" 인터페이스 이벤트 목록" + "[" + jsonObj["@count"] + "]")
-				),
-			DIVobj.clone().attr("class", "span12 well well-small").attr("style", "margin-left:0px").append(
-				TABLEobj.attr("class", "table").append(
-					COLGROUPobj.clone().append(
-						COLobj.clone().attr("width", "15%").append(),
-						COLobj.clone().attr("width", "25%").append(),
-						COLobj.clone().attr("width", "15%").append(),
-						COLobj.clone().attr("width", "45%").append()
-					),
-					TRobj.clone().append(
-						THobj.clone().append().text("이벤트ID"),
-						THobj.clone().append().text("시간"),
-						THobj.clone().append().text("상태"),
-						THobj.clone().append().text("메세지")
+//		MainDIVObj.attr("class", "row-fluid").append(
+		MainDIVObj.attr("class", "accordion-group").append(
+			DIVobj.clone().attr("class", "accordion-heading").append(
+					Aobj.clone().attr("class","accordion-toggle").attr("href", "#interfaceInfoCollapse").attr("data-toggle","collapse").attr("data-parent","#collapse").append(
+							FONTobj.clone().attr("color", "black").text("인터페이스 목록" + "[" + jsonObj["@count"] + "]")	
+					)
+			),
+//			H5obj.append(
+//					FONTobj.clone().attr("color", "blue").text(ipAddress),
+//					FONTobj.clone().attr("color", "black").text(" 인터페이스 이벤트 목록" + "[" + jsonObj["@count"] + "]")
+//			),
+			DIVobj.clone().attr("class", "row-fluid collapse").attr("id","interfaceInfoCollapse").append(
+				DIVobj.clone().attr("class", "span12 well well-small").attr("style", "margin-bottom: 0px; margin-left: 0px;").append(
+					TABLEobj.attr("class", "table").append(
+						COLGROUPobj.clone().append(
+							COLobj.clone().attr("width", "15%").append(),
+							COLobj.clone().attr("width", "25%").append(),
+							COLobj.clone().attr("width", "15%").append(),
+							COLobj.clone().attr("width", "45%").append()
+						),
+						TRobj.clone().append(
+							THobj.clone().append().text("이벤트ID"),
+							THobj.clone().append().text("시간"),
+							THobj.clone().append().text("상태"),
+							THobj.clone().append().text("메세지")
+						)
 					)
 				)
 			)
@@ -358,7 +408,8 @@ function getTabletagToInterfaceEventJsonObj(jsonObj, notiId, ipAddress){
 					),
 					TRobj.clone().append(
 						TDobj.clone().append(
-							Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+ "").append().text(events[i]["@id"])
+//							Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+ "").append().text(events[i]["@id"])
+							Aobj.clone().attr("href", "javascript:popupEventInfo('"+events[i]["@id"]+ "')").append().text(events[i]["@id"])
 						),
 						TDobj.clone().append().text(new Date(events[i]["createTime"]).format('yy-MM-dd hh:mm:ss')),
 						TDobj.clone().attr("class", "").append(
@@ -391,7 +442,8 @@ function getTabletagToInterfaceEventJsonObj(jsonObj, notiId, ipAddress){
 				),	
 				TRobj.clone().append(
 					TDobj.clone().append(
-						Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"").append().text(events["@id"])
+//						Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"").append().text(events["@id"])
+						Aobj.clone().attr("href", "javascript:popupEventInfo('"+events["@id"]+ "')").append().text(events["@id"])
 					),
 					TDobj.clone().append().text(new Date(events["createTime"]).format('yy-MM-dd hh:mm:ss')),
 					THobj.clone().attr("class", ""+events["@severity"].toLowerCase()+"").append().text(events["@severity"]),
@@ -406,6 +458,31 @@ function getTabletagToInterfaceEventJsonObj(jsonObj, notiId, ipAddress){
 		/*****************************************/
 		
 		/*****************************************/
+	}else{
+//		DIVobj.attr("class", "row-fluid").append(
+		DIVobj.attr("class", "accordion-group").append(
+//				H5obj.append().text("서비스 장애 목록" + "[" + jsonObj["@count"] + "]"),
+			
+			DIVobj.clone().attr("class", "accordion-heading").append(
+					Aobj.clone().attr("class","accordion-toggle").attr("href", "#interfaceInfoCollapse").attr("data-toggle","collapse").attr("data-parent","#collapse").append(
+						FONTobj.clone().attr("color", "black").text("인터페이스 목록" + "[" + jsonObj["@count"] + "]")	
+					)
+				),
+			DIVobj.clone().attr("class", "row-fluid collapse").attr("id","interfaceInfoCollapse").append(
+				DIVobj.clone().attr("class", "span12 well well-small").attr("style", "margin-bottom: 0px; margin-left: 0px;").append(
+					TABLEobj.attr("class", "table").append(
+						TRobj.clone().append(
+							THobj.clone().append().text("이벤트ID"),
+							THobj.clone().append().text("시간"),
+							THobj.clone().append().text("상태"),
+							THobj.clone().append().text("메세지")
+							
+						),
+						TRobj.clone().text("인터페이스 목록이 없습니다.")
+					)
+				)
+			)
+		);
 	}
 
 	//return str;
@@ -417,6 +494,7 @@ function getTabletagToInterfaceEventJsonObj(jsonObj, notiId, ipAddress){
  * 메뉴의 검색 -> 노드 검색 -> 노드 목록에서 node를 클릭 시 새로 이동하는 화면단의 서비스 이벤트 목록
  */
 function getTabletagToServiceEventJsonObj(jsonObj, serviceNm){
+	console.log(jsonObj);
 	var events = jsonObj["event"];
 	//var str = "";
 	/*********************************************/
@@ -448,24 +526,33 @@ function getTabletagToServiceEventJsonObj(jsonObj, serviceNm){
 				+ "			<colgroup><col width='15%'/><col  width='25%'/><col  width='15%'/><col  width='45%'/></colgroup>"
 				+ "			<tbody>";*/
 		/*****************************************************************************************************************************************************************/
-		MainDIVObj.attr("class", "row-fluid").append(
-			H5obj.append(
-					FONTobj.clone().attr("color", "blue").text(serviceNm),
-					FONTobj.clone().attr("color", "black").text(" 서비스 이벤트 목록" + "[" + jsonObj["@count"] + "]")
+//		MainDIVObj.attr("class", "row-fluid").append(
+		MainDIVObj.attr("class", "accordion-group").append(
+//			H5obj.append(
+//					FONTobj.clone().attr("color", "blue").text(serviceNm),
+//					FONTobj.clone().attr("color", "black").text(" 서비스 이벤트 목록" + "[" + jsonObj["@count"] + "]")
+//			),
+			DIVobj.clone().attr("class", "accordion-heading").append(
+					Aobj.clone().attr("class","accordion-toggle").attr("href", "#interfaceInfoCollapse").attr("data-toggle","collapse").attr("data-parent","#collapse").append(
+							FONTobj.clone().attr("color", "blue").text(serviceNm),
+							FONTobj.clone().attr("color", "black").text(" 인터페이스 목록" + "[" + jsonObj["@count"] + "]")
+					)
 			),
-			DIVobj.clone().attr("class", "span12 well well-small").attr("style", "margin-left:0px").append(
-				TABLEobj.attr("class", "table").append(
-					COLGROUPobj.clone().append(
-						COLobj.clone().attr("width", "15%").append(),
-						COLobj.clone().attr("width", "25%").append(),
-						COLobj.clone().attr("width", "15%").append(),
-						COLobj.clone().attr("width", "45%").append()
-					),
-					TRobj.clone().append(
-						THobj.clone().append().text("이벤트ID"),
-						THobj.clone().append().text("시간"),
-						THobj.clone().append().text("상태"),
-						THobj.clone().append().text("메세지")
+			DIVobj.clone().attr("class", "row-fluid collapse").attr("id","interfaceInfoCollapse").append(
+				DIVobj.clone().attr("class", "span12 well well-small").attr("style", "margin-bottom: 0px; margin-left: 0px;").append(
+					TABLEobj.attr("class", "table").append(
+						COLGROUPobj.clone().append(
+							COLobj.clone().attr("width", "15%").append(),
+							COLobj.clone().attr("width", "25%").append(),
+							COLobj.clone().attr("width", "15%").append(),
+							COLobj.clone().attr("width", "45%").append()
+						),
+						TRobj.clone().append(
+							THobj.clone().append().text("이벤트ID"),
+							THobj.clone().append().text("시간"),
+							THobj.clone().append().text("상태"),
+							THobj.clone().append().text("메세지")
+						)
 					)
 				)
 			)
@@ -520,7 +607,8 @@ function getTabletagToServiceEventJsonObj(jsonObj, serviceNm){
 					),
 					TRobj.clone().append(
 						TDobj.clone().append(
-							Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+ "").append().text(events[i]["@id"])
+//							Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events[i]["@id"]+ "").append().text(events[i]["@id"])
+							Aobj.clone().attr("href", "javascript:popupEventInfo('"+events[i]["@id"]+ "')").append().text(events[i]["@id"])
 						),
 						TDobj.clone().append().text(new Date(events[i]["createTime"]).format('yy-MM-dd hh:mm:ss')),
 						TDobj.clone().attr("class", "").append(
@@ -544,6 +632,28 @@ function getTabletagToServiceEventJsonObj(jsonObj, serviceNm){
 			str += "<td>" + events["logMessage"].replace(/<p>|<\/p>/gi,'') + "</td>";
 			str += "</tr>";*/
 			/*****************************************************************************************************************************************************************/
+			if(events["@severity"]=="CRITICAL"){
+				 statusProgress = "progress-danger";
+			}
+			else if(events["@severity"]=="MAJOR"){
+				 statusProgress = "progress-caution";						
+			}
+			else if(events["@severity"]=="MINOR"){
+				 statusProgress = "progress-warning";
+			}
+			else if(events["@severity"]=="WARNING"){
+				 statusProgress = "progress-gray";
+			}
+			else if(events["@severity"]=="NORMAL"){
+				 statusProgress = "progress-info";
+			}
+			else if(events["@severity"]=="CLEARED"){
+				 statusProgress = "progress";
+			}
+			else if(events["@severity"]=="INDETERMINATE"){
+				 statusProgress = "progress-success";
+			}
+			
 			TABLEobj.append(
 				COLGROUPobj.clone().append(
 					COLobj.clone().attr("width", "13%").append(),
@@ -553,10 +663,15 @@ function getTabletagToServiceEventJsonObj(jsonObj, serviceNm){
 				),	
 				TRobj.clone().append(
 					TDobj.clone().append(
-						Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"").append().text(events["@id"])
+//						Aobj.clone().attr("href", "/"+version+"/search/event/eventDesc.do?eventId="+events["@id"]+"").append().text(events["@id"])
+						Aobj.clone().attr("href", "javascript:popupEventInfo('"+events["@id"]+"')").append().text(events["@id"])
 					),
 					TDobj.clone().append().text(new Date(events["createTime"]).format('yy-MM-dd hh:mm:ss')),
-					THobj.clone().attr("class", ""+events["@severity"].toLowerCase()+"").append().text(events["@severity"]),
+					TDobj.clone().attr("class", "").append(
+							DIVobj.clone().attr("class", "progress progress-striped active " + statusProgress +"").attr("style", "margin-bottom: 0px;width: 130px;").append(
+								DIVobj.clone().attr("class", "bar").attr("style", "width:100%;").append().text(events["@severity"])
+							)	
+						),
 					TDobj.clone().append().text(events["logMessage"].replace(/<p>|<\/p>/gi,''))
 				)
 			);
@@ -589,61 +704,121 @@ function getEventinfoBox(jsonObj){
 	var DIVobj = $("<div></div>");
 	var MDIVobj = $("<div></div>");
 	var TABLEobj = $("<table></table>");
+	var H5obj = $("<h5></h5>");
 	var TRobj = $("<tr></tr>");
 	var THobj = $("<th></th>");
 	var TDobj = $("<td></td>");
 	var MTDobj = $("<td></td>");
 	var Aobj = $("<a></a>");
 	var FONTobj = $("<font></font>");
+	var PREobj = $("<pre></pre>");
+	
 	var nullCheckJsonObj = nullCheckJsonObject(jsonObj["event"], ["serviceType"]["name"]);
-	var eventInfoStr = DIVobj.attr("class", "row-fluid").append(
-							MDIVobj.attr("class", "span12 well well-small").clone().append(
-								TABLEobj.attr("class", "table table-striped").clone().append(
-									TRobj.clone().append(
-										THobj.clone().text("상태"),
-										MTDobj.attr("class", small).attr("style", "width:380px").text(jsonObj["event"]["@severity"]),
-										THobj.clone().text("노드"),
-										TDobj.clone().append(
-											Aobj.attr("href", "/" + version + "/search/node/nodeDesc.do?nodeId=" + jsonObj["event"]["nodeId"]).clone().text(jsonObj["event"]["nodeLabel"])	
-										),
-										THobj.clone().text("이벤트ID"),
-										TDobj.clone().append(
-											FONTobj.attr("color", "gray").text(jsonObj["event"]["@id"])
-										),
-										TDobj.clone().text("")
-									),
-									TRobj.clone().append(
-										THobj.clone().text("시간"),
-										TDobj.clone().text(new Date(jsonObj["event"]["time"]).format('yy-MM-dd hh:mm:ss')),
-										THobj.clone().text("인터페이스"),
-										TDobj.clone().append(
-											Aobj.attr("href", "/" + version + "/search/node/nodeDesc.do?nodeId=" + jsonObj["event"]["nodeId"] + "&intf=" + jsonObj["event"]["ipAddress"]).clone().text(jsonObj["event"]["ipAddress"])
-											//Aobj.attr("href", "/" + version + "/search/node/interfaceDesc.do?nodeId=" + jsonObj["event"]["nodeId"] + "&intf=" + jsonObj["event"]["ipAddress"]).clone().text(jsonObj["event"]["ipAddress"])
-										),
-										THobj.clone().text("노드ID"),
-										TDobj.clone().append(
-											Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ jsonObj["event"]["nodeId"]).append().text(jsonObj["event"]["nodeId"])
-										)
-									),
-									TRobj.clone().append(
-										THobj.text("서비스"),
-										TDobj.clone().append(
-											Aobj.clone().attr("href", "/" + version + "/search/service/serviceDesc?nodeId=" + jsonObj["event"]["nodeId"] + "&intf=" + jsonObj["event"]["nodeId"] + "&serviceNm=" + nullCheckJsonObj).clone().text(nullCheckJsonObj)
-										),
-										TDobj.clone().text(""),
-										TDobj.clone().text(""),
-										TDobj.clone().text(""),
-										TDobj.clone().text(""),
-										TDobj.clone().text("")
-									),
-									TRobj.clone().append(
-										THobj.clone().text("Uei"),
-										TDobj.clone().text(jsonObj["event"]["uei"]),
-										TDobj.attr("colspan", "4").clone().text()
-									)
+	/** 2014.07.32 수정  ********************************************************************************/
+	var eventInfoStr = 
+			DIVobj.attr("class", "row-fluid").append(
+				MDIVobj.attr("class", "span12").attr("style", "margin-left:0px").clone().append(
+					H5obj.append(
+						FONTobj.attr("color", "red").clone().text(jsonObj["event"]["nodeLabel"]),
+						FONTobj.attr("color", "black").clone().text(" [ "),
+						FONTobj.attr("color", "blue").clone().text("노드 ID : "),
+						FONTobj.attr("color", "blue").clone().text(jsonObj["event"]["nodeId"]),
+						FONTobj.attr("color", "black").clone().text(" ] "),
+						FONTobj.attr("color", "black").clone().text("의 이벤트 장애 아이디"),
+						FONTobj.attr("color", "black").clone().text(" ["),
+						FONTobj.attr("color", "blue").clone().text(jsonObj["event"]["@id"]),
+						FONTobj.attr("color", "black").clone().text("]")
+					)
+				)
+			);
+			PREobj.append(
+				DIVobj.attr("class", "row-fluid").append(
+					MDIVobj.attr("class", "span12 well well-small").clone().append(
+						TABLEobj.attr("class", "table table-striped").clone().append(
+							TRobj.clone().append(
+								THobj.clone().text("노드명"),
+								TDobj.clone().text(jsonObj["event"]["nodeLabel"]),
+								THobj.clone().text("노드 ID"),
+								TDobj.clone().text(jsonObj["event"]["nodeId"])
+								
+							),
+							TRobj.clone().append(
+								THobj.clone().text("상태"),
+								MTDobj.attr("class", small).attr("style", "width:380px").text(jsonObj["event"]["@severity"]),
+								THobj.clone().text("시간"),
+								TDobj.clone().text(new Date(jsonObj["event"]["time"]).format('yy-MM-dd hh:mm:ss'))
+								
+							),
+							TRobj.clone().append(
+								THobj.clone().text("인터페이스"),
+								TDobj.clone().append(
+									Aobj.attr("href", "/" + version + "/search/node/nodeDesc.do?nodeId=" + jsonObj["event"]["nodeId"] + "&intf=" + jsonObj["event"]["ipAddress"]).clone().text(jsonObj["event"]["ipAddress"])
+								),
+								THobj.text("서비스"),
+								TDobj.clone().append(
+									Aobj.clone().attr("href", "/" + version + "/search/service/serviceDesc?nodeId=" + jsonObj["event"]["nodeId"] + "&intf=" + jsonObj["event"]["nodeId"] + "&serviceNm=" + nullCheckJsonObj).clone().text(nullCheckJsonObj)
 								)
+							),
+							TRobj.clone().append(
+								THobj.clone().text("Uei"),
+								TDobj.attr("colspan", "3").clone().text(jsonObj["event"]["uei"])
 							)
-						);
+						)
+					)
+				)
+			);
+	/** 2014.07.32 끝 *******************************************************************************/
+	/** 원본 *******************************************************************************/
+//	var eventInfoStr = DIVobj.attr("class", "row-fluid").append(
+//							MDIVobj.attr("class", "span12 well well-small").clone().append(
+//								TABLEobj.attr("class", "table table-striped").clone().append(
+//									TRobj.clone().append(
+//										THobj.clone().text("상태"),
+//										MTDobj.attr("class", small).attr("style", "width:380px").text(jsonObj["event"]["@severity"]),
+//										THobj.clone().text("노드"),
+////										TDobj.clone().append(
+////											Aobj.attr("href", "/" + version + "/search/node/nodeDesc.do?nodeId=" + jsonObj["event"]["nodeId"]).clone().text(jsonObj["event"]["nodeLabel"])	
+////										),
+//										TDobj.clone().text(jsonObj["event"]["nodeLabel"]),
+//										THobj.clone().text("이벤트ID"),
+//										TDobj.clone().append(
+//											FONTobj.attr("color", "gray").text(jsonObj["event"]["@id"])
+//										),
+//										TDobj.clone().text("")
+//									),
+//									TRobj.clone().append(
+//										THobj.clone().text("시간"),
+//										TDobj.clone().text(new Date(jsonObj["event"]["time"]).format('yy-MM-dd hh:mm:ss')),
+//										THobj.clone().text("인터페이스"),
+//										TDobj.clone().append(
+//											Aobj.attr("href", "/" + version + "/search/node/nodeDesc.do?nodeId=" + jsonObj["event"]["nodeId"] + "&intf=" + jsonObj["event"]["ipAddress"]).clone().text(jsonObj["event"]["ipAddress"])
+//											//Aobj.attr("href", "/" + version + "/search/node/interfaceDesc.do?nodeId=" + jsonObj["event"]["nodeId"] + "&intf=" + jsonObj["event"]["ipAddress"]).clone().text(jsonObj["event"]["ipAddress"])
+//										),
+//										THobj.clone().text("노드ID"),
+////										TDobj.clone().append(
+////											Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ jsonObj["event"]["nodeId"]).append().text(jsonObj["event"]["nodeId"])
+////										)
+//										TDobj.clone().text(jsonObj["event"]["nodeId"])
+//									),
+//									TRobj.clone().append(
+//										THobj.text("서비스"),
+//										TDobj.clone().append(
+//											Aobj.clone().attr("href", "/" + version + "/search/service/serviceDesc?nodeId=" + jsonObj["event"]["nodeId"] + "&intf=" + jsonObj["event"]["nodeId"] + "&serviceNm=" + nullCheckJsonObj).clone().text(nullCheckJsonObj)
+//										),
+//										TDobj.clone().text(""),
+//										TDobj.clone().text(""),
+//										TDobj.clone().text(""),
+//										TDobj.clone().text(""),
+//										TDobj.clone().text("")
+//									),
+//									TRobj.clone().append(
+//										THobj.clone().text("Uei"),
+//										TDobj.clone().text(jsonObj["event"]["uei"]),
+//										TDobj.attr("colspan", "4").clone().text()
+//									)
+//								)
+//							)
+//						);
 	/********************************************************************************/
 	/*var eventInfoStr =	'<div class="row-fluid">'+
 						'	<div class="span12 well well-small">'+

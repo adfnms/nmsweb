@@ -34,7 +34,7 @@
 		
 		$('#nodeListTable').empty();
 
-		var str = getTabletagToSearchJsonObj(jsonObj,"Admin");
+		var str = getTabletagToSearchJsonObj(jsonObj,"<c:out value='${GROUP_NM}'/>");
 		
 		$('#nodeListTable').append(str);
 		
@@ -61,6 +61,29 @@
 		$("#requisitionsListTable").append(str);
 	}
 	
+	function deleteRequisitionInNode(nodeId,foreignSource,foreignId)
+	{
+// 		deleteNode(nodeId);
+		deleteRequisitionNode(foreignSource,foreignId);
+		synRequisition(foreignSource);
+		location.reload();
+	}
+	
+	function deleteRequisitionNode(foreignSource,foreignId)
+	{
+		$.ajax({
+			type : 'delete',
+			url : '/' + version + '/requisitions/' + foreignSource + '/nodes/' + foreignId,
+			datatype : 'json',
+			async:false,
+			contentType : 'application/json',
+			error : function(data) {
+				alert("요구 삭제 실패");
+			},
+			success : function(data) {
+			}
+		});
+	}
 	
 </script>
 </head>

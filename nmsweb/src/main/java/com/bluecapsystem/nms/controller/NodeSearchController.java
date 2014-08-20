@@ -1,15 +1,25 @@
 package com.bluecapsystem.nms.controller;
 
 
+import java.util.HashMap;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.co.adflow.nms.web.NodeController;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bluecapsystem.nms.dto.NodeTbl;
+import com.bluecapsystem.nms.service.NodeService;
 
 /**
  * @author byun
@@ -18,6 +28,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class NodeSearchController
 {
+
+	private static final Logger logger = LoggerFactory.getLogger(NodeController.class);
+	
+	@Autowired
+	private NodeService service; 
 	
 	/**노드 검색 페이지
 	 * @param request
@@ -39,6 +54,94 @@ public class NodeSearchController
 		model.addObject("ipAddress",ipAddress);
 		
 		model.setViewName("/search/node/search");
+		return model;
+	}
+	
+	/**노드 검색 페이지
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/search/seachNodeList")
+	public ModelAndView seachNodeList(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "id", required = false)Integer nodeId,
+			@RequestParam(value = "label", required = false)String nodeLabel,
+			@RequestParam(value = "serviceId", required = false)Integer serviceId,
+			@RequestParam(value = "ipAddress", required = false)String ipAddress)
+	{
+		
+		Boolean success = false;
+		String message = "";
+			
+		ModelAndView model = new ModelAndView();
+		
+		HashMap<String,Object> paramter = new HashMap<String,Object>();
+		
+		paramter.put("nodeId", nodeId);      
+		paramter.put("nodeLabel",nodeLabel);
+		paramter.put("serviceId",serviceId);
+		paramter.put("ipAddress",ipAddress);
+		
+		
+		List<NodeTbl> nodeList= service.searchNodList(paramter);
+		
+		ERROR:
+		{
+			if(nodeList == null || nodeList.size() == 0)
+			{
+				success = false;
+				message ="검색 실패";
+				break ERROR;
+			}
+			
+			success = true;
+			message ="검색 성공";
+			
+			model.addObject("nodeList",nodeList);
+		}
+		
+		model.addObject("success",success);
+		model.addObject("message",message);
+		
+//		if(ipAddress != null && !ipAddress.equals(""))
+//		{
+//			logger.info(PATH + request.getRequestURI());
+//	
+//			try {
+//				resultSearchIp = (String) service.nodeSearchIp(ipAddress);
+//			} catch (HandleException e) {
+//				logger.error("Failed in processing", e);
+//			}
+//	
+//			logger.debug(RETURNRESULT + resultSearchIp);
+//		}
+//
+//		if(serviceId != null && !serviceId.equals(""))
+//		{
+//			try {
+//				resultSearchService = (String) service.nodeSearchService(serviceId);
+//			} catch (HandleException e) {
+//				logger.error("Failed in processing", e);
+//			}
+//	
+//			logger.debug(RETURNRESULT + resultSearchService);
+//		
+//		}
+//		
+//		if( (nodeLabel!=null && !nodeLabel.equals("") )||( nodeId!=null && !nodeId.equals("")))
+//		{
+//			try {
+//				resultSearchNodeIdAndnodeLabel = (String) service.nodeSearchNodeIdAndLikeNodelabel(nodeId,nodeLabel);
+//			} catch (HandleException e) {
+//				logger.error("Failed in processing", e);
+//			}
+//
+//			logger.debug(RETURNRESULT + resultSearchNodeIdAndnodeLabel);
+//		}
+		
+		
+		model.setViewName("jsonView");
+		
 		return model;
 	}
 	

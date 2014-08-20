@@ -1,5 +1,6 @@
 package com.bluecapsystem.nms.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -103,7 +104,16 @@ public class UserManagerDaoImpl extends BaseDao implements UserManagerDao{
 		return ;
 	}
 		
-	
-	
+	@Override
+	public UserTbl userInfo(Map<String, Object> params) {
+		
+		try{
+			return (UserTbl)getSqlMapClientTemplate().queryForObject("com.bluecapsystem.nms.userManager.userInfo", params);
+		}catch(Exception ex){
+			
+			ex.printStackTrace();
+		}
+		return null;
+	}
 
 }

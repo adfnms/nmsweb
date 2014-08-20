@@ -11,6 +11,8 @@
 	<jsp:param value="Y" name="styleFlag" />
 </jsp:include>
 <script src="<c:url value="/resources/js/nodes.js" />"></script>
+<script src="<c:url value="/resources/js/requisitions.js" />"></script>
+
 <script type="text/javascript">
 
 var orderBy = "id";
@@ -19,7 +21,11 @@ $(document).ready(function(){
 	saveAjax(save, "orderBy="+orderBy);
 });
 
+
 function saveNode(){
+	
+	addNodeIdListRequisitions('',$('#nodeFrm'));
+	return;
 	window.opener.location.reload();
 	window.close();
 }
@@ -28,13 +34,15 @@ function saveNode(){
 </head>
 
 <body>
-	<div class='nodeDiv'>
-		<form id="nodeFrm">
+	<form id="nodeFrm">
+		<input type="hidden" name="requisitions" id="requisitions">
+		<div class='nodeDiv'>
+			
 			<table class="table table-striped table-hover" id="getNodeList">
 			<!-- 노드 리스트 -->	
 			</table>
-		</form>
-	</div>
+		</div>
+	</form>
 </body>
 <div class="nodeDiv" id='nodeBtnDiv'>
 	<button type="button" class="btn btn-primary" id='saveBtn' style="margin-left: 550px;" title="저장" onclick="javascript:saveNode();">저장</button>

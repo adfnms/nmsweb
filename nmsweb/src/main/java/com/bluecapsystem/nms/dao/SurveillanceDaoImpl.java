@@ -9,7 +9,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Repository;
 
 import com.bluecapsystem.frm.BaseDao;
-import com.bluecapsystem.nms.dto.AssetsTbl;
 import com.bluecapsystem.nms.dto.CategoriesTbl;
 import com.bluecapsystem.nms.dto.CategoryNodeTbl;
 import com.ibatis.sqlmap.client.SqlMapClient;
@@ -109,11 +108,11 @@ boolean ret = false;
 	}
 
 	@Override
-	public boolean delNodePop(Integer categoryId, CategoryNodeTbl categoryNodeTbl) {
+	public boolean delNodePop(CategoryNodeTbl categoryNodeTbl) {
 		
 		try{
 			
-			super.getSqlMapClientTemplate().delete("com.bluecapsystem.nms.surveillance.delNodePop", categoryId);
+			super.getSqlMapClientTemplate().delete("com.bluecapsystem.nms.surveillance.delNodePop", categoryNodeTbl);
 			
 		}catch(Exception ex)
 		{
@@ -155,10 +154,8 @@ boolean ret = false;
 	}
 
 	@Override
-	public boolean delCategory(Integer categoryid, CategoriesTbl categoriesTbl) {
+	public boolean delCategory(CategoriesTbl categoriesTbl) {
 	try{
-		System.out.println("--------categoryId---------");
-		System.out.println(categoriesTbl.getCategoryid());
 			super.getSqlMapClientTemplate().delete("com.bluecapsystem.nms.surveillance.delCategory", categoriesTbl);
 			
 		}catch(Exception ex)

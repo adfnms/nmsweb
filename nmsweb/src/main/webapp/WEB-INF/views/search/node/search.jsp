@@ -40,24 +40,10 @@
 	function addNodeLists(jsonObj) {
 		$('#nodeListTable').empty();
 
-		$.ajax({
-			type : 'get',
-			url : '<c:url value="/menu/showMenu.do" />',
-			contentType : 'application/json', 
-			error : function(data) {
-				alert('사용자 그룹 menu리스트 서비스 실패');
-			},
-			success : function(data) {
-				//console.log(data);
-				
-				for(var i = 0; i < data.userList.length; i++)
-	       		{
-	        		var	groupName= data.userList[i].groupNm;
-	       		}
-				var str = getTabletagToSearchJsonObj(jsonObj, groupName);
-				$('#nodeListTable').append(str);
-			}
-		});   	
+		var str = getTabletagToSearchJsonObj(jsonObj, "<c:out value='${GROUP_NM}'/>");
+   		
+		$('#nodeListTable').append(str);
+
 	}
 	
 	/* service search button */
@@ -74,27 +60,11 @@
 	
 	function addNodeserviceLists(jsonObj) {
 		$('#nodeListTable').empty();
+		
+		var str = getSearchNodeserviceJsonObj(jsonObj, "<c:out value='${GROUP_NM}'/>");
+   		
+		$('#nodeListTable').append(str);
 
-		$.ajax({
-			type : 'get',
-			url : '<c:url value="/menu/showMenu.do" />',
-			contentType : 'application/json', 
-			error : function(data) {
-				alert('사용자 그룹 menu리스트 서비스 실패');
-			},
-			success : function(data) {
-				//console.log(data);
-				
-				for(var i = 0; i < data.userList.length; i++)
-	       		{
-	        		var	groupName= data.userList[i].groupNm;
-	       		}
-				var str = getSearchNodeserviceJsonObj(jsonObj, groupName);
-	       		
-				$('#nodeListTable').append(str);
-	       		
-			}
-		});   	
 	}
 	
 	/* Service list Callback */
@@ -141,6 +111,30 @@
 	}
 	/*//ipAddress search button */
 	
+	function allNodeListSarch()
+	{
+		$.ajax({
+			type : 'get',
+			url : '<c:url value="/search/seachNodeList.do" />',
+			dataType : 'json',
+			data:$('#searchNodeFrm').serialize(),
+			error : function(data) {
+				alert("[" + ipAddress + '] 아이피 정보 검색 실패');
+			},
+			success : function(data) {
+				console.log('=========');
+				console.log(data);
+				
+				$('#nodeListTable').empty();
+				
+				var str = getTableToSearchJsonObj(data, "<c:out value='${GROUP_NM}'/>");
+		   		
+				$('#nodeListTable').append(str);
+			
+			}
+		});
+	}
+	
 </script>
 </head>
 
@@ -159,6 +153,7 @@
 			</div>
 			<jsp:include page="/include/sideBar.jsp" />
 		</div>
+		
 		<form id="searchNodeFrm" name="searchNodeFrm">
 			<div class="row-fluid">
 				<div class="span12 well well-small">
@@ -171,45 +166,51 @@
 						<div class="span12">
 							<div class="row-fluid">
 								<div class="span12">
-									<label class="span2 control-label" for="label">노드명</label>
+									<div class="span1" style="width:20px;">
+										<input class="control-label" type="checkbox" id="nodeLabelCheck"/>
+									</div>
+									<label class="span2 control-label" style="margin-left:0px; padding-left:10px;" for="label">노드명</label>
 									<div class="span4 controls">
-										<input type="text" id="label" class="span12" name="label"
-											value="${nodeLabel}" /> 
-											
+										<input type="text" id="label" class="span12" name="label" value="${nodeLabel}" /> 
 									</div>
-									<label class="span2 control-label" for="id">노드 ID</label>
+									<label class="span2 control-label" style="margin-left:0px; padding-left:10px;" for="id">노드 ID</label>
 									<div class="span3 controls">
-										 <input type="text" id="id" class="span12" name="id" value="${nodeId}" /> 
-										
+										 <input type="text" id="id" class="span12" name="id" value="${nodeId}" />								
 									</div>
-									<div class="span1">
-										<button type="button" class="btn btn-primary span12" title="검색"
-											onclick="javascript:schNodeFromNameId();">검색</button>
-									</div>
+<!-- 									<div class="span1"> -->
+<!-- 										<button type="button" class="btn btn-primary span12" title="검색" onclick="javascript:schNodeFromNameId();">검색</button> -->
+<!-- 									</div> -->
 								</div>
 							</div>
 							<div class="row-fluid">
 								<div class="span12">
-									<label class="span2 control-label" for="serviceId">제공 서비스</label>
+									<div class="span1" style="width:20px;">
+										<input class="control-label" type="checkbox" id="nodeServiceCheck"/>
+									</div>
+									
+									<label class="span2 control-label" style="margin-left:0px; padding-left:10px;" for="serviceId">제공 서비스</label>
 									<div class="span3 controls">
 										<select class="span12" id="serviceId" name="serviceId">
 											<option value="">선택해주세요.</option>
 										</select>
 									</div>
-									<div class="span1">
-										<button type="button" class="btn btn-primary span12" title="검색"
-											onclick="javascript:schNodeFromService();">검색</button>
+<!-- 									<div class="span1"> -->
+<!-- 										<button type="button" class="btn btn-primary span12" title="검색" onclick="javascript:schNodeFromService();">검색</button> -->
+<!-- 									</div> -->
+									<div class="span1" style="width: 66.29px; margin-left: 0px;"></div>
+									<div class="span1" style="width: 20px; padding-left: 10px; margin-left: 0px;">
+										<input class="control-label" type="checkbox" id="nodeIpAddressCheck"/>
 									</div>
 									
-									<label class="span2 control-label" for="ipAddress">TCP/IP 주소</label>
+									<label class="span2 control-label" style="margin-left:0px; padding-left:10px;" for="ipAddress">TCP/IP 주소</label>
 									<div class="span3 controls">
 										<input type="text" placeholder="*.*.*.*" id="ipAddress"
 											class="span12" name="ipAddress" value="${ipAddress}" />
 									</div>
-									<div class="span1">
-										<button type="button" class="btn btn-primary span12" title="검색"
-											onclick="javascript:schNodeFromIpAddress();">검색</button>
-									</div>
+<!-- 									<div class="span1"> -->
+<!-- 										<button type="button" class="btn btn-primary span12" title="검색" -->
+<!-- 											onclick="javascript:schNodeFromIpAddress();">검색</button> -->
+<!-- 									</div> -->
 								</div>
 							</div>
 							<!-- <div class="row-fluid" id="cateDiv">
@@ -242,7 +243,10 @@
 							</div> -->
 							<div class="row-fluid">
 								<div class="span12">
-									<div class="span10"></div>
+									<div class="span9"></div>
+									<div class="span1">
+										<button type="button" class="btn btn-primary span12" title="검색" onclick="javascript:allNodeListSarch()">검색</button>
+									</div>
 									<div class="span2">
 										<button type="button" class="btn btn-primary span12" title="검색"
 											onclick="javascript:location.reload();">Clean</button>

@@ -28,6 +28,7 @@ var orderBy = "id";
 	});
 	
 	
+	/* 카테고리에 속하는 노드 정보 얻기 */
 	function getRegNodeList(jsonObj,categoryId) {
 		if(jsonObj["RegNodeItems"].length==0){
 			$('#nodeListTable').empty();
@@ -42,49 +43,65 @@ var orderBy = "id";
 			$('#nodeListTable').append(str);
 		}else{
 			var nodeObj = jsonObj["RegNodeItems"];
-			
-			for( var i in nodeObj){
-				$('#nodeListTable').empty();
-				var nodeId =  nodeObj[i]["nodeid"];
-				var nodelabel=nodeObj[i]["nodelabel"];
-				
-				NodeListAjax(showRegNodeList,nodeId,nodelabel,categoryId);
-			}
+			$('#nodeListTable').empty();
+			surveillanceGetNodeListAjax(showRegNodeList,nodeObj,categoryId);			
 		}
 	}
+	
+	/* 카테고리에 속하는 노드 정보 화면에 표시 */
 	function showRegNodeList(data,nodeId,nodelabel,categoryId){
-		
-	var strInfo = regNodeInfoStr(data,nodeId,nodelabel);
-		 $('#nodeListTable').append(strInfo);
-		
+		var strInfo = regNodeInfoStr(data,nodeId,nodelabel);
+		$('#nodeListTable').append(strInfo);
 	}
 	
 	
-	/*노드 리스트 정보 갖고와서 POPUP창에 보여주기  */
-	function addNodeCategory(){
+	/*노드 리스트 정보 갖고와서 등록  POPUP 창  */
+	function addNodeCategoryPop(){
 		
-	
-		getNodeTotalList(NodeCheckBoxStr,  "orderBy="+orderBy+"&limit="+limit);
+		getNodeTotalList(NodeTotalListPop,  "orderBy="+orderBy+"&limit="+limit);
 		
-		/*등록된 노드의 정보를 갖고와서 체크해주기  */
-		getNodeToSurveillance(getRegNodeList, "${categoryId}");
+		getNodeToSurveillance(NodeIsSurveillanceItemCheck, "${categoryId}");
 	}
-	function NodeCheckBoxStr(jsonObj){
-		
+	
+	/* 노드 전체 정보 가지고 화면에 보여줌 */
+	function NodeTotalListPop(jsonObj){
 		var categoryid=("${categoryId}");
-		
 		$('#checkboxNode').empty();
-		var str = nodeCheckBoxStr(jsonObj,categoryid );
-		
+		var str = NodeTotalListPopObj(jsonObj,categoryid );
 		$('#checkboxNode').prepend(str);	
 	}
 	
+	/* 노드 전체 중 카테고리에 속한 노드를 체크 */
+	function NodeIsSurveillanceItemCheck(jsonObj,categoryId)
+	{
+		var nodeObj = jsonObj["RegNodeItems"];
+		for(var i in nodeObj)
+			$("#checkboxPopup input[name=nodeid][value=" + nodeObj[i]["nodeid"]+ "]").attr("checked", true);
+	}
 	
-	// POPUP창에 노드 CheckBox의 노드아이디를 1)삭제 후  2)저장 <트랜젝션>
+	/* 삭제 노드  POPUP */
+	function delNodeCategoryPop(){
+		getNodeToSurveillance(getNodeToSurveillanceInfo, "${categoryId}");
+	}
+	
+	/* 카테고리에 속하는 노드 정보  */
+	function getNodeToSurveillanceInfo(jsonObj,categoryid) {
+		var nodeObj = jsonObj["RegNodeItems"];
+		$('#delNode').empty();
+		var str = NodeToSurveillancePopObj(nodeObj, categoryid );
+		$('#delNode').prepend(str);
+	}
+	
+	/* 등록 POPUP 창 노드 CheckBox의 노드아이디를 이용하여 등록(전체 삭제후 선택된 노드 등록)저장 <트랜젝션> */
 	function regNodePop(){
 		
 		//var chkObj = $('#checkboxPopup');
 		var data = $("#checkboxPopup").serialize();
+		if(!$("#checkboxPopup input[type=checkbox]").is(":checked"))
+		{
+			alert('선택된 노드가 없습니다.');
+			return;
+		}
 		
 		 $.ajax({
 	      	url : '<c:url value="/regNodePop.do" />',
@@ -103,10 +120,41 @@ var orderBy = "id";
 	        	getNodeToSurveillance(getRegNodeList, "${categoryId}");
 	        }
 		});  
-		
 	}
 	
-function delCategory(){
+	/* 삭제 POPUP 창  노드 CheckBox의 노드아이디로 이용하여 삭제 */
+	function delNodePop(){
+		
+		//var chkObj = $('#checkboxPopup');
+		var data = $("#delPopup").serialize();
+		
+		if(!$("#delPopup input[type=checkbox]").is(":checked"))
+		{
+			alert('선택된 노드가 없습니다.');
+			return;
+		}
+		
+		 $.ajax({
+	      	url : '<c:url value="/delNodePop.do" />',
+	        type:'post',
+	        dataType:'json',
+	        data:data,
+	        error:function(data, status, err){
+	            alert('Error, service not found');
+	        },
+	        success:function(res){
+	        	if(res.isSuccess == false)
+	       		{
+	        		alert(res.errorMessage);        		
+	        		return;
+	       		}
+	        	getNodeToSurveillance(getRegNodeList, "${categoryId}");
+	        }
+		});  
+	}
+
+	/* 카테고리 삭제, 노드 삭제후 카테고리 삭제.. 메인페이지 이동 */
+	function delCategory(){
 		
 		var emptyNode  = $("#nodeListTable input[name=emptyNode]").val();
 		
@@ -183,15 +231,19 @@ function delCategory(){
 		</div>
 		<div class="row-fluid">
 			<div class="span12">
-				<div class="span8">
+				<div class="span6">
 				</div>
 				<div class="span2">
 					<a type="button" class="btn btn-primary span12" data-toggle="modal" title="suveillance 삭제"
 						 onclick="javascript:delCategory();">System 분류 삭제</a>
 				</div>
 				<div class="span2">
-					<a type="button" class="btn btn-primary span12" data-toggle="modal" title="노드추가"
-						href="#mySurvaillenceModal" onclick="javascript:addNodeCategory();">+ 노드추가</a>
+					<a type="button" class="btn btn-primary span12" data-toggle="modal" title="노드 추가"
+						href="#mySurvaillenceModal" onclick="javascript:addNodeCategoryPop();">+ 노드 추가</a>
+				</div>
+				<div class="span2">
+					<a type="button" class="btn btn-primary span12" data-toggle="modal" title="노드 삭제"
+						href="#deleteSurvaillenceModal" onclick="javascript:delNodeCategoryPop();">- 노드 삭제</a>
 				</div>
 			</div>
 		</div> 
@@ -208,16 +260,33 @@ function delCategory(){
 	<div class="modal-body" style="height:400px;  overflow-y:auto;">
 		<div class="row-fluid" >
 		<form id="checkboxPopup">
+		<input  value='${categoryId}'  name='categoryid' id='categoryid'  type='hidden'/>
 			<table id="checkboxNode" class="table table-striped">
-				
 			</table>
-		
 		</form>
-			
 		</div>
 	</div>
 	<div class="modal-footer">
 		<button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true" onclick="javascript:regNodePop();" >+ 등록</button>
+		<button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+<div id="deleteSurvaillenceModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="deleteModalSurvaillence" aria-hidden="true" >
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalSurvaillence" >노드 제거</h3>
+	</div>
+	<div class="modal-body" style="height:400px;  overflow-y:auto;">
+		<div class="row-fluid" >
+		<form id="delPopup">
+		<input  value='${categoryId}'  name='categoryid' id='categoryid'  type='hidden'/>
+			<table id="delNode" class="table table-striped">
+			</table>
+		</form>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true" onclick="javascript:delNodePop();" >- 제거</button>
 		<button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
 	</div>
 </div>

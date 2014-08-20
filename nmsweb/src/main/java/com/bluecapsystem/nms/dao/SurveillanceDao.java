@@ -2,7 +2,6 @@ package com.bluecapsystem.nms.dao;
 
 import java.util.List;
 
-import com.bluecapsystem.nms.dto.AssetsTbl;
 import com.bluecapsystem.nms.dto.CategoriesTbl;
 import com.bluecapsystem.nms.dto.CategoryNodeTbl;
 
@@ -14,10 +13,9 @@ public interface SurveillanceDao
 
 	boolean getRegNodeList(Integer categoryId, List<CategoriesTbl> RegNodeItems);
 	
+	boolean delNodePop(CategoryNodeTbl categoryNodeTbl);
 	
-	boolean delNodePop(Integer categoryId,CategoryNodeTbl categoryNodeTbl);
-	
-	boolean delCategory(Integer categoryId,CategoriesTbl categoriesTbl);
+	boolean delCategory(CategoriesTbl categoriesTbl);
 	
 	boolean regNodePop(CategoryNodeTbl categoryNodeTbl);
 	

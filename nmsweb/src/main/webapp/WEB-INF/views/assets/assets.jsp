@@ -62,7 +62,6 @@ function FieldListStr(jsonObj) {
 
 /* 필드리스트 검색  */
 function searchField(){
-	
 	var fieldText = $("#fieldFrm input[name=field]").val();
 	var fieldSelect = $("#fieldFrm select[name=fieldSelect]").val();
 	getFieldSearchAssets(FieldListStr, fieldSelect,fieldText);

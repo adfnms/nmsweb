@@ -10,13 +10,9 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.bluecapsystem.frm.BaseService;
-import com.bluecapsystem.nms.dao.AssetsDao;
 import com.bluecapsystem.nms.dao.SurveillanceDao;
-import com.bluecapsystem.nms.dto.AssetsTbl;
 import com.bluecapsystem.nms.dto.CategoriesTbl;
 import com.bluecapsystem.nms.dto.CategoryNodeTbl;
-import com.bluecapsystem.nms.dto.MenuGroupTbl;
-import com.bluecapsystem.nms.service.GroupServiceImpl.MenuAuthTransactionCallback;
 
 
 @Service(value="SurveillanceService")
@@ -73,15 +69,12 @@ public class SurveillanceServiceImpl extends BaseService implements Surveillance
 
 
 	@Override
-	public boolean regNodePop(Integer[] categoryid, Integer[] nodeid, CategoryNodeTbl categoryNodeTbl ) {
+	public boolean regNodePop(Integer categoryid, Integer[] nodeid) {
 		logger.debug("start service");
 		boolean ret = false;
 		
-		regNodePopTransactionCallback transWorker = new regNodePopTransactionCallback(categoryid, nodeid, categoryNodeTbl); 
-		transWorker.categoryNodeTbl = categoryNodeTbl;
-		 transWorker.categoryId = categoryid;
-		 transWorker.nodeId = nodeid;
-		 ret = this.transactionTemplate.execute(transWorker);
+		regNodePopTransactionCallback transWorker = new regNodePopTransactionCallback(categoryid, nodeid); 
+		ret = this.transactionTemplate.execute(transWorker);
 		
 		logger.debug(String.format("end service result : %b", ret));
 		
@@ -91,14 +84,14 @@ public class SurveillanceServiceImpl extends BaseService implements Surveillance
 	class regNodePopTransactionCallback implements TransactionCallback <Boolean>
 	{
 		CategoryNodeTbl categoryNodeTbl = null;
-		Integer[] categoryId = null;
+		Integer categoryId = null;
 		Integer[] nodeId = null;
 
-		public regNodePopTransactionCallback(Integer[] categoryid, Integer[] nodeid, CategoryNodeTbl categoryNodeTbl)
+		public regNodePopTransactionCallback(Integer categoryid, Integer[] nodeid)
 		{
-			this.categoryNodeTbl = categoryNodeTbl;
-		/*	this.categoryId = categoryId;
-			this.nodeId = nodeId;*/
+			this.categoryNodeTbl = new CategoryNodeTbl();
+			this.categoryId = categoryid;
+			this.nodeId = nodeid;
 		}
 
 		@Override
@@ -108,30 +101,19 @@ public class SurveillanceServiceImpl extends BaseService implements Surveillance
 			_TRANSACTION : {
 				try
 				{
-					Integer [] categoryIds = null;
-					Integer [] nodeIds = null;
+					if(categoryId == null || categoryId == -1)
+						break _TRANSACTION;
 					
-					for(int i=0; i< categoryId.length; i++){
-						
-						if(categoryId == null || categoryId.equals("")){
-						
-							categoryIds=new Integer[0];
-						
-						}else{
-							int categoryid = 	categoryId[i];
-							categoryNodeTbl.setCategoryid(categoryid);
-						}
-						int categoryid = 	categoryId[i];
-						if(surveillanceDao.delNodePop(categoryid, categoryNodeTbl) == false)
-							
-							break _TRANSACTION;
-					}
+					if( this.nodeId==null || this.nodeId.length == 0)
+						break _TRANSACTION;
+					
+					this.categoryNodeTbl.setCategoryid(categoryId);
+					
+					if(surveillanceDao.delNodePop(this.categoryNodeTbl) == false)
+						break _TRANSACTION;
+					
 					for(int i=0; i< nodeId.length; i++){
-						
-						int nodeid = 	nodeId[i];
-						int categoryid = 	categoryId[i];
-						categoryNodeTbl.setCategoryid(categoryid);
-						categoryNodeTbl.setNodeid(nodeid);
+						this.categoryNodeTbl.setNodeid(nodeId[i]);
 						if(surveillanceDao.regNodePop(categoryNodeTbl) == false)
 							break _TRANSACTION;
 					}
@@ -175,17 +157,79 @@ public class SurveillanceServiceImpl extends BaseService implements Surveillance
 		}
 		return ret;
 	}
+	
+	@Override
+	public boolean delNodePop(Integer categoryid, Integer[] nodeid)
+	{
+		logger.debug("start service");
+		boolean ret = false;
+		
+		delNodePopTransactionCallback transWorker = new delNodePopTransactionCallback(categoryid, nodeid); 
+		ret = this.transactionTemplate.execute(transWorker);
+		
+		logger.debug(String.format("end service result : %b", ret));
+		
+		return ret;
+	}	
+	
+	class delNodePopTransactionCallback implements TransactionCallback <Boolean>
+	{
+		CategoryNodeTbl categoryNodeTbl = null;
+		Integer categoryId = null;
+		Integer[] nodeId = null;
 
+		public delNodePopTransactionCallback(Integer categoryid, Integer[] nodeid)
+		{
+			this.categoryNodeTbl = new CategoryNodeTbl();
+			this.categoryId = categoryid;
+			this.nodeId = nodeid;
+		}
 
-
+		@Override
+		public Boolean doInTransaction(TransactionStatus status) {
+			boolean retTrans = false;
+			
+			_TRANSACTION : {
+				try
+				{
+					
+					if(categoryId == null || categoryId == -1)
+						break _TRANSACTION;
+					categoryNodeTbl.setCategoryid(this.categoryId);
+					for(int i=0; i< this.nodeId.length; i++){
+						
+						categoryNodeTbl.setNodeid(this.nodeId[i]);
+						
+						if(surveillanceDao.delNodePop(categoryNodeTbl) == false)
+							break _TRANSACTION;
+					}
+					
+					retTrans = true;
+				}catch(DataAccessException ex)
+				{
+					ex.printStackTrace();
+					logger.error(ex.getMessage());
+				}
+			}
+			
+			if(retTrans == false)
+			{
+				status.setRollbackOnly();
+			}else
+			{
+				status.flush();
+			}
+			
+			return retTrans;
+		}
+	}
+	
 	@Override
 	public boolean delNodePop(Integer categoryid,CategoryNodeTbl categoryNodeTbl) {
 		boolean ret = false;
 		try
 		{
-			surveillanceDao.delNodePop(categoryid,categoryNodeTbl);
-			
-			
+			surveillanceDao.delNodePop(categoryNodeTbl);
 			ret = true;
 			
 		}catch(Exception ex)
@@ -203,14 +247,13 @@ public class SurveillanceServiceImpl extends BaseService implements Surveillance
 
 
 	@Override
-	public boolean delCategory(Integer categoryid, CategoriesTbl categoriesTbl) {
+	public boolean delCategory(CategoriesTbl categoriesTbl) {
 		
 		boolean ret = false;
 		
-		categoriesTbl.setCategoryid(categoryid);
 		try
 		{
-			surveillanceDao.delCategory(categoryid,categoriesTbl);
+			surveillanceDao.delCategory(categoriesTbl);
 			
 			
 			ret = true;

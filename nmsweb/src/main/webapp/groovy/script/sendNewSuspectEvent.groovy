@@ -4,7 +4,7 @@ import groovy.xml.MarkupBuilder;
 
 class sendEvent {
 
-  static void sendNewSuspectEvent(String[] args) {
+  static MarkupBuilder sendNewSuspectEvent(String[] args) {
 
       if (args.length < 1) {
             System.err.println("Usgage : <new suspect ip> [<hostname of opennms server>]")
@@ -26,7 +26,7 @@ class sendEvent {
 //              System.out.withWriter { out ->
       
               def xml = new MarkupBuilder(out);
-              xml.log {
+               xml.log {
                   events {
                       event {
                           uei("uei.opennms.org/internal/discovery/newSuspect")
@@ -36,9 +36,9 @@ class sendEvent {
                           'interface'(ipAddr)
                       }
                   }
-              }
-
-      
+              };
+              
+              return xml;
      }
       
   }

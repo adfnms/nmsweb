@@ -238,6 +238,11 @@
 			<version>8.1.9.v20130131</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.minidev</groupId>
+			<artifactId>json-smart</artifactId>
+			<version>1.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

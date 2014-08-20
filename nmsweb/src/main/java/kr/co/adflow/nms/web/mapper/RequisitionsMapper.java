@@ -71,16 +71,12 @@ public class RequisitionsMapper {
 
 				while (it.hasNext()) {
 					temp = it.next();
-					requisiNodes.setNodelabel(temp.path("node-label")
-							.getTextValue());
-					requisiNodes.setForeignid(temp.path("foreign-id")
-							.getTextValue());
-					requisiNodes.setBuilding(temp.path("building")
-							.getTextValue());
+					requisiNodes.setNodelabel(temp.path("node-label").getTextValue());
+					requisiNodes.setForeignid(temp.path("foreign-id").getTextValue());
+					requisiNodes.setBuilding(temp.path("building").getTextValue());
 				}
 
-				logger.debug("requisiNodes.getBuilding()::"
-						+ requisiNodes.getBuilding());
+				logger.debug("requisiNodes.getBuilding()::"+ requisiNodes.getBuilding());
 			}
 		} catch (Exception e) {
 			throw new MapperException(e);

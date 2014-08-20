@@ -208,6 +208,33 @@ public class GraphController {
 		return graphUrl;
 	}
 
+	@RequestMapping(value = "/graph/resource/{resourceId:.+}/custom/{startDate}/{endDate}", method = RequestMethod.GET)
+	public @ResponseBody
+	String graphResourceSelectCustom(
+			@PathVariable String resourceId,
+			@PathVariable String startDate,
+			@PathVariable String endDate,
+			HttpServletRequest request) throws HandleException,
+			MapperException, UtilException {
+		logger.info(PATH + request.getRequestURL());
+		String result = null;
+		String graphUrl = null;
+		
+		
+		String customTime = startCustomCalendar(startDate) + endCustomCalendar(endDate);
+
+		
+		try {
+			result = (String) service.graphResourceIdSerCustom(resourceId,customTime);
+			graphUrl = gutil.graphUrl(result);
+		} catch (HandleException e) {
+			logger.error("Failed in processing", e);
+			throw e;
+		}
+		logger.debug(RETURNRESULT + graphUrl);
+		return graphUrl;
+	}
+	
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
 	public String processException(Exception e, HttpServletResponse response)
@@ -231,5 +258,27 @@ public class GraphController {
 	public String processUtilException(HandleException e) {
 		return "{\"code\":\"" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR
 				+ "\",\"message\":\"" + e.getMessage() + "\"}";
+	}
+	
+	public String startCustomCalendar(String calendar)
+	{
+		String[] dateArray = calendar.split(":");
+						
+		return 
+				"&startMonth="+(Integer.parseInt(dateArray[1])-1)+
+				"&startDate="+dateArray[2]+
+				"&startYear="+dateArray[0]+
+				"&startHour="+dateArray[3];
+	}
+	
+	public String endCustomCalendar(String calendar)
+	{
+		String[] dateArray = calendar.split(":");
+			
+		return 
+				"&endMonth="+(Integer.parseInt(dateArray[1])-1)+
+				"&endDate="+dateArray[2]+
+				"&endYear="+dateArray[0]+
+				"&endHour="+dateArray[3];
 	}
 }

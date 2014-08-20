@@ -471,8 +471,7 @@ public class RequisitionsController {
 		try {
 		
 			xmlData = ut.xmlParsingRequisitionsService(rservice);
-			result = (String) service.requisitionServicesPro(xmlData, name,
-					foreignId, ipAddress);
+			result = (String) service.requisitionServicesPro(xmlData, name, foreignId, ipAddress);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
 			throw e;
@@ -580,7 +579,7 @@ public class RequisitionsController {
 			result = (String) service.requisitionImport(name);
 		} catch (HandleException e) {
 			logger.error("Failed in processing", e);
-			throw e;
+//			throw e;
 		}
 		logger.debug(RETURNRESULT + result);
 		return result;

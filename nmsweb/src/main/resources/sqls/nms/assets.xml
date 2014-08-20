@@ -117,64 +117,63 @@
 		
 		 <dynamic prepend="WHERE">
 			
-			
-			<isNotEmpty property="assetsTbl" prepend="OR">	COMMENT 				=#assetsTbl#	</isNotEmpty>
-			<isNotEmpty property="assetsTbl" prepend="OR">	DESCRIPTION 			=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	CIRCUITID 				=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	ASSETNUMBER 			=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	DIVISION 				=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	DEPARTMENT 				=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	ADDRESS1 				=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	ADDRESS2 				=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	CITY 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	BUILDING				=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	FLOOR					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	DATEINSTALLED 			=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	DISPLAYCATEGORY 		=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	MANUFACTURER 			=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	SUPPORTPHONE 			=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	LEASE 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	LEASEEXPIRES 			=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	MAINTCONTRACT 			=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	MAINTCONTRACTEXPIRES 	=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	MODELNUMBER 			=#assetsTbl#	</isNotEmpty>
-			<isNotEmpty property="assetsTbl" prepend="OR">	NOTIFYCATEGORY 			=#assetsTbl#	</isNotEmpty>
-			<isNotEmpty property="assetsTbl" prepend="OR">	ASS.OPERATINGSYSTEM 		=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	PORT 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	POLLERCATEGORY 			=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	RACK 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	REGION 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	ROOM 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	SERIALNUMBER 			=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	SLOT 					=#assetsTbl#	</isNotEmpty>
-			<isNotEmpty property="assetsTbl" prepend="OR">	STATE 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	THRESHOLDCATEGORY		=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	USERLASTMODIFIED 		=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	VENDOR 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	VENDORPHONE 			=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	VENDORFAX 				=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	VENDORASSETNUMBER 		=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	ZIP 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	USERNAME 				=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	PASSWORD 				=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	ENABLE 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	AUTOENABLE				=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	CONNECTION 				=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	CPU 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	RAM 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	STORAGECTRL 			=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	HDD1 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	HDD2 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	HDD3 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	HDD4 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	HDD5 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	HDD6 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	NUMPOWERSUPPLIES 		=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	INPUTPOWER 				=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	ADDITIONALHARDWARE 		=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	ADMIN 					=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	SNMPCOMMUNITY 			=#assetsTbl#	</isNotEmpty> 
-			<isNotEmpty property="assetsTbl" prepend="OR">	RACKUNITHEIGHT  		=#assetsTbl#	</isNotEmpty>
+			<isNotEmpty property="assetsTbl" prepend="OR">	COMMENT 				like '%' || #assetsTbl#	|| '%'</isNotEmpty>
+			<isNotEmpty property="assetsTbl" prepend="OR">	DESCRIPTION 			like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	CIRCUITID 				like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ASSETNUMBER 			like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	DIVISION 				like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	DEPARTMENT 				like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ADDRESS1 				like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ADDRESS2 				like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	CITY 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	BUILDING				like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	FLOOR					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	DATEINSTALLED 			like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	DISPLAYCATEGORY 		like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	MANUFACTURER 			like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	SUPPORTPHONE 			like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	LEASE 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	LEASEEXPIRES 			like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	MAINTCONTRACT 			like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	MAINTCONTRACTEXPIRES 	like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	MODELNUMBER 			like '%' || #assetsTbl#	|| '%'</isNotEmpty>
+			<isNotEmpty property="assetsTbl" prepend="OR">	NOTIFYCATEGORY 			like '%' || #assetsTbl#	|| '%'</isNotEmpty>
+			<isNotEmpty property="assetsTbl" prepend="OR">	ASS.OPERATINGSYSTEM 	like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	PORT 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	POLLERCATEGORY 			like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	RACK 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	REGION 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ROOM 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	SERIALNUMBER 			like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	SLOT 					like '%' || #assetsTbl#	|| '%'</isNotEmpty>
+			<isNotEmpty property="assetsTbl" prepend="OR">	STATE 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	THRESHOLDCATEGORY		like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	USERLASTMODIFIED 		like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	VENDOR 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	VENDORPHONE 			like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	VENDORFAX 				like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	VENDORASSETNUMBER 		like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ZIP 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	USERNAME 				like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	PASSWORD 				like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ENABLE 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	AUTOENABLE				like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	CONNECTION 				like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	CPU 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	RAM 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	STORAGECTRL 			like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	HDD1 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	HDD2 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	HDD3 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	HDD4 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	HDD5 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	HDD6 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	NUMPOWERSUPPLIES 		like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	INPUTPOWER 				like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ADDITIONALHARDWARE 		like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	ADMIN 					like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	SNMPCOMMUNITY 			like '%' || #assetsTbl#	|| '%'</isNotEmpty> 
+			<isNotEmpty property="assetsTbl" prepend="OR">	RACKUNITHEIGHT  		like '%' || #assetsTbl#	|| '%'</isNotEmpty>
 			
          </dynamic> 
 	</select>

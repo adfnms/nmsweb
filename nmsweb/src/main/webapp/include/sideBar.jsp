@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <script>
 
 $(document).ready(function(){
@@ -61,19 +62,17 @@ function sidebarInfo(jsonObj) {
 		
 		for ( var i in sideOutageObj) {
 
-			var timeStr = sideOutageObj[i]["iflostservice"].substring(0,sideOutageObj[i]["iflostservice"].length-3);
-// 			alert(sideOutageObj[i]["iflostservice"]);
-			lostTime = new Date(timeStr);
 			
-			console.log(Date.parse(sideOutageObj[i]["iflostservice"]));
-			console.log(lostTime);
+			lostTime = new Date(sideOutageObj[i]["iflostservice"].replace(' ','T') + ":00");
+			
 			lastTime = dateDiff(lostTime, current);
-			 
+			
 			$('#sideBarOutageList').append(
 				H5obj.clone().append( 
 					STRONGobj.clone().append(
-							Aobj.clone().attr("href","#myModalSide").attr("class","text-error").attr("data-toggle","modal").attr("onclick","javascript:outageSideBarPop("+sideOutageObj[i]["outageid"]+")").text(sideOutageObj[i]["ipaddr"]),
-							Aobj.clone().attr("href","/"+version + "/search/outage/outageDesc.do?outageId="+ sideOutageObj[i]["outageid"]+"").text(" ("+lastTime+")")
+							Aobj.clone().attr("href","#popupOutageInfoMethod").attr("class","text-error").attr("data-toggle","modal").attr("onclick","javascript:popupOutageInfo('"+sideOutageObj[i]["outageid"]+"')").text(sideOutageObj[i]["ipaddr"]),
+// 							Aobj.clone().attr("href","/"+version + "/search/outage/outageDesc.do?outageId="+ sideOutageObj[i]["outageid"]+"").text(" ("+lastTime+")")
+							Aobj.clone().attr("href","javascript:popupOutageInfo('"+sideOutageObj[i]["outageid"]+"')").text(" ("+lastTime+")")
 					)
 				)
 			);	 
@@ -87,19 +86,65 @@ function sidebarInfo(jsonObj) {
 	
 }
 
-function outageSideBarPop(outageid){
-	var data = "id="+outageid;
+// function outageSideBarPop(outageid){
+// 	var data = "id="+outageid;
 	
-	getTotalOutagesList(addOutageSideInfo, data);
-}
-/* outageSideBarPop Callback */
-function addOutageSideInfo(jsonObj){
+// 	getTotalOutagesList(addOutageSideInfo, data);
+// }
+// /* outageSideBarPop Callback */
+// function addOutageSideInfo(jsonObj){
 	
-	$('#outageInfoDivSide').empty();
-	var outageInfoStr = getOutageInfoBox(jsonObj);
-	$('#outageInfoDivSide').append(outageInfoStr);
+// 	$('#outageInfoDivSide').empty();
+// 	var outageInfoStr = getOutageInfoBox(jsonObj);
+// 	$('#outageInfoDivSide').append(outageInfoStr);
 
-	//$("#myModalLabel").html(ipaddr+"&nbsp;장애&nbsp;정보");
+// 	//$("#myModalLabel").html(ipaddr+"&nbsp;장애&nbsp;정보");
+// }
+
+function popupOutageInfo(data)
+{
+	var _data = "id="+data;
+	getTotalOutagesList(addOutageInfo, _data);
+}
+
+function addOutageInfo(jsonObj){
+	
+	var outageInfoStr = getOutageInfoBox(jsonObj);
+	$('#popupOutageInfo').empty();
+	$('#popupOutageInfo').append(outageInfoStr);
+	$('#popupOutageInfoMethod').modal('show');
+	
+}
+
+function popupEventInfo(eventId)
+{
+	
+	var data = "id="+eventId;
+	
+	getTotalEvenstList(addEventInfo,data);
+
+}
+
+/* Event Info */
+function addEventInfo(jsonObj){
+	
+	$('#popupEventInfo').empty();
+	//Event Info
+	var eventInfoStr = 	getEventinfoBox(jsonObj);
+	$('#popupEventInfo').append(eventInfoStr);
+	
+	//Event Log
+	var eventLogStr = 	getEventLogBox(jsonObj);
+	$('#popupEventInfo').append(eventLogStr);
+
+	//Event Desc
+	var eventDescStr = 	getEventDescBox(jsonObj);
+	$('#popupEventInfo').append(eventDescStr);
+	
+	$('#popupEventInfoMethod').css('left','45%');
+	$('#popupOutageInfoMethod').modal('hide');
+	$('#popupEventInfoMethod').modal('show');
+
 }
 /*//outage Info Callback */
 /*// 장애 정보 POPUP창 */
@@ -112,16 +157,45 @@ function addOutageSideInfo(jsonObj){
 	</ul>
 </div>
 <!-- Modal -->
-<div id="myModalSide" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabelSide" >장애정보</h3>
-  </div>
-  <div class="modal-body" >
-    <div class="row-fluid" id="outageInfoDivSide"></div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
-  </div>
-</div>
+<!-- <div id="myModalSide" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" > -->
+<!--   <div class="modal-header"> -->
+<!--     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
+<!--     <h3 id="myModalLabelSide" >장애정보</h3> -->
+<!--   </div> -->
+<!--   <div class="modal-body" > -->
+<!--     <div class="row-fluid" id="outageInfoDivSide"></div> -->
+<!--   </div> -->
+<!--   <div class="modal-footer"> -->
+<!--     <button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true">Close</button> -->
+<!--   </div> -->
+<!-- </div> -->
+
+<!--  						정보 Popup 창 						-->
+<div id="popupEventInfoMethod" class="modal hide fade" tabindex="-1" style="width:880px;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+    	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    	<h3 id="myModalLabelSide" >이벤트 장애 정보</h3>
+	</div>
+	<div class="modal-body" style="width:850px;">
+		<div class="row-fluid" id="popupEventInfo"></div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div> 
+
+<div id="popupOutageInfoMethod" class="modal hide fade"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+    	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    	<h3 id="myModalLabelSide" >서비스 장애 정보</h3>
+	</div>
+	<div class="modal-body" >
+		<div class="row-fluid" id="popupOutageInfo"></div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div> 
+<!-- 							정보 Popup 창 END 									-->
+
 <!--/.well -->

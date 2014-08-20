@@ -379,14 +379,7 @@ public class UserManagerController extends BaseController{
 			e.printStackTrace();
 		}
 		model.setViewName("/admin/userMng/userMng");
-		
-		
+
 		return model;
-	}
-	
-	
-	
-	
-	
-	
+	}	
 }

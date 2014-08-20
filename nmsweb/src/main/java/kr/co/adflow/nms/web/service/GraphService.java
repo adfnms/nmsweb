@@ -66,7 +66,8 @@ public class GraphService {
 			HashMap hash = new HashMap();
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
-			hash.put(URL, graphNodeUrl+"node["+nodeid+"]");
+//			hash.put(URL, graphNodeUrl+"node["+nodeid+"]");
+			hash.put(URL, graphNodeUrl+nodeid);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 
@@ -170,6 +171,26 @@ public class GraphService {
 			hash.put(USERNAME, loginId);
 			hash.put(PASSWORD, loginPass);
 			hash.put(URL, graphResouceUrl+resourceId+"&relativetime=lastyear");
+			hash.put(Accept, "application/json");
+			hash.put(METHOD, "GET");
+
+			result = (String) handler.handle(hash);
+
+		} catch (Exception e) {
+			throw new HandleException(e);
+		}
+		logger.debug("result:::" + result);
+		return result;
+	}
+	
+	public String graphResourceIdSerCustom(String resourceId,String customTime) throws HandleException {
+		String result = null;
+
+		try {
+			HashMap hash = new HashMap();
+			hash.put(USERNAME, loginId);
+			hash.put(PASSWORD, loginPass);
+			hash.put(URL, graphResouceUrl+resourceId+"&relativetime=custom&zoom="+customTime);
 			hash.put(Accept, "application/json");
 			hash.put(METHOD, "GET");
 

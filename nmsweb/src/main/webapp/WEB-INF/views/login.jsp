@@ -72,14 +72,22 @@
 			}		
 	});
  }
+ 
+ function keyDown(event)
+ {
+	 if (event.keyCode == '13') {
+		 memberLogIn();
+     }
+ }
+
 </script>
 </head>
 <body>
 	<div class="container">
 		<form class="form-signin" id="form-logIn" name="form-logIn">
 			<h2 class="form-signin-heading">로그인</h2>
-			<input type="text"  id="user-id" name="user-id" class="input-block-level" placeholder="ID" value="admin"/>
-			<input type="password"  id="password" name="password" class="input-block-level" placeholder="Password" value="admin"/>
+			<input type="text"  id="user-id" name="user-id" class="input-block-level" placeholder="ID" value="admin" onkeyup="javascript:keyDown(event)"/>
+			<input type="password"  id="password" name="password" class="input-block-level" placeholder="Password" onkeyup="javascript:keyDown(event)" value="admin"/>
 			<!------------------------------------------>
 			<div class="row-fluid">
 				<div class="span12">

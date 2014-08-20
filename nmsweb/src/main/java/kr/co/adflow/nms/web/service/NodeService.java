@@ -2,6 +2,7 @@ package kr.co.adflow.nms.web.service;
 
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
+import groovy.xml.MarkupBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -469,15 +470,13 @@ public class NodeService {
 		try {
 			ClassLoader parent = getClass().getClassLoader();
 			GroovyClassLoader loader = new GroovyClassLoader(parent);
-			Class groovyClass = loader.parseClass(new File(
-					groovyPath+"sendNewSuspectEvent.groovy"));
+			Class groovyClass = loader.parseClass(new File(groovyPath+"sendNewSuspectEvent.groovy"));
 
 			// let's call some method on an instance
-			GroovyObject groovyObject = (GroovyObject) groovyClass
-					.newInstance();
-			String[] args = { ip, "127.0.0.1" };
-			Object ret = groovyObject.invokeMethod("sendNewSuspectEvent", args);
-			
+			GroovyObject groovyObject = (GroovyObject) groovyClass.newInstance();
+			String[] args = { ip,"127.0.0.1" };
+			groovy.xml.MarkupBuilder ret =  (MarkupBuilder)groovyObject.invokeMethod("sendNewSuspectEvent", args);
+
 			logger.debug("ret :" + ret);
 			result ="{\"result\":\"success\"}";
 		} catch (Exception e) {
@@ -486,7 +485,6 @@ public class NodeService {
 
 		return result;
 	}
-	
 	
 	public String serviceList() throws HandleException {
 
@@ -573,8 +571,7 @@ public class NodeService {
 				throw new Exception("Boom - No Context");
 
 			// /jdbc/postgres is the name of the resource above
-			DataSource ds = (DataSource) ctx
-					.lookup("java:comp/env/jdbc/postgres");
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/postgres");
 			if (ds != null) {
 				conn = ds.getConnection();
 
@@ -658,8 +655,7 @@ public class NodeService {
 					while (rst.next()) {
 
 						result.append("{\"nodeid\":\"" + rst.getInt(1) + "\",");
-						result.append("\"nodelabel\":\""
-								+ rst.getString(2) + "\"},");
+						result.append("\"nodelabel\":\""+ rst.getString(2) + "\"},");
 						
 						selectCheck = false;
 
@@ -674,8 +670,7 @@ public class NodeService {
 //						result = new StringBuffer();
 						
 						try {
-							throw new HandleException(
-									"iplike "+iplike+" Not Found");
+							throw new HandleException("iplike "+iplike+" Not Found");
 						} catch (HandleException e) {
 							throw e;
 						}
@@ -706,8 +701,98 @@ public class NodeService {
 		return result.toString();
 	}
 	
+	public String nodeSearchNodeIdAndLikeNodelabel(String nodeId,String nodelabellike) throws HandleException {
 
+		StringBuffer result = new StringBuffer();
 
+		Statement stmt = null;
+		ResultSet rst = null;
+		Connection conn = null;
+		String sql = null;
+
+		try {
+			Context ctx = new InitialContext();
+			if (ctx == null)
+				throw new Exception("Boom - No Context");
+
+			// /jdbc/postgres is the name of the resource above
+			DataSource ds = (DataSource) ctx
+					.lookup("java:comp/env/jdbc/postgres");
+			if (ds != null) {
+				conn = ds.getConnection();
+
+				if (conn != null) {
+					stmt = conn.createStatement();
+					sql = "SELECT nodeid, nodelabel FROM node WHERE ";
+					
+					if(nodelabellike != null && !nodelabellike.equals(""))
+					{
+						sql +="nodelabel like '%"+nodelabellike+"%'";
+					}
+					
+					if(nodeId != null && !nodeId.equals(""))
+					{
+						if(nodelabellike != null && !nodelabellike.equals(""))
+							sql +=" AND ";
+						
+						sql +="nodeid = "+nodeId;
+					}
+					
+					logger.debug("sql:::" + sql);
+					boolean selectCheck = true;
+					
+					rst = stmt.executeQuery(sql);
+					
+					result.append("{\"nodes\":[");
+					while (rst.next()) {
+
+						result.append("{\"nodeid\":\"" + rst.getInt(1) + "\",");
+						result.append("\"nodelabel\":\""
+								+ rst.getString(2) + "\"},");
+						
+						selectCheck = false;
+
+					}
+					// last "&" delete.
+					result.deleteCharAt(result.length() - 1);
+					result.append("]}");
+					
+					
+					if (selectCheck) {
+						
+//						result = new StringBuffer();
+						
+						try {
+							throw new HandleException( "nodeId "+nodeId+", nodelabellike"+nodelabellike+" Not Found");
+						} catch (HandleException e) {
+							throw e;
+						}
+						
+					}
+					
+					rst.close();
+
+					
+					logger.debug("ResultSet Json:::" + result.toString());
+				}
+			}
+		} catch (Exception e) {
+			throw new HandleException(e);
+		} finally {
+			if (stmt != null)
+				try {
+					stmt.close();
+				} catch (Exception e) {
+				}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (Exception e) {
+				}
+		}
+
+		return result.toString();
+	}
 	
 	public String nodesPost(String data)
 			throws HandleException {

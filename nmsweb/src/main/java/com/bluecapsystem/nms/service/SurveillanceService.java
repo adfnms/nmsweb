@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.bluecapsystem.nms.dto.CategoriesTbl;
 import com.bluecapsystem.nms.dto.CategoryNodeTbl;
-import com.bluecapsystem.nms.dto.MenuGroupTbl;
 
 public interface SurveillanceService {
 
@@ -14,11 +13,13 @@ public interface SurveillanceService {
 	
 	boolean getRegNodeList(Integer categoryId, List<CategoriesTbl> RegNodeItems);	
 	
-	boolean regNodePop(Integer[] categoryid, Integer[] nodeid , CategoryNodeTbl categoryNodeTbl);
+	boolean regNodePop(Integer categoryid, Integer[] nodeid);
+	
+	boolean delNodePop(Integer categoryid, Integer[] nodeid);
 	
 	boolean delNodePop(Integer categoryid,  CategoryNodeTbl categoryNodeTbl);
 	
-	boolean delCategory (Integer categoryid,  CategoriesTbl categoriesTbl);
+	boolean delCategory (CategoriesTbl categoriesTbl);
 	
 	boolean regSurveillenceName(CategoriesTbl categoriesTbl);
 	

@@ -220,11 +220,12 @@ function searchNodeFromIpAddress(callback, ipAddress) {
 		url : '/' + version + '/nodes/searchIp/' + ipAddress,
 		dataType : 'json',
 		contentType : 'application/json',
+		async:false,
 		error : function(data) {
 			alert("[" + ipAddress + '] 아이피 정보 검색 실패');
 		},
 		success : function(data) {
-
+			console.log(data);
 			data = JSON.stringify(data).replaceAll('"nodeid"', '"@id"');
 			data = data.replaceAll('"nodelabel"', '"@label"');
 			data = JSON.parse(data);
@@ -345,9 +346,8 @@ function getInterfaceAvailability(nodeId, ipAddress){
 			alert("[" + nodeId + '] 인터페이스 가용성 가져오기 실패');
 		},
 		success : function(data) {
-
 			interfaceAvail  = data["interfaceAvailability"][0]["avail"];
- 			
+
 		}
 	});
 	
@@ -385,14 +385,15 @@ function deleteNode(nodeId){
  * @param ipAddress
  */
 function nodeScan(callback, ipAddress){
-	
+
 	$.ajax({
 		type : 'post',
 		url : '/' + version + '/nodes/scan/' + ipAddress,
 		dataType : 'json',
 		contentType : 'application/json',
+		async:false,
 		error : function(data) {
-
+ 
 			if (typeof callback == "function") {
 				callback(data);
 			}
@@ -558,7 +559,122 @@ function addNodePop(){
 	return str;
 }*/
 
+function getTableToSearchJsonObj(jsonObj, auth){
+	var nodeObj = jsonObj["nodeList"];;
 
+	var TBODYobj = $("<tbody></tbody>");
+	var TRobj = $("<tr></tr>");
+	var TDobj = $("<td></td>");
+	var H4obj = $("<h4></h4>");
+	var Aobj = $("<a></a>");
+	var BUTTONobj = $("<button></button>");
+	
+	TBODYobj.append(	
+		TRobj.clone().append(
+			TDobj.clone().append(
+				H4obj.clone().text("id")	
+			),
+			TDobj.clone().append(
+				H4obj.clone().text("node")	
+			),
+			TDobj.clone().append(
+				H4obj.clone().text("Node Create Time")	
+			),
+			TDobj.clone().attr("class","span2").append(
+				H4obj.clone().text("")	
+			),
+			TDobj.clone().attr("class","span2").append(
+				H4obj.clone().text("")	
+			)
+		)
+	);
+	
+		/*str += "<tr>";
+		str += "<td><h4>id</h4></td>";
+		str += "<td><h4>Node</h4></td>";
+		str += "<td><h4>Node Create Time</h4></td>";
+		str += "<td><h4>&nbsp;</h4></td>";
+		str += "<td><h4>&nbsp;</h4></td>";
+		str += "</tr>";*/
+	
+	if (nodeObj == null || nodeObj ==""){
+		TBODYobj.append(	
+			TRobj.append().text("노드 목록이 없습니다!")
+		);
+		
+		/*str += "<tr>";
+		str += "<td>노드 목록이 없습니다!</td>";
+		str += "</tr>";*/		
+	
+	}else{
+		var TRobjClone;
+		for (var i in nodeObj) {
+			TRobjClone = TRobj.clone();
+			TBODYobj.append(
+				TRobjClone.append(
+					TDobj.clone().append().text(nodeObj[i]["nodeid"]),
+					TDobj.clone().append(
+						Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["nodeid"]+"").append().text(nodeObj[i]["nodelabel"])),
+					TDobj.clone().append().text(new Date(nodeObj[i]["nodecreatetime"]).format('yy-MM-dd hh:mm:ss'))
+				)
+			);
+			
+			if(auth=="Admin")
+			{
+				TRobjClone.append(
+					TDobj.clone().append(
+						BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","javascript:goNodeManagePage("+nodeObj[i]["nodeid"]+")").text("관리")),
+					TDobj.clone().append(
+						BUTTONobj.clone().attr("type","button").attr("class","btn btn-danger").attr("onclick","javascript:deleteNode("+nodeObj[i]["nodeid"]+")").text("삭제")
+					)
+						
+				);
+			}
+			else
+			{
+				TRobjClone.append(
+					TDobj.clone().append(),
+					TDobj.clone().append()
+				);
+			}
+			
+		}
+		
+//		if(auth!="Admin"){
+//			TRobjClone = TRobj.clone();
+//			for (var i in nodeObj) {
+//				TBODYobj.append(
+//					TRobjClone.append(
+//						TDobj.clone().append().text(nodeObj[i]["nodeid"]),
+//						TDobj.clone().append(
+//							Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["nodeid"]+"").append().text(nodeObj[i]["nodelabel"])),
+//						TDobj.clone().append().text(new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss')),
+//						TDobj.clone().append(),
+//						TDobj.clone().append()
+//					)
+//				);
+//			}
+//		}else if(auth=="Admin"){
+//			for (var i in nodeObj) {
+//				TBODYobj.append(
+//					TRobjClone.append(
+//						TDobj.clone().append().text(nodeObj[i]["nodeid"]),
+//						TDobj.clone().append(
+//							Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["nodeid"]+"").append().text(nodeObj[i]["nodelabel"])),
+//						TDobj.clone().append().text(new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss')),				
+//						TDobj.clone().append(
+//							BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","javascript:goNodeManagePage("+nodeObj[i]["@id"]+")").text("관리")),
+//						TDobj.clone().append(
+//							BUTTONobj.clone().attr("type","button").attr("class","btn btn-danger").attr("onclick","javascript:deleteNode("+nodeObj[i]["@id"]+")").text("삭제")
+//						)
+//					)				
+//				);		
+//			}
+//		}
+	}	
+	
+	return TBODYobj;
+}
 
 
 function getTabletagToSearchJsonObj(jsonObj, auth){
@@ -610,33 +726,33 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 		str += "</tr>";*/		
 	
 	}else if (jsonObj["@totalCount"] == 1 || jsonObj["@count"] == 1) {
-		if(auth!="Admin"){
-			TBODYobj.append(
-				TRobj.clone().append(
-					TDobj.clone().append().text("1"),
+		var TRobjClone = TRobj.clone();
+		TBODYobj.append(
+				TRobjClone.append(
+					TDobj.clone().append().text(nodeObj["@id"]),
 					TDobj.clone().append(
 						Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+"").append().text(nodeObj["@label"])),
-					TDobj.clone().append().text(new Date(nodeObj["createTime"]).format('yy-MM-dd hh:mm:ss')),
-					TDobj.clone().append(),
-					TDobj.clone().append()
+					TDobj.clone().append().text(new Date(nodeObj["createTime"]).format('yy-MM-dd hh:mm:ss'))
+			)
+		);
+		
+		if(auth!="Admin"){
+			TRobjClone.append(
+				TDobj.clone().append(),
+				TDobj.clone().append()
+			);
+		}
+		else
+		{
+			TRobjClone.append(
+				TDobj.clone().append(
+					BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","javascript:goNodeManagePage("+nodeObj["@id"]+")").text("관리")),
+				TDobj.clone().append(
+					BUTTONobj.clone().attr("type","button").attr("class","btn btn-danger").attr("onclick","javascript:deleteRequisitionInNode('"+nodeObj["@id"]+"','"+nodeObj["@foreignSource"]+"','"+nodeObj["@foreignId"]+"')").text("삭제")
 				)
 			);
-		}else if(auth=="Admin"){
-			TBODYobj.append(
-				TRobj.clone().append(
-					TDobj.clone().append().text("1"),
-					TDobj.clone().append(
-						Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+"").append().text(nodeObj["@label"])),
-					TDobj.clone().append().text(new Date(nodeObj["createTime"]).format('yy-MM-dd hh:mm:ss')),				
-					TDobj.clone().append(
-						BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","javascript:goNodeManagePage("+nodeObj["@id"]+")").text("관리")),
-					TDobj.clone().append(
-						BUTTONobj.clone().attr("type","button").attr("class","btn btn-danger").attr("onclick","javascript:deleteNode("+nodeObj["@id"]+")").text("삭제")
-					)
-				)				
-			);		
 		}
-		
+
 		/*str += "<tr>";
 		str += "<td>1</td>";
 		str += "<td><a href='/" + version + "/search/node/nodeDesc.do?nodeId="+ nodeObj["@id"]+ "'>"
@@ -652,34 +768,32 @@ function getTabletagToSearchJsonObj(jsonObj, auth){
 		str += "</tr>";*/
 		
 	}else if (jsonObj["@totalCount"] > 1 || jsonObj["@count"] > 1) {
-		if(auth!="Admin"){
-			for (var i in nodeObj) {
-				TBODYobj.append(
-					TRobj.clone().append(
+		var TRobjClone = TRobj.clone();
+		for (var i in nodeObj) {
+			TBODYobj.append(
+					TRobjClone.append(
 						TDobj.clone().append().text(nodeObj[i]["@id"]),
 						TDobj.clone().append(
 							Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+"").append().text(nodeObj[i]["@label"])),
-						TDobj.clone().append().text(new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss')),
-						TDobj.clone().append(),
-						TDobj.clone().append()
-					)
+						TDobj.clone().append().text(new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss'))
+				)
+			);
+			
+			if(auth!="Admin"){
+				TRobjClone.append(
+					TDobj.clone().append(),
+					TDobj.clone().append()
 				);
 			}
-		}else if(auth=="Admin"){
-			for (var i in nodeObj) {
-				TBODYobj.append(
-					TRobj.clone().append(
-						TDobj.clone().append().text(nodeObj[i]["@id"]),
-						TDobj.clone().append(
-							Aobj.clone().attr("href","/"+version+"/search/node/nodeDesc.do?nodeId="+ nodeObj[i]["@id"]+"").append().text(nodeObj[i]["@label"])),
-						TDobj.clone().append().text(new Date(nodeObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss')),				
-						TDobj.clone().append(
-							BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","javascript:goNodeManagePage("+nodeObj[i]["@id"]+")").text("관리")),
-						TDobj.clone().append(
-							BUTTONobj.clone().attr("type","button").attr("class","btn btn-danger").attr("onclick","javascript:deleteNode("+nodeObj[i]["@id"]+")").text("삭제")
-						)
-					)				
-				);		
+			else
+			{
+				TRobjClone.append(
+					TDobj.clone().append(
+						BUTTONobj.clone().attr("type","button").attr("class","btn btn-info").attr("onclick","javascript:goNodeManagePage("+nodeObj[i]["@id"]+")").text("관리")),
+					TDobj.clone().append(
+						BUTTONobj.clone().attr("type","button").attr("class","btn btn-danger").attr("onclick","javascript:deleteRequisitionInNode('"+nodeObj[i]["@id"]+"','"+nodeObj[i]["@foreignSource"]+"','"+nodeObj[i]["@foreignId"]+"')").text("삭제")
+					)
+				);
 			}
 		}
 	}	
@@ -953,12 +1067,12 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 	if (jsonObj["@count"] > 0) {
 		
 		var serviceObj = jsonObj["service"];
+		
+		
 		var data = "";
 		
-		
-		
 		if (jsonObj["@count"] > 1) {
-
+			serviceObj.sort(serviceSort);
 			for ( var i in serviceObj) {
 				
 				if(data == ""){
@@ -990,6 +1104,7 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 		});
 		if(AvailJsonObj == null){return false;}
 		var serviceObj = jsonObj["service"];
+		
 		/******************************************************/
 		//TABLEobj.attr("class", "table table-striped").append(
 		/******************************************************/
@@ -999,22 +1114,25 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 					for ( var i in serviceObj) {
 						var serviceAvail = "";
 						var serviceNm = serviceObj[i]["serviceType"]["name"];
-						
+						var serviceStatus = serviceObj[i]["@status"];
 						for(var j in AvailJsonObj["serviceAvailability"]){
 							if(AvailJsonObj["serviceAvailability"][j]["serviceId"] == serviceObj[i]["serviceType"]["@id"]){
 								serviceAvail = AvailJsonObj["serviceAvailability"][j]["avail"];
 								break;
 							}
 						}
+						
+						var serviceId = serviceObj[i]["serviceType"]["@id"];
 						/****************************************************************************************************************************************************************************************************/
 						TABLEobj.attr("class", "table table-striped").append(
 								TRobj.clone().append(
 									TDobj.clone().append(
-										Aobj.clone().attr("href", "javascript:goServiceDiv('"+nodeId+"', '"+ipAddress+"','"+serviceNm+"')").text(serviceObj[i]["serviceType"]["name"])
+										Aobj.clone().attr("href", "javascript:goServiceDiv('"+nodeId+"', '"+ipAddress+"','"+serviceNm+"','"+serviceId+"')").text(serviceNm)
 									),
-									TDobj.clone().text(availToStringFromStatoCode(serviceObj[i]["@status"],Number(serviceAvail).toFixed(3)))
+									TDobj.clone().text(availToStringFromStatoCode(serviceStatus,Number(serviceAvail).toFixed(3)))
 								)
 						);
+						
 						/****************************************************************************************************************************************************************************************************/
 						/*str += '<tr>';
 						//str += '	<td><a href="/'+version+'/search/service/serviceDesc?nodeId='+nodeId+'&intf='+ipAddress+'&serviceNm='+serviceObj[i]["serviceType"]["name"]+'">';
@@ -1028,10 +1146,12 @@ function getTabletagToAvailJsonObj(nodeId, ipAddress){
 					}
 				} else {
 					/**********************************************************************************************************************************************************************************************/
+					serviceAvail = AvailJsonObj["serviceAvailability"][0]["avail"];
 					TABLEobj.attr("class", "table table-striped").append(
 							TRobj.clone().append(
 								TDobj.clone().append(
-									Aobj.clone().attr("href","/"+version+"/search/service/serviceDesc?nodeId="+nodeId+'&intf='+ipAddress+'&serviceNm='+serviceObj["serviceType"]["name"]+"").text(serviceObj["serviceType"]["name"])
+//									Aobj.clone().attr("href","/"+version+"/search/service/serviceDesc?nodeId="+nodeId+'&intf='+ipAddress+'&serviceNm='+serviceObj["serviceType"]["name"]+"").text(serviceObj["serviceType"]["name"])
+									Aobj.clone().attr("href", "javascript:goServiceDiv('"+nodeId+"', '"+ipAddress+"','"+serviceObj["serviceType"]["name"]+"','"+serviceObj["serviceType"]["@id"]+"')").text(serviceObj["serviceType"]["name"])
 								),
 								TDobj.clone().text(availToStringFromStatoCode(serviceObj["@status"],Number(serviceAvail).toFixed(3)))
 							)
@@ -1170,7 +1290,9 @@ function nodeListPop(){
 }
 
 function getTableToNodeList(foreignSource, data){
+	$('#requisitions').val(foreignSource);
 	var dataObj = data['node'];
+	var count = data['@totalCount'];
 	var str = '';
 		str += '<tr>';
 		str += '	<td><b>ID</b></td>';
@@ -1181,17 +1303,42 @@ function getTableToNodeList(foreignSource, data){
 		str += '	<td></td>';
 		str += '</tr>';
 		if(data['node'] != undefined){
+			if(count == 1 && dataObj['@foreignId'] != undefined)
+			{
+
+				str += '<tr>';
+				str += '	<td>' + dataObj['@id'] + '</td>';
+				str += '	<td>' + dataObj['@label'] + '</td>';
+				str += '	<td>' + new Date(dataObj["createTime"]).format('yy-MM-dd hh:mm:ss') + '</td>';
+				str += '	<td>' + dataObj['@foreignId'] + '</td>';
+				str += '	<td><input name="nodeids" type="checkbox" style="margin:0px" name="chk" value=\'' + dataObj['@id']+ '\'/></td>';
+				
+//				if(dataObj[i]['@foreignSource'] == foreignSource){
+//					str += '	<td><input type="checkbox" style="margin:0px" name="chk" checked="checked" value=\'' + dataObj[i]['@foreignId'] + '\',\'' + dataObj[i]['@label'] + '\'/></td>';
+//				}else{
+//					str += '	<td><input name="nodeids" type="checkbox" style="margin:0px" name="chk" value=\'' + dataObj[i]['@foreignId'] + ',' + dataObj[i]['@label'] + '\'/></td>';
+//				}
+				str += '	<td><button type="button" class="btn btn-danger btn-mini" onclick="javascript:goNodePage(\'' + dataObj['@id'] + '\');">수정</button></td>';
+				str += '</tr>';
+			}
+			else
 			for(var i in dataObj){
+				
+				if(dataObj[i]['@foreignId'] != undefined)
+					continue;
+				
 				str += '<tr>';
 				str += '	<td>' + dataObj[i]['@id'] + '</td>';
 				str += '	<td>' + dataObj[i]['@label'] + '</td>';
 				str += '	<td>' + new Date(dataObj[i]["createTime"]).format('yy-MM-dd hh:mm:ss') + '</td>';
 				str += '	<td>' + dataObj[i]['@foreignId'] + '</td>';
-				if(dataObj[i]['@foreignSource'] == foreignSource){
-					str += '	<td><input type="checkbox" style="margin:0px" name="chk" checked="checked" value=\'' + dataObj[i]['@foreignId'] + '\',\'' + dataObj[i]['@label'] + '\'/></td>';
-				}else{
-					str += '	<td><input type="checkbox" style="margin:0px" name="chk" value=\'' + dataObj[i]['@foreignId'] + ',' + dataObj[i]['@label'] + '\'/></td>';
-				}
+				str += '	<td><input name="nodeids" type="checkbox" style="margin:0px" name="chk" value=\'' + dataObj[i]['@id']+ '\'/></td>';
+				
+//				if(dataObj[i]['@foreignSource'] == foreignSource){
+//					str += '	<td><input type="checkbox" style="margin:0px" name="chk" checked="checked" value=\'' + dataObj[i]['@foreignId'] + '\',\'' + dataObj[i]['@label'] + '\'/></td>';
+//				}else{
+//					str += '	<td><input name="nodeids" type="checkbox" style="margin:0px" name="chk" value=\'' + dataObj[i]['@foreignId'] + ',' + dataObj[i]['@label'] + '\'/></td>';
+//				}
 				str += '	<td><button type="button" class="btn btn-danger btn-mini" onclick="javascript:goNodePage(\'' + dataObj[i]['@id'] + '\');">수정</button></td>';
 				str += '</tr>';
 			}
@@ -1305,6 +1452,7 @@ function saveAjax(callback, data){
 }
 
 function saves(foreignSource, data){
+
 	var str = getTableToNodeList(foreignSource, data);
 	$('#getNodeList').append(str);
 }
@@ -1317,6 +1465,7 @@ function save(data){
 function paramNodes(callback, data){
 	var Request = function(){
 		this.getParameter = function(name){
+			
 			var rtnval = '';
 			var IpAddress = unescape(location.href);
 			var params = (IpAddress.slice(IpAddress.indexOf('?')+1,IpAddress.length)).split('&');
@@ -1327,6 +1476,7 @@ function paramNodes(callback, data){
 				break;
 				}
 			}
+
 			if (typeof callback == "function") {
 				callback(rtnval, data);
 			}

@@ -6209,26 +6209,33 @@ a.badge:focus {
 .affix {
   position: fixed;
 }
-.critical{/*»¡°£»ö  */
-	background-image: -webkit-linear-gradient(top, #DD514C, #DD514C) !important;
+.critical{/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  */
+/* 	background-image: -webkit-linear-gradient(top, #DD514C, #DD514C) !important; */
+	background-image: linear-gradient(to top, #DD514C, #DD514C) !important;
 }
-.major{/*ÁÖÈ²»ö  */
-	background-image: -webkit-linear-gradient(top, #FF7012, #FF7012) !important;
+.major{/*ï¿½ï¿½È²ï¿½ï¿½  */
+/* 	background-image: -webkit-linear-gradient(top, #FF7012, #FF7012) !important; */
+	background-image: linear-gradient(to top, #FF7012, #FF7012) !important;
 }
-.minor{/*³ë¶õ»ö  */
-	background-image: -webkit-linear-gradient(top, #FFBB00, #FFBB00) !important;
+.minor{/*ï¿½ï¿½ï¿½ï¿½ï¿½  */
+/* 	background-image: -webkit-linear-gradient(top, #FFBB00, #FFBB00) !important; */
+	background-image: linear-gradient(to top, #FFBB00, #FFBB00) !important;
 }
-.warning{/*È¸»ö  */
-	background-image: -webkit-linear-gradient(top, #C0BEBF, #C0BEBF) !important;
+.warning{/*È¸ï¿½ï¿½  */
+/* 	background-image: -webkit-linear-gradient(top, #C0BEBF, #C0BEBF) !important; */
+	background-image: linear-gradient(to top, #C0BEBF, #C0BEBF) !important;
 }
-.normal{/*ÇÏ´Ã»ö  */
-	background-image: -webkit-linear-gradient(top, #4BB1CF, #4BB1CF) !important;
+.normal{/*ï¿½Ï´Ã»ï¿½  */
+/* 	background-image: -webkit-linear-gradient(top, #4BB1CF, #4BB1CF) !important; */
+	background-image: linear-gradient(to top, #4BB1CF, #4BB1CF) !important;
 }
-.indeterminate{/*ÆÄ¶õ»ö */
-	background-image: -webkit-linear-gradient(top, #0E90D2, #0E90D2) !important;
+.indeterminate{/*ï¿½Ä¶ï¿½ï¿½ï¿½ */
+/* 	background-image: -webkit-linear-gradient(top, #0E90D2, #0E90D2) !important; */
+	background-image: linear-gradient(to top, #0E90D2, #0E90D2) !important;
 }
-.indeterminate{/*³ì»ö  */
-	background-image: -webkit-linear-gradient(top, #5EB95E, #5EB95E) !important;
+.indeterminate{/*ï¿½ï¿½ï¿½  */
+/* background-image: -webkit-linear-gradient(top, #5EB95E, #5EB95E) !important; */
+	background-image: linear-gradient(to top, #5EB95E, #5EB95E) !important;
 }
 
 

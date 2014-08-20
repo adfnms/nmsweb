@@ -50,8 +50,7 @@ function setUrlData(urlData) {
  * @param pageBlockSize
  *            페이징에서 보여질 갯수
  */
-function getPagingHtml(jsonObj, callback, totalCount, crruntPageNm, rowSize,
-		pageBlockSize) {
+function getPagingHtml(jsonObj, callback, totalCount, crruntPageNm, rowSize,pageBlockSize) {
 	
 	// ex) int Val = Math.floor(3.78) Val = 3
 	var startPage = Math.floor(crruntPageNm / pageBlockSize) + 1;
@@ -198,17 +197,23 @@ function nullCheckJsonObject(parentObj, childname) {
 	console.log(childname);
 	console.log(typeof parentObj[childname]);*/
 	
+	
 	var childName=childname;
 	var strValue = "";
+	
+	if(parentObj == null || (typeof parentObj == "undefined")){
+		return null;
+	}
+	
+	if(parentObj[childName] != null || (typeof parentObj[childName] != "undefined")){
 		
-		if(parentObj[childName] != null || (typeof parentObj[childName] != "undefined")){
-			
-			strValue = parentObj[childName];
+		strValue = parentObj[childName];
+	
+	}else{
 		
-		}else{
-			
-			strValue="";
-		}
+		strValue="";
+	}
+	
 	return strValue;
 
 }
@@ -406,6 +411,46 @@ function getCategorieIdx(categoriNm){
 	return statsStr;
 }
 
+function relativeTime(timeVal)
+{
+	var now = new Date();
+	var year= now.getFullYear();
+	var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
+	var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
+	
+	var changeDate = new Date();
+	
+	
+	switch(timeVal)
+	{
+		case "custom":
+			changeDate.setFullYear(year, mon-1, day-1);
+			break;
+		case "day":
+			changeDate.setFullYear(year, mon-1, day-1);
+			break;
+		case "week":
+			changeDate.setFullYear(year, mon-1, day-7);
+			break;
+		case "month":
+			changeDate.setFullYear(year, mon-2, day);
+			break;
+		case "year":
+			changeDate.setFullYear(year-1, mon, day);
+			break;
+	}
+	
+	var relativeYesr = changeDate.getFullYear();
+    var relativeMon = changeDate.getMonth() + 1;
+    var relativeDay = changeDate.getDate();
+    if(relativeMon < 10)    { relativeMon = "0" + relativeMon; }
+    if(relativeDay < 10)    { relativeDay = "0" + relativeDay; }
+    
+    var relativeTime = relativeYesr + "년" + relativeMon + "월" + relativeDay+"일";
+    
+    return relativeTime;
+}
+
 function yesterday(){
 	
 	var now = new Date();
@@ -465,11 +510,12 @@ function beforeOneMonth(){
     return resultDate;
 	
 }
+
 function beforeOneyear(){
 	var now = new Date();
 	var year= now.getFullYear();
 	var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
-	var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
+	var day = now.getDate() > 9 ? ''+now.getDate() : '0'+now.getDate();
 	var changeDate = new Date();
 	changeDate.setFullYear(year-1, mon, day);
 	
@@ -488,4 +534,17 @@ function serviceSort(a, b) {
 	}
 	
 	return  parseInt(a["@id"]) > parseInt(b["@id"]) ? 1 : -1;
+}
+
+function graphSort(a, b) {
+
+	var _a = a["id"].substring(a["id"].indexOf('[')+1,a["id"].length-1);
+	var _b = b["id"].substring(b["id"].indexOf('[')+1,b["id"].length-1);
+	
+	if(parseInt(_a) == parseInt(_b))
+	{
+		return 0;
+	}
+	
+	return  parseInt(_a) > parseInt(_b) ? 1 : -1;
 }

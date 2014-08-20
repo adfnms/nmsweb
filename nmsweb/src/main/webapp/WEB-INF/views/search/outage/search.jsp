@@ -18,10 +18,11 @@
 	var pageNum = 1;
 	var limit =20;
 	var offset = 0;
+	var pageSize = 10;
 	$(document).ready(function() {
 		
 		/* 장애 목록 검색 */
-		getTotalOutagesList(addOutage, "limit="+limit+"&offset="+offset);
+		getTotalOutagesList(addOutage, "&orderBy=ifLostService&order=desc&limit="+limit+"&offset="+offset);
 		
 	});
 		/* 장애 목록*/
@@ -29,7 +30,8 @@
 			var str = getTabletagToOutageSearchJsonObj(jsonObj);
 			$('#outageListTable').empty();
 			$('#outageListTable').append(str);
-		getPagingHtml($('#pagingDiv'), "goSearchPageing", jsonObj["@totalCount"], pageNum, "10", "10" );
+			
+		getPagingHtml($('#pagingDiv'), "goSearchPageing", jsonObj["@totalCount"], pageNum, limit, pageSize );
 	}
 	
 		/* 장애 ID 검색*/
@@ -38,15 +40,42 @@
 	}
 		/* 노드 ID 검색 */
 	function searchNodeId(){
-		seachOutageToNodeId(addOutage, $('#nodeId').val());
+		
+		// var data = "query=this_.nodeId = '"+nodeId+"' AND this_.iflostservice >
+		// '"+new Date().format("yyyy-MM-ddTHH:MM:ss")+"'";
+		
+		
+// 		seachOutageToNodeId(addOutage, $('#nodeId').val());
+		pageNum = 1;
+		offset = 0;
+		
+		var nodeId =  $('#nodeId').val();
+		if (nodeId == null) {
+			alert("노드 아이디가 없습니다.");
+			return;
+		}
+		
+		var query ="query=this_.nodeId='" + nodeId+ "'";
+		var filter = "&orderBy=ifLostService&order=desc&limit=" + limit+"&offset="+offset;
+		
+		getTotalOutagesList(addOutage, query + filter);
+		
 	}
 	
 	//페이징 처리 스크립트
 	function goSearchPageing(pageNm){
 		pageNum = pageNm;
 		offset = (parseInt(pageNm)-1) * limit;
+		var query="";
+		var nodeId = $('#nodeId').val();
 		
-		getTotalOutagesList(addOutage, "limit="+limit+"&offset="+offset);
+		if(nodeId!=null)
+		{
+			 query ="query=this_.nodeId='" + nodeId+ "'";
+		}
+		var filter = "&orderBy=ifLostService&order=desc&limit="+limit+"&offset="+offset;
+		
+		getTotalOutagesList(addOutage, query + filter);
 		
 	}
 </script>

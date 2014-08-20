@@ -335,15 +335,13 @@
 			$('#outageInfo').append("<strong class=text-error> 현재 장애 목록이 없습니다. </strong><br><strong class=text-error></strong><br><strong class=text-error></strong><br><strong class=text-error></strong>");
 			
 		}else{
-			
-			
+			var current = new Date();
+			var lostTime;
+			var lastTime;
 			for ( var i in outageObj) {
-
-				var time = outageObj[i]["iflostservice"].substring(0,outageObj[i]["iflostservice"].length-3);
-				var lostTime = new Date(time).format('yyyy-MM-dd hh:mm:ss');
-				alert(lostTime);
-				var current = new Date();
-				var lastTime = dateDiff(lostTime, current);
+				
+				lostTime = new Date(outageObj[i]["iflostservice"].replace(' ','T') + ":00");
+				lastTime = dateDiff(lostTime, current);
 				
 				$('#outageInfo').append("<strong><a class=text-error data-toggle=modal href='#myModal' onclick=\"javascript:outagePop('"+outageObj
 						[i]["outageid"]+"','"+outageObj[i]["ipaddr"]+"');\">" + outageObj[i]["ipaddr"] + "</a></strong> ("+ lastTime + ")<br/>");
@@ -534,18 +532,18 @@
 	</div>
 	<!-- /container -->
 	<!-- Modal -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="myModalLabel" >장애정보</h3>
-	</div>
-	<div class="modal-body">
-		<div class="row-fluid" id="outageInfoDiv"></div>
-	</div>
-	<div class="modal-footer">
-		<button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
-	</div>
-</div>
+<!-- <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" > -->
+<!-- 	<div class="modal-header"> -->
+<!-- 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
+<!-- 		<h3 id="myModalLabel" >장애정보</h3> -->
+<!-- 	</div> -->
+<!-- 	<div class="modal-body"> -->
+<!-- 		<div class="row-fluid" id="outageInfoDiv"></div> -->
+<!-- 	</div> -->
+<!-- 	<div class="modal-footer"> -->
+<!-- 		<button class="btn  btn-primary" data-dismiss="modal" aria-hidden="true">Close</button> -->
+<!-- 	</div> -->
+<!-- </div> -->
 <!-- Modal -->
 </body>
 

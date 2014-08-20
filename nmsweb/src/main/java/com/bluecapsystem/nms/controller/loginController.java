@@ -1,7 +1,9 @@
 package com.bluecapsystem.nms.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +16,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,6 +27,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bluecapsystem.nms.define.Define;
 import com.bluecapsystem.nms.dto.UserInfoTbl;
+import com.bluecapsystem.nms.dto.UserTbl;
+import com.bluecapsystem.nms.service.UserManagerService;
 import com.bluecapsystem.nms.util.Util;
 
 import com.bluecapsystem.nms.define.NMSProperties;
@@ -36,6 +41,9 @@ import com.bluecapsystem.nms.define.NMSProperties;
 public class loginController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(loginController.class);
+	
+	@Autowired
+	private UserManagerService userManagerService;
 	
 	/**LogIn Main Controller
 	 * @param locale
@@ -73,7 +81,20 @@ public class loginController {
 		String jsonStr = "";
 		
 		_LOGIN:
-		
+		{
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("userId", userId);
+			UserTbl userInfo =  userManagerService.userInfo(params);
+			
+			if(userInfo == null)
+			{
+				
+				logger.error("사용자 ID 및 PW가 없음");
+				result = false;
+				message = "아이디 또는 패스워드를 확인하세요.";
+				break _LOGIN;
+			}
+			
 			if(userId== null || userId  == "" || passWord == null || passWord  == ""){// id , password null check
 			
 			logger.error("사용자 ID 및 PW가 없음");
@@ -120,7 +141,7 @@ public class loginController {
 					//--------------------------세션 생성-----------------------------
 					request.getSession().setAttribute(Define.USER_ID_KEY, Id); 
 					request.getSession().setAttribute(Define.FULL_NAME_KEY, name);
-					request.getSession().setAttribute(Define.GROUP_ID_KEY, "");
+					request.getSession().setAttribute(Define.GROUP_NM, userInfo.getGroupNm());
 					//--------------------------세션 생성-----------------------------
 					result = true;
 					
@@ -130,9 +151,8 @@ public class loginController {
 					logger.error("get Json date false");
 					e.printStackTrace();
 				}
-		
 			}
-		
+		}
 		model.addObject("result",result);
 		model.addObject("message",message);
 		model.setViewName("jsonView");
@@ -148,7 +168,3 @@ public class loginController {
 		return "redirect:/login.do";
 	}
 }
-
-
-
-

@@ -13,5 +13,6 @@ public class Define
 	public static final String MENU_ID_KEY		= "MENU_ID";
 	public static final String AUTH_ID_KEY		= "AUTH_ID";
 	public static final String GROUP_ID_KEY		= "GROUP_ID";
+	public static final String GROUP_NM		= "GROUP_NM";
 	
 }

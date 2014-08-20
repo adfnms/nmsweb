@@ -87,7 +87,6 @@ function getNodeToSurveillance(callback,categoryId){
 			}
 		}
 	}); 
-	
 }
 
 function regNodeListStr(jsonObj){
@@ -138,6 +137,7 @@ function NodeListAjax(callback,nodeId,nodelabel,categoryId){
 		dataType : 'json',
 		data : data,
 		contentType : 'application/json',
+		async : true,
 		error : function(data) {
 			alert("장애목록 가져오기 실패");
 		},
@@ -148,6 +148,38 @@ function NodeListAjax(callback,nodeId,nodelabel,categoryId){
 			}
 		}
 	});
+}
+
+function surveillanceGetNodeListAjax(callback,nodeObj,categoryId){
+	
+	for( var i in nodeObj){
+		var nodeId =  nodeObj[i]["nodeid"];
+		var nodelabel=nodeObj[i]["nodelabel"];
+		
+		var recentCount =10;
+		var query = encodeURI("query=this_.nodeId = '" + nodeId + "'");
+		var filter = "&orderBy=ifLostService&order=desc&limit=" + recentCount;
+		var data =query + filter;
+		
+		$.ajax({
+			type : 'get',
+			url : '/' + version + '/outages',
+			dataType : 'json',
+			data : data,
+			contentType : 'application/json',
+			async : false,
+			error : function(data) {
+				alert("장애목록 가져오기 실패");
+			},
+			success : function(data) {
+				//성공 시 데이터 불러오기
+				if (typeof callback == "function") {
+					callback(data,nodeId,nodelabel,categoryId);
+				}
+			}
+		});
+		
+	}
 }
 
 function regNodeInfoStr(data,nodeId,nodelabel){
@@ -169,7 +201,7 @@ function regNodeInfoStr(data,nodeId,nodelabel){
 				strInfo += '		<div class="accordion-heading" >';
 				strInfo += '			<h3><a class="accordion-toggle text-error" data-toggle="collapse" data-parent="#accordion2"  href="#'+nodeId+'" id= '+nodelabel+'>'+nodelabel+'</a></h3>';
 				strInfo += '		</div>';
-				strInfo += '		<div id="'+nodeId+'" class="accordion-body collapse in">';
+				strInfo += '		<div id="'+nodeId+'" class="accordion-body collapse">';
 				strInfo += '			<div class="accordion-inner">';
 				strInfo += '				<div class="well well-small">';
 				strInfo += '<table class="table table-striped ">';
@@ -368,15 +400,12 @@ function getSearchAssetsList(callback,categorynm) {
 		
 		
 	}
-	function nodeCheckBoxStr(jsonObj, categoryid ){
-		
-		console.log("----------NodeCheckBoxStr----------");
-		console.log(jsonObj);
+	function  NodeTotalListPopObj(jsonObj, categoryid ){
 		
 		var str = "";
 		var node=jsonObj["node"];
 		var totalCount=jsonObj["@totalCount"];
-		
+
 		if (totalCount == 0) {
 			str += "<tr>";
 			str += "<td></td>";
@@ -386,7 +415,6 @@ function getSearchAssetsList(callback,categorynm) {
 			str += "<tr>";
 			str += "	<td class=''>";
 			str += "		<label class='checkbox'>";
-			str += "			<input  value='"+categoryid+"'  name='categoryid' id='categoryid'  type='hidden'/>	"; 
 			str += "			<input style='margin-left: 0px;;'  value='"+node["@id"]+"' name='nodeid' id='nodeid'  type='checkbox' />"; 
 			str += "		</label>";
 			str += "</td>";
@@ -397,7 +425,6 @@ function getSearchAssetsList(callback,categorynm) {
 				str += "<tr>";
 				str += "	<td class=''>";
 				str += "		<label class='checkbox'>";
-				str += "			<input  value='"+categoryid+"'  name='categoryid' id='categoryid'  type='hidden'/>	"; 
 				str += "			<input style='margin-left: 0px;;'  value='"+node[i]["@id"]+"' name='nodeid' id='nodeid'  type='checkbox' />"; 
 				str += "		</label>";
 				str += "</td>";
@@ -408,6 +435,40 @@ function getSearchAssetsList(callback,categorynm) {
 		return str;
 	}
 	
+function  NodeToSurveillancePopObj(nodeObj, categoryid ){
+		
+		var str = "";
+		var totalCount = nodeObj.length;
+		
+		if (totalCount == 0) {
+			str += "<tr>";
+			str += "<td></td>";
+			str += "<td>노드가 없습니다</td>";
+			str += "<td></td>";
+		}else if(totalCount ==1) {
+			str += "<tr>";
+			str += "	<td class=''>";
+			str += "		<label class='checkbox'>";
+			str += "			<input style='margin-left: 0px;;'  value='"+nodeObj["nodeid"]+"' name='nodeid' id='nodeid'  type='checkbox' />"; 
+			str += "		</label>";
+			str += "</td>";
+			str += "	<td class=''><h5>노드아이디 : "+nodeObj["nodeid"]+"</h5></td>";
+			str += "	<td class=''><h5>노드 라벨 :"+nodeObj["nodelabel"] +"</h5></td>";
+		}else if(totalCount >0) {
+			for ( var i in nodeObj) {
+				str += "<tr>";
+				str += "	<td class=''>";
+				str += "		<label class='checkbox'>";
+				str += "			<input style='margin-left: 0px;;'  value='"+nodeObj[i]["nodeid"]+"' name='nodeid' id='nodeid'  type='checkbox' />"; 
+				str += "		</label>";
+				str += "</td>";
+				str += "	<td class=''><h5>노드아이디 : "+nodeObj[i]["nodeid"]+"</h5></td>";
+				str += "	<td class=''><h5>노드 라벨 :"+nodeObj[i]["nodelabel"] +"</h5></td>";
+			}
+		}
+		return str;
+	}
+
 	function categoryNameStr(jsonObj,categoryid,categoryname){
 		
 		var str = ""; 

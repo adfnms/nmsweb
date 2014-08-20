@@ -4,11 +4,52 @@ function addProvisioningRequisition(){
 	getTotalRequisitionsList(getTotalRequisitions);
 }
 
+function addNodeRequisitions(callback,nodeIpAddress,requisitions)
+{
+	$.ajax({
+		type : 'post',
+		url : '/'+version+'/admin/addNode/' + nodeIpAddress + "/"+requisitions,
+		dataType : 'json',
+		async:false,
+		contentType : 'application/json',
+		error : function(data) {
+			alert('필요조건 리스트 가져오기 서비스 실패');
+		},
+		success : function(data) {
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+}
+
+function addNodeIdListRequisitions(callback,data)
+{
+	alert($(data).serialize());
+	$.ajax({
+		type : 'post',
+		url : '/'+version+'/admin/addRequisitions',
+		
+		data:$(data).serialize(),
+		async:false,
+		error : function(data) {
+			console.log(data);
+			alert('필요조건 리스트 가져오기 서비스 실패');
+		},
+		success : function(data) {
+			if (typeof callback == "function") {
+				callback(data);
+			}
+		}
+	});
+}
+
 function getTotalRequisitionsList(callback) {
 	$.ajax({
 		type : 'get',
 		url : '/' + version + '/requisitions',
 		dataType : 'json',
+		async : false,
 		contentType : 'application/json',
 		error : function(data) {
 			alert('필요조건 리스트 가져오기 서비스 실패');
@@ -74,6 +115,7 @@ function delRequisition(foreignSource) {
 		url : '/' + version + '/requisitions/deployed/' + foreignSource,
 		datatype : 'json',
 		contentType : 'application/json',
+		async:false,
 		error : function(data) {
 			alert("노드 [" + foreignSource + "] 삭제 실패");
 		},
@@ -89,6 +131,11 @@ function addRequisition() {
 		alert("추가할 노드 그룹명을 입력하십시오.");
 		return;
 	}
+	
+//	showSaveRequisitionPopListAjax('test123', '123456', 'WIN-AV5R9S8978S.local', 'test');
+	
+	
+//	return;
 	var text = $("#requisitionsBox input[name=requisitions]").val();
 	if(regRequisitionCheck(text))
 	{
@@ -250,6 +297,7 @@ function delRequisitionPopList(foreignId){
 		type : 'delete',
 		url : '/' + version + '/requisitions/' + foreignSource + '/nodes/' + foreignId,
 		datatype : 'json',
+		async:false,
 		contentType : 'application/json',
 		error : function(data) {
 			alert("요구 삭제 실패");
@@ -2616,6 +2664,7 @@ function getTableToEditRequisitionJsonObj(jsonObj, foreignSource, foreignId){
 		str += '</ul>';
 	return str;
 }
+
 //메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 사 새로 생성된 하단부 리스트
 function getTableToRequisitionsJsonObj(jsonObj) {
 	var requisitionObj = jsonObj["model-import"];
@@ -2725,6 +2774,49 @@ function getTableToRequisitionsJsonObj(jsonObj) {
 		str += "</tr>";
 	}
 	return str;
+}
+
+//메뉴의 운영관리 -> 노드 관리 -> + 노드 추가 클릭 사 새로 생성된 하단부 리스트
+function getTableToRequisitionsSelectBoxJsonObj(jsonObj) {
+	var requisitionObj = jsonObj["model-import"];
+	var selectObj = $('<select></select>').clone();
+	var optionObj = $('<option></option>');
+	
+	selectObj.attr('name','requisitions');
+	selectObj.attr('id','requisitions');
+
+	selectObj.append(
+		optionObj.clone().text("선택 하세요.")
+	);
+	
+	if(jsonObj["@count"] == 1){
+		var nullStrNode =nullCheckJsonObject(jsonObj["model-import"], ["node"]);
+		
+		if(nullStrNode.length >1){
+			nodeStr = nullStrNode.length;
+		}
+		else if(nullStrNode == ""){
+			nodeStr ="0";
+		}else{
+			nodeStr ="1";
+		}
+			selectObj.append(
+				optionObj.clone().attr('value',requisitionObj["@foreign-source"]).text(requisitionObj["@foreign-source"])
+			);
+
+	}else if(jsonObj["@count"] > 1){
+		
+		for (var i in requisitionObj){
+			selectObj.append(
+					optionObj.clone().attr('value',requisitionObj[i]["@foreign-source"]).text(requisitionObj[i]["@foreign-source"])
+			);
+		}	
+	}else{
+		selectObj.append(
+				optionObj.clone().text('노드 그룹이 없습니다.')
+		);
+	}
+	return selectObj;
 }
 
 /** 이벤트 정보를 table 테그 Str로 만들어준다.  
